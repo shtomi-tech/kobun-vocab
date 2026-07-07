@@ -9,6 +9,7 @@
 
 const DATA_URL = "data/vocab.json";
 const STORE_KEY = "kobun_vocab_progress_v1";
+const APP_ID = "kobun-vocab";
 
 const state = {
   meta: {},
@@ -16,6 +17,8 @@ const state = {
   progress: {},       // id -> { correct, wrong }
   session: null,      // 現在の演習セッション
 };
+
+let cloud = null;     // harness createCloud のインスタンス（config無しなら no-op）
 
 /* ---------- localStorage ---------- */
 function loadProgress() {
@@ -28,6 +31,33 @@ function loadProgress() {
 function saveProgress() {
   try { localStorage.setItem(STORE_KEY, JSON.stringify(state.progress)); }
   catch (e) { /* ignore */ }
+  if (cloud) cloud.queueSave();
+}
+
+/* ============================================================
+   cloud sync（生徒別・共有URL ?s=&t=）— harness/cloud.js を利用
+   共通スキーマ app_students / app_progress（app="kobun-vocab"）。
+   config.json が無ければ no-op で、従来どおり匿名ローカル動作（無回帰）。
+   進捗は語ごとの { correct, wrong } マップをそのまま1つのjsonbに保存。
+   ============================================================ */
+function setShareStatus(message, tone = "") {
+  const slot = el("shareStatus");
+  if (!slot) return;
+  slot.textContent = message || "";
+  slot.className = "shareStatus" + (tone ? " " + tone : "");
+}
+// クラウドから来た進捗を localStorage へ静かに反映（cloudエコー保存を避ける）
+function applyCloudProgress(p) {
+  if (!p || typeof p !== "object") return;
+  state.progress = p;
+  try { localStorage.setItem(STORE_KEY, JSON.stringify(state.progress)); }
+  catch (e) { /* ignore */ }
+}
+function applySharedUi() {
+  const enabled = !!(cloud && cloud.isEnabled());
+  document.body.classList.toggle("sharedMode", enabled);
+  const resetBtn = el("resetBtn");
+  if (resetBtn) resetBtn.classList.toggle("hide", enabled);
 }
 function statOf(id) {
   return state.progress[id] || { correct: 0, wrong: 0 };
@@ -400,6 +430,7 @@ document.addEventListener("keydown", (e) => {
 
 /* ---------- リセット ---------- */
 el("resetBtn").addEventListener("click", () => {
+  if (cloud && cloud.isEnabled()) return;   // 共有モードでは進捗を消さない
   if (confirm("すべての進捗（正答・誤答の記録）をリセットしますか？")) {
     state.progress = {};
     saveProgress();
@@ -415,6 +446,17 @@ async function boot() {
     state.meta = data.meta || {};
     state.words = (data.words || []).filter(w => w.meanings && w.meanings.length);
     state.progress = loadProgress();
+
+    // 生徒別クラウド同期（共有URL ?s=&t= があり config.json が揃うときのみ有効）
+    cloud = createCloud({
+      appId: APP_ID,
+      getPayload: () => state.progress,
+      applyLoaded: applyCloudProgress,
+      onStatus: setShareStatus,
+    });
+    await cloud.init();
+    applySharedUi();
+
     renderHome();
   } catch (e) {
     el("homePanel").innerHTML = `<section class="card"><p>データの読み込みに失敗しました。</p><p class="hint">${esc(String(e))}</p></section>`;
