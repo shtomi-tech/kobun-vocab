@@ -197,6 +197,44 @@ h2 {
 .reviewCta { background: var(--clay); border-color: var(--clay); }
 .reviewCta:hover { background: #8f3e22; }
 
+.primaryCta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  width: 100%;
+  min-width: 0;
+  min-height: 64px;
+  padding: 12px 16px;
+  margin-top: 14px;
+  background: var(--clay);
+  border-color: var(--clay);
+}
+.primaryCta:hover { background: #8f3e22; }
+.primaryCta .ctaTag {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: rgba(250, 249, 246, .78);
+}
+.primaryCta .ctaMain { font-family: var(--serif); font-size: 19px; }
+
+.moreDetails summary,
+.chapterDetails summary {
+  cursor: pointer;
+  list-style: none;
+}
+.moreDetails summary::-webkit-details-marker,
+.chapterDetails summary::-webkit-details-marker { display: none; }
+.moreDetails summary::before,
+.chapterDetails summary::before { content: "▸ "; }
+.moreDetails[open] summary::before,
+.chapterDetails[open] summary::before { content: "▾ "; }
+.chapterDetails .chapterList { margin-top: 12px; }
+.chapterBtnAll { background: var(--parchment); }
+.chapterBtnAll .chapterName { font-weight: 600; }
+
 /* ---- Quiz session ---- */
 .sessionHead {
   display: flex;

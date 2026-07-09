@@ -142,14 +142,20 @@ function renderHome() {
   const { total, mastered, attempted, remaining } = progressSummary();
   const weak = weakWords();
   const chapters = chapterGroups();
+  const chapterEntries = [{ name: "すべての章", words: state.words, isAll: true }, ...chapters];
   const todayPool = firstUnmastered(state.words);
   const todayCount = Math.min(20, todayPool.length || total);
+  const sharedMode = !!(cloud && cloud.isEnabled());
 
   home.innerHTML = `
     <section class="card hero">
       <p class="label">Kobun Vocabulary</p>
       <h2>今日の20語から、408語を着実に回す</h2>
-      <p class="hint">古語 → 現代語訳の4択。2回正解で習得扱い、誤答語は復習に自動で残ります。</p>
+      <button class="cta primaryCta" id="startToday" type="button">
+        <span class="ctaTag">おすすめ・約3分</span>
+        <span class="ctaMain">今日の20語を始める</span>
+      </button>
+      <p class="hint">古語 → 現代語訳の4択。2回正解で習得扱い、間違えた語はその場で最後にもう一度出題されます。</p>
     </section>
 
     <section class="card">
@@ -165,57 +171,74 @@ function renderHome() {
         </div>
         <div class="statCell">
           <div class="statNum">${weak.length}</div>
-          <div class="statCaption">苦手（要復習）</div>
+          <div class="statCaption">要復習</div>
         </div>
       </div>
       <div class="masteryBar" aria-label="習得率 ${mastered}/${total}">
         <div class="masteryFill" style="width:${total ? Math.round((mastered / total) * 100) : 0}%"></div>
       </div>
+      ${weak.length ? `
       <div class="actions">
-        <button class="cta" id="startToday" type="button">未習得から${todayCount}語</button>
-        <button class="cta reviewCta" id="startWeak" type="button" ${weak.length ? "" : "disabled"}>
-          苦手だけ演習（${weak.length}語）
-        </button>
-        <button class="ghost inlineGhost" id="startAll" type="button">全${total}語</button>
-      </div>
-      <p class="hint">残り${remaining}語。迷ったら左の「未習得から20語」で短く回すのがおすすめです。</p>
+        <button class="cta reviewCta" id="startWeak" type="button">間違えた${weak.length}語を復習する</button>
+      </div>` : ""}
+      <p class="hint">残り${remaining}語。</p>
     </section>
 
     <section class="card">
-      <p class="label">Chapters — 章・範囲で演習</p>
-      <div class="chapterList">
-        ${chapters.map((c, i) => {
-          const cp = progressSummary(c.words);
-          const pct = cp.total ? Math.round((cp.mastered / cp.total) * 100) : 0;
-          return `<button class="chapterBtn" data-ci="${i}" type="button">
-            <span class="chapterMain">
-              <span class="chapterName">${esc(c.name)}</span>
-              <span class="chapterMiniBar"><span style="width:${pct}%"></span></span>
-            </span>
-            <span class="chapterStat">${cp.mastered}/${cp.total} 習得・苦手${cp.weak}</span>
-          </button>`;
-        }).join("")}
-      </div>
+      <details class="chapterDetails">
+        <summary class="label">章から選ぶ（全${chapters.length}章）</summary>
+        <div class="chapterList">
+          ${chapterEntries.map((c, i) => {
+            const cp = progressSummary(c.words);
+            const pct = cp.total ? Math.round((cp.mastered / cp.total) * 100) : 0;
+            return `<button class="chapterBtn${c.isAll ? " chapterBtnAll" : ""}" data-ci="${i}" type="button">
+              <span class="chapterMain">
+                <span class="chapterName">${esc(c.name)}</span>
+                <span class="chapterMiniBar"><span style="width:${pct}%"></span></span>
+              </span>
+              <span class="chapterStat">${cp.mastered}/${cp.total} 習得</span>
+            </button>`;
+          }).join("")}
+        </div>
+      </details>
     </section>
+
+    ${sharedMode ? "" : `
+    <section class="card">
+      <details class="moreDetails">
+        <summary class="label">その他</summary>
+        <div class="actions">
+          <button class="ghost" id="resetBtn" type="button">進捗をすべて削除</button>
+        </div>
+      </details>
+    </section>`}
   `;
 
   el("startToday").addEventListener("click", () => {
     const pool = todayPool.length ? todayPool : state.words;
-    startSession(takeForSession(pool, 20), "未習得から20語");
+    startSession(takeForSession(pool, 20), "つづきから20語");
   });
-  el("startAll").addEventListener("click", () => startSession(state.words));
-  el("startWeak").addEventListener("click", () => {
-    if (weak.length) startSession(weak, "苦手だけ演習");
-  });
+  if (weak.length) {
+    el("startWeak").addEventListener("click", () => startSession(weak, "間違えた語を復習"));
+  }
   document.querySelectorAll(".chapterBtn").forEach(btn => {
     btn.addEventListener("click", () => {
-      const c = chapters[parseInt(btn.dataset.ci, 10)];
+      const c = chapterEntries[parseInt(btn.dataset.ci, 10)];
       if (c && c.words.length) {
         const pool = firstUnmastered(c.words);
         startSession(pool.length ? pool : c.words, c.name);
       }
     });
   });
+  if (!sharedMode) {
+    el("resetBtn").addEventListener("click", () => {
+      if (confirm("すべての進捗（正答・誤答の記録）を削除しますか？")) {
+        state.progress = {};
+        saveProgress();
+        renderHome();
+      }
+    });
+  }
 }
 
 // 章ごとに単語をまとめる（出現順を保持）
@@ -281,7 +304,7 @@ function renderQuestion() {
         <span>Q ${num} / ${totalQ}</span>
         <span class="streak">正解 ${s.correctCount}</span>
       </div>
-      <button class="ghost smallGhost" id="quitSession" type="button">ホームへ</button>
+      <button class="ghost smallGhost" id="quitSession" type="button">中断してホームへ</button>
     </div>
     <div class="progressTrack"><div class="progressFill" style="width:${pct}%"></div></div>
 
@@ -322,7 +345,11 @@ function selectAnswer(i) {
 
   const stat = statOf(word.id);
   if (correct) { stat.correct += 1; s.correctCount += 1; }
-  else { stat.wrong += 1; if (!s.wrongIds.includes(word.id)) s.wrongIds.push(word.id); }
+  else {
+    stat.wrong += 1;
+    if (!s.wrongIds.includes(word.id)) s.wrongIds.push(word.id);
+    s.queue.push(word); // 誤答語はこのセッションの最後にもう一度出題する
+  }
   state.progress[word.id] = stat;
   saveProgress();
 
@@ -350,20 +377,12 @@ function renderFeedback(correct) {
       <ul>
         ${word.meanings.map(m => `<li>${esc(m)}</li>`).join("")}
       </ul>
+      ${correct ? "" : `<p class="hint">この語は最後にもう一度出題されます。</p>`}
     </div>
     <div class="nextRow">
-      ${correct ? "" : `<button class="ghost inlineGhost" id="retryNow" type="button">この語を最後にもう一度</button>`}
       <button class="cta" id="nextBtn" type="button">${last ? "結果を見る" : "次の問題へ"}</button>
     </div>
   `;
-  const retryBtn = el("retryNow");
-  if (retryBtn) {
-    retryBtn.addEventListener("click", () => {
-      s.queue.push(word);
-      retryBtn.disabled = true;
-      retryBtn.textContent = "最後に追加済み";
-    });
-  }
   const nextBtn = el("nextBtn");
   nextBtn.addEventListener("click", nextQuestion);
   nextBtn.focus();
@@ -390,11 +409,11 @@ function renderDone() {
     </section>
     <section class="card">
       <p class="label">Next</p>
-      <p class="resultText">このセッション内の習得語は${masteredNow}語。間違えた語はホームの「苦手だけ演習」に残ります。</p>
+      <p class="resultText">このセッション内の習得語は${masteredNow}語。${wrongWords.length ? `間違えた語はホームの「間違えた語を復習する」に残ります。` : ""}</p>
       <div class="actions">
         ${wrongWords.length ? `<button class="cta reviewCta" id="retryWrong" type="button">間違えた${wrongWords.length}語をもう一度</button>` : ""}
-        <button class="cta" id="nextTwenty" type="button">次の未習得20語</button>
-        <button class="cta" id="backHome" type="button">ホームに戻る</button>
+        <button class="${wrongWords.length ? "ghost inlineGhost" : "cta"}" id="nextTwenty" type="button">つづきから20語</button>
+        <button class="ghost smallGhost" id="backHome" type="button">ホームに戻る</button>
       </div>
       ${wrongWords.length ? `<div class="wrongList">
         ${wrongWords.map(w => `<span>${esc(w.kana)}</span>`).join("")}
@@ -403,11 +422,11 @@ function renderDone() {
   `;
 
   if (wrongWords.length) {
-    el("retryWrong").addEventListener("click", () => startSession(wrongWords));
+    el("retryWrong").addEventListener("click", () => startSession(wrongWords, "間違えた語を復習"));
   }
   el("nextTwenty").addEventListener("click", () => {
     const pool = firstUnmastered(state.words);
-    startSession(takeForSession(pool.length ? pool : state.words, 20), "次の未習得20語");
+    startSession(takeForSession(pool.length ? pool : state.words, 20), "つづきから20語");
   });
   el("backHome").addEventListener("click", renderHome);
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -425,16 +444,6 @@ document.addEventListener("keydown", (e) => {
   } else if (e.key === "Enter" && s.answered) {
     const btn = el("nextBtn");
     if (btn) btn.click();
-  }
-});
-
-/* ---------- リセット ---------- */
-el("resetBtn").addEventListener("click", () => {
-  if (cloud && cloud.isEnabled()) return;   // 共有モードでは進捗を消さない
-  if (confirm("すべての進捗（正答・誤答の記録）をリセットしますか？")) {
-    state.progress = {};
-    saveProgress();
-    renderHome();
   }
 });
 
