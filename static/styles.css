@@ -110,17 +110,15 @@ h2 {
 
 .hint { color: var(--muted); font-size: 13px; margin: 8px 0 0; }
 
-/* ---- App / practice tab nav（appNav = 単語/活用、practiceNav = 活用内の助動詞/用言/文法4択） ---- */
-.appNav,
-.practiceNav {
+/* ---- App nav（単語／助動詞／用言／文法4択のフラットな1段タブ） ---- */
+.appNav {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   border-top: 1px solid var(--ink);
   border-left: 1px solid var(--ink);
   margin-bottom: 16px;
 }
-.appTab,
-.practiceTab {
+.appTab {
   border: 0;
   border-right: 1px solid var(--ink);
   border-bottom: 1px solid var(--ink);
@@ -134,8 +132,7 @@ h2 {
   padding: 10px 12px;
   text-align: left;
 }
-.appTab span,
-.practiceTab span {
+.appTab span {
   color: var(--muted);
   font-family: var(--mono);
   font-size: 10px;
@@ -143,16 +140,12 @@ h2 {
   text-transform: uppercase;
 }
 .appTab[aria-pressed="true"],
-.appTab:hover,
-.practiceTab[aria-pressed="true"],
-.practiceTab:hover {
+.appTab:hover {
   background: var(--ink);
   color: var(--parchment);
 }
 .appTab[aria-pressed="true"] span,
-.appTab:hover span,
-.practiceTab[aria-pressed="true"] span,
-.practiceTab:hover span { color: rgba(250, 249, 246, .74); }
+.appTab:hover span { color: rgba(250, 249, 246, .74); }
 
 /* ---- Stats grid ---- */
 .statGrid {
@@ -235,7 +228,7 @@ h2 {
 }
 .chapterMiniBar span { display: block; height: 100%; background: currentColor; }
 @media (max-width: 560px) { .chapterList { grid-template-columns: 1fr; } }
-.cta { border-radius: 0 0 8px 8px; font-weight: 600; min-width: min(100%, 260px); }
+.cta { font-weight: 600; min-width: min(100%, 260px); }
 .reviewCta { background: var(--clay); border-color: var(--clay); }
 .reviewCta:hover { background: #8f3e22; }
 
@@ -306,8 +299,6 @@ h2 {
 .groupStat { font-family: var(--mono); font-size: 11px; letter-spacing: .04em; color: var(--muted); }
 .groupBtn:hover .groupStat { color: rgba(250, 249, 246, .8); }
 @media (max-width: 620px) { .groupList { grid-template-columns: 1fr; } }
-
-.resetRow { display: flex; justify-content: flex-end; margin-top: 4px; }
 
 /* ---- Quiz / drill session ---- */
 .sessionHead {
@@ -473,8 +464,7 @@ h2 {
   padding: 10px 12px;
   text-align: left;
 }
-.gradeChoiceBtn:hover:not(:disabled),
-.gradeChoiceBtn[aria-pressed="true"] {
+.gradeChoiceBtn:hover:not(:disabled) {
   background: var(--ink);
   color: var(--parchment);
 }
@@ -551,7 +541,6 @@ h2 {
 .doneBanner .sub { color: rgba(250,249,246,.72); font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; margin-top: 6px; }
 
 .hide { display: none !important; }
-body:not(.vocabActive) .shareStatus { display: none; }
 
 @media (max-width: 640px) {
   .statGrid { grid-template-columns: repeat(3, 1fr); }

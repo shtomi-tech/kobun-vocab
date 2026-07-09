@@ -1,14 +1,16 @@
 "use strict";
 
 /* ============================================================
-   古文演習 — 単語（VocabApp）／活用（KatsuyoApp）を切り替える薄いシェル。
+   古文演習 — 単語／助動詞／用言／文法4択 を切り替える薄いシェル。
    各モードは static/mode-*.js に IIFE で閉じており、ここでは
-   トップレベルのタブ切替と表示中モードの mount のみを担当する。
+   フラットな1段タブの切替と、表示中モードへのキー入力の橋渡しのみを担当する。
    ============================================================ */
 
 const APPS = [
-  { id: "vocab", tag: "VOCAB QUIZ", label: "単語", title: "古文単語 4択演習", app: VocabApp },
-  { id: "katsuyo", tag: "CONJUGATION", label: "活用", title: "古文 活用ドリル", app: KatsuyoApp },
+  { id: "vocab", tag: "VOCAB QUIZ", label: "単語", title: "古文単語 4択演習", mount: () => VocabApp.mount(), handleKey: (e) => VocabApp.handleKey(e) },
+  { id: "jodoshi", tag: "AUXILIARY", label: "助動詞", title: "古文 助動詞 活用ドリル", mount: () => KatsuyoApp.mount("jodoshi"), handleKey: (e) => KatsuyoApp.handleKey(e) },
+  { id: "yougo", tag: "YOUGO", label: "用言", title: "古文 用言 活用ドリル", mount: () => KatsuyoApp.mount("yougo"), handleKey: (e) => KatsuyoApp.handleKey(e) },
+  { id: "choice", tag: "MULTIPLE CHOICE", label: "文法4択", title: "古文 文法4択", mount: () => KatsuyoApp.mount("choice"), handleKey: (e) => KatsuyoApp.handleKey(e) },
 ];
 
 let currentAppId = null;
@@ -32,15 +34,17 @@ function renderAppNav() {
 
 function switchApp(id) {
   if (currentAppId === id) return;
-  const prev = APPS.find(a => a.id === currentAppId);
-  if (prev && prev.app.unmount) prev.app.unmount();
   currentAppId = id;
   const next = APPS.find(a => a.id === id);
   document.getElementById("appTitle").textContent = next.title;
   document.title = next.title;
-  document.body.classList.toggle("vocabActive", id === "vocab");
   renderAppNav();
-  next.app.mount();
+  next.mount();
 }
+
+document.addEventListener("keydown", (e) => {
+  const app = APPS.find(a => a.id === currentAppId);
+  if (app && app.handleKey) app.handleKey(e);
+});
 
 switchApp("vocab");

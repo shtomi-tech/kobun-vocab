@@ -3,6 +3,8 @@
 const KatsuyoApp = (function () {
   const FORM_NAMES = ["未然形", "連用形", "終止形", "連体形", "已然形", "命令形"];
   const STORE_KEY = "kobun-katsuyo-progress-v1";
+  const APP_ID = "kobun-katsuyo";
+  const MASTERY_THRESHOLD = 2; // 単語モードと同じ「累計2回正解」で習得扱いに揃える
 
   const homePanel = document.getElementById("homePanel");
   const sessionPanel = document.getElementById("sessionPanel");
@@ -10,6 +12,7 @@ const KatsuyoApp = (function () {
   let DATA = null;
   let currentSet = null;
   let byId = {};
+  let cloud = null;
 
   /* ---------- progress (localStorage) ---------- */
   function loadProgress() {
@@ -20,6 +23,7 @@ const KatsuyoApp = (function () {
   }
   function saveProgress(p) {
     try { localStorage.setItem(STORE_KEY, JSON.stringify(p)); } catch (_) {}
+    if (cloud) cloud.queueSave();
   }
   function itemKey(id) {
     return currentSet.id + ":" + id;
@@ -45,22 +49,19 @@ const KatsuyoApp = (function () {
     p[key] = rec;
     saveProgress(p);
   }
+  function isMastered(rec) {
+    return !!rec && rec.c >= MASTERY_THRESHOLD && !rec.weak;
+  }
   function weakIds() {
     const p = loadProgress();
     return getItems().filter(item => (progressRecord(p, itemId(item)) || {}).weak).map(itemId);
   }
   function masteredCount() {
     const p = loadProgress();
-    return getItems().filter(item => {
-      const r = progressRecord(p, itemId(item));
-      return r && r.c > 0 && !r.weak;
-    }).length;
+    return getItems().filter(item => isMastered(progressRecord(p, itemId(item)))).length;
   }
   function groupDoneCount(g, p) {
-    return g.ids.filter(id => {
-      const r = progressRecord(p, id);
-      return r && r.c > 0 && !r.weak;
-    }).length;
+    return g.ids.filter(id => isMastered(progressRecord(p, id))).length;
   }
   // groups配列は「重要度順、最後が総仕上げ（全件通し）」という並びを前提に、
   // 最初に手をつけるべき未習得グループを1つ選ぶ。
@@ -80,6 +81,18 @@ const KatsuyoApp = (function () {
   }
   function setMode(set) {
     return set.mode || "table";
+  }
+
+  /* ---------- cloud sync（生徒別・共有URL ?s=&t= — harness/cloud.js を利用） ---------- */
+  function setShareStatus(message, tone = "") {
+    const slot = document.getElementById("shareStatus");
+    if (!slot) return;
+    slot.textContent = message || "";
+    slot.className = "shareStatus" + (tone ? " " + tone : "");
+  }
+  function applyCloudProgress(p) {
+    if (!p || typeof p !== "object") return;
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(p)); } catch (_) {}
   }
 
   /* ---------- helpers ---------- */
@@ -116,20 +129,7 @@ const KatsuyoApp = (function () {
     const total = getItems().length;
     const mastered = masteredCount();
     const weak = weakIds().length;
-
-    const nav = el("section", "practiceNav");
-    DATA.practiceSets.forEach(set => {
-      const btn = el("button", "practiceTab", set.name);
-      btn.type = "button";
-      btn.setAttribute("aria-pressed", set.id === currentSet.id ? "true" : "false");
-      btn.appendChild(el("span", null, set.label));
-      btn.addEventListener("click", () => {
-        currentSet = set;
-        renderHome();
-      });
-      nav.appendChild(btn);
-    });
-    homePanel.appendChild(nav);
+    const sharedMode = !!(cloud && cloud.isEnabled());
 
     const hero = el("section", "card hero");
     hero.appendChild(el("span", "label", currentSet.label + " CHECK"));
@@ -138,10 +138,49 @@ const KatsuyoApp = (function () {
     hero.appendChild(h2);
     hero.appendChild(el("p", "hint", currentSet.description + "。間違えた行はセッション末尾で再出題されます。"));
 
+    // ヒーローには「つづきから」の主導線を1本だけ置く（単語モードと同じ構成）
+    let primary = null;
+    if (weak > 0) {
+      primary = {
+        tag: "苦手復習・約" + Math.max(1, Math.round(weak * 0.3)) + "分",
+        main: "間違えた" + weak + currentSet.unit + "を復習する",
+        action: () => startSession(weakIds(), "苦手復習"),
+      };
+    } else {
+      const inc = firstIncompleteGroup();
+      if (inc) {
+        primary = {
+          tag: "つづきから",
+          main: inc.group.name + "（" + inc.done + " / " + inc.group.ids.length + "）",
+          action: () => startSession(inc.group.shuffle ? shuffle(inc.group.ids) : inc.group.ids.slice(), inc.group.name),
+        };
+      } else if (total > 0) {
+        primary = {
+          tag: "総仕上げ",
+          main: total + currentSet.unit + "をランダム出題",
+          action: () => startSession(shuffle(getItems().map(itemId)), "総仕上げ"),
+        };
+      }
+    }
+    if (primary) {
+      const btn = el("button", "cta primaryCta", "");
+      btn.type = "button";
+      const tag = el("span", "ctaTag", primary.tag);
+      const main = el("span", "ctaMain", primary.main);
+      btn.appendChild(tag);
+      btn.appendChild(main);
+      btn.addEventListener("click", primary.action);
+      hero.appendChild(btn);
+    }
+    homePanel.appendChild(hero);
+
+    // ---- 進捗カード（単語モードと同じ構成：label→statGrid→masteryBar→補足） ----
+    const progressCard = el("section", "card");
+    progressCard.appendChild(el("span", "label", "Progress"));
     const grid = el("div", "statGrid");
     const cells = [
-      [String(mastered), "/ " + total, "MASTERED"],
-      [String(weak), "", "WEAK / 苦手"],
+      [String(mastered), "/ " + total, "MASTERED・習得"],
+      [String(weak), "", "WEAK・苦手"],
       [String(total), "", currentSet.unit],
     ];
     cells.forEach(([num, small, cap]) => {
@@ -153,35 +192,18 @@ const KatsuyoApp = (function () {
       c.appendChild(el("div", "statCaption", cap));
       grid.appendChild(c);
     });
-    hero.appendChild(grid);
+    progressCard.appendChild(grid);
 
     const bar = el("div", "masteryBar");
+    bar.setAttribute("aria-label", "習得率 " + mastered + "/" + total);
     const fill = el("div", "masteryFill");
     fill.style.width = (total ? Math.round(mastered / total * 100) : 0) + "%";
     bar.appendChild(fill);
-    hero.appendChild(bar);
+    progressCard.appendChild(bar);
+    progressCard.appendChild(el("p", "hint", "残り" + Math.max(0, total - mastered) + currentSet.unit + "。"));
+    homePanel.appendChild(progressCard);
 
-    const actions = el("div", "actions");
-    if (weak > 0) {
-      const rev = el("button", "cta reviewCta", "苦手だけ復習（" + weak + "）");
-      rev.addEventListener("click", () => startSession(weakIds(), "苦手復習"));
-      actions.appendChild(rev);
-    } else {
-      const inc = firstIncompleteGroup();
-      if (inc) {
-        const label = "つづきから：" + inc.group.name + "（" + inc.done + " / " + inc.group.ids.length + "）";
-        const next = el("button", "cta", label);
-        next.addEventListener("click", () => startSession(inc.group.shuffle ? shuffle(inc.group.ids) : inc.group.ids.slice(), inc.group.name));
-        actions.appendChild(next);
-      } else if (total > 0) {
-        const redo = el("button", "cta", "総仕上げ：" + total + currentSet.unit + "をランダム");
-        redo.addEventListener("click", () => startSession(shuffle(getItems().map(itemId)), "総仕上げ"));
-        actions.appendChild(redo);
-      }
-    }
-    hero.appendChild(actions);
-    homePanel.appendChild(hero);
-
+    // ---- グループ一覧 ----
     const listCard = el("section", "card");
     listCard.appendChild(el("span", "label", "練習グループを選ぶ"));
     const list = el("div", "groupList");
@@ -199,17 +221,29 @@ const KatsuyoApp = (function () {
     listCard.appendChild(list);
     homePanel.appendChild(listCard);
 
-    const resetRow = el("div", "resetRow");
-    const resetBtn = el("button", "ghost smallGhost", "すべての記録を消す");
-    resetBtn.type = "button";
-    resetBtn.addEventListener("click", () => {
-      if (confirm("進捗（習得・苦手）をすべてリセットします。よろしいですか？")) {
-        localStorage.removeItem(STORE_KEY);
-        renderHome();
-      }
-    });
-    resetRow.appendChild(resetBtn);
-    homePanel.appendChild(resetRow);
+    // ---- その他（リセット、単語モードと同じく折りたたみ＋共有モード時は非表示） ----
+    if (!sharedMode) {
+      const moreCard = el("section", "card");
+      const details = document.createElement("details");
+      details.className = "moreDetails";
+      const summary = document.createElement("summary");
+      summary.className = "label";
+      summary.textContent = "その他";
+      details.appendChild(summary);
+      const actionsRow = el("div", "actions");
+      const resetBtn = el("button", "ghost", "進捗をすべて削除");
+      resetBtn.type = "button";
+      resetBtn.addEventListener("click", () => {
+        if (confirm("進捗（習得・苦手）をすべて削除しますか？")) {
+          localStorage.removeItem(STORE_KEY);
+          renderHome();
+        }
+      });
+      actionsRow.appendChild(resetBtn);
+      details.appendChild(actionsRow);
+      moreCard.appendChild(details);
+      homePanel.appendChild(moreCard);
+    }
   }
 
   /* ---------- session ---------- */
@@ -225,6 +259,8 @@ const KatsuyoApp = (function () {
       firstTryOk: 0,  // correct on first attempt
       requeued: new Set(),
       wrongNos: new Set(),
+      answered: false,
+      choiceSelect: null,
     };
     homePanel.classList.add("hide");
     sessionPanel.classList.remove("hide");
@@ -234,6 +270,8 @@ const KatsuyoApp = (function () {
   function renderRow() {
     sessionPanel.innerHTML = "";
     if (session.queue.length === 0) { renderDone(); return; }
+    session.answered = false;
+    session.choiceSelect = null;
     if (setMode(currentSet) === "choice") { renderChoiceRow(); return; }
     const id = session.queue[0];
     const j = byId[itemKey(id)];
@@ -243,7 +281,7 @@ const KatsuyoApp = (function () {
     info.appendChild(el("span", null, session.title));
     info.appendChild(el("span", null, "残り " + session.queue.length));
     head.appendChild(info);
-    const quit = el("button", "ghost smallGhost", "中断（進捗は保存）");
+    const quit = el("button", "ghost smallGhost", "中断してホームへ（進捗は保存）");
     quit.addEventListener("click", renderHome);
     head.appendChild(quit);
     sessionPanel.appendChild(head);
@@ -347,7 +385,7 @@ const KatsuyoApp = (function () {
     info.appendChild(el("span", null, session.title));
     info.appendChild(el("span", null, "残り " + session.queue.length));
     head.appendChild(info);
-    const quit = el("button", "ghost smallGhost", "中断（進捗は保存）");
+    const quit = el("button", "ghost smallGhost", "中断してホームへ（進捗は保存）");
     quit.addEventListener("click", renderHome);
     head.appendChild(quit);
     sessionPanel.appendChild(head);
@@ -366,34 +404,28 @@ const KatsuyoApp = (function () {
     top.appendChild(wc);
     box.appendChild(top);
 
-    let chosen = null;
     const choices = el("div", "gradeChoiceList");
     const buttons = [];
-    const submit = el("button", "cta", "採点する");
-    submit.disabled = true;
     const choiceOptions = shuffle(q.choices.map((text, originalIndex) => ({ text, originalIndex })));
+
+    // 単語モードの4択と同じく、選んだ瞬間に即採点する（1〜4キーにも対応）
+    function selectAndGrade(idx) {
+      if (session.answered) return;
+      const chosen = choiceOptions[idx].originalIndex;
+      gradeChoiceRow(q, chosen, buttons, choiceOptions, box);
+    }
+    session.choiceSelect = selectAndGrade;
 
     choiceOptions.forEach((choice, idx) => {
       const btn = el("button", "gradeChoiceBtn");
       btn.type = "button";
-      btn.setAttribute("aria-pressed", "false");
       btn.appendChild(el("span", "gradeChoiceMark", String.fromCharCode(65 + idx)));
       btn.appendChild(el("span", "gradeChoiceText", choice.text));
-      btn.addEventListener("click", () => {
-        chosen = choice.originalIndex;
-        buttons.forEach(b => b.setAttribute("aria-pressed", "false"));
-        btn.setAttribute("aria-pressed", "true");
-        submit.disabled = false;
-      });
+      btn.addEventListener("click", () => selectAndGrade(idx));
       buttons.push(btn);
       choices.appendChild(btn);
     });
     box.appendChild(choices);
-
-    const submitRow = el("div", "submitRow");
-    submit.addEventListener("click", () => gradeChoiceRow(q, chosen, buttons, choiceOptions, box, submit));
-    submitRow.appendChild(submit);
-    box.appendChild(submitRow);
 
     sessionPanel.appendChild(box);
   }
@@ -507,6 +539,7 @@ const KatsuyoApp = (function () {
 
     // disable inputs/submit
     submit.disabled = true;
+    session.answered = true;
     if (state.setsuzokuChips) state.setsuzokuChips.forEach(c => c.disabled = true);
     state.typeChips.forEach(c => c.disabled = true);
 
@@ -530,7 +563,7 @@ const KatsuyoApp = (function () {
 
     // feedback
     const fb = el("div", "feedback " + (allOk ? "ok" : "ng"));
-    fb.appendChild(el("h3", null, allOk ? "○ 全項目正解" : "× 誤りあり — 正解を確認"));
+    fb.appendChild(el("h3", null, allOk ? "正解" : "不正解"));
     const ansForms = j.forms.map((f, i) => FORM_NAMES[i] + "：" + (f.length ? f.join("・") : "○")).join("　");
     if (currentSet.showSetsuzoku) addAnswer(fb, "接続", j.setsuzoku);
     addAnswer(fb, "活用形", ansForms);
@@ -538,16 +571,18 @@ const KatsuyoApp = (function () {
     if (currentSet.showMeanings) addAnswer(fb, "意味", j.meanings.join("・"));
     box.appendChild(fb);
 
-    const nextRow = el("div", "submitRow");
-    const next = el("button", "cta", session.queue.length ? "次へ" : "結果を見る");
+    const nextRow = el("div", "nextRow");
+    const next = el("button", "cta", session.queue.length ? "次の問題へ" : "結果を見る");
+    next.id = "katsuyoNextBtn";
     next.addEventListener("click", renderRow);
     nextRow.appendChild(next);
     box.appendChild(nextRow);
     next.focus();
   }
 
-  function gradeChoiceRow(q, chosen, buttons, choiceOptions, box, submit) {
+  function gradeChoiceRow(q, chosen, buttons, choiceOptions, box) {
     const allOk = chosen === q.answerIndex;
+    session.answered = true;
 
     buttons.forEach((btn, idx) => {
       btn.disabled = true;
@@ -555,7 +590,6 @@ const KatsuyoApp = (function () {
       if (originalIndex === q.answerIndex) btn.classList.add("correct");
       else if (originalIndex === chosen) btn.classList.add("wrong");
     });
-    submit.disabled = true;
 
     const id = itemId(q);
     recordResult(id, allOk);
@@ -571,13 +605,14 @@ const KatsuyoApp = (function () {
     }
 
     const fb = el("div", "feedback " + (allOk ? "ok" : "ng"));
-    fb.appendChild(el("h3", null, allOk ? "○ 正解" : "× 誤りあり — 解説を確認"));
+    fb.appendChild(el("h3", null, allOk ? "正解" : "不正解"));
     addAnswer(fb, "正解", q.choices[q.answerIndex]);
     addAnswer(fb, "解説", q.explanation);
     box.appendChild(fb);
 
-    const nextRow = el("div", "submitRow");
-    const next = el("button", "cta", session.queue.length ? "次へ" : "結果を見る");
+    const nextRow = el("div", "nextRow");
+    const next = el("button", "cta", session.queue.length ? "次の問題へ" : "結果を見る");
+    next.id = "katsuyoNextBtn";
     next.addEventListener("click", renderRow);
     nextRow.appendChild(next);
     box.appendChild(nextRow);
@@ -604,50 +639,71 @@ const KatsuyoApp = (function () {
 
   function renderDone() {
     sessionPanel.innerHTML = "";
+    const total = session.total;
+    const score = session.firstTryOk;
+    const pct = total ? Math.round((score / total) * 100) : 0;
+
     const banner = el("div", "doneBanner");
-    banner.appendChild(el("div", "big", session.firstTryOk + " / " + session.total));
-    banner.appendChild(el("div", "sub", "一発正解 / 出題数"));
+    banner.appendChild(el("p", "label", "Session Complete"));
+    banner.querySelector(".label").style.color = "rgba(250,249,246,.72)";
+    banner.appendChild(el("div", "big", score + " / " + total));
+    banner.appendChild(el("div", "sub", "正答率 " + pct + "%"));
     sessionPanel.appendChild(banner);
 
-    if (session.wrongNos.size > 0) {
-      const card = el("div", "card");
-      card.appendChild(el("span", "label", "つまずいた" + currentSet.unit));
+    const card = el("section", "card");
+    card.appendChild(el("span", "label", "Next"));
+    const wrongCount = session.wrongNos.size;
+    card.appendChild(el("p", "resultText", "一発正解は" + score + currentSet.unit + "。" + (wrongCount ? "間違えた" + currentSet.unit + "はホームの「間違えた" + currentSet.unit + "を復習する」に残ります。" : "")));
+
+    const actions = el("div", "actions");
+    if (wrongCount > 0) {
+      const nos = Array.from(session.wrongNos);
+      const retry = el("button", "cta reviewCta", "間違えた" + nos.length + currentSet.unit + "をもう一度");
+      retry.addEventListener("click", () => startSession(nos, "苦手復習"));
+      actions.appendChild(retry);
+    }
+    const backHome = el("button", "ghost smallGhost", "ホームに戻る");
+    backHome.addEventListener("click", renderHome);
+    actions.appendChild(backHome);
+    card.appendChild(actions);
+
+    if (wrongCount > 0) {
       const list = el("div", "wrongList");
       Array.from(session.wrongNos).forEach(id => {
         const item = byId[itemKey(id)];
         list.appendChild(el("span", null, item.kihon || ("Q" + item.no)));
       });
       card.appendChild(list);
-      sessionPanel.appendChild(card);
     }
+    sessionPanel.appendChild(card);
+  }
 
-    const actions = el("div", "actions");
-    if (session.wrongNos.size > 0) {
-      const nos = Array.from(session.wrongNos);
-      const retry = el("button", "cta reviewCta", "苦手だけ復習（" + nos.length + "）");
-      retry.addEventListener("click", () => startSession(nos, "苦手復習"));
-      actions.appendChild(retry);
-      const again = el("button", "ghost", "ホームへ戻る");
-      again.addEventListener("click", renderHome);
-      actions.appendChild(again);
-    } else {
-      const again = el("button", "cta", "ホームへ戻る");
-      again.addEventListener("click", renderHome);
-      actions.appendChild(again);
+  /* ---------- キーボード（文法4択のみ：1〜4で選択即採点、Enterで次へ） ---------- */
+  function handleKey(e) {
+    if (!session) return;
+    if (setMode(currentSet) !== "choice") return;
+    if (["1", "2", "3", "4"].includes(e.key)) {
+      if (!session.answered && session.choiceSelect) {
+        const i = parseInt(e.key, 10) - 1;
+        session.choiceSelect(i);
+      }
+    } else if (e.key === "Enter" && session.answered) {
+      const btn = document.getElementById("katsuyoNextBtn");
+      if (btn) btn.click();
     }
-    sessionPanel.appendChild(actions);
   }
 
   /* ---------- boot ---------- */
   let booted = false;
+  let bootPromise = null;
   function boot() {
-    return Promise.all([
+    bootPromise = Promise.all([
       fetch("data/katsuyo.json?v=20260709-5")
         .then(r => { if (!r.ok) throw new Error("katsuyo data load failed: " + r.status); return r.json(); }),
       fetch("data/multiple_choice.json?v=20260709-3")
         .then(r => { if (!r.ok) throw new Error("choice data load failed: " + r.status); return r.json(); })
     ])
-      .then(([d, choiceData]) => {
+      .then(async ([d, choiceData]) => {
         DATA = Object.assign({}, d, choiceData);
 
         const jodoshiSet = d.practiceSets.find(s => s.id === "jodoshi");
@@ -688,17 +744,25 @@ const KatsuyoApp = (function () {
           collection: "choiceQuestions",
           groups: "choiceGroups",
           askLabel: "正しい選択肢を選べ",
-          unit: "問題",
+          unit: "問",
           mode: "choice",
           homeTitle: "文法知識を、4択でテンポよく確認"
         };
 
         DATA.practiceSets = [jodoshiSet, yougoSet, choiceSet];
-        currentSet = DATA.practiceSets[0];
         DATA.practiceSets.forEach(set => {
           (DATA[set.collection] || []).forEach(item => { byId[set.id + ":" + itemId(item)] = item; });
         });
-        renderHome();
+
+        // 生徒別クラウド同期（共有URL ?s=&t= があり config.json が揃うときのみ有効）。
+        // 3つの練習セット（jodoshi/yougo/choice）の進捗を1つのprogressマップとしてまとめて同期する。
+        cloud = createCloud({
+          appId: APP_ID,
+          getPayload: loadProgress,
+          applyLoaded: applyCloudProgress,
+          onStatus: setShareStatus,
+        });
+        await cloud.init();
       })
       .catch(err => {
         homePanel.innerHTML = "";
@@ -707,13 +771,20 @@ const KatsuyoApp = (function () {
         c.appendChild(el("p", "hint", String(err) + "（ローカルサーバー経由で開いてください）"));
         homePanel.appendChild(c);
       });
+    return bootPromise;
   }
 
-  async function mount() {
-    if (booted) { renderHome(); return; }
-    booted = true;
-    await boot();
+  async function mount(setId) {
+    if (!booted) {
+      booted = true;
+      await boot();
+    } else {
+      await bootPromise;
+    }
+    if (!DATA) return; // データ読み込み失敗
+    currentSet = DATA.practiceSets.find(s => s.id === setId) || DATA.practiceSets[0];
+    renderHome();
   }
 
-  return { mount };
+  return { mount, handleKey };
 })();

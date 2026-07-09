@@ -165,15 +165,15 @@ const VocabApp = (function () {
         <div class="statGrid">
           <div class="statCell">
             <div class="statNum">${mastered}<small>/${total}</small></div>
-            <div class="statCaption">習得（2回正解）</div>
+            <div class="statCaption">MASTERED・習得</div>
           </div>
           <div class="statCell">
             <div class="statNum">${attempted}<small>/${total}</small></div>
-            <div class="statCaption">着手した語</div>
+            <div class="statCaption">STARTED・着手</div>
           </div>
           <div class="statCell">
             <div class="statNum">${weak.length}</div>
-            <div class="statCaption">要復習</div>
+            <div class="statCaption">WEAK・要復習</div>
           </div>
         </div>
         <div class="masteryBar" aria-label="習得率 ${mastered}/${total}">
@@ -306,7 +306,7 @@ const VocabApp = (function () {
           <span>Q ${num} / ${totalQ}</span>
           <span class="streak">正解 ${s.correctCount}</span>
         </div>
-        <button class="ghost smallGhost" id="quitSession" type="button">中断してホームへ</button>
+        <button class="ghost smallGhost" id="quitSession" type="button">中断してホームへ（進捗は保存）</button>
       </div>
       <div class="progressTrack"><div class="progressFill" style="width:${pct}%"></div></div>
 
@@ -434,9 +434,8 @@ const VocabApp = (function () {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  /* ---------- キーボード ---------- */
-  document.addEventListener("keydown", (e) => {
-    if (!VocabApp.isActive()) return;
+  /* ---------- キーボード（1〜4で選択、Enterで次へ。シェルから active 時のみ呼ばれる） ---------- */
+  function handleKey(e) {
     const s = state.session;
     if (!s) return;
     if (["1", "2", "3", "4"].includes(e.key)) {
@@ -448,7 +447,7 @@ const VocabApp = (function () {
       const btn = el("nextBtn");
       if (btn) btn.click();
     }
-  });
+  }
 
   /* ---------- 起動 ---------- */
   async function boot() {
@@ -475,16 +474,11 @@ const VocabApp = (function () {
     }
   }
 
-  let active = false;
   async function mount() {
-    active = true;
     if (booted) { renderHome(); return; }
     booted = true;
     await boot();
   }
-  function unmount() {
-    active = false;
-  }
 
-  return { mount, unmount, isActive: () => active };
+  return { mount, handleKey };
 })();
