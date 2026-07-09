@@ -3,18 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>古文単語 4択演習</title>
-<link rel="stylesheet" href="static/styles.css?v=0.1.0">
+<title>古文演習</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="static/styles.css?v=0.2.0">
 </head>
 <body>
 <div class="wrap">
   <header class="top">
     <div class="brand">
-      <span class="backlink">Kobun ・ Vocabulary Quiz</span>
-      <h1>古文単語 4択演習</h1>
+      <span class="backlink">Kobun ・ Practice</span>
+      <h1 id="appTitle">古文単語 4択演習</h1>
       <p class="shareStatus" id="shareStatus" role="status" aria-live="polite"></p>
     </div>
   </header>
+
+  <nav class="appNav" id="appNav"></nav>
 
   <main>
     <div id="homePanel"></div>
@@ -23,6 +26,8 @@
 </div>
 
 <script src="static/vendor/harness/cloud.js?v=0.1.0"></script>
-<script src="static/app.js?v=0.1.0"></script>
+<script src="static/mode-vocab.js?v=0.2.0"></script>
+<script src="static/mode-katsuyo.js?v=0.2.0"></script>
+<script src="static/app.js?v=0.2.0"></script>
 </body>
 </html>

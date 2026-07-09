@@ -23,10 +23,8 @@ body {
 }
 
 button:focus-visible,
-a:focus-visible {
-  outline: 2px solid var(--ink);
-  outline-offset: 2px;
-}
+a:focus-visible,
+input:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 
 button { font: inherit; }
 
@@ -47,7 +45,7 @@ button.ghost:hover { background: var(--ink); color: var(--parchment); }
 .inlineGhost { min-width: 0; }
 .smallGhost { min-height: 34px; padding: 5px 10px; font-size: 12px; }
 
-.wrap { max-width: 880px; margin: 0 auto; padding: 24px 16px 64px; }
+.wrap { max-width: 960px; margin: 0 auto; padding: 24px 16px 64px; }
 
 .top {
   display: flex;
@@ -112,6 +110,50 @@ h2 {
 
 .hint { color: var(--muted); font-size: 13px; margin: 8px 0 0; }
 
+/* ---- App / practice tab nav（appNav = 単語/活用、practiceNav = 活用内の助動詞/用言/文法4択） ---- */
+.appNav,
+.practiceNav {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  border-top: 1px solid var(--ink);
+  border-left: 1px solid var(--ink);
+  margin-bottom: 16px;
+}
+.appTab,
+.practiceTab {
+  border: 0;
+  border-right: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+  background: var(--paper);
+  color: var(--ink);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  min-height: 62px;
+  padding: 10px 12px;
+  text-align: left;
+}
+.appTab span,
+.practiceTab span {
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.appTab[aria-pressed="true"],
+.appTab:hover,
+.practiceTab[aria-pressed="true"],
+.practiceTab:hover {
+  background: var(--ink);
+  color: var(--parchment);
+}
+.appTab[aria-pressed="true"] span,
+.appTab:hover span,
+.practiceTab[aria-pressed="true"] span,
+.practiceTab:hover span { color: rgba(250, 249, 246, .74); }
+
 /* ---- Stats grid ---- */
 .statGrid {
   display: grid;
@@ -149,7 +191,7 @@ h2 {
 }
 .masteryFill { height: 100%; background: var(--ink); }
 
-/* ---- Chapter list ---- */
+/* ---- Chapter list（単語モード） ---- */
 .chapterList {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -235,7 +277,39 @@ h2 {
 .chapterBtnAll { background: var(--parchment); }
 .chapterBtnAll .chapterName { font-weight: 600; }
 
-/* ---- Quiz session ---- */
+/* ---- Group list（活用モード：グループ選択） ---- */
+.groupList {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-top: 1px solid var(--ink);
+  border-left: 1px solid var(--ink);
+  margin-top: 4px;
+}
+.groupBtn {
+  border: 0;
+  border-right: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+  border-radius: 0;
+  background: var(--paper);
+  color: var(--ink);
+  display: grid;
+  gap: 6px;
+  text-align: left;
+  padding: 14px;
+  cursor: pointer;
+  font: inherit;
+}
+.groupBtn:hover { background: var(--ink); color: var(--parchment); }
+.groupName { font-size: 16px; font-family: var(--serif); }
+.groupSub { font-size: 12px; color: var(--muted); }
+.groupBtn:hover .groupSub { color: rgba(250, 249, 246, .8); }
+.groupStat { font-family: var(--mono); font-size: 11px; letter-spacing: .04em; color: var(--muted); }
+.groupBtn:hover .groupStat { color: rgba(250, 249, 246, .8); }
+@media (max-width: 620px) { .groupList { grid-template-columns: 1fr; } }
+
+.resetRow { display: flex; justify-content: flex-end; margin-top: 4px; }
+
+/* ---- Quiz / drill session ---- */
 .sessionHead {
   display: flex;
   align-items: flex-start;
@@ -265,8 +339,8 @@ h2 {
 }
 .progressFill { height: 100%; background: var(--ink); transition: width .18s ease; }
 
-.quizBox { border: 1px solid var(--ink); background: var(--parchment); padding: 16px; }
-.quizTop {
+.quizBox, .drillBox { border: 1px solid var(--ink); background: var(--parchment); padding: 16px; }
+.quizTop, .drillTop {
   display: flex;
   justify-content: space-between;
   gap: 12px;
@@ -287,7 +361,7 @@ h2 {
 }
 .askWord {
   font-family: var(--serif);
-  font-size: 34px;
+  font-size: 36px;
   line-height: 1.25;
   margin: 0 0 4px;
 }
@@ -302,7 +376,14 @@ h2 {
   padding: 1px 6px;
   margin-right: 8px;
 }
+.gradeChoiceQuestion {
+  font-family: var(--serif);
+  font-size: 24px;
+  line-height: 1.55;
+  margin: 0;
+}
 
+/* ---- 単語モード：4択（choices/choiceBtn） ---- */
 .choices { display: grid; gap: 10px; }
 .choiceBtn {
   background: var(--paper);
@@ -334,6 +415,92 @@ h2 {
   font-size: 12px;
 }
 
+/* ---- 活用モード：行入力フィールド ---- */
+.fieldRow { border-top: 1px solid var(--line); padding: 12px 0; }
+.fieldRow:first-of-type { border-top: 0; }
+.fieldName {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--muted); margin: 0 0 8px;
+}
+
+.kanaInputs { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.kanaInput {
+  font: inherit; font-family: var(--serif); font-size: 20px;
+  border: 1px solid var(--ink); border-radius: 0; background: var(--paper);
+  color: var(--ink); padding: 6px 10px; width: 130px; min-height: 44px;
+}
+.kanaInput.correct { border-color: var(--ok); border-width: 2px; background: #f3faf4; }
+.kanaInput.wrong { border-color: var(--ng); border-width: 2px; background: #fdf3f2; }
+.markNone {
+  font-family: var(--serif); font-size: 20px; border: 1px dashed var(--muted);
+  padding: 6px 14px; color: var(--muted); min-height: 44px; display: inline-flex; align-items: center;
+}
+
+.optionGroup { margin-bottom: 10px; }
+.optionGroup:last-child { margin-bottom: 0; }
+.optionGroupLabel {
+  display: block; font-family: var(--mono); font-size: 10px;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 4px;
+}
+.optionWrap { display: flex; flex-wrap: wrap; gap: 8px; }
+.optionChip {
+  border: 1px solid var(--ink); border-radius: 0; background: var(--paper);
+  color: var(--ink); padding: 8px 12px; min-height: 40px; cursor: pointer; font: inherit; font-size: 14px;
+}
+.optionChip:hover:not(:disabled) { background: var(--ink); color: var(--parchment); }
+.optionChip[aria-pressed="true"] { background: var(--ink); color: var(--parchment); }
+.optionChip.correct { border-color: var(--ok); border-width: 2px; }
+.optionChip.wrong { border-color: var(--ng); border-width: 2px; }
+.optionChip.missed { border-color: var(--clay); border-width: 2px; color: var(--clay); }
+.optionChip:disabled { cursor: default; }
+.fieldHint { color: var(--muted); font-size: 12px; margin: 6px 0 0; }
+
+/* ---- 活用モード：文法4択（gradeChoice*、単語モードのchoiceBtnと構造が異なるため別名） ---- */
+.gradeChoiceList {
+  display: grid;
+  gap: 10px;
+}
+.gradeChoiceBtn {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  align-items: start;
+  gap: 10px;
+  border: 1px solid var(--ink);
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 52px;
+  padding: 10px 12px;
+  text-align: left;
+}
+.gradeChoiceBtn:hover:not(:disabled),
+.gradeChoiceBtn[aria-pressed="true"] {
+  background: var(--ink);
+  color: var(--parchment);
+}
+.gradeChoiceBtn.correct {
+  border-color: var(--ok);
+  border-width: 2px;
+}
+.gradeChoiceBtn.wrong {
+  border-color: var(--ng);
+  border-width: 2px;
+}
+.gradeChoiceMark {
+  border: 1px solid currentColor;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 12px;
+  min-height: 28px;
+}
+.gradeChoiceText { overflow-wrap: anywhere; }
+
+.submitRow { display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px; }
+.submitRow .cta { min-width: min(100%, 220px); }
+
+/* ---- Feedback ---- */
 .feedback {
   border: 1px solid var(--ink);
   border-left: 4px solid var(--ink);
@@ -350,6 +517,8 @@ h2 {
 .feedback .word small { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-left: 8px; }
 .feedback ul { margin: 8px 0 0; padding-left: 20px; }
 .feedback li { margin: 2px 0; }
+.answerLine { font-family: var(--serif); font-size: 15px; margin: 4px 0; }
+.answerLine .k { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: .06em; margin-right: 8px; text-transform: uppercase; }
 
 .nextRow { display: flex; justify-content: flex-end; gap: 10px; margin-top: 16px; }
 .nextRow .cta { min-width: min(100%, 200px); }
@@ -382,13 +551,18 @@ h2 {
 .doneBanner .sub { color: rgba(250,249,246,.72); font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; margin-top: 6px; }
 
 .hide { display: none !important; }
+body:not(.vocabActive) .shareStatus { display: none; }
 
 @media (max-width: 640px) {
   .statGrid { grid-template-columns: repeat(3, 1fr); }
-  .askWord { font-size: 28px; }
+  .askWord { font-size: 30px; }
+  .gradeChoiceQuestion { font-size: 20px; }
+  .kanaInput { width: 46%; }
   .topActions, .top { align-items: stretch; }
   .chapterBtn { align-items: flex-start; flex-direction: column; }
   .chapterStat { flex: 0 1 auto; }
   .actions .cta, .actions .ghost { width: 100%; }
   .nextRow { justify-content: stretch; flex-direction: column; }
+  .submitRow { flex-direction: column; }
+  .submitRow .cta { width: 100%; }
 }
