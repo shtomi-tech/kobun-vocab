@@ -700,7 +700,7 @@ const KatsuyoApp = (function () {
     bootPromise = Promise.all([
       fetch("data/katsuyo.json?v=20260709-5")
         .then(r => { if (!r.ok) throw new Error("katsuyo data load failed: " + r.status); return r.json(); }),
-      fetch("data/multiple_choice.json?v=20260709-3")
+      fetch("data/multiple_choice.json?v=20260710-1")
         .then(r => { if (!r.ok) throw new Error("choice data load failed: " + r.status); return r.json(); })
     ])
       .then(async ([d, choiceData]) => {
