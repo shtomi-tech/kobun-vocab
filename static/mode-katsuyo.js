@@ -63,14 +63,25 @@ const KatsuyoApp = (function () {
   function groupDoneCount(g, p) {
     return g.ids.filter(id => isMastered(progressRecord(p, id))).length;
   }
-  // 知識項目チェックは、各 coverageId から必ず1問ずつ選ぶ。
-  // 同じ項目の問題を増やしても、代表問題が重複して出題されない。
   function sessionIdsForGroup(g) {
-    if (!g.coverage) return g.shuffle ? shuffle(g.ids) : g.ids.slice();
-    return (g.coverageIds || []).map(coverageId => {
-      const candidates = g.ids.filter(id => (byId[currentSet.id + ":" + id] || {}).coverageId === coverageId);
-      return candidates.length ? candidates[Math.floor(Math.random() * candidates.length)] : null;
-    }).filter(Boolean);
+    return g.shuffle ? shuffle(g.ids) : g.ids.slice();
+  }
+
+  /* ---------- 知識項目カバレッジ ---------- */
+  // 手順型の知識は「手順確認・条件確認・対比・統合」に分けて出題する。
+  // coverageId ごとに、紐づく問題がすべて習得済みかどうかで手順の抜けを判定する。
+  function coverageTopics() {
+    return (DATA.coverageTopics || []).filter(t => getItems().some(item => item.topic === t.topic));
+  }
+  function idsForCoverage(coverageId) {
+    return getItems().filter(item => item.coverageId === coverageId).map(itemId);
+  }
+  function isCoverageDone(coverageId, p) {
+    const ids = idsForCoverage(coverageId);
+    return ids.length > 0 && ids.every(id => isMastered(progressRecord(p, id)));
+  }
+  function openCoverageIds(p) {
+    return coverageTopics().flatMap(t => t.items.map(i => i.id)).filter(id => !isCoverageDone(id, p));
   }
   // groups配列は「重要度順、最後が総仕上げ（全件通し）」という並びを前提に、
   // 最初に手をつけるべき未習得グループを1つ選ぶ。
@@ -153,7 +164,8 @@ const KatsuyoApp = (function () {
       primary = {
         tag: "苦手復習・約" + Math.max(1, Math.round(weak * 0.3)) + "分",
         main: "間違えた" + weak + currentSet.unit + "を復習する",
-        action: () => startSession(weakIds(), "苦手復習"),
+        // 復習は順番を覚えてしまわないようランダム順にする
+        action: () => startSession(shuffle(weakIds()), "苦手復習"),
       };
     } else {
       const inc = firstIncompleteGroup();
@@ -212,6 +224,8 @@ const KatsuyoApp = (function () {
     progressCard.appendChild(el("p", "hint", "残り" + Math.max(0, total - mastered) + currentSet.unit + "。"));
     homePanel.appendChild(progressCard);
 
+    renderCoverageCard();
+
     // ---- グループ一覧 ----
     const listCard = el("section", "card");
     listCard.appendChild(el("span", "label", "練習グループを選ぶ"));
@@ -253,6 +267,54 @@ const KatsuyoApp = (function () {
       moreCard.appendChild(details);
       homePanel.appendChild(moreCard);
     }
+  }
+
+  // 「知識項目×問題形式」の対応表。どの手順が確認済みで、どこが抜けているかを一覧する。
+  // 項目をクリックすると、その手順に対応する問題だけをランダム順で再出題する。
+  function renderCoverageCard() {
+    const topics = coverageTopics();
+    if (!topics.length) return;
+    const p = loadProgress();
+
+    const card = el("section", "card");
+    card.appendChild(el("span", "label", "知識項目チェック"));
+    card.appendChild(el("p", "hint", "手順ごとに確認済みかどうかを表示します。項目を選ぶと、その手順の問題だけを出題します。"));
+
+    topics.forEach(t => {
+      const block = el("div", "coverageTopic");
+      block.appendChild(el("p", "coverageTopicName", t.topic));
+      const row = el("div", "coverageItems");
+      t.items.forEach(item => {
+        const done = isCoverageDone(item.id, p);
+        const btn = el("button", "coverageItem" + (done ? " done" : ""));
+        btn.type = "button";
+        btn.setAttribute("aria-label", t.topic + "・" + item.label + "（" + (done ? "習得済み" : "未習得") + "）");
+        btn.appendChild(el("span", "coverageMark", done ? "✓" : "□"));
+        btn.appendChild(el("span", "coverageLabel", item.label));
+        btn.addEventListener("click", () => {
+          startSession(shuffle(idsForCoverage(item.id)), t.topic + "・" + item.label);
+        });
+        row.appendChild(btn);
+      });
+      block.appendChild(row);
+      card.appendChild(block);
+    });
+
+    const open = openCoverageIds(p);
+    const actions = el("div", "actions");
+    if (open.length) {
+      const btn = el("button", "cta reviewCta", "未習得の" + open.length + "項目だけ復習する");
+      btn.type = "button";
+      btn.addEventListener("click", () => {
+        const ids = shuffle(open.flatMap(idsForCoverage));
+        startSession(ids, "未習得の知識項目");
+      });
+      actions.appendChild(btn);
+      card.appendChild(actions);
+    } else {
+      card.appendChild(el("p", "hint", "すべての知識項目を確認済みです。"));
+    }
+    homePanel.appendChild(card);
   }
 
   /* ---------- session ---------- */
@@ -668,7 +730,7 @@ const KatsuyoApp = (function () {
     if (wrongCount > 0) {
       const nos = Array.from(session.wrongNos);
       const retry = el("button", "cta reviewCta", "間違えた" + nos.length + currentSet.unit + "をもう一度");
-      retry.addEventListener("click", () => startSession(nos, "苦手復習"));
+      retry.addEventListener("click", () => startSession(shuffle(nos), "苦手復習"));
       actions.appendChild(retry);
     }
     const backHome = el("button", "ghost smallGhost", "ホームに戻る");
@@ -709,7 +771,7 @@ const KatsuyoApp = (function () {
     bootPromise = Promise.all([
       fetch("data/katsuyo.json?v=20260709-5")
         .then(r => { if (!r.ok) throw new Error("katsuyo data load failed: " + r.status); return r.json(); }),
-      fetch("data/multiple_choice.json?v=20260710-3")
+      fetch("data/multiple_choice.json?v=20260710-4")
         .then(r => { if (!r.ok) throw new Error("choice data load failed: " + r.status); return r.json(); })
     ])
       .then(async ([d, choiceData]) => {

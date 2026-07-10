@@ -300,6 +300,39 @@ h2 {
 .groupBtn:hover .groupStat { color: rgba(250, 249, 246, .8); }
 @media (max-width: 620px) { .groupList { grid-template-columns: 1fr; } }
 
+/* ---- 知識項目カバレッジ（手順ごとの確認状況） ---- */
+.coverageTopic {
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+  margin-top: 12px;
+}
+.coverageTopicName {
+  margin: 0 0 8px;
+  font-family: var(--serif);
+  font-size: 15px;
+}
+.coverageItems {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.coverageItem {
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--muted);
+}
+.coverageItem:hover { background: var(--ink); color: var(--parchment); }
+.coverageItem.done { border-color: var(--ink); color: var(--ink); }
+.coverageMark { font-family: var(--mono); font-size: 13px; }
+.coverageItem.done .coverageMark { color: var(--ok); }
+.coverageItem:hover .coverageMark { color: var(--parchment); }
+.coverageLabel { font-size: 13px; }
+
 /* ---- Quiz / drill session ---- */
 .sessionHead {
   display: flex;
