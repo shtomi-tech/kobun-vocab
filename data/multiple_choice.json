@@ -1,6 +1,6 @@
 {
   "meta": {
-    "source": "Chapter 1・2の品詞と用言、およびChapter 3の助動詞の知識項目をもとにしたオリジナル4択問題",
+    "source": "Chapter 1・2の品詞と用言、およびChapter 3・4の助動詞の知識項目をもとにしたオリジナル4択問題",
     "note": "市販教材の設問文をそのまま転記せず、学習項目をもとに独自の問題文・選択肢・解説として作成。写真などの出典資料はリポジトリに保存しない。"
   },
   "choiceGroups": [
@@ -71,8 +71,43 @@
       ]
     },
     {
+      "id": "qa-chapter-4",
+      "name": "Chapter 4 助動詞の攻略②",
+      "sub": "未然形接続の助動詞の識別",
+      "ids": [
+        "c4-001",
+        "c4-002",
+        "c4-003",
+        "c4-004",
+        "c4-005",
+        "c4-006"
+      ]
+    },
+    {
+      "id": "qa-chapter-4-coverage",
+      "name": "Chapter 4 知識項目チェック",
+      "sub": "各手順を1問ずつ確認",
+      "coverage": true,
+      "coverageIds": [
+        "rareru-first-cue",
+        "sasu-honorific-cue",
+        "zu-supplementary",
+        "muzu-subject",
+        "mashi-counterfactual",
+        "mashi-hesitant-will"
+      ],
+      "ids": [
+        "c4-001",
+        "c4-002",
+        "c4-003",
+        "c4-004",
+        "c4-005",
+        "c4-006"
+      ]
+    },
+    {
       "id": "qa-all",
-      "name": "総仕上げ：45問ランダム",
+      "name": "総仕上げ：51問ランダム",
       "sub": "登録済みの問題をランダム出題",
       "shuffle": true,
       "ids": [
@@ -120,7 +155,13 @@
         "c3-007",
         "c3-008",
         "c3-009",
-        "c3-010"
+        "c3-010",
+        "c4-001",
+        "c4-002",
+        "c4-003",
+        "c4-004",
+        "c4-005",
+        "c4-006"
       ]
     }
   ],
@@ -754,6 +795,102 @@
       ],
       "answerIndex": 0,
       "explanation": "助動詞は、上に何形が来るか（接続）と、自身がどう形を変えるか（活用）を分けて整理すると定着しやすい。"
+    },
+    {
+      "id": "c4-001",
+      "chapter": 4,
+      "no": 1,
+      "coverageId": "rareru-first-cue",
+      "questionType": "condition",
+      "question": "「る・らる」の意味を見分ける最初の手がかりとして、直前に補って確認するとよいものはどれか。",
+      "choices": [
+        "動作を受ける相手を表す「（誰々）に」",
+        "原因を表す「ので」",
+        "逆接を表す「けれども」",
+        "場所を表す「にて」"
+      ],
+      "answerIndex": 0,
+      "explanation": "「る・らる」は、上に動作の受け手を表す「（誰々）に」を補えるか確認すると、受身の可能性を絞り込める。"
+    },
+    {
+      "id": "c4-002",
+      "chapter": 4,
+      "no": 2,
+      "coverageId": "sasu-honorific-cue",
+      "questionType": "condition",
+      "question": "「す・さす・しむ」で、下に尊敬を表す語が続く場合に考えやすい意味はどれか。",
+      "choices": [
+        "尊敬",
+        "使役",
+        "打消",
+        "推量"
+      ],
+      "answerIndex": 0,
+      "explanation": "「す・さす・しむ」は基本的に使役・尊敬の意味を持つ。下に尊敬語が続く場合は、尊敬として解釈する手がかりになる。"
+    },
+    {
+      "id": "c4-003",
+      "chapter": 4,
+      "no": 3,
+      "coverageId": "zu-supplementary",
+      "questionType": "condition",
+      "question": "助動詞「ず」が補助活用（「ざら・ざり・ざる・ざれ」）を用いる主な場面はどれか。",
+      "choices": [
+        "下に別の助動詞が続くとき",
+        "主語が一人称のときだけ",
+        "文が必ず疑問文になるとき",
+        "上に体言があるときだけ"
+      ],
+      "answerIndex": 0,
+      "explanation": "「ず」の補助活用は、下に助動詞を接続させるために使われる。「ざり」などの形を見たら、後続語を確認する。"
+    },
+    {
+      "id": "c4-004",
+      "chapter": 4,
+      "no": 4,
+      "coverageId": "muzu-subject",
+      "questionType": "procedure",
+      "question": "助動詞「む・むず」の意味を判断するとき、まず確認する重要な手がかりはどれか。",
+      "choices": [
+        "主語が一人称・二人称・三人称のどれか",
+        "文中の漢字の数はいくつか",
+        "直前の語が体言かどうかだけ",
+        "文末が必ず疑問形かどうか"
+      ],
+      "answerIndex": 0,
+      "explanation": "「む・むず」は、主語が一人称なら意志、二人称なら適当・勧誘、三人称なら推量を基本の手がかりとして訳し分ける。"
+    },
+    {
+      "id": "c4-005",
+      "chapter": 4,
+      "no": 5,
+      "coverageId": "mashi-counterfactual",
+      "questionType": "application",
+      "question": "「ましかば…まし」「ませば…まし」の形が表す基本的な意味はどれか。",
+      "choices": [
+        "事実と反対の仮定（反実仮想）",
+        "現在の事実の単純な説明",
+        "相手への尊敬",
+        "動作の完了"
+      ],
+      "answerIndex": 0,
+      "explanation": "「ましかば…まし」「ませば…まし」は、現実とは異なる条件を仮定する反実仮想の構文である。"
+    },
+    {
+      "id": "c4-006",
+      "chapter": 4,
+      "no": 6,
+      "coverageId": "mashi-hesitant-will",
+      "questionType": "contrast",
+      "question": "「まし」に疑問詞や「や・か」などが伴う場合の訳し分けとして適切なものはどれか。",
+      "choices": [
+        "ためらいを含む意志（～ようか、いや…）",
+        "必ず過去の事実だったとする意志",
+        "相手に命令する意志",
+        "完了した動作の確認"
+      ],
+      "answerIndex": 0,
+      "explanation": "「まし」に疑問詞や「や・か」が伴うと、単純な意志ではなく「～ようか、いや…」というためらいの意志を表すことがある。"
     }
   ]
 }

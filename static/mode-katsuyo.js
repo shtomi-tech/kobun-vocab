@@ -63,6 +63,15 @@ const KatsuyoApp = (function () {
   function groupDoneCount(g, p) {
     return g.ids.filter(id => isMastered(progressRecord(p, id))).length;
   }
+  // 知識項目チェックは、各 coverageId から必ず1問ずつ選ぶ。
+  // 同じ項目の問題を増やしても、代表問題が重複して出題されない。
+  function sessionIdsForGroup(g) {
+    if (!g.coverage) return g.shuffle ? shuffle(g.ids) : g.ids.slice();
+    return (g.coverageIds || []).map(coverageId => {
+      const candidates = g.ids.filter(id => (byId[currentSet.id + ":" + id] || {}).coverageId === coverageId);
+      return candidates.length ? candidates[Math.floor(Math.random() * candidates.length)] : null;
+    }).filter(Boolean);
+  }
   // groups配列は「重要度順、最後が総仕上げ（全件通し）」という並びを前提に、
   // 最初に手をつけるべき未習得グループを1つ選ぶ。
   function firstIncompleteGroup() {
@@ -152,7 +161,7 @@ const KatsuyoApp = (function () {
         primary = {
           tag: "つづきから",
           main: inc.group.name + "（" + inc.done + " / " + inc.group.ids.length + "）",
-          action: () => startSession(inc.group.shuffle ? shuffle(inc.group.ids) : inc.group.ids.slice(), inc.group.name),
+          action: () => startSession(sessionIdsForGroup(inc.group), inc.group.name),
         };
       } else if (total > 0) {
         primary = {
@@ -215,7 +224,7 @@ const KatsuyoApp = (function () {
       btn.appendChild(el("span", "groupName", g.name));
       btn.appendChild(el("span", "groupSub", g.sub));
       btn.appendChild(el("span", "groupStat", "習得 " + done + " / " + g.ids.length));
-      btn.addEventListener("click", () => startSession(g.shuffle ? shuffle(g.ids) : g.ids.slice(), g.name));
+      btn.addEventListener("click", () => startSession(sessionIdsForGroup(g), g.name));
       list.appendChild(btn);
     });
     listCard.appendChild(list);
@@ -700,7 +709,7 @@ const KatsuyoApp = (function () {
     bootPromise = Promise.all([
       fetch("data/katsuyo.json?v=20260709-5")
         .then(r => { if (!r.ok) throw new Error("katsuyo data load failed: " + r.status); return r.json(); }),
-      fetch("data/multiple_choice.json?v=20260710-2")
+      fetch("data/multiple_choice.json?v=20260710-3")
         .then(r => { if (!r.ok) throw new Error("choice data load failed: " + r.status); return r.json(); })
     ])
       .then(async ([d, choiceData]) => {
