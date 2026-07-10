@@ -1,0 +1,639 @@
+{
+  "meta": {
+    "source": "未然形接続の助動詞（る・らる／す・さす・しむ／ず／む・むず／まし）の識別手順をもとにしたオリジナル問題",
+    "note": "市販教材の設問文・例文をそのまま転記せず、識別手順の知識をもとに独自の問題文・選択肢・解説・古文例として作成。写真などの出典資料はリポジトリに保存しない。"
+  },
+  "procedures": [
+    {
+      "id": "rareru",
+      "name": "る・らるの識別",
+      "sub": "受身・可能・自発・尊敬",
+      "steps": [
+        { "no": "手順I", "text": "上に動作の受け手を表す「（誰々）に」を補えるか確認する。補えれば受身。" },
+        { "no": "手順II", "text": "補えない場合、下に打消の語があるか確認する。あれば可能。" },
+        { "no": "手順III", "text": "それでも決まらない場合、上に心情語・知覚動詞（思ふ・泣く・驚く・見ゆ など）があるか確認する。あれば自発。" },
+        { "no": "手順IV", "text": "主語が身分の高い人物で、他の手がかりが立たない場合は尊敬。「仰せらる」の「らる」は絶対に尊敬、「れ給ふ・られ給ふ」の「れ・られ」は絶対に尊敬にならない。" }
+      ]
+    },
+    {
+      "id": "sasu",
+      "name": "す・さす・しむの識別",
+      "sub": "使役・尊敬",
+      "steps": [
+        { "no": "手順I", "text": "下に尊敬を表す語（給ふ・おはします など）が続くか確認する。" },
+        { "no": "手順II", "text": "尊敬語が続いていても、動作をさせる相手「（誰々）に」が示されていれば使役と判断する。" },
+        { "no": "手順III", "text": "尊敬語が続かず、させる相手も示されない場合は使役と判断する（基本の意味）。" }
+      ]
+    },
+    {
+      "id": "zu",
+      "name": "ずの活用",
+      "sub": "本活用・補助活用",
+      "steps": [
+        { "no": "手順I", "text": "下に別の助動詞（き・けり など）が続くか確認する。続く場合は補助活用（ざら・ざり・ざる・ざれ）を使う。" },
+        { "no": "手順II", "text": "続かない場合は本活用（ず・ず・ず・ぬ・ね・○）を使う。" },
+        { "no": "手順III", "text": "本活用の連体形「ぬ」・已然形「ね」は完了の助動詞「ぬ」と形が同じになるので、直前の語の活用形（未然形接続か連用形接続か）で区別する。" }
+      ]
+    },
+    {
+      "id": "mu",
+      "name": "む・むずの識別",
+      "sub": "意志・推量・適当勧誘",
+      "steps": [
+        { "no": "手順I", "text": "主語が一人称・二人称・三人称のどれかを確認する。" },
+        { "no": "手順II", "text": "一人称なら意志、三人称なら推量と判断する。" },
+        { "no": "手順III", "text": "二人称の場合は、意志ではなく適当・勧誘と判断する。" },
+        { "no": "手順IV", "text": "人称だけで決まらないときは、「むと」の形（〜しようと）は意志で使われやすい、など周辺の語との結び付きも手がかりにする。" }
+      ]
+    },
+    {
+      "id": "mashi",
+      "name": "ましの識別",
+      "sub": "反実仮想・ためらいの意志",
+      "steps": [
+        { "no": "手順I", "text": "疑問詞や「や・か」を伴っているか確認する。伴っていればためらいの意志。" },
+        { "no": "手順II", "text": "伴っていない場合、「ましかば…まし」「ませば…まし」の形になっているか確認する。" },
+        { "no": "手順III", "text": "その形になっていれば反実仮想と判断し、「もし〜だったなら、〜であっただろうに」と訳す。" }
+      ]
+    }
+  ],
+  "shikibetsuQuestions": [
+    {
+      "id": "sb-rareru-proc1",
+      "topic": "る・らるの識別",
+      "step": "手順I「（誰々）に」を補う",
+      "questionType": "procedure",
+      "coverageId": "sb-rareru-proc1",
+      "question": "「る・らる」の意味を見分ける最初の手がかりとして、直前に補って確認するとよいものはどれか。",
+      "choices": [
+        "動作を受ける相手を表す「（誰々）に」",
+        "原因を表す「ので」",
+        "逆接を表す「けれども」",
+        "場所を表す「にて」"
+      ],
+      "answerIndex": 0,
+      "explanation": "「る・らる」は、上に動作の受け手を表す「（誰々）に」を補えるか確認すると、受身の可能性を絞り込める。識別はここから始める。"
+    },
+    {
+      "id": "sb-rareru-proc2",
+      "topic": "る・らるの識別",
+      "step": "手順IIへの分岐",
+      "questionType": "procedure",
+      "coverageId": "sb-rareru-proc2",
+      "question": "「る・らる」の識別で、上に「（誰々）に」を補えなかった場合、次に確認する手がかりはどれか。",
+      "choices": [
+        "下に打消の語があるか",
+        "主語が二人称かどうか",
+        "文末が命令形かどうか",
+        "上に体言があるかどうか"
+      ],
+      "answerIndex": 0,
+      "explanation": "受身の手がかりが立たない場合は、下に打消の語があるかを確認して可能を疑う。それも立たなければ心情語・知覚動詞→尊敬の順に進む。"
+    },
+    {
+      "id": "sb-rareru-cond1",
+      "topic": "る・らるの識別",
+      "step": "手順II打消語の有無",
+      "questionType": "condition",
+      "coverageId": "sb-rareru-cond1",
+      "question": "「る・らる」が打消の語を伴っている場合、まず考えるとよい意味はどれか。",
+      "choices": ["可能", "尊敬", "完了", "断定"],
+      "answerIndex": 0,
+      "explanation": "平安期の「る・らる」の可能は、下に打消の語を伴って「〜できない」の形で用いられることが多い。打消語を見たら可能を疑う。"
+    },
+    {
+      "id": "sb-rareru-cond2",
+      "topic": "る・らるの識別",
+      "step": "手順III心情語・知覚動詞",
+      "questionType": "condition",
+      "coverageId": "sb-rareru-cond2",
+      "question": "心情や知覚を表す動詞（思ふ・泣く・驚く・見ゆ など）に「る・らる」が付く場合の意味はどれか。",
+      "choices": ["自発", "受身", "使役", "打消"],
+      "answerIndex": 0,
+      "explanation": "心情語・知覚動詞に付く「る・らる」は自発。「自然と〜される・思わず〜してしまう」と訳す。"
+    },
+    {
+      "id": "sb-rareru-cond3",
+      "topic": "る・らるの識別",
+      "step": "手順IV主語の身分",
+      "questionType": "condition",
+      "coverageId": "sb-rareru-cond3",
+      "question": "「る・らる」の主語が帝や大臣など身分の高い人物である場合に考える意味はどれか。",
+      "choices": ["尊敬", "可能", "自発", "完了"],
+      "answerIndex": 0,
+      "explanation": "主語が高貴な人物で、受身・可能・自発の手がかりがどれも立たないとき、「る・らる」は尊敬と判断する。"
+    },
+    {
+      "id": "sb-rareru-cont1",
+      "topic": "る・らるの識別",
+      "step": "手がかりの競合",
+      "questionType": "contrast",
+      "coverageId": "sb-rareru-cont1",
+      "question": "主語が身分の高い人物であり、同時に直前に「（誰々）に」も補える場合、「る・らる」の意味はどのように判断するか。",
+      "choices": [
+        "「（誰々）に」を補える手がかりを優先し、受身と判断する",
+        "主語の身分を優先し、必ず尊敬と判断する",
+        "どちらの手がかりも使えないので可能と判断する",
+        "打消がないので自発と判断する"
+      ],
+      "answerIndex": 0,
+      "explanation": "識別は受身→可能→自発→尊敬の順に条件を確認する。動作の受け手「（誰々）に」を補えるなら、主語が高貴でも受身を先に採る。尊敬は他の手がかりが立たないときの判断である。"
+    },
+    {
+      "id": "sb-rareru-int1",
+      "topic": "る・らるの識別",
+      "step": "手順の統合",
+      "questionType": "integration",
+      "coverageId": "sb-rareru-int1",
+      "passage": "昔のこと思ひ出でらる。",
+      "target": "らる",
+      "steps": [
+        {
+          "prompt": "手順I：上に動作の受け手「（誰々）に」を補えるか。",
+          "choices": ["補える → 受身", "補えない → 次の手順へ"],
+          "answerIndex": 1,
+          "explanation": "動作の受け手を示す語はなく、補えない。"
+        },
+        {
+          "prompt": "手順II：下に打消の語があるか。",
+          "choices": ["ある → 可能", "ない → 次の手順へ"],
+          "answerIndex": 1,
+          "explanation": "「らる」の下に打消の語は続いていない。"
+        },
+        {
+          "prompt": "手順III：上に心情語・知覚動詞があるか。",
+          "choices": ["ある → 自発", "ない → 次の手順へ"],
+          "answerIndex": 0,
+          "explanation": "「思ひ出づ」は心情を表す動詞である。"
+        },
+        {
+          "prompt": "最終判断：この「らる」の意味は。",
+          "choices": ["受身", "可能", "自発", "尊敬"],
+          "answerIndex": 2,
+          "explanation": "心情語「思ひ出づ」に付くので自発。「自然と昔のことが思い出される」と訳す。"
+        }
+      ],
+      "explanation": "心情語＋る・らる → 自発。手順を上から順に消去していけば迷わない。"
+    },
+    {
+      "id": "sb-sasu-proc1",
+      "topic": "す・さす・しむの識別",
+      "step": "手順I下の尊敬語",
+      "questionType": "procedure",
+      "coverageId": "sb-sasu-proc1",
+      "question": "「す・さす・しむ」の意味を判断するとき、最初に確認する手がかりはどれか。",
+      "choices": [
+        "下に尊敬語（給ふ・おはします 等）が続くかどうか",
+        "主語が一人称かどうか",
+        "上に体言があるかどうか",
+        "文末が疑問形かどうか"
+      ],
+      "answerIndex": 0,
+      "explanation": "「す・さす・しむ」はまず下に尊敬語が続くかを確認し、続けば尊敬の可能性を、続かなければ使役をまず考える。"
+    },
+    {
+      "id": "sb-sasu-cond1",
+      "topic": "す・さす・しむの識別",
+      "step": "手順I尊敬語あり",
+      "questionType": "condition",
+      "coverageId": "sb-sasu-cond1",
+      "question": "「す・さす・しむ」で、下に尊敬を表す語が続く場合に考えやすい意味はどれか。",
+      "choices": ["尊敬", "使役", "打消", "推量"],
+      "answerIndex": 0,
+      "explanation": "「す・さす・しむ」は基本的に使役・尊敬の意味を持つ。下に尊敬語が続く場合は、尊敬として解釈する手がかりになる。"
+    },
+    {
+      "id": "sb-sasu-cond2",
+      "topic": "す・さす・しむの識別",
+      "step": "手順III使役の基本",
+      "questionType": "condition",
+      "coverageId": "sb-sasu-cond2",
+      "question": "「す・さす・しむ」の下に尊敬語が続かない場合、どの意味と判断するか。",
+      "choices": ["使役", "尊敬", "受身", "可能"],
+      "answerIndex": 0,
+      "explanation": "下に尊敬語（給ふ・おはします など）が続かなければ使役と判断する。尊敬になるのは尊敬語を伴うときに限られる。"
+    },
+    {
+      "id": "sb-sasu-cont1",
+      "topic": "す・さす・しむの識別",
+      "step": "手がかりの競合",
+      "questionType": "contrast",
+      "coverageId": "sb-sasu-cont1",
+      "question": "「せ給ふ」のように下に尊敬語が続いていても、使役と判断すべきなのはどのような場合か。",
+      "choices": [
+        "動作をさせる相手を表す「（誰々）に」が示されているとき",
+        "主語が帝であるとき",
+        "文末が連体形であるとき",
+        "上の動詞が四段活用であるとき"
+      ],
+      "answerIndex": 0,
+      "explanation": "下に尊敬語が続くと尊敬になりやすいが、動作をさせる相手「（誰々）に」が文中にあれば使役。手がかりが競合したら、使役の相手の有無を先に確認する。"
+    },
+    {
+      "id": "sb-sasu-int1",
+      "topic": "す・さす・しむの識別",
+      "step": "手順の統合",
+      "questionType": "integration",
+      "coverageId": "sb-sasu-int1",
+      "passage": "帝、蔵人に歌を書かせ給ふ。",
+      "target": "せ",
+      "steps": [
+        {
+          "prompt": "手順I：下に尊敬語（給ふ 等）が続くか。",
+          "choices": ["続く → 尊敬の可能性を検討", "続かない → 使役"],
+          "answerIndex": 0,
+          "explanation": "下に「給ふ」が続いている。"
+        },
+        {
+          "prompt": "手順II：動作をさせる相手「（誰々）に」が示されているか。",
+          "choices": ["示されている → 使役", "示されていない → 尊敬"],
+          "answerIndex": 0,
+          "explanation": "「蔵人に」と、させる相手が示されている。"
+        },
+        {
+          "prompt": "最終判断：この「せ」の意味は。",
+          "choices": ["使役", "尊敬", "受身", "自発"],
+          "answerIndex": 0,
+          "explanation": "尊敬語を伴っても、させる相手が明示されるときは使役。「帝が蔵人に歌をお書かせになる」と訳す。"
+        }
+      ],
+      "explanation": "尊敬語＋させる相手が明示 → 使役。尊敬語だけで即断せず、させる相手の有無を必ず確認する。"
+    },
+    {
+      "id": "sb-zu-proc1",
+      "topic": "ずの活用",
+      "step": "手順I下の助動詞の有無",
+      "questionType": "procedure",
+      "coverageId": "sb-zu-proc1",
+      "question": "「ず」が本活用と補助活用のどちらの形になるかを判断するとき、最初に確認することは何か。",
+      "choices": [
+        "下に別の助動詞が続くかどうか",
+        "主語が三人称かどうか",
+        "上に体言があるかどうか",
+        "文末が命令形かどうか"
+      ],
+      "answerIndex": 0,
+      "explanation": "下に助動詞が続く場合は補助活用（ざら・ざり・ざる・ざれ）、続かない場合は本活用（ず・ず・ず・ぬ・ね・○）を使う。"
+    },
+    {
+      "id": "sb-zu-cond1",
+      "topic": "ずの活用",
+      "step": "補助活用の役割",
+      "questionType": "condition",
+      "coverageId": "sb-zu-cond1",
+      "question": "助動詞「ず」が補助活用（「ざら・ざり・ざる・ざれ」）を用いる主な場面はどれか。",
+      "choices": [
+        "下に別の助動詞が続くとき",
+        "主語が一人称のときだけ",
+        "文が必ず疑問文になるとき",
+        "上に体言があるときだけ"
+      ],
+      "answerIndex": 0,
+      "explanation": "「ず」の補助活用は、下に助動詞を接続させるために使われる。「ざり」などの形を見たら、後続語を確認する。"
+    },
+    {
+      "id": "sb-zu-cond2",
+      "topic": "ずの活用",
+      "step": "本活用の活用形",
+      "questionType": "condition",
+      "coverageId": "sb-zu-cond2",
+      "question": "打消の助動詞「ず」の本活用で、連体形と已然形はそれぞれどれか。",
+      "choices": [
+        "連体形「ぬ」・已然形「ね」",
+        "連体形「ね」・已然形「ぬ」",
+        "連体形「ざる」・已然形「ぬ」",
+        "連体形「ぬ」・已然形「ざれ」"
+      ],
+      "answerIndex": 0,
+      "explanation": "「ず」の本活用は（ず・ず・ず・ぬ・ね・○）。連体形は「ぬ」、已然形は「ね」。補助活用（ざら・ざり・○・ざる・ざれ・ざれ）と区別する。"
+    },
+    {
+      "id": "sb-zu-cont1",
+      "topic": "ずの活用",
+      "step": "本活用と補助活用の使い分け",
+      "questionType": "contrast",
+      "coverageId": "sb-zu-cont1",
+      "question": "「言はずやあらむ」の「ず」と「言はざりき」の「ざり」で、活用の種類が異なる理由はどれか。",
+      "choices": [
+        "「ざり」は下に助動詞「き」が続くため補助活用を使うが、「ず」は下に助動詞が続かないため本活用のままでよい",
+        "「ざり」の方が古い形で、「ず」は新しい形だから",
+        "主語の人称が違うから",
+        "「ざり」は連体形、「ず」は已然形だから"
+      ],
+      "answerIndex": 0,
+      "explanation": "本活用は単独で文を終えられるが、下に助動詞を続けるときは補助活用「ざり」系列が必要になる。「言はざりき」は「ざり」＋過去「き」の形。"
+    },
+    {
+      "id": "sb-zu-int1",
+      "topic": "ずの活用",
+      "step": "手順の統合",
+      "questionType": "integration",
+      "coverageId": "sb-zu-int1",
+      "passage": "まだ知らぬ人を恋しく思ふ。",
+      "target": "ぬ",
+      "steps": [
+        {
+          "prompt": "手順I：直前の「知ら」の活用形は。",
+          "choices": ["未然形 → 打消「ず」の可能性", "連用形 → 完了「ぬ」の可能性"],
+          "answerIndex": 0,
+          "explanation": "「知ら」は四段動詞「知る」の未然形。"
+        },
+        {
+          "prompt": "手順II：下に体言が続いているか。",
+          "choices": ["続いている → 連体形", "続いていない → 終止形"],
+          "answerIndex": 0,
+          "explanation": "下に体言「人」が続いている。"
+        },
+        {
+          "prompt": "最終判断：この「ぬ」は。",
+          "choices": [
+            "打消の助動詞「ず」の連体形",
+            "完了の助動詞「ぬ」の終止形",
+            "完了の助動詞「ぬ」の連体形",
+            "断定の助動詞「なり」の連体形"
+          ],
+          "answerIndex": 0,
+          "explanation": "未然形接続＋連体形なので、打消の助動詞「ず」の連体形と決まる。完了の「ぬ」なら連用形に接続する。"
+        }
+      ],
+      "explanation": "接続（未然形か連用形か）を確かめる手順が、打消の「ぬ」と完了の「ぬ」を見分ける決め手になる。"
+    },
+    {
+      "id": "sb-mu-proc1",
+      "topic": "む・むずの識別",
+      "step": "手順I主語の人称",
+      "questionType": "procedure",
+      "coverageId": "sb-mu-proc1",
+      "question": "助動詞「む・むず」の意味を判断するとき、まず確認する重要な手がかりはどれか。",
+      "choices": [
+        "主語が一人称・二人称・三人称のどれか",
+        "文中の漢字の数はいくつか",
+        "直前の語が体言かどうかだけ",
+        "文末が必ず疑問形かどうか"
+      ],
+      "answerIndex": 0,
+      "explanation": "「む・むず」は、主語が一人称なら意志、二人称なら適当・勧誘、三人称なら推量を基本の手がかりとして訳し分ける。"
+    },
+    {
+      "id": "sb-mu-proc2",
+      "topic": "む・むずの識別",
+      "step": "手順IV周辺表現との結び付き",
+      "questionType": "procedure",
+      "coverageId": "sb-mu-proc2",
+      "question": "「む」の主語の人称を確認してもなお意味に迷う場合、次に見るとよい手がかりはどれか。",
+      "choices": [
+        "「むと」の形（〜しようと）など、周辺の語との結び付き",
+        "文中の漢字の総数",
+        "段落の最初の一文かどうか",
+        "係助詞「こそ」があるかどうか"
+      ],
+      "answerIndex": 0,
+      "explanation": "人称だけで決まらない場合は、「むと（て）」の形で使われる「む」は意志で使われやすい、といった周辺表現との結び付きも手がかりにする。"
+    },
+    {
+      "id": "sb-mu-cond1",
+      "topic": "む・むずの識別",
+      "step": "一人称＝意志",
+      "questionType": "condition",
+      "coverageId": "sb-mu-cond1",
+      "question": "「む」の主語が一人称である場合の基本の意味はどれか。",
+      "choices": ["意志", "推量", "適当・勧誘", "打消"],
+      "answerIndex": 0,
+      "explanation": "一人称が主語なら意志。「〜しよう・〜するつもりだ」と訳す。"
+    },
+    {
+      "id": "sb-mu-cond2",
+      "topic": "む・むずの識別",
+      "step": "三人称＝推量",
+      "questionType": "condition",
+      "coverageId": "sb-mu-cond2",
+      "question": "「む」の主語が三人称である場合の基本の意味はどれか。",
+      "choices": ["推量", "意志", "命令", "完了"],
+      "answerIndex": 0,
+      "explanation": "三人称が主語なら推量。「〜だろう」と訳す。一人称なら意志、二人称なら適当・勧誘になる。"
+    },
+    {
+      "id": "sb-mu-cont1",
+      "topic": "む・むずの識別",
+      "step": "二人称＝適当・勧誘",
+      "questionType": "contrast",
+      "coverageId": "sb-mu-cont1",
+      "question": "主語が二人称の「む」を訳すとき、一人称の「意志」と区別してどのように訳すのが適切か。",
+      "choices": [
+        "「〜するのがよい・〜しませんか」という適当・勧誘",
+        "「〜しよう」という話し手自身の意志",
+        "「〜にちがいない」という強い断定",
+        "「〜であった」という過去"
+      ],
+      "answerIndex": 0,
+      "explanation": "決め手は主語の人称。二人称は相手に向けた適当・勧誘になる。「〜しよう」と訳すと話し手自身の意志になってしまい、主語がずれる。"
+    },
+    {
+      "id": "sb-mu-int1",
+      "topic": "む・むずの識別",
+      "step": "手順の統合",
+      "questionType": "integration",
+      "coverageId": "sb-mu-int1",
+      "passage": "われ、明日は必ず参らむ。",
+      "target": "む",
+      "steps": [
+        {
+          "prompt": "手順I：主語は一人称・二人称・三人称のどれか。",
+          "choices": ["一人称", "二人称", "三人称"],
+          "answerIndex": 0,
+          "explanation": "主語は「われ」で一人称。"
+        },
+        {
+          "prompt": "最終判断：この「む」の意味は。",
+          "choices": ["意志", "推量", "適当・勧誘", "打消"],
+          "answerIndex": 0,
+          "explanation": "一人称の主語なので意志。「私は明日必ず参上しよう」と訳す。"
+        }
+      ],
+      "explanation": "主語の人称を確認するだけで、この「む」は意志と決まる。"
+    },
+    {
+      "id": "sb-mashi-proc1",
+      "topic": "ましの識別",
+      "step": "手順I疑問詞の有無",
+      "questionType": "procedure",
+      "coverageId": "sb-mashi-proc1",
+      "question": "「まし」の意味を判断するとき、最初に確認する手がかりはどれか。",
+      "choices": [
+        "疑問詞や「や・か」を伴っているかどうか",
+        "主語が一人称かどうか",
+        "上に体言があるかどうか",
+        "文末が命令形かどうか"
+      ],
+      "answerIndex": 0,
+      "explanation": "疑問詞や「や・か」を伴っていればためらいの意志。伴っていなければ「ましかば…まし」の形になっているかを確認し、反実仮想と判断する。"
+    },
+    {
+      "id": "sb-mashi-cond1",
+      "topic": "ましの識別",
+      "step": "反実仮想の形",
+      "questionType": "condition",
+      "coverageId": "sb-mashi-cond1",
+      "question": "「ましかば…まし」「ませば…まし」の形が表す基本的な意味はどれか。",
+      "choices": ["事実と反対の仮定（反実仮想）", "現在の事実の単純な説明", "相手への尊敬", "動作の完了"],
+      "answerIndex": 0,
+      "explanation": "「ましかば…まし」「ませば…まし」は、現実とは異なる条件を仮定する反実仮想の構文である。"
+    },
+    {
+      "id": "sb-mashi-cond2",
+      "topic": "ましの識別",
+      "step": "反実仮想の訳",
+      "questionType": "condition",
+      "coverageId": "sb-mashi-cond2",
+      "question": "反実仮想の「ましかば…まし」を訳すとき、最も適切な訳し方はどれか。",
+      "choices": [
+        "「もし〜だったなら、〜であっただろうに」",
+        "「〜なので、〜である」",
+        "「〜したところ、〜した」",
+        "「〜してはいけない、〜だ」"
+      ],
+      "answerIndex": 0,
+      "explanation": "条件節「ましかば」で現実と反対の条件を仮定し、帰結の「まし」でその想像上の結果を述べる。実際にはそうでない、という含みが残る。"
+    },
+    {
+      "id": "sb-mashi-cont1",
+      "topic": "ましの識別",
+      "step": "ためらいの意志",
+      "questionType": "contrast",
+      "coverageId": "sb-mashi-cont1",
+      "question": "「まし」に疑問詞や「や・か」などが伴う場合の訳し分けとして適切なものはどれか。",
+      "choices": [
+        "ためらいを含む意志（〜ようか、いや…）",
+        "必ず過去の事実だったとする意志",
+        "相手に命令する意志",
+        "完了した動作の確認"
+      ],
+      "answerIndex": 0,
+      "explanation": "「まし」に疑問詞や「や・か」が伴うと、反実仮想ではなく「〜ようか、いや…」というためらいの意志を表す。仮定の条件節があるかどうかで見分ける。"
+    },
+    {
+      "id": "sb-mashi-int1",
+      "topic": "ましの識別",
+      "step": "手順の統合",
+      "questionType": "integration",
+      "coverageId": "sb-mashi-int1",
+      "passage": "鏡に色・形あらましかば、映らざらまし。",
+      "target": "まし",
+      "steps": [
+        {
+          "prompt": "手順I：疑問詞や「や・か」を伴っているか。",
+          "choices": ["伴っている → ためらいの意志", "伴っていない → 次の手順へ"],
+          "answerIndex": 1,
+          "explanation": "疑問詞や「や・か」は見当たらない。"
+        },
+        {
+          "prompt": "手順II：「ましかば…まし」「ませば…まし」の形になっているか。",
+          "choices": ["なっている → 反実仮想", "なっていない → 単純な推量"],
+          "answerIndex": 0,
+          "explanation": "「あらましかば…まし」の形になっている。"
+        },
+        {
+          "prompt": "最終判断：この「まし」の意味は。",
+          "choices": ["反実仮想", "ためらいの意志", "単なる推量", "過去の事実"],
+          "answerIndex": 0,
+          "explanation": "実際には鏡に色や形はない、という反実仮想。「もし鏡に色や形があったなら、何も映らないだろうに」と訳す。"
+        }
+      ],
+      "explanation": "疑問詞なし＋「ましかば…まし」の形 → 反実仮想。手順を順に確認すれば、ためらいの意志と混同しない。"
+    }
+  ],
+  "shikibetsuGroups": [
+    {
+      "id": "sb-rareru",
+      "name": "る・らるの識別",
+      "sub": "受身・可能・自発・尊敬（手順→条件→対比→統合）",
+      "ids": ["sb-rareru-proc1", "sb-rareru-proc2", "sb-rareru-cond1", "sb-rareru-cond2", "sb-rareru-cond3", "sb-rareru-cont1", "sb-rareru-int1"]
+    },
+    {
+      "id": "sb-sasu",
+      "name": "す・さす・しむの識別",
+      "sub": "使役・尊敬（手順→条件→対比→統合）",
+      "ids": ["sb-sasu-proc1", "sb-sasu-cond1", "sb-sasu-cond2", "sb-sasu-cont1", "sb-sasu-int1"]
+    },
+    {
+      "id": "sb-zu",
+      "name": "ずの活用",
+      "sub": "本活用・補助活用（手順→条件→対比→統合）",
+      "ids": ["sb-zu-proc1", "sb-zu-cond1", "sb-zu-cond2", "sb-zu-cont1", "sb-zu-int1"]
+    },
+    {
+      "id": "sb-mu",
+      "name": "む・むずの識別",
+      "sub": "意志・推量・適当勧誘（手順→条件→対比→統合）",
+      "ids": ["sb-mu-proc1", "sb-mu-proc2", "sb-mu-cond1", "sb-mu-cond2", "sb-mu-cont1", "sb-mu-int1"]
+    },
+    {
+      "id": "sb-mashi",
+      "name": "ましの識別",
+      "sub": "反実仮想・ためらいの意志（手順→条件→対比→統合）",
+      "ids": ["sb-mashi-proc1", "sb-mashi-cond1", "sb-mashi-cond2", "sb-mashi-cont1", "sb-mashi-int1"]
+    },
+    {
+      "id": "sb-all",
+      "name": "総仕上げ：識別28問",
+      "sub": "5つの識別手順をすべてランダム出題",
+      "shuffle": true,
+      "ids": ["sb-rareru-proc1", "sb-rareru-proc2", "sb-rareru-cond1", "sb-rareru-cond2", "sb-rareru-cond3", "sb-rareru-cont1", "sb-rareru-int1", "sb-sasu-proc1", "sb-sasu-cond1", "sb-sasu-cond2", "sb-sasu-cont1", "sb-sasu-int1", "sb-zu-proc1", "sb-zu-cond1", "sb-zu-cond2", "sb-zu-cont1", "sb-zu-int1", "sb-mu-proc1", "sb-mu-proc2", "sb-mu-cond1", "sb-mu-cond2", "sb-mu-cont1", "sb-mu-int1", "sb-mashi-proc1", "sb-mashi-cond1", "sb-mashi-cond2", "sb-mashi-cont1", "sb-mashi-int1"]
+    }
+  ],
+  "coverageTopics": [
+    {
+      "topic": "る・らるの識別",
+      "items": [
+        { "id": "sb-rareru-proc1", "label": "受身（最初の手がかり）", "questionType": "procedure" },
+        { "id": "sb-rareru-proc2", "label": "可能への分岐", "questionType": "procedure" },
+        { "id": "sb-rareru-cond1", "label": "可能", "questionType": "condition" },
+        { "id": "sb-rareru-cond2", "label": "自発", "questionType": "condition" },
+        { "id": "sb-rareru-cond3", "label": "尊敬", "questionType": "condition" },
+        { "id": "sb-rareru-cont1", "label": "手がかりの競合", "questionType": "contrast" },
+        { "id": "sb-rareru-int1", "label": "統合問題", "questionType": "integration" }
+      ]
+    },
+    {
+      "topic": "す・さす・しむの識別",
+      "items": [
+        { "id": "sb-sasu-proc1", "label": "最初の手がかり", "questionType": "procedure" },
+        { "id": "sb-sasu-cond1", "label": "尊敬", "questionType": "condition" },
+        { "id": "sb-sasu-cond2", "label": "使役", "questionType": "condition" },
+        { "id": "sb-sasu-cont1", "label": "手がかりの競合", "questionType": "contrast" },
+        { "id": "sb-sasu-int1", "label": "統合問題", "questionType": "integration" }
+      ]
+    },
+    {
+      "topic": "ずの活用",
+      "items": [
+        { "id": "sb-zu-proc1", "label": "最初の手がかり", "questionType": "procedure" },
+        { "id": "sb-zu-cond1", "label": "補助活用", "questionType": "condition" },
+        { "id": "sb-zu-cond2", "label": "本活用", "questionType": "condition" },
+        { "id": "sb-zu-cont1", "label": "本活用と補助活用の使い分け", "questionType": "contrast" },
+        { "id": "sb-zu-int1", "label": "統合問題", "questionType": "integration" }
+      ]
+    },
+    {
+      "topic": "む・むずの識別",
+      "items": [
+        { "id": "sb-mu-proc1", "label": "人称の確認", "questionType": "procedure" },
+        { "id": "sb-mu-proc2", "label": "周辺表現の確認", "questionType": "procedure" },
+        { "id": "sb-mu-cond1", "label": "意志（一人称）", "questionType": "condition" },
+        { "id": "sb-mu-cond2", "label": "推量（三人称）", "questionType": "condition" },
+        { "id": "sb-mu-cont1", "label": "適当・勧誘（二人称）", "questionType": "contrast" },
+        { "id": "sb-mu-int1", "label": "統合問題", "questionType": "integration" }
+      ]
+    },
+    {
+      "topic": "ましの識別",
+      "items": [
+        { "id": "sb-mashi-proc1", "label": "最初の手がかり", "questionType": "procedure" },
+        { "id": "sb-mashi-cond1", "label": "反実仮想の形", "questionType": "condition" },
+        { "id": "sb-mashi-cond2", "label": "反実仮想の訳", "questionType": "condition" },
+        { "id": "sb-mashi-cont1", "label": "ためらいの意志", "questionType": "contrast" },
+        { "id": "sb-mashi-int1", "label": "統合問題", "questionType": "integration" }
+      ]
+    }
+  ]
+}

@@ -546,6 +546,23 @@ h2 {
 .nextRow { display: flex; justify-content: flex-end; gap: 10px; margin-top: 16px; }
 .nextRow .cta { min-width: min(100%, 200px); }
 .resultText { margin: 0; color: var(--muted); }
+
+/* ---- 識別：手順カード・統合問題のステップ実行 ---- */
+.procedureDetails { border: 1px solid var(--line); padding: 10px 14px; margin-bottom: 10px; }
+.procedureDetails summary { cursor: pointer; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.procedureDetails summary::-webkit-details-marker { display: none; }
+.procedureName { font-family: var(--serif); font-size: 16px; }
+.procedureSub { font-family: var(--mono); font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+.procedureStepList { margin: 10px 0 0; padding-left: 20px; }
+.procedureStep { margin: 6px 0; }
+.procedureStepNo { font-family: var(--mono); font-size: 11px; color: var(--clay); letter-spacing: .06em; margin-right: 8px; }
+
+.stepPassage { font-family: var(--serif); font-size: 19px; line-height: 1.7; }
+.targetWord { font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.stepPrompt { font-family: var(--serif); font-size: 16px; margin: 0 0 10px; }
+.stepHistoryItem { opacity: .85; }
+.stepHistoryItem .stepPrompt { font-size: 14px; color: var(--muted); }
+.stepCurrent { margin-top: 16px; }
 .wrongList {
   border-top: 1px solid var(--ink);
   display: flex;
