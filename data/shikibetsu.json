@@ -123,6 +123,22 @@
       "explanation": "受身の手がかりが立たない場合は、下に打消の語があるかを確認して可能を疑う。それも立たなければ心情語・知覚動詞→尊敬の順に進む。"
     },
     {
+      "id": "sb-rareru-cond-ukemi",
+      "topic": "る・らるの識別",
+      "step": "手順I受身の条件",
+      "questionType": "condition",
+      "coverageId": "sb-rareru-cond-ukemi",
+      "question": "「る・らる」の上に動作の受け手を表す「（誰々）に」を補える場合、考えられる意味はどれか。",
+      "choices": [
+        "受身",
+        "可能",
+        "自発",
+        "尊敬"
+      ],
+      "answerIndex": 0,
+      "explanation": "動作の受け手「（誰々）に」を補えるときは受身。識別の手順で最初に確認する条件である。"
+    },
+    {
       "id": "sb-rareru-cond1",
       "topic": "る・らるの識別",
       "step": "手順II打消語の有無",
@@ -251,6 +267,22 @@
       ],
       "answerIndex": 0,
       "explanation": "「す・さす・しむ」はまず下に尊敬語が続くかを確認し、続けば尊敬の可能性を、続かなければ使役をまず考える。"
+    },
+    {
+      "id": "sb-sasu-proc2",
+      "topic": "す・さす・しむの識別",
+      "step": "手順IIへの分岐",
+      "questionType": "procedure",
+      "coverageId": "sb-sasu-proc2",
+      "question": "「す・さす・しむ」で下に尊敬語が続く場合、それでもなお使役と判断するために次に確認する手がかりはどれか。",
+      "choices": [
+        "動作をさせる相手を表す「（誰々）に」が示されているか",
+        "主語が二人称かどうか",
+        "文末が命令形かどうか",
+        "上に体言があるかどうか"
+      ],
+      "answerIndex": 0,
+      "explanation": "尊敬語が続いていても、動作をさせる相手「（誰々）に」が示されていれば使役と判断する。この確認をしてから尊敬と決める。"
     },
     {
       "id": "sb-sasu-cond1",
@@ -406,9 +438,25 @@
       "explanation": "三人称が主語なら推量。「〜だろう」と訳す。一人称なら意志、二人称なら適当・勧誘になる。"
     },
     {
-      "id": "sb-mu-cont1",
+      "id": "sb-mu-cond3",
       "topic": "む・むずの識別",
       "step": "二人称＝適当・勧誘",
+      "questionType": "condition",
+      "coverageId": "sb-mu-cond3",
+      "question": "「む」の主語が二人称である場合の基本の意味はどれか。",
+      "choices": [
+        "適当・勧誘",
+        "意志",
+        "推量",
+        "断定"
+      ],
+      "answerIndex": 0,
+      "explanation": "二人称が主語なら適当・勧誘。「〜するのがよい・〜しませんか」と訳す。一人称なら意志、三人称なら推量になる。"
+    },
+    {
+      "id": "sb-mu-cont1",
+      "topic": "む・むずの識別",
+      "step": "意志との訳し分け",
       "questionType": "contrast",
       "coverageId": "sb-mu-cont1",
       "question": "主語が二人称の「む」を訳すとき、一人称の「意志」と区別してどのように訳すのが適切か。",
@@ -471,6 +519,22 @@
       "explanation": "疑問詞や「や・か」を伴っていればためらいの意志。伴っていなければ「ましかば…まし」の形になっているかを確認し、反実仮想と判断する。"
     },
     {
+      "id": "sb-mashi-proc2",
+      "topic": "ましの識別",
+      "step": "手順IIへの分岐",
+      "questionType": "procedure",
+      "coverageId": "sb-mashi-proc2",
+      "question": "「まし」に疑問詞や「や・か」が伴わない場合、次に確認する手がかりはどれか。",
+      "choices": [
+        "「ましかば…まし」「ませば…まし」の形になっているか",
+        "主語が一人称かどうか",
+        "文末が体言止めかどうか",
+        "係助詞「こそ」があるかどうか"
+      ],
+      "answerIndex": 0,
+      "explanation": "疑問詞や「や・か」が無い場合は、「ましかば…まし」「ませば…まし」の形になっているかを確認し、反実仮想と判断する。"
+    },
+    {
       "id": "sb-mashi-cond1",
       "topic": "ましの識別",
       "step": "反実仮想の形",
@@ -489,34 +553,34 @@
     {
       "id": "sb-mashi-cond2",
       "topic": "ましの識別",
-      "step": "反実仮想の訳",
+      "step": "ためらいの意志の条件",
       "questionType": "condition",
       "coverageId": "sb-mashi-cond2",
-      "question": "反実仮想の「ましかば…まし」を訳すとき、最も適切な訳し方はどれか。",
+      "question": "「まし」に疑問詞や「や・か」を伴っている場合、考えられる意味はどれか。",
       "choices": [
-        "「もし〜だったなら、〜であっただろうに」",
-        "「〜なので、〜である」",
-        "「〜したところ、〜した」",
-        "「〜してはいけない、〜だ」"
+        "ためらいの意志",
+        "反実仮想",
+        "単なる推量",
+        "過去の事実"
       ],
       "answerIndex": 0,
-      "explanation": "条件節「ましかば」で現実と反対の条件を仮定し、帰結の「まし」でその想像上の結果を述べる。実際にはそうでない、という含みが残る。"
+      "explanation": "疑問詞や「や・か」を伴う「まし」は、「〜ようか、いや…」というためらいの意志を表す。"
     },
     {
       "id": "sb-mashi-cont1",
       "topic": "ましの識別",
-      "step": "ためらいの意志",
+      "step": "手がかりの競合",
       "questionType": "contrast",
       "coverageId": "sb-mashi-cont1",
-      "question": "「まし」に疑問詞や「や・か」などが伴う場合の訳し分けとして適切なものはどれか。",
+      "question": "文中に疑問詞「や」もあり、同時に「ましかば」の形も使われている場合、「まし」の意味はどのように判断するか。",
       "choices": [
-        "ためらいを含む意志（〜ようか、いや…）",
-        "必ず過去の事実だったとする意志",
-        "相手に命令する意志",
-        "完了した動作の確認"
+        "疑問詞の手がかりを優先し、ためらいの意志と判断する",
+        "「ましかば」の形を優先し、必ず反実仮想と判断する",
+        "両方の手がかりが競合するので単なる推量と判断する",
+        "疑問詞と条件節がある場合は過去の事実として訳す"
       ],
       "answerIndex": 0,
-      "explanation": "「まし」に疑問詞や「や・か」が伴うと、反実仮想ではなく「〜ようか、いや…」というためらいの意志を表す。仮定の条件節があるかどうかで見分ける。"
+      "explanation": "識別は手順I（疑問詞の有無）を最初に確認する。疑問詞があればためらいの意志を優先し、「ましかば」の形は疑問詞が無いときに確認する手がかりである。"
     },
     {
       "id": "sb-mashi-int1",
@@ -568,6 +632,7 @@
       "ids": [
         "sb-rareru-proc1",
         "sb-rareru-proc2",
+        "sb-rareru-cond-ukemi",
         "sb-rareru-cond1",
         "sb-rareru-cond2",
         "sb-rareru-cond3",
@@ -581,6 +646,7 @@
       "sub": "使役・尊敬（手順→条件→対比→統合）",
       "ids": [
         "sb-sasu-proc1",
+        "sb-sasu-proc2",
         "sb-sasu-cond1",
         "sb-sasu-cond2",
         "sb-sasu-cont1",
@@ -596,6 +662,7 @@
         "sb-mu-proc2",
         "sb-mu-cond1",
         "sb-mu-cond2",
+        "sb-mu-cond3",
         "sb-mu-cont1",
         "sb-mu-int1"
       ]
@@ -606,6 +673,7 @@
       "sub": "反実仮想・ためらいの意志（手順→条件→対比→統合）",
       "ids": [
         "sb-mashi-proc1",
+        "sb-mashi-proc2",
         "sb-mashi-cond1",
         "sb-mashi-cond2",
         "sb-mashi-cont1",
@@ -614,18 +682,20 @@
     },
     {
       "id": "sb-all",
-      "name": "総仕上げ：識別23問",
+      "name": "総仕上げ：識別27問",
       "sub": "5つの識別手順をすべてランダム出題",
       "shuffle": true,
       "ids": [
         "sb-rareru-proc1",
         "sb-rareru-proc2",
+        "sb-rareru-cond-ukemi",
         "sb-rareru-cond1",
         "sb-rareru-cond2",
         "sb-rareru-cond3",
         "sb-rareru-cont1",
         "sb-rareru-int1",
         "sb-sasu-proc1",
+        "sb-sasu-proc2",
         "sb-sasu-cond1",
         "sb-sasu-cond2",
         "sb-sasu-cont1",
@@ -634,9 +704,11 @@
         "sb-mu-proc2",
         "sb-mu-cond1",
         "sb-mu-cond2",
+        "sb-mu-cond3",
         "sb-mu-cont1",
         "sb-mu-int1",
         "sb-mashi-proc1",
+        "sb-mashi-proc2",
         "sb-mashi-cond1",
         "sb-mashi-cond2",
         "sb-mashi-cont1",
@@ -657,6 +729,11 @@
           "id": "sb-rareru-proc2",
           "label": "可能への分岐",
           "questionType": "procedure"
+        },
+        {
+          "id": "sb-rareru-cond-ukemi",
+          "label": "受身",
+          "questionType": "condition"
         },
         {
           "id": "sb-rareru-cond1",
@@ -691,6 +768,11 @@
         {
           "id": "sb-sasu-proc1",
           "label": "最初の手がかり",
+          "questionType": "procedure"
+        },
+        {
+          "id": "sb-sasu-proc2",
+          "label": "使役への分岐",
           "questionType": "procedure"
         },
         {
@@ -739,8 +821,13 @@
           "questionType": "condition"
         },
         {
-          "id": "sb-mu-cont1",
+          "id": "sb-mu-cond3",
           "label": "適当・勧誘（二人称）",
+          "questionType": "condition"
+        },
+        {
+          "id": "sb-mu-cont1",
+          "label": "意志との訳し分け",
           "questionType": "contrast"
         },
         {
@@ -759,18 +846,23 @@
           "questionType": "procedure"
         },
         {
+          "id": "sb-mashi-proc2",
+          "label": "反実仮想への分岐",
+          "questionType": "procedure"
+        },
+        {
           "id": "sb-mashi-cond1",
           "label": "反実仮想の形",
           "questionType": "condition"
         },
         {
           "id": "sb-mashi-cond2",
-          "label": "反実仮想の訳",
+          "label": "ためらいの意志",
           "questionType": "condition"
         },
         {
           "id": "sb-mashi-cont1",
-          "label": "ためらいの意志",
+          "label": "手がかりの競合",
           "questionType": "contrast"
         },
         {
