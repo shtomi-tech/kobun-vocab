@@ -1138,7 +1138,7 @@ const KatsuyoApp = (function () {
         .then(r => { if (!r.ok) throw new Error("katsuyo data load failed: " + r.status); return r.json(); }),
       fetch("data/multiple_choice.json?v=20260711-1")
         .then(r => { if (!r.ok) throw new Error("choice data load failed: " + r.status); return r.json(); }),
-      fetch("data/shikibetsu.json?v=20260711-2")
+      fetch("data/shikibetsu.json?v=20260711-3")
         .then(r => { if (!r.ok) throw new Error("shikibetsu data load failed: " + r.status); return r.json(); })
     ])
       .then(async ([d, choiceData, shikibetsuData]) => {

@@ -203,9 +203,82 @@
       "explanation": "識別は受身→可能→自発→尊敬の順に条件を確認する。動作の受け手「（誰々）に」を補えるなら、主語が高貴でも受身を先に採る。尊敬は他の手がかりが立たないときの判断である。"
     },
     {
+      "id": "sb-rareru-int-ukemi",
+      "topic": "る・らるの識別",
+      "step": "統合①",
+      "questionType": "integration",
+      "coverageId": "sb-rareru-int-ukemi",
+      "passage": "盗人に衣を奪はる。",
+      "target": "る",
+      "steps": [
+        {
+          "prompt": "手順I：上に動作の受け手「（誰々）に」を補えるか。",
+          "choices": [
+            "補える → 受身",
+            "補えない → 次の手順へ"
+          ],
+          "answerIndex": 0,
+          "explanation": "「盗人に」と、動作の受け手が示されている。"
+        },
+        {
+          "prompt": "最終判断：この「る」の意味は。",
+          "choices": [
+            "受身",
+            "可能",
+            "自発",
+            "尊敬"
+          ],
+          "answerIndex": 0,
+          "explanation": "動作の受け手「盗人に」が示されているので受身。「盗人に衣を奪われる」と訳す。"
+        }
+      ],
+      "explanation": "動作の受け手「（誰々）に」が示されている → 受身。最初の手がかりだけで意味が決まる。"
+    },
+    {
+      "id": "sb-rareru-int-kanou",
+      "topic": "る・らるの識別",
+      "step": "統合②",
+      "questionType": "integration",
+      "coverageId": "sb-rareru-int-kanou",
+      "passage": "悲しさに、涙をとどめられず。",
+      "target": "られ",
+      "steps": [
+        {
+          "prompt": "手順I：上に動作の受け手「（誰々）に」を補えるか。",
+          "choices": [
+            "補える → 受身",
+            "補えない → 次の手順へ"
+          ],
+          "answerIndex": 1,
+          "explanation": "動作の受け手を示す語はなく、補えない。"
+        },
+        {
+          "prompt": "手順II：下に打消の語があるか。",
+          "choices": [
+            "ある → 可能",
+            "ない → 次の手順へ"
+          ],
+          "answerIndex": 0,
+          "explanation": "「られ」の下に打消の語「ず」が続いている。"
+        },
+        {
+          "prompt": "最終判断：この「られ」の意味は。",
+          "choices": [
+            "受身",
+            "可能",
+            "自発",
+            "尊敬"
+          ],
+          "answerIndex": 1,
+          "explanation": "打消の語「ず」を伴うので可能。「涙を止めることができない」と訳す。"
+        }
+      ],
+      "explanation": "打消の語「ず」を伴う → 可能。受身の手がかりが無いことを確認したうえで判断する。"
+    },
+    {
       "id": "sb-rareru-int1",
       "topic": "る・らるの識別",
-      "step": "手順の統合",
+      "step": "統合③",
       "questionType": "integration",
       "coverageId": "sb-rareru-int1",
       "passage": "昔のこと思ひ出でらる。",
@@ -251,6 +324,65 @@
         }
       ],
       "explanation": "心情語＋る・らる → 自発。手順を上から順に消去していけば迷わない。"
+    },
+    {
+      "id": "sb-rareru-int-sonkei",
+      "topic": "る・らるの識別",
+      "step": "統合④",
+      "questionType": "integration",
+      "coverageId": "sb-rareru-int-sonkei",
+      "passage": "帝、「とく参れ」と仰せらる。",
+      "target": "らる",
+      "steps": [
+        {
+          "prompt": "手順I：上に動作の受け手「（誰々）に」を補えるか。",
+          "choices": [
+            "補える → 受身",
+            "補えない → 次の手順へ"
+          ],
+          "answerIndex": 1,
+          "explanation": "動作の受け手を示す語はない。"
+        },
+        {
+          "prompt": "手順II：下に打消の語があるか。",
+          "choices": [
+            "ある → 可能",
+            "ない → 次の手順へ"
+          ],
+          "answerIndex": 1,
+          "explanation": "打消の語は続いていない。"
+        },
+        {
+          "prompt": "手順III：上に心情語・知覚動詞があるか。",
+          "choices": [
+            "ある → 自発",
+            "ない → 次の手順へ"
+          ],
+          "answerIndex": 1,
+          "explanation": "「仰す」は心情語・知覚動詞ではない。"
+        },
+        {
+          "prompt": "手順IV：主語が身分の高い人物か。",
+          "choices": [
+            "身分が高い → 尊敬",
+            "身分が高くない → 判断が難しい"
+          ],
+          "answerIndex": 0,
+          "explanation": "主語は帝であり、身分が高い。「仰せらる」の「らる」は絶対に尊敬である。"
+        },
+        {
+          "prompt": "最終判断：この「らる」の意味は。",
+          "choices": [
+            "受身",
+            "可能",
+            "自発",
+            "尊敬"
+          ],
+          "answerIndex": 3,
+          "explanation": "受身・可能・自発の手がかりがどれも立たず、主語が帝で「仰せらる」の形なので尊敬。「帝が『早く参れ』とおっしゃる」と訳す。"
+        }
+      ],
+      "explanation": "受身・可能・自発の手がかりが立たず、主語が身分の高い人物で「仰せらる」の形 → 尊敬。手順を最後まで確認して初めて決まる意味である。"
     },
     {
       "id": "sb-sasu-proc1",
@@ -335,7 +467,7 @@
     {
       "id": "sb-sasu-int1",
       "topic": "す・さす・しむの識別",
-      "step": "手順の統合",
+      "step": "統合①",
       "questionType": "integration",
       "coverageId": "sb-sasu-int1",
       "passage": "帝、蔵人に歌を書かせ給ふ。",
@@ -372,6 +504,47 @@
         }
       ],
       "explanation": "尊敬語＋させる相手が明示 → 使役。尊敬語だけで即断せず、させる相手の有無を必ず確認する。"
+    },
+    {
+      "id": "sb-sasu-int-sonkei",
+      "topic": "す・さす・しむの識別",
+      "step": "統合②",
+      "questionType": "integration",
+      "coverageId": "sb-sasu-int-sonkei",
+      "passage": "帝、南殿に出でさせ給ふ。",
+      "target": "させ",
+      "steps": [
+        {
+          "prompt": "手順I：下に尊敬語（給ふ 等）が続くか。",
+          "choices": [
+            "続く → 尊敬の可能性を検討",
+            "続かない → 使役"
+          ],
+          "answerIndex": 0,
+          "explanation": "下に「給ふ」が続いている。"
+        },
+        {
+          "prompt": "手順II：動作をさせる相手「（誰々）に」が示されているか。",
+          "choices": [
+            "示されている → 使役",
+            "示されていない → 尊敬"
+          ],
+          "answerIndex": 1,
+          "explanation": "させる相手を示す語はない。"
+        },
+        {
+          "prompt": "最終判断：この「させ」の意味は。",
+          "choices": [
+            "使役",
+            "尊敬",
+            "受身",
+            "自発"
+          ],
+          "answerIndex": 1,
+          "explanation": "尊敬語を伴い、させる相手も示されないので尊敬。「帝が南殿にお出になる」と訳す。"
+        }
+      ],
+      "explanation": "尊敬語＋させる相手が示されない → 尊敬。使役の相手が無いことを確認して初めて尊敬と判断できる。"
     },
     {
       "id": "sb-mu-proc1",
@@ -472,7 +645,7 @@
     {
       "id": "sb-mu-int1",
       "topic": "む・むずの識別",
-      "step": "手順の統合",
+      "step": "統合①",
       "questionType": "integration",
       "coverageId": "sb-mu-int1",
       "passage": "われ、明日は必ず参らむ。",
@@ -501,6 +674,72 @@
         }
       ],
       "explanation": "主語の人称を確認するだけで、この「む」は意志と決まる。"
+    },
+    {
+      "id": "sb-mu-int-suiryou",
+      "topic": "む・むずの識別",
+      "step": "統合②",
+      "questionType": "integration",
+      "coverageId": "sb-mu-int-suiryou",
+      "passage": "空を見れば、明日は雨も降らむ。",
+      "target": "む",
+      "steps": [
+        {
+          "prompt": "手順I：主語は一人称・二人称・三人称のどれか。",
+          "choices": [
+            "一人称",
+            "二人称",
+            "三人称"
+          ],
+          "answerIndex": 2,
+          "explanation": "主語は「雨」で、話し手・聞き手のどちらでもない三人称にあたる。"
+        },
+        {
+          "prompt": "最終判断：この「む」の意味は。",
+          "choices": [
+            "意志",
+            "推量",
+            "適当・勧誘",
+            "打消"
+          ],
+          "answerIndex": 1,
+          "explanation": "三人称の主語なので推量。「明日は雨も降るだろう」と訳す。"
+        }
+      ],
+      "explanation": "主語の人称を確認するだけで、この「む」は推量と決まる。"
+    },
+    {
+      "id": "sb-mu-int-kanyuu",
+      "topic": "む・むずの識別",
+      "step": "統合③",
+      "questionType": "integration",
+      "coverageId": "sb-mu-int-kanyuu",
+      "passage": "汝も、ともに参らむ。",
+      "target": "む",
+      "steps": [
+        {
+          "prompt": "手順I：主語は一人称・二人称・三人称のどれか。",
+          "choices": [
+            "一人称",
+            "二人称",
+            "三人称"
+          ],
+          "answerIndex": 1,
+          "explanation": "「汝」に呼びかけているので、動作主は聞き手である二人称。"
+        },
+        {
+          "prompt": "最終判断：この「む」の意味は。",
+          "choices": [
+            "意志",
+            "推量",
+            "適当・勧誘",
+            "打消"
+          ],
+          "answerIndex": 2,
+          "explanation": "二人称の主語なので適当・勧誘。「あなたも一緒に参るのがよい」と訳す。"
+        }
+      ],
+      "explanation": "主語の人称を確認するだけで、この「む」は適当・勧誘と決まる。"
     },
     {
       "id": "sb-mashi-proc1",
@@ -585,7 +824,7 @@
     {
       "id": "sb-mashi-int1",
       "topic": "ましの識別",
-      "step": "手順の統合",
+      "step": "統合①",
       "questionType": "integration",
       "coverageId": "sb-mashi-int1",
       "passage": "鏡に色・形あらましかば、映らざらまし。",
@@ -622,6 +861,38 @@
         }
       ],
       "explanation": "疑問詞なし＋「ましかば…まし」の形 → 反実仮想。手順を順に確認すれば、ためらいの意志と混同しない。"
+    },
+    {
+      "id": "sb-mashi-int-tamerai",
+      "topic": "ましの識別",
+      "step": "統合②",
+      "questionType": "integration",
+      "coverageId": "sb-mashi-int-tamerai",
+      "passage": "この扇に、何を書かまし。",
+      "target": "まし",
+      "steps": [
+        {
+          "prompt": "手順I：疑問詞や「や・か」を伴っているか。",
+          "choices": [
+            "伴っている → ためらいの意志",
+            "伴っていない → 次の手順へ"
+          ],
+          "answerIndex": 0,
+          "explanation": "疑問詞「何」を伴っている。"
+        },
+        {
+          "prompt": "最終判断：この「まし」の意味は。",
+          "choices": [
+            "反実仮想",
+            "ためらいの意志",
+            "単なる推量",
+            "過去の事実"
+          ],
+          "answerIndex": 1,
+          "explanation": "疑問詞「何」を伴うので、ためらいの意志。「何を書こうか、いや…」と迷う気持ちを表す。"
+        }
+      ],
+      "explanation": "疑問詞を伴う → ためらいの意志。手順Iだけで意味が決まる。"
     }
   ],
   "shikibetsuGroups": [
@@ -637,7 +908,10 @@
         "sb-rareru-cond2",
         "sb-rareru-cond3",
         "sb-rareru-cont1",
-        "sb-rareru-int1"
+        "sb-rareru-int-ukemi",
+        "sb-rareru-int-kanou",
+        "sb-rareru-int1",
+        "sb-rareru-int-sonkei"
       ]
     },
     {
@@ -650,7 +924,8 @@
         "sb-sasu-cond1",
         "sb-sasu-cond2",
         "sb-sasu-cont1",
-        "sb-sasu-int1"
+        "sb-sasu-int1",
+        "sb-sasu-int-sonkei"
       ]
     },
     {
@@ -664,7 +939,9 @@
         "sb-mu-cond2",
         "sb-mu-cond3",
         "sb-mu-cont1",
-        "sb-mu-int1"
+        "sb-mu-int1",
+        "sb-mu-int-suiryou",
+        "sb-mu-int-kanyuu"
       ]
     },
     {
@@ -677,12 +954,13 @@
         "sb-mashi-cond1",
         "sb-mashi-cond2",
         "sb-mashi-cont1",
-        "sb-mashi-int1"
+        "sb-mashi-int1",
+        "sb-mashi-int-tamerai"
       ]
     },
     {
       "id": "sb-all",
-      "name": "総仕上げ：識別27問",
+      "name": "総仕上げ：識別34問",
       "sub": "5つの識別手順をすべてランダム出題",
       "shuffle": true,
       "ids": [
@@ -693,13 +971,17 @@
         "sb-rareru-cond2",
         "sb-rareru-cond3",
         "sb-rareru-cont1",
+        "sb-rareru-int-ukemi",
+        "sb-rareru-int-kanou",
         "sb-rareru-int1",
+        "sb-rareru-int-sonkei",
         "sb-sasu-proc1",
         "sb-sasu-proc2",
         "sb-sasu-cond1",
         "sb-sasu-cond2",
         "sb-sasu-cont1",
         "sb-sasu-int1",
+        "sb-sasu-int-sonkei",
         "sb-mu-proc1",
         "sb-mu-proc2",
         "sb-mu-cond1",
@@ -707,12 +989,15 @@
         "sb-mu-cond3",
         "sb-mu-cont1",
         "sb-mu-int1",
+        "sb-mu-int-suiryou",
+        "sb-mu-int-kanyuu",
         "sb-mashi-proc1",
         "sb-mashi-proc2",
         "sb-mashi-cond1",
         "sb-mashi-cond2",
         "sb-mashi-cont1",
-        "sb-mashi-int1"
+        "sb-mashi-int1",
+        "sb-mashi-int-tamerai"
       ]
     }
   ],
@@ -756,8 +1041,23 @@
           "questionType": "contrast"
         },
         {
+          "id": "sb-rareru-int-ukemi",
+          "label": "統合①",
+          "questionType": "integration"
+        },
+        {
+          "id": "sb-rareru-int-kanou",
+          "label": "統合②",
+          "questionType": "integration"
+        },
+        {
           "id": "sb-rareru-int1",
-          "label": "統合問題",
+          "label": "統合③",
+          "questionType": "integration"
+        },
+        {
+          "id": "sb-rareru-int-sonkei",
+          "label": "統合④",
           "questionType": "integration"
         }
       ]
@@ -792,7 +1092,12 @@
         },
         {
           "id": "sb-sasu-int1",
-          "label": "統合問題",
+          "label": "統合①",
+          "questionType": "integration"
+        },
+        {
+          "id": "sb-sasu-int-sonkei",
+          "label": "統合②",
           "questionType": "integration"
         }
       ]
@@ -832,7 +1137,17 @@
         },
         {
           "id": "sb-mu-int1",
-          "label": "統合問題",
+          "label": "統合①",
+          "questionType": "integration"
+        },
+        {
+          "id": "sb-mu-int-suiryou",
+          "label": "統合②",
+          "questionType": "integration"
+        },
+        {
+          "id": "sb-mu-int-kanyuu",
+          "label": "統合③",
           "questionType": "integration"
         }
       ]
@@ -867,7 +1182,12 @@
         },
         {
           "id": "sb-mashi-int1",
-          "label": "統合問題",
+          "label": "統合①",
+          "questionType": "integration"
+        },
+        {
+          "id": "sb-mashi-int-tamerai",
+          "label": "統合②",
           "questionType": "integration"
         }
       ]
