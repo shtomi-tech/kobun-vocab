@@ -283,27 +283,30 @@ const KatsuyoApp = (function () {
     homePanel.appendChild(progressCard);
 
     if (currentSet.proceduresKey) renderProcedureStepsCard();
-    renderCoverageCard();
 
-    // ---- グループ一覧 ----
-    const listCard = el("section", "card");
-    listCard.appendChild(el("span", "label", "練習グループを選ぶ"));
-    const list = el("div", "groupList");
-    const p = loadProgress();
-    // 識別タブは手順学習カードの「この手順を学習する」と導線が重複するため、総仕上げのみ表示する。
-    const groupsToShow = currentSet.id === "shikibetsu" ? getGroups().filter(g => g.id === "sb-all") : getGroups();
-    groupsToShow.forEach(g => {
-      const btn = el("button", "groupBtn");
-      btn.type = "button";
-      const done = groupDoneCount(g, p);
-      btn.appendChild(el("span", "groupName", g.name));
-      btn.appendChild(el("span", "groupSub", g.sub));
-      btn.appendChild(el("span", "groupStat", "習得 " + done + " / " + g.ids.length));
-      btn.addEventListener("click", () => startSession(sessionIdsForGroup(g), g.name));
-      list.appendChild(btn);
-    });
-    listCard.appendChild(list);
-    homePanel.appendChild(listCard);
+    // 識別タブは手順学習カード（つづきから・この手順を学習する）が唯一の導線のため、
+    // 知識項目チェック・グループ一覧（練習グループを選ぶ）は表示しない。
+    if (currentSet.id !== "shikibetsu") {
+      renderCoverageCard();
+
+      // ---- グループ一覧 ----
+      const listCard = el("section", "card");
+      listCard.appendChild(el("span", "label", "練習グループを選ぶ"));
+      const list = el("div", "groupList");
+      const p = loadProgress();
+      getGroups().forEach(g => {
+        const btn = el("button", "groupBtn");
+        btn.type = "button";
+        const done = groupDoneCount(g, p);
+        btn.appendChild(el("span", "groupName", g.name));
+        btn.appendChild(el("span", "groupSub", g.sub));
+        btn.appendChild(el("span", "groupStat", "習得 " + done + " / " + g.ids.length));
+        btn.addEventListener("click", () => startSession(sessionIdsForGroup(g), g.name));
+        list.appendChild(btn);
+      });
+      listCard.appendChild(list);
+      homePanel.appendChild(listCard);
+    }
 
     // ---- その他（リセット、単語モードと同じく折りたたみ＋共有モード時は非表示） ----
     if (!sharedMode) {

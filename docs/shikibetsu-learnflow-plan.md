@@ -40,6 +40,11 @@
 >   既存の `sb-*-int1`（旧「手順の統合」）もこの番号方式に統一。
 > - ID・group・coverageTopicsを更新。既存IDは維持（進捗互換）、新規IDは意味名で命名
 >   （`sb-rareru-int-ukemi`／`sb-sasu-int-sonkei`／`sb-mu-int-suiryou`／`sb-mu-int-kanyuu`／`sb-mashi-int-tamerai` 等）。
+>
+> **追記（2026-07-11・導線の一本化）**：識別タブの「知識項目チェック」（coverageカード）と
+> 「練習グループを選ぶ」（グループ一覧）を削除し、手順学習カード（つづきから／この手順を学習する）
+> のみに一本化した。他タブ（助動詞・用言・文法4択）はこれらのカードを維持している
+> （`renderHome` 内で `currentSet.id !== "shikibetsu"` の条件分岐を追加）。
 
 対象：`kobun-vocab` の識別タブに、`eiken2-q1` 第1問と同じ
 **「STEP 1 内容理解 → STEP 2 4択問題 → STEP 3 実践問題」** の3段階学習フローを追加する。
