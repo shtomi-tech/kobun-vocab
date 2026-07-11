@@ -6,6 +6,7 @@
 > - グループの出題順は `orderBy` のようなコード分岐を足さず、JSON側で procedure→condition→contrast→integration の順にidを並べるだけで実現（sessionIdsForGroupは無改修）。
 > - ホームの「手順カード」は既存の「知識項目チェック」とは別に、手順本文（手順I〜IV）だけを表示する軽量カード（`renderProcedureStepsCard`）として追加し、両カードを併置。
 > - 既存フィールド名（topic/step/questionType/coverageId）をそのまま踏襲し、`procedureId`/`qtype` という新フィールド名は使っていない（既存コードとの互換のため）。
+> - 追記（同日）：「ずの活用」は意味の識別ではなく活用知識のため識別タブから外し、文法4択のChapter 3（接続と活用）へ移動。識別タブは4手順・23問（る・らる／す・さす・しむ／む・むず／まし）、文法4択Chapter 3は15問に更新。
 
 対象：`kobun-vocab` に「識別」タブを新設し、助動詞などの**意味の識別手順**を
 「手順確認 → 条件確認 → 対比 → 統合」の4種類の問題で定着させる。
