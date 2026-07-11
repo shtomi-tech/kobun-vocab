@@ -13,6 +13,7 @@ const KatsuyoApp = (function () {
   let currentSet = null;
   let byId = {};
   let cloud = null;
+  let flow = null; // 識別セクションの学習フロー文脈（理解→4択→実践）
 
   /* ---------- progress (localStorage) ---------- */
   function loadProgress() {
@@ -103,6 +104,47 @@ const KatsuyoApp = (function () {
     return set.mode || "table";
   }
 
+  /* ---------- 識別セクション：学習フロー（理解→4択→実践） ---------- */
+  function shikibetsuProcedures() {
+    return DATA[currentSet.proceduresKey] || [];
+  }
+  function shikibetsuGroupForProc(procId) {
+    return getGroups().find(g => g.id === "sb-" + procId);
+  }
+  function shikibetsuQuizIds(procId) {
+    const g = shikibetsuGroupForProc(procId);
+    if (!g) return [];
+    return g.ids.filter(id => (byId[itemKey(id)] || {}).questionType !== "integration");
+  }
+  function shikibetsuPracticeIds(procId) {
+    const g = shikibetsuGroupForProc(procId);
+    if (!g) return [];
+    return g.ids.filter(id => (byId[itemKey(id)] || {}).questionType === "integration");
+  }
+  // 「習得済み」（isMastered、累計2回正解）は苦手復習・進捗バー用の基準。
+  // フローの完了判定はセッションを1周し終えた（1回でも正解した）ことだけを基準にする。
+  // 各セッションは誤答をキュー末尾に再出題し続け、全問正解するまで終わらないため、
+  // セッション完了＝そのステージの全問が最低1回は正解済み、と言える。
+  function shikibetsuIdCleared(id, p) {
+    const rec = progressRecord(p, id);
+    return !!rec && rec.c >= 1;
+  }
+  function shikibetsuProcStatus(procId) {
+    const p = loadProgress();
+    const quizIds = shikibetsuQuizIds(procId);
+    const practiceIds = shikibetsuPracticeIds(procId);
+    const quizDone = quizIds.filter(id => shikibetsuIdCleared(id, p)).length;
+    const practiceDone = practiceIds.filter(id => shikibetsuIdCleared(id, p)).length;
+    return {
+      quizIds, practiceIds, quizDone, practiceDone,
+      complete: quizIds.length > 0 && quizDone === quizIds.length
+        && practiceIds.length > 0 && practiceDone === practiceIds.length,
+    };
+  }
+  function firstIncompleteProcedure() {
+    return shikibetsuProcedures().find(proc => !shikibetsuProcStatus(proc.id).complete) || null;
+  }
+
   /* ---------- cloud sync（生徒別・共有URL ?s=&t= — harness/cloud.js を利用） ---------- */
   function setShareStatus(message, tone = "") {
     const slot = document.getElementById("shareStatus");
@@ -141,6 +183,7 @@ const KatsuyoApp = (function () {
 
   /* ---------- home ---------- */
   function renderHome() {
+    flow = null;
     sessionPanel.classList.add("hide");
     sessionPanel.innerHTML = "";
     homePanel.classList.remove("hide");
@@ -167,6 +210,21 @@ const KatsuyoApp = (function () {
         // 復習は順番を覚えてしまわないようランダム順にする
         action: () => startSession(shuffle(weakIds()), "苦手復習"),
       };
+    } else if (currentSet.proceduresKey) {
+      const proc = firstIncompleteProcedure();
+      if (proc) {
+        primary = {
+          tag: "つづきから",
+          main: proc.name + "を学習する",
+          action: () => startShikibetsuFlow(proc.id),
+        };
+      } else if (total > 0) {
+        primary = {
+          tag: "総仕上げ",
+          main: total + currentSet.unit + "をランダム出題",
+          action: () => startSession(shuffle(getItems().map(itemId)), "総仕上げ"),
+        };
+      }
     } else {
       const inc = firstIncompleteGroup();
       if (inc) {
@@ -232,7 +290,9 @@ const KatsuyoApp = (function () {
     listCard.appendChild(el("span", "label", "練習グループを選ぶ"));
     const list = el("div", "groupList");
     const p = loadProgress();
-    getGroups().forEach(g => {
+    // 識別タブは手順学習カードの「この手順を学習する」と導線が重複するため、総仕上げのみ表示する。
+    const groupsToShow = currentSet.id === "shikibetsu" ? getGroups().filter(g => g.id === "sb-all") : getGroups();
+    groupsToShow.forEach(g => {
       const btn = el("button", "groupBtn");
       btn.type = "button";
       const done = groupDoneCount(g, p);
@@ -270,18 +330,37 @@ const KatsuyoApp = (function () {
     }
   }
 
-  // 識別セクション専用：各手順の本文（手順I〜IV）を演習前に確認できるカード。
+  // 識別セクション専用：手順ごとに「学習する」ボタン（理解→4択→実践のフロー開始）と
+  // 4択・実践の習得状況、手順本文（手順I〜IV）の折りたたみ確認を並べたカード。
   function renderProcedureStepsCard() {
-    const procedures = DATA[currentSet.proceduresKey] || [];
+    const procedures = shikibetsuProcedures();
     if (!procedures.length) return;
     const card = el("section", "card");
-    card.appendChild(el("span", "label", "識別手順を確認する"));
+    card.appendChild(el("span", "label", "手順を学習する"));
+    card.appendChild(el("p", "hint", "手順の内容理解→4択問題→実践問題（統合）の順に進みます。"));
     procedures.forEach(proc => {
+      const status = shikibetsuProcStatus(proc.id);
+      const block = el("div", "procedureLearnBlock");
+
+      const head = el("div", "procedureLearnHead");
+      const info = el("div");
+      info.appendChild(el("p", "procedureName", proc.name));
+      info.appendChild(el("p", "procedureSub", proc.sub));
+      head.appendChild(info);
+      const startBtn = el("button", "cta", status.complete ? "もう一度学習する" : "この手順を学習する");
+      startBtn.type = "button";
+      startBtn.addEventListener("click", () => startShikibetsuFlow(proc.id));
+      head.appendChild(startBtn);
+      block.appendChild(head);
+
+      block.appendChild(el("p", "procedureLearnStat",
+        "4択 完了 " + status.quizDone + " / " + status.quizIds.length
+        + "　実践 完了 " + status.practiceDone + " / " + status.practiceIds.length));
+
       const details = document.createElement("details");
       details.className = "procedureDetails";
       const summary = document.createElement("summary");
-      summary.appendChild(el("span", "procedureName", proc.name));
-      summary.appendChild(el("span", "procedureSub", proc.sub));
+      summary.appendChild(el("span", null, "手順本文を読む"));
       details.appendChild(summary);
       const list = el("ol", "procedureStepList");
       proc.steps.forEach(step => {
@@ -291,7 +370,9 @@ const KatsuyoApp = (function () {
         list.appendChild(li);
       });
       details.appendChild(list);
-      card.appendChild(details);
+      block.appendChild(details);
+
+      card.appendChild(block);
     });
     homePanel.appendChild(card);
   }
@@ -347,7 +428,7 @@ const KatsuyoApp = (function () {
   /* ---------- session ---------- */
   let session = null;
 
-  function startSession(ids, title) {
+  function startSession(ids, title, opts) {
     if (!ids || ids.length === 0) { renderHome(); return; }
     session = {
       title,
@@ -359,10 +440,134 @@ const KatsuyoApp = (function () {
       wrongNos: new Set(),
       answered: false,
       choiceSelect: null,
+      flow: (opts && opts.flow) || null, // 識別の学習フロー内で開始されたセッションかどうか
     };
     homePanel.classList.add("hide");
     sessionPanel.classList.remove("hide");
     renderRow();
+  }
+
+  // 識別セクションの学習フロー：手順本文の理解 → 4択問題 → 実践問題（統合）の順に進む。
+  function startShikibetsuFlow(procId) {
+    const proc = shikibetsuProcedures().find(pr => pr.id === procId);
+    if (!proc) { renderHome(); return; }
+    flow = { procId, flashIdx: 0 };
+    homePanel.classList.add("hide");
+    sessionPanel.classList.remove("hide");
+    renderUnderstand();
+  }
+
+  function startShikibetsuQuiz() {
+    const proc = shikibetsuProcedures().find(pr => pr.id === flow.procId);
+    flow.stage = "quiz";
+    startSession(shikibetsuQuizIds(flow.procId), proc.name + "・4択問題", { flow: Object.assign({}, flow) });
+  }
+
+  function startShikibetsuPractice() {
+    const proc = shikibetsuProcedures().find(pr => pr.id === flow.procId);
+    flow.stage = "practice";
+    startSession(shikibetsuPracticeIds(flow.procId), proc.name + "・実践問題", { flow: Object.assign({}, flow) });
+  }
+
+  // 理解→4択→実践の3ステージを表す帯（eiken2-q1のstageBarに相当する構成）。
+  function flowStageBar(stage) {
+    const order = ["understand", "quiz", "practice"];
+    const labels = { understand: "1 理解", quiz: "2 4択", practice: "3 実践" };
+    const cur = order.indexOf(stage);
+    const bar = el("div", "flowStageBar");
+    order.forEach((s, i) => {
+      let cls = "flowStagePill";
+      if (i < cur) cls += " cleared";
+      if (s === stage) cls += " active";
+      bar.appendChild(el("div", cls, labels[s]));
+    });
+    return bar;
+  }
+
+  function flowHead(proc) {
+    const head = el("div", "sessionHead");
+    const info = el("div", "roundInfo");
+    info.appendChild(el("span", null, proc.name));
+    head.appendChild(info);
+    const quit = el("button", "ghost smallGhost", "中断してホームへ（進捗は保存）");
+    quit.type = "button";
+    quit.addEventListener("click", renderHome);
+    head.appendChild(quit);
+    return head;
+  }
+
+  // STEP 1：手順本文（手順I〜IV）を1枚ずつ確認する（eiken2-q1のflashカードに相当）。
+  function renderUnderstand() {
+    sessionPanel.innerHTML = "";
+    const proc = shikibetsuProcedures().find(pr => pr.id === flow.procId);
+    const steps = proc.steps;
+    const idx = flow.flashIdx;
+    const step = steps[idx];
+
+    sessionPanel.appendChild(flowHead(proc));
+    sessionPanel.appendChild(flowStageBar("understand"));
+
+    const box = el("div", "drillBox understandBox");
+    box.appendChild(el("p", "askLabel", proc.name + "・" + proc.sub));
+    const stepBox = el("div", "understandStep");
+    stepBox.appendChild(el("span", "procedureStepNo", step.no));
+    stepBox.appendChild(el("p", "understandStepText", step.text));
+    box.appendChild(stepBox);
+
+    const nav = el("div", "actions");
+    const canBack = idx > 0;
+    const prev = el("button", "ghost", "← 前の手順");
+    prev.type = "button";
+    if (!canBack) prev.disabled = true;
+    prev.addEventListener("click", () => { flow.flashIdx -= 1; renderUnderstand(); });
+    nav.appendChild(prev);
+
+    const isLast = idx === steps.length - 1;
+    const next = el("button", "cta", isLast ? "4択問題へ進む →" : "次の手順 →");
+    next.type = "button";
+    next.id = "understandNextBtn";
+    next.addEventListener("click", () => {
+      if (isLast) startShikibetsuQuiz();
+      else { flow.flashIdx += 1; renderUnderstand(); }
+    });
+    nav.appendChild(next);
+    box.appendChild(nav);
+    box.appendChild(el("p", "cardCounter", "手順 " + (idx + 1) + " / " + steps.length));
+
+    sessionPanel.appendChild(box);
+  }
+
+  // フロー内のセッション（4択・実践）が完了したときの分岐：
+  // 4択完了→実践へ、実践完了→手順の学習完了（次の未完了手順への導線）。
+  function renderFlowDone() {
+    const proc = shikibetsuProcedures().find(pr => pr.id === flow.procId);
+    const card = el("section", "card");
+    card.appendChild(el("span", "label", "Next"));
+
+    const actions = el("div", "actions");
+    if (session.flow.stage === "quiz") {
+      card.appendChild(el("p", "resultText", "4択問題が完了しました。次は実践問題（統合）で、識別手順を最後まで適用します。"));
+      const next = el("button", "cta", "実践問題へ進む →");
+      next.type = "button";
+      next.addEventListener("click", startShikibetsuPractice);
+      actions.appendChild(next);
+    } else {
+      card.appendChild(el("p", "resultText", proc.name + "の学習が完了しました。"));
+      const nextProc = firstIncompleteProcedure();
+      if (nextProc) {
+        const next = el("button", "cta", "次の手順を学習する（" + nextProc.name + "） →");
+        next.type = "button";
+        next.addEventListener("click", () => startShikibetsuFlow(nextProc.id));
+        actions.appendChild(next);
+      }
+    }
+    const backHome = el("button", "ghost smallGhost", "ホームに戻る");
+    backHome.type = "button";
+    backHome.addEventListener("click", renderHome);
+    actions.appendChild(backHome);
+    card.appendChild(actions);
+
+    sessionPanel.appendChild(card);
   }
 
   // 3つの出題UI（活用ドリル・4択・統合ステップ）で共通のヘッダー＋進捗バー。
@@ -376,6 +581,8 @@ const KatsuyoApp = (function () {
     quit.addEventListener("click", renderHome);
     head.appendChild(quit);
     sessionPanel.appendChild(head);
+
+    if (session.flow) sessionPanel.appendChild(flowStageBar(session.flow.stage));
 
     const track = el("div", "progressTrack");
     const pf = el("div", "progressFill");
@@ -872,6 +1079,8 @@ const KatsuyoApp = (function () {
     banner.appendChild(el("div", "sub", "正答率 " + pct + "%"));
     sessionPanel.appendChild(banner);
 
+    if (session.flow) { renderFlowDone(); return; }
+
     const card = el("section", "card");
     card.appendChild(el("span", "label", "Next"));
     const wrongCount = session.wrongNos.size;
@@ -902,6 +1111,11 @@ const KatsuyoApp = (function () {
 
   /* ---------- キーボード（文法4択のみ：1〜4で選択即採点、Enterで次へ） ---------- */
   function handleKey(e) {
+    if (flow && !session && e.key === "Enter") {
+      const btn = document.getElementById("understandNextBtn");
+      if (btn) btn.click();
+      return;
+    }
     if (!session) return;
     if (setMode(currentSet) !== "choice") return;
     if (["1", "2", "3", "4"].includes(e.key)) {
