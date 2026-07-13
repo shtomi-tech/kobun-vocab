@@ -10,6 +10,7 @@
 const VocabApp = (function () {
   const DATA_URL = "data/vocab.json";
   const STORE_KEY = "kobun_vocab_progress_v1";
+  const RANGE_KEY = "kobun_vocab_range_v1";
   const APP_ID = "kobun-vocab";
 
   const state = {
@@ -34,6 +35,17 @@ const VocabApp = (function () {
     try { localStorage.setItem(STORE_KEY, JSON.stringify(state.progress)); }
     catch (e) { /* ignore */ }
     if (cloud) cloud.queueSave();
+  }
+  function loadRange() {
+    try {
+      const raw = localStorage.getItem(RANGE_KEY);
+      if (raw) return JSON.parse(raw);
+    } catch (e) { /* ignore */ }
+    return null;
+  }
+  function saveRange(start, end) {
+    try { localStorage.setItem(RANGE_KEY, JSON.stringify({ start, end })); }
+    catch (e) { /* ignore */ }
   }
 
   /* ============================================================
@@ -83,6 +95,11 @@ const VocabApp = (function () {
     ));
   }
   function el(id) { return document.getElementById(id); }
+  function clampInt(v, min, max, fallback) {
+    const n = parseInt(v, 10);
+    if (Number.isNaN(n)) return fallback;
+    return Math.min(max, Math.max(min, n));
+  }
   function progressSummary(words = state.words) {
     const total = words.length;
     const mastered = words.filter(w => isMastered(w.id)).length;
@@ -145,6 +162,10 @@ const VocabApp = (function () {
     const weak = weakWords();
     const chapters = chapterGroups();
     const chapterEntries = [{ name: "すべての章", words: state.words, isAll: true }, ...chapters];
+    const { min: idMin, max: idMax } = idBounds();
+    const savedRange = loadRange();
+    const rangeStart = clampInt(savedRange && savedRange.start, idMin, idMax, idMin);
+    const rangeEnd = clampInt(savedRange && savedRange.end, idMin, idMax, idMax);
     const todayPool = firstUnmastered(state.words);
     const todayCount = Math.min(20, todayPool.length || total);
     const sharedMode = !!(cloud && cloud.isEnabled());
@@ -205,6 +226,29 @@ const VocabApp = (function () {
         </details>
       </section>
 
+      <section class="card">
+        <details class="chapterDetails">
+          <summary class="label">単語番号で選ぶ（${idMin}〜${idMax}）</summary>
+          <div class="rangePicker">
+            <div class="rangeRow">
+              <label class="rangeField">
+                <span class="rangeFieldLabel">開始</span>
+                <input type="number" id="rangeStartInput" min="${idMin}" max="${idMax}" value="${rangeStart}">
+              </label>
+              <span class="rangeSep">〜</span>
+              <label class="rangeField">
+                <span class="rangeFieldLabel">終了</span>
+                <input type="number" id="rangeEndInput" min="${idMin}" max="${idMax}" value="${rangeEnd}">
+              </label>
+            </div>
+            <p class="hint" id="rangeSummary"></p>
+            <div class="actions">
+              <button class="cta" id="startRange" type="button">この範囲を演習する</button>
+            </div>
+          </div>
+        </details>
+      </section>
+
       ${sharedMode ? "" : `
       <section class="card">
         <details class="moreDetails">
@@ -232,6 +276,36 @@ const VocabApp = (function () {
         }
       });
     });
+    const startInput = el("rangeStartInput");
+    const endInput = el("rangeEndInput");
+    const rangeBtn = el("startRange");
+    const rangeSummary = el("rangeSummary");
+    function refreshRangeSummary() {
+      const s = clampInt(startInput.value, idMin, idMax, idMin);
+      const e = clampInt(endInput.value, idMin, idMax, idMax);
+      const lo = Math.min(s, e);
+      const hi = Math.max(s, e);
+      const words = wordsInRange(lo, hi);
+      const sp = progressSummary(words);
+      rangeSummary.textContent = words.length
+        ? `${lo}〜${hi} ・ ${sp.total}語中 ${sp.mastered}語習得`
+        : `${lo}〜${hi} には単語がありません`;
+      rangeBtn.disabled = !words.length;
+    }
+    startInput.addEventListener("input", refreshRangeSummary);
+    endInput.addEventListener("input", refreshRangeSummary);
+    refreshRangeSummary();
+    rangeBtn.addEventListener("click", () => {
+      const s = clampInt(startInput.value, idMin, idMax, idMin);
+      const e = clampInt(endInput.value, idMin, idMax, idMax);
+      const lo = Math.min(s, e);
+      const hi = Math.max(s, e);
+      const words = wordsInRange(lo, hi);
+      if (!words.length) return;
+      saveRange(lo, hi);
+      const pool = firstUnmastered(words);
+      startSession(pool.length ? pool : words, `単語${lo}〜${hi}`);
+    });
     if (!sharedMode) {
       el("resetBtn").addEventListener("click", () => {
         if (confirm("すべての進捗（正答・誤答の記録）を削除しますか？")) {
@@ -241,6 +315,20 @@ const VocabApp = (function () {
         }
       });
     }
+  }
+
+  // id の最小・最大（単語番号の範囲指定に使う）
+  function idBounds() {
+    let min = Infinity, max = -Infinity;
+    for (const w of state.words) {
+      if (w.id < min) min = w.id;
+      if (w.id > max) max = w.id;
+    }
+    if (!state.words.length) { min = 1; max = 1; }
+    return { min, max };
+  }
+  function wordsInRange(start, end) {
+    return state.words.filter(w => w.id >= start && w.id <= end);
   }
 
   // 章ごとに単語をまとめる（出現順を保持）

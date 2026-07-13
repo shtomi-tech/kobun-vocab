@@ -267,6 +267,27 @@ h2 {
 .moreDetails[open] summary::before,
 .chapterDetails[open] summary::before { content: "▾ "; }
 .chapterDetails .chapterList { margin-top: 12px; }
+
+.rangePicker { margin-top: 12px; }
+.rangeRow { display: flex; align-items: flex-end; gap: 10px; flex-wrap: wrap; }
+.rangeField { display: flex; flex-direction: column; gap: 4px; }
+.rangeFieldLabel {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .08em;
+  color: var(--muted);
+}
+.rangeField input[type="number"] {
+  width: 90px;
+  padding: 8px 10px;
+  border: 1px solid var(--ink);
+  background: var(--parchment);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 15px;
+}
+.rangeField input[type="number"]:focus { outline: 2px solid var(--ink); outline-offset: 1px; }
+.rangeSep { padding-bottom: 8px; color: var(--muted); }
 .chapterBtnAll { background: var(--parchment); }
 .chapterBtnAll .chapterName { font-weight: 600; }
 
