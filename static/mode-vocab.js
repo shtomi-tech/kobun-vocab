@@ -178,7 +178,7 @@ const VocabApp = (function () {
           <span class="ctaTag">おすすめ・約3分</span>
           <span class="ctaMain">今日の20語を始める</span>
         </button>
-        <p class="hint">古語 → 現代語訳の4択。2回正解で習得扱い、間違えた語はその場で最後にもう一度出題されます。</p>
+        <p class="hint">古語 → 現代語訳の4択。2回正解で習得扱い、間違えた語はセッションの最後にまとめて復習します。</p>
       </section>
 
       <section class="card">
@@ -358,6 +358,8 @@ const VocabApp = (function () {
       idx: 0,
       correctCount: 0,
       wrongIds: [],
+      wrongLog: [],
+      reviewed: false,
       answered: false,
       title: title || sessionTitle(words, "演習"),
     };
@@ -371,7 +373,11 @@ const VocabApp = (function () {
     const panel = el("sessionPanel");
 
     if (s.idx >= s.queue.length) {
-      renderDone();
+      if (s.wrongLog.length && !s.reviewed) {
+        renderReview();
+      } else {
+        renderDone();
+      }
       return;
     }
 
@@ -430,7 +436,7 @@ const VocabApp = (function () {
     if (s.answered) return;
     s.answered = true;
 
-    const { word, answerIndex } = s.current;
+    const { word, choices, answerIndex } = s.current;
     const correct = i === answerIndex;
 
     const stat = statOf(word.id);
@@ -438,7 +444,7 @@ const VocabApp = (function () {
     else {
       stat.wrong += 1;
       if (!s.wrongIds.includes(word.id)) s.wrongIds.push(word.id);
-      s.queue.push(word); // 誤答語はこのセッションの最後にもう一度出題する
+      s.wrongLog.push({ word, picked: choices[i] }); // 復習ステージでまとめて解説する
     }
     state.progress[word.id] = stat;
     saveProgress();
@@ -467,7 +473,7 @@ const VocabApp = (function () {
         <ul>
           ${word.meanings.map(m => `<li>${esc(m)}</li>`).join("")}
         </ul>
-        ${correct ? "" : `<p class="hint">この語は最後にもう一度出題されます。</p>`}
+        ${correct ? "" : `<p class="hint">この語はあとでまとめて復習します。</p>`}
       </div>
       <div class="nextRow">
         <button class="cta" id="nextBtn" type="button">${last ? "結果を見る" : "次の問題へ"}</button>
@@ -483,9 +489,75 @@ const VocabApp = (function () {
     renderQuestion();
   }
 
+  // 選んだ意味が本当はどの語の意味だったかを逆引き（混同ペアの可視化）
+  function findOwnerOf(meaning, excludeId) {
+    return state.words.find(w => w.id !== excludeId && w.meanings.includes(meaning));
+  }
+
+  function renderReview() {
+    const s = state.session;
+    const panel = el("sessionPanel");
+    const checked = new Set();
+
+    panel.innerHTML = `
+      <div class="sessionHead">
+        <div class="roundInfo">
+          <span>${esc(s.title)}</span>
+          <span>間違えた${s.wrongLog.length}語の復習</span>
+        </div>
+      </div>
+      <section class="quizBox">
+        <p class="askLabel">それぞれの語の意味を確認してください。読み終えたら「確認した」を押してください。</p>
+        <div class="reviewList">
+          ${s.wrongLog.map((entry, i) => {
+            const { word, picked } = entry;
+            const owner = findOwnerOf(picked, word.id);
+            const kanji = word.kanji ? `<small>（${esc(word.kanji)}）</small>` : "";
+            return `
+            <article class="reviewCard" id="reviewCard${i}">
+              <div class="reviewCardHead">
+                <p class="word">${esc(word.kana)}${kanji} <small>${esc(word.pos)}</small></p>
+                <button class="ghost smallGhost reviewCheckBtn" data-i="${i}" type="button">確認した</button>
+              </div>
+              <ul>
+                ${word.meanings.map(m => `<li>${esc(m)}</li>`).join("")}
+              </ul>
+              <p class="answerLine ng"><span class="k">選んだ意味</span>${esc(picked)}${owner ? `　→　これは「${esc(owner.kana)}」の意味です` : ""}</p>
+            </article>`;
+          }).join("")}
+        </div>
+        <div class="nextRow">
+          <p class="hint" id="reviewCountHint">残り${s.wrongLog.length}語</p>
+          <button class="cta" id="reviewDoneBtn" type="button" disabled>結果を見る</button>
+        </div>
+      </section>
+    `;
+
+    const doneBtn = el("reviewDoneBtn");
+    const hint = el("reviewCountHint");
+    document.querySelectorAll(".reviewCheckBtn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const i = parseInt(btn.dataset.i, 10);
+        if (checked.has(i)) return;
+        checked.add(i);
+        btn.disabled = true;
+        btn.textContent = "確認済み";
+        el("reviewCard" + i).classList.add("reviewCardDone");
+        const remaining = s.wrongLog.length - checked.size;
+        hint.textContent = remaining > 0 ? `残り${remaining}語` : "すべて確認しました";
+        if (checked.size === s.wrongLog.length) doneBtn.disabled = false;
+      });
+    });
+    doneBtn.addEventListener("click", () => {
+      s.reviewed = true;
+      renderDone();
+    });
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
   function renderDone() {
     const s = state.session;
-    const total = s.queue.length;
+    const total = s.idx;
     const score = s.correctCount;
     const pct = Math.round((score / total) * 100);
     const wrongWords = state.words.filter(w => s.wrongIds.includes(w.id));

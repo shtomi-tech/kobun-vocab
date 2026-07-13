@@ -8,8 +8,7 @@
 
 const APPS = [
   { id: "vocab", tag: "VOCAB QUIZ", label: "単語", title: "古文単語 4択演習", mount: () => VocabApp.mount(), handleKey: (e) => VocabApp.handleKey(e) },
-  { id: "jodoshi", tag: "AUXILIARY", label: "助動詞", title: "古文 助動詞 活用ドリル", mount: () => KatsuyoApp.mount("jodoshi"), handleKey: (e) => KatsuyoApp.handleKey(e) },
-  { id: "yougo", tag: "YOUGO", label: "用言", title: "古文 用言 活用ドリル", mount: () => KatsuyoApp.mount("yougo"), handleKey: (e) => KatsuyoApp.handleKey(e) },
+  { id: "katsuyo", tag: "KATSUYO", label: "活用", title: "古文 助動詞・用言 活用ドリル", mount: () => KatsuyoApp.mount("katsuyo"), handleKey: (e) => KatsuyoApp.handleKey(e) },
   { id: "choice", tag: "MULTIPLE CHOICE", label: "文法4択", title: "古文 文法4択", mount: () => KatsuyoApp.mount("choice"), handleKey: (e) => KatsuyoApp.handleKey(e) },
   { id: "shikibetsu", tag: "IDENTIFY", label: "識別", title: "古文 助動詞 識別演習", mount: () => KatsuyoApp.mount("shikibetsu"), handleKey: (e) => KatsuyoApp.handleKey(e) },
 ];

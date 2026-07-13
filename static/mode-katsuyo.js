@@ -14,6 +14,7 @@ const KatsuyoApp = (function () {
   let byId = {};
   let cloud = null;
   let flow = null; // 識別セクションの学習フロー文脈（理解→4択→実践）
+  let combinedKatsuyoMode = false; // 「活用」タブ（助動詞＋用言の統合ホーム）から来たセッションかどうか
 
   /* ---------- progress (localStorage) ---------- */
   function loadProgress() {
@@ -102,6 +103,180 @@ const KatsuyoApp = (function () {
   }
   function setMode(set) {
     return set.mode || "table";
+  }
+
+  /* ---------- 「活用」タブ：助動詞＋用言の統合ホーム ---------- */
+  // currentSet はグローバルなので、他セットの集計中だけ一時的に差し替えて計算する（同期処理のみなので安全）。
+  function statsForSet(set) {
+    const prev = currentSet;
+    currentSet = set;
+    const total = getItems().length;
+    const mastered = masteredCount();
+    const weak = weakIds().length;
+    currentSet = prev;
+    return { total, mastered, weak };
+  }
+  // set内に苦手または未習得グループが残っていれば「つづきから」候補を返す。無ければnull（=そのセットは仕上がっている）。
+  function primaryForSet(set) {
+    const prev = currentSet;
+    currentSet = set;
+    let result = null;
+    const weak = weakIds();
+    if (weak.length > 0) {
+      result = {
+        tag: "苦手復習・約" + Math.max(1, Math.round(weak.length * 0.3)) + "分",
+        main: set.name + "：間違えた" + weak.length + set.unit + "を復習する",
+        action: () => { currentSet = set; startSession(shuffle(weakIds()), "苦手復習"); },
+      };
+    } else {
+      const inc = firstIncompleteGroup();
+      if (inc) {
+        result = {
+          tag: "つづきから",
+          main: set.name + "：" + inc.group.name + "（" + inc.done + " / " + inc.group.ids.length + "）",
+          action: () => { currentSet = set; startSession(sessionIdsForGroup(inc.group), inc.group.name); },
+        };
+      }
+    }
+    currentSet = prev;
+    return result;
+  }
+  function goHome() {
+    if (combinedKatsuyoMode) renderKatsuyoHome();
+    else renderHome();
+  }
+
+  function renderKatsuyoHome() {
+    flow = null;
+    sessionPanel.classList.add("hide");
+    sessionPanel.innerHTML = "";
+    homePanel.classList.remove("hide");
+    homePanel.innerHTML = "";
+
+    const jodoshiSet = DATA.practiceSets.find(s => s.id === "jodoshi");
+    const yougoSet = DATA.practiceSets.find(s => s.id === "yougo");
+    const sets = [jodoshiSet, yougoSet];
+    const statsList = sets.map(statsForSet);
+    const total = statsList.reduce((a, s) => a + s.total, 0);
+    const mastered = statsList.reduce((a, s) => a + s.mastered, 0);
+    const weak = statsList.reduce((a, s) => a + s.weak, 0);
+    const sharedMode = !!(cloud && cloud.isEnabled());
+
+    // ---- hero：つづきから（苦手復習 or 未習得グループ。助動詞→用言の順で優先） ----
+    const hero = el("section", "card hero");
+    hero.appendChild(el("span", "label", "KATSUYO CHECK"));
+    const h2 = el("h2", null, "助動詞・用言の活用を、行ごとに埋めてテスト");
+    h2.style.color = "var(--parchment)";
+    hero.appendChild(h2);
+    hero.appendChild(el("p", "hint", "助動詞と用言（動詞・形容詞・形容動詞）の活用練習を1つにまとめました。間違えた行はセッション末尾で再出題されます。"));
+
+    const primary = primaryForSet(jodoshiSet) || primaryForSet(yougoSet);
+    if (primary) {
+      const btn = el("button", "cta primaryCta", "");
+      btn.type = "button";
+      btn.appendChild(el("span", "ctaTag", primary.tag));
+      btn.appendChild(el("span", "ctaMain", primary.main));
+      btn.addEventListener("click", primary.action);
+      hero.appendChild(btn);
+    } else if (total > 0) {
+      hero.appendChild(el("p", "hint", "助動詞・用言はすべて習得済みです。もう一度復習する場合は下の一覧から選べます。"));
+    }
+    homePanel.appendChild(hero);
+
+    // ---- 進捗カード（助動詞＋用言の合算） ----
+    const progressCard = el("section", "card");
+    progressCard.appendChild(el("span", "label", "Progress"));
+    const grid = el("div", "statGrid");
+    [[String(mastered), "/ " + total, "MASTERED・習得"], [String(weak), "", "WEAK・苦手"], [String(total), "", "項目"]]
+      .forEach(([num, small, cap]) => {
+        const c = el("div", "statCell");
+        const n = el("div", "statNum");
+        n.appendChild(document.createTextNode(num));
+        if (small) n.appendChild(el("small", null, small));
+        c.appendChild(n);
+        c.appendChild(el("div", "statCaption", cap));
+        grid.appendChild(c);
+      });
+    progressCard.appendChild(grid);
+    const bar = el("div", "masteryBar");
+    bar.setAttribute("aria-label", "習得率 " + mastered + "/" + total);
+    const fill = el("div", "masteryFill");
+    fill.style.width = (total ? Math.round(mastered / total * 100) : 0) + "%";
+    bar.appendChild(fill);
+    progressCard.appendChild(bar);
+    progressCard.appendChild(el("p", "hint", "残り" + Math.max(0, total - mastered) + "項目。"));
+    homePanel.appendChild(progressCard);
+
+    // ---- 内訳（助動詞／用言。表示のみ、クリック不可） ----
+    const breakdownCard = el("section", "card");
+    breakdownCard.appendChild(el("span", "label", "内訳"));
+    const chapterListEl = el("div", "chapterList");
+    sets.forEach((set, i) => {
+      const s = statsList[i];
+      const pct = s.total ? Math.round(s.mastered / s.total * 100) : 0;
+      const row = el("div", "chapterBtn");
+      row.style.pointerEvents = "none"; // 表示専用（クリック不可・hover反転もさせない）
+      const main = el("span", "chapterMain");
+      main.appendChild(el("span", "chapterName", set.name));
+      const miniBar = el("span", "chapterMiniBar");
+      const miniFill = el("span");
+      miniFill.style.width = pct + "%";
+      miniBar.appendChild(miniFill);
+      main.appendChild(miniBar);
+      row.appendChild(main);
+      row.appendChild(el("span", "chapterStat", s.mastered + "/" + s.total + " 習得"));
+      chapterListEl.appendChild(row);
+    });
+    breakdownCard.appendChild(chapterListEl);
+    homePanel.appendChild(breakdownCard);
+
+    // ---- 練習グループを選ぶ（助動詞・用言の全グループを1つのリストに） ----
+    const listCard = el("section", "card");
+    listCard.appendChild(el("span", "label", "練習グループを選ぶ"));
+    const groupListEl = el("div", "groupList");
+    sets.forEach(set => {
+      const prev = currentSet;
+      currentSet = set;
+      const p = loadProgress();
+      getGroups().forEach(g => {
+        const done = groupDoneCount(g, p);
+        const btn = el("button", "groupBtn");
+        btn.type = "button";
+        const name = set.id === "jodoshi" ? "助動詞：" + g.name : g.name;
+        btn.appendChild(el("span", "groupName", name));
+        btn.appendChild(el("span", "groupSub", g.sub));
+        btn.appendChild(el("span", "groupStat", "習得 " + done + " / " + g.ids.length));
+        btn.addEventListener("click", () => { currentSet = set; startSession(sessionIdsForGroup(g), g.name); });
+        groupListEl.appendChild(btn);
+      });
+      currentSet = prev;
+    });
+    listCard.appendChild(groupListEl);
+    homePanel.appendChild(listCard);
+
+    // ---- その他（リセットは助動詞・用言・文法4択・識別すべての進捗を含む共有ストアを削除） ----
+    if (!sharedMode) {
+      const moreCard = el("section", "card");
+      const details = document.createElement("details");
+      details.className = "moreDetails";
+      const summary = document.createElement("summary");
+      summary.className = "label";
+      summary.textContent = "その他";
+      details.appendChild(summary);
+      const actionsRow = el("div", "actions");
+      const resetBtn = el("button", "ghost", "進捗をすべて削除");
+      resetBtn.type = "button";
+      resetBtn.addEventListener("click", () => {
+        if (confirm("進捗（習得・苦手）をすべて削除しますか？")) {
+          localStorage.removeItem(STORE_KEY);
+          renderKatsuyoHome();
+        }
+      });
+      actionsRow.appendChild(resetBtn);
+      details.appendChild(actionsRow);
+      moreCard.appendChild(details);
+      homePanel.appendChild(moreCard);
+    }
   }
 
   /* ---------- 識別セクション：学習フロー（理解→4択→実践） ---------- */
@@ -432,7 +607,7 @@ const KatsuyoApp = (function () {
   let session = null;
 
   function startSession(ids, title, opts) {
-    if (!ids || ids.length === 0) { renderHome(); return; }
+    if (!ids || ids.length === 0) { goHome(); return; }
     session = {
       title,
       queue: ids.slice(),
@@ -453,7 +628,7 @@ const KatsuyoApp = (function () {
   // 識別セクションの学習フロー：手順本文の理解 → 4択問題 → 実践問題（統合）の順に進む。
   function startShikibetsuFlow(procId) {
     const proc = shikibetsuProcedures().find(pr => pr.id === procId);
-    if (!proc) { renderHome(); return; }
+    if (!proc) { goHome(); return; }
     flow = { procId, flashIdx: 0 };
     homePanel.classList.add("hide");
     sessionPanel.classList.remove("hide");
@@ -494,7 +669,7 @@ const KatsuyoApp = (function () {
     head.appendChild(info);
     const quit = el("button", "ghost smallGhost", "中断してホームへ（進捗は保存）");
     quit.type = "button";
-    quit.addEventListener("click", renderHome);
+    quit.addEventListener("click", goHome);
     head.appendChild(quit);
     return head;
   }
@@ -566,7 +741,7 @@ const KatsuyoApp = (function () {
     }
     const backHome = el("button", "ghost smallGhost", "ホームに戻る");
     backHome.type = "button";
-    backHome.addEventListener("click", renderHome);
+    backHome.addEventListener("click", goHome);
     actions.appendChild(backHome);
     card.appendChild(actions);
 
@@ -581,7 +756,7 @@ const KatsuyoApp = (function () {
     info.appendChild(el("span", null, "残り " + session.queue.length));
     head.appendChild(info);
     const quit = el("button", "ghost smallGhost", "中断してホームへ（進捗は保存）");
-    quit.addEventListener("click", renderHome);
+    quit.addEventListener("click", goHome);
     head.appendChild(quit);
     sessionPanel.appendChild(head);
 
@@ -1097,7 +1272,7 @@ const KatsuyoApp = (function () {
       actions.appendChild(retry);
     }
     const backHome = el("button", "ghost smallGhost", "ホームに戻る");
-    backHome.addEventListener("click", renderHome);
+    backHome.addEventListener("click", goHome);
     actions.appendChild(backHome);
     card.appendChild(actions);
 
@@ -1236,6 +1411,12 @@ const KatsuyoApp = (function () {
       await bootPromise;
     }
     if (!DATA) return; // データ読み込み失敗
+    combinedKatsuyoMode = (setId === "katsuyo");
+    if (combinedKatsuyoMode) {
+      currentSet = null;
+      renderKatsuyoHome();
+      return;
+    }
     currentSet = DATA.practiceSets.find(s => s.id === setId) || DATA.practiceSets[0];
     renderHome();
   }
