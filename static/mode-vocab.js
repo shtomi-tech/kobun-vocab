@@ -12,6 +12,7 @@ const VocabApp = (function () {
   const STORE_KEY = "kobun_vocab_progress_v1";
   const RANGE_KEY = "kobun_vocab_range_v1";
   const APP_ID = "kobun-vocab";
+  const NEXT_KEY_COOLDOWN_MS = 500; // 解答直後の数字キー連打を「次へ」と誤認しない猶予
 
   const state = {
     meta: {},
@@ -410,7 +411,7 @@ const VocabApp = (function () {
           <span class="streak">${esc(word.group || "")}　正${currentStat.correct}／誤${currentStat.wrong}</span>
         </div>
         <p class="askWord">${esc(word.kana)}${kanjiTag}</p>
-        <p class="askMeta"><span class="pos">${esc(word.pos)}</span>1〜4のキーでも解答できます</p>
+        <p class="askMeta"><span class="pos">${esc(word.pos)}</span>1〜4のキーで解答／解答後は1〜4またはEnterで次へ</p>
 
         <div class="choices" id="choices">
           ${choices.map((c, i) => `
@@ -435,6 +436,7 @@ const VocabApp = (function () {
     const s = state.session;
     if (s.answered) return;
     s.answered = true;
+    s.answeredAt = Date.now(); // 直後のキー連打で次の問題を誤答しないためのクールダウン基準
 
     const { word, choices, answerIndex } = s.current;
     const correct = i === answerIndex;
@@ -604,6 +606,10 @@ const VocabApp = (function () {
       if (!s.answered && s.current) {
         const i = parseInt(e.key, 10) - 1;
         if (i < s.current.choices.length) selectAnswer(i);
+      } else if (s.answered && Date.now() - s.answeredAt >= NEXT_KEY_COOLDOWN_MS) {
+        // 解答済みなら数字キーでも次へ（直後の連打は無効化して誤答を防ぐ）
+        const btn = el("nextBtn");
+        if (btn) btn.click();
       }
     } else if (e.key === "Enter" && s.answered) {
       const btn = el("nextBtn");
