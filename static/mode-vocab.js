@@ -522,6 +522,8 @@ const VocabApp = (function () {
               <ul>
                 ${word.meanings.map(m => `<li>${esc(m)}</li>`).join("")}
               </ul>
+              ${word.note ? `<p class="reviewNote"><span class="k">POINT</span>${esc(word.note)}</p>` : ""}
+              ${word.example ? `<p class="reviewExample"><span class="k">例文</span><span class="exJp">${esc(word.example.jp)}</span><span class="exYaku">${esc(word.example.yaku)}</span></p>` : ""}
               <p class="answerLine ng"><span class="k">選んだ意味</span>${esc(picked)}${owner ? `　→　これは「${esc(owner.kana)}」の意味です` : ""}</p>
             </article>`;
           }).join("")}
