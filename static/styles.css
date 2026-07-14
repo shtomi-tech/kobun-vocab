@@ -44,6 +44,8 @@ button.ghost { background: transparent; color: var(--ink); }
 button.ghost:hover { background: var(--ink); color: var(--parchment); }
 .inlineGhost { min-width: 0; }
 .smallGhost { min-height: 34px; padding: 5px 10px; font-size: 12px; }
+.destructive { border-color: var(--ng); color: var(--ng); }
+.destructive:hover { background: var(--ng); color: var(--parchment); }
 
 .wrap { max-width: 960px; margin: 0 auto; padding: 24px 16px 64px; }
 
@@ -291,6 +293,41 @@ h2 {
 .chapterBtnAll { background: var(--parchment); }
 .chapterBtnAll .chapterName { font-weight: 600; }
 
+/* ---- 活用ホーム：表示専用の内訳（練習ボタンと見た目を分ける） ---- */
+.breakdownList {
+  display: grid;
+  border-top: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+}
+.breakdownRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 12px 14px;
+}
+.breakdownRow .chapterMain { gap: 8px; }
+
+/* ---- 活用ホーム：目的別に閉じる練習グループ ---- */
+.groupDetails { border-top: 1px solid var(--line); }
+.groupDetails:first-of-type { border-top: 0; }
+.groupDetailsSummary {
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  list-style: none;
+  padding: 10px 4px;
+  font-family: var(--serif);
+  font-size: 17px;
+}
+.groupDetailsSummary::-webkit-details-marker { display: none; }
+.groupDetailsSummary::before { content: "▸"; margin-right: 10px; font-family: var(--mono); font-size: 13px; }
+.groupDetails[open] .groupDetailsSummary::before { content: "▾"; }
+.groupDetails .groupList { margin-top: 4px; margin-bottom: 12px; }
+
 /* ---- Group list（活用モード：グループ選択） ---- */
 .groupList {
   display: grid;
@@ -429,7 +466,7 @@ h2 {
 }
 
 /* ---- 単語モード：4択（choices/choiceBtn） ---- */
-.choices { display: grid; gap: 10px; }
+.choices { display: grid; gap: 12px; }
 .choiceBtn {
   background: var(--paper);
   color: var(--ink);
@@ -438,7 +475,7 @@ h2 {
   display: flex;
   align-items: center;
   gap: 12px;
-  min-height: 52px;
+  min-height: 56px;
   padding: 10px 14px;
   text-align: left;
   cursor: pointer;
@@ -566,6 +603,8 @@ h2 {
 
 .nextRow { display: flex; justify-content: flex-end; gap: 10px; margin-top: 16px; }
 .nextRow .cta { min-width: min(100%, 200px); }
+.sessionHead .smallGhost { min-height: 44px; }
+.sessionSaveHint { color: var(--muted); font-size: 12px; align-self: center; }
 .resultText { margin: 0; color: var(--muted); }
 
 /* ---- 識別：手順カード・統合問題のステップ実行 ---- */
@@ -684,7 +723,8 @@ h2 {
 .hide { display: none !important; }
 
 @media (max-width: 640px) {
-  .statGrid { grid-template-columns: repeat(3, 1fr); }
+  .statGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .statGrid .statCell:first-child { grid-column: 1 / -1; }
   .askWord { font-size: 30px; }
   .gradeChoiceQuestion { font-size: 20px; }
   .kanaInput { width: 46%; }
@@ -695,4 +735,19 @@ h2 {
   .nextRow { justify-content: stretch; flex-direction: column; }
   .submitRow { flex-direction: column; }
   .submitRow .cta { width: 100%; }
+  .appNav { border: 0; gap: 8px; }
+  .appTab { border: 1px solid var(--ink); min-height: 56px; }
+  .choiceBtn { min-height: 56px; }
+  .nextRow .cta { min-height: 56px; width: 100%; }
+  #sessionPanel .nextRow {
+    position: sticky;
+    bottom: 0;
+    z-index: 5;
+    background: var(--parchment);
+    border-top: 1px solid var(--line);
+    padding: 12px 0 calc(12px + env(safe-area-inset-bottom));
+  }
 }
+
+/* 演習中は回答に集中させ、モード切替を誤って押さないようにする。 */
+body:has(#sessionPanel:not(.hide)) .appNav { display: none; }

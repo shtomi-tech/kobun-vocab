@@ -253,9 +253,9 @@ const VocabApp = (function () {
       ${sharedMode ? "" : `
       <section class="card">
         <details class="moreDetails">
-          <summary class="label">その他</summary>
+          <summary class="label">データ管理</summary>
           <div class="actions">
-            <button class="ghost" id="resetBtn" type="button">進捗をすべて削除</button>
+            <button class="ghost destructive" id="resetBtn" type="button">単語の進捗をすべて削除</button>
           </div>
         </details>
       </section>`}
@@ -401,7 +401,8 @@ const VocabApp = (function () {
           <span>Q ${num} / ${totalQ}</span>
           <span class="streak">正解 ${s.correctCount}</span>
         </div>
-        <button class="ghost smallGhost" id="quitSession" type="button">中断してホームへ（進捗は保存）</button>
+        <button class="ghost smallGhost" id="quitSession" type="button">演習を中断</button>
+        <span class="sessionSaveHint">進捗は保存されます</span>
       </div>
       <div class="progressTrack"><div class="progressFill" style="width:${pct}%"></div></div>
 

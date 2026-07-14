@@ -7,10 +7,10 @@
    ============================================================ */
 
 const APPS = [
-  { id: "vocab", tag: "VOCAB QUIZ", label: "単語", title: "古文単語 4択演習", mount: () => VocabApp.mount(), handleKey: (e) => VocabApp.handleKey(e) },
-  { id: "katsuyo", tag: "KATSUYO", label: "活用", title: "古文 助動詞・用言 活用ドリル", mount: () => KatsuyoApp.mount("katsuyo"), handleKey: (e) => KatsuyoApp.handleKey(e) },
+  { id: "vocab", tag: "VOCAB QUIZ", label: "単語4択", title: "古文単語 4択演習", mount: () => VocabApp.mount(), handleKey: (e) => VocabApp.handleKey(e) },
+  { id: "katsuyo", tag: "KATSUYO", label: "活用表", title: "古文 助動詞・用言 活用ドリル", mount: () => KatsuyoApp.mount("katsuyo"), handleKey: (e) => KatsuyoApp.handleKey(e) },
   { id: "choice", tag: "MULTIPLE CHOICE", label: "文法4択", title: "古文 文法4択", mount: () => KatsuyoApp.mount("choice"), handleKey: (e) => KatsuyoApp.handleKey(e) },
-  { id: "shikibetsu", tag: "IDENTIFY", label: "識別", title: "古文 助動詞 識別演習", mount: () => KatsuyoApp.mount("shikibetsu"), handleKey: (e) => KatsuyoApp.handleKey(e) },
+  { id: "shikibetsu", tag: "IDENTIFY", label: "助動詞の識別", title: "古文 助動詞 識別演習", mount: () => KatsuyoApp.mount("shikibetsu"), handleKey: (e) => KatsuyoApp.handleKey(e) },
 ];
 
 let currentAppId = null;

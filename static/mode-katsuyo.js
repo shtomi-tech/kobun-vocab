@@ -170,7 +170,9 @@ const KatsuyoApp = (function () {
     hero.appendChild(h2);
     hero.appendChild(el("p", "hint", "助動詞と用言（動詞・形容詞・形容動詞）の活用練習を1つにまとめました。間違えた行はセッション末尾で再出題されます。"));
 
-    const primary = primaryForSet(jodoshiSet) || primaryForSet(yougoSet);
+    const jodoshiPrimary = primaryForSet(jodoshiSet);
+    const yougoPrimary = primaryForSet(yougoSet);
+    const primary = jodoshiPrimary || yougoPrimary;
     if (primary) {
       const btn = el("button", "cta primaryCta", "");
       btn.type = "button";
@@ -210,12 +212,11 @@ const KatsuyoApp = (function () {
     // ---- 内訳（助動詞／用言。表示のみ、クリック不可） ----
     const breakdownCard = el("section", "card");
     breakdownCard.appendChild(el("span", "label", "内訳"));
-    const chapterListEl = el("div", "chapterList");
+    const chapterListEl = el("div", "breakdownList");
     sets.forEach((set, i) => {
       const s = statsList[i];
       const pct = s.total ? Math.round(s.mastered / s.total * 100) : 0;
-      const row = el("div", "chapterBtn");
-      row.style.pointerEvents = "none"; // 表示専用（クリック不可・hover反転もさせない）
+      const row = el("div", "breakdownRow");
       const main = el("span", "chapterMain");
       main.appendChild(el("span", "chapterName", set.name));
       const miniBar = el("span", "chapterMiniBar");
@@ -230,11 +231,23 @@ const KatsuyoApp = (function () {
     breakdownCard.appendChild(chapterListEl);
     homePanel.appendChild(breakdownCard);
 
-    // ---- 練習グループを選ぶ（助動詞・用言の全グループを1つのリストに） ----
+    // ---- 練習グループを選ぶ（目的ごとに閉じ、最初は推奨カテゴリだけ開く） ----
     const listCard = el("section", "card");
     listCard.appendChild(el("span", "label", "練習グループを選ぶ"));
-    const groupListEl = el("div", "groupList");
-    sets.forEach(set => {
+    const groupSections = [
+      { set: jodoshiSet, title: "助動詞から選ぶ", open: !!jodoshiPrimary },
+      { set: yougoSet, title: "用言から選ぶ", open: !jodoshiPrimary && !!yougoPrimary },
+    ];
+    groupSections.forEach(section => {
+      const details = document.createElement("details");
+      details.className = "groupDetails";
+      details.open = section.open;
+      const summary = document.createElement("summary");
+      summary.className = "groupDetailsSummary";
+      summary.textContent = section.title;
+      details.appendChild(summary);
+      const groupListEl = el("div", "groupList");
+      const set = section.set;
       const prev = currentSet;
       currentSet = set;
       const p = loadProgress();
@@ -250,8 +263,9 @@ const KatsuyoApp = (function () {
         groupListEl.appendChild(btn);
       });
       currentSet = prev;
+      details.appendChild(groupListEl);
+      listCard.appendChild(details);
     });
-    listCard.appendChild(groupListEl);
     homePanel.appendChild(listCard);
 
     // ---- その他（リセットは助動詞・用言・文法4択・識別すべての進捗を含む共有ストアを削除） ----
@@ -261,10 +275,10 @@ const KatsuyoApp = (function () {
       details.className = "moreDetails";
       const summary = document.createElement("summary");
       summary.className = "label";
-      summary.textContent = "その他";
+      summary.textContent = "データ管理";
       details.appendChild(summary);
       const actionsRow = el("div", "actions");
-      const resetBtn = el("button", "ghost", "進捗をすべて削除");
+      const resetBtn = el("button", "ghost destructive", "活用・文法・識別の進捗をすべて削除");
       resetBtn.type = "button";
       resetBtn.addEventListener("click", () => {
         if (confirm("進捗（習得・苦手）をすべて削除しますか？")) {
@@ -490,10 +504,10 @@ const KatsuyoApp = (function () {
       details.className = "moreDetails";
       const summary = document.createElement("summary");
       summary.className = "label";
-      summary.textContent = "その他";
+      summary.textContent = "データ管理";
       details.appendChild(summary);
       const actionsRow = el("div", "actions");
-      const resetBtn = el("button", "ghost", "進捗をすべて削除");
+      const resetBtn = el("button", "ghost destructive", "活用・文法・識別の進捗をすべて削除");
       resetBtn.type = "button";
       resetBtn.addEventListener("click", () => {
         if (confirm("進捗（習得・苦手）をすべて削除しますか？")) {
@@ -525,7 +539,7 @@ const KatsuyoApp = (function () {
       info.appendChild(el("p", "procedureName", proc.name));
       info.appendChild(el("p", "procedureSub", proc.sub));
       head.appendChild(info);
-      const startBtn = el("button", "cta", status.complete ? "もう一度学習する" : "この手順を学習する");
+      const startBtn = el("button", "cta", status.complete ? (proc.name + "をもう一度学ぶ") : (proc.name + "を学ぶ"));
       startBtn.type = "button";
       startBtn.addEventListener("click", () => startShikibetsuFlow(proc.id));
       head.appendChild(startBtn);
@@ -667,10 +681,11 @@ const KatsuyoApp = (function () {
     const info = el("div", "roundInfo");
     info.appendChild(el("span", null, proc.name));
     head.appendChild(info);
-    const quit = el("button", "ghost smallGhost", "中断してホームへ（進捗は保存）");
-    quit.type = "button";
-    quit.addEventListener("click", goHome);
-    head.appendChild(quit);
+     const quit = el("button", "ghost smallGhost", "演習を中断");
+     quit.type = "button";
+     quit.addEventListener("click", goHome);
+     head.appendChild(quit);
+     head.appendChild(el("span", "sessionSaveHint", "進捗は保存されます"));
     return head;
   }
 
@@ -755,9 +770,10 @@ const KatsuyoApp = (function () {
     info.appendChild(el("span", null, session.title));
     info.appendChild(el("span", null, "残り " + session.queue.length));
     head.appendChild(info);
-    const quit = el("button", "ghost smallGhost", "中断してホームへ（進捗は保存）");
-    quit.addEventListener("click", goHome);
-    head.appendChild(quit);
+     const quit = el("button", "ghost smallGhost", "演習を中断");
+     quit.addEventListener("click", goHome);
+     head.appendChild(quit);
+     head.appendChild(el("span", "sessionSaveHint", "進捗は保存されます"));
     sessionPanel.appendChild(head);
 
     if (session.flow) sessionPanel.appendChild(flowStageBar(session.flow.stage));
