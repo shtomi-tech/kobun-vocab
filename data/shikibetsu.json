@@ -95,6 +95,111 @@
           "text": "その形になっていれば反実仮想と判断し、「もし〜だったなら、〜であっただろうに」と訳す。"
         }
       ]
+    },
+    {
+      "id": "keri",
+      "name": "けりの識別",
+      "sub": "過去・詠嘆",
+      "steps": [
+        {
+          "no": "手順I",
+          "text": "文末で、話し手の気づきや感動があるか確認する。"
+        },
+        {
+          "no": "手順II",
+          "text": "事実を回想しているだけなら過去、気づき・詠嘆なら詠嘆と判断する。"
+        }
+      ]
+    },
+    {
+      "id": "ramu",
+      "name": "らむの識別",
+      "sub": "現在推量・現在原因推量・伝聞・婉曲",
+      "steps": [
+        {
+          "no": "手順I",
+          "text": "現在の事実について推量しているか確認する。"
+        },
+        {
+          "no": "手順II",
+          "text": "疑問語と結び付く場合は現在の原因を推量する用法を疑う。"
+        }
+      ]
+    },
+    {
+      "id": "beshi",
+      "name": "べしの識別",
+      "sub": "推量・意志・可能・当然・命令・適当",
+      "steps": [
+        {
+          "no": "手順I",
+          "text": "主語と文脈から、意志・推量・当然などの候補を立てる。"
+        },
+        {
+          "no": "手順II",
+          "text": "命令・規則、能力、未来の決意などの手がかりを確認する。"
+        }
+      ]
+    },
+    {
+      "id": "nari",
+      "name": "なりの識別",
+      "sub": "断定・伝聞推定",
+      "steps": [
+        {
+          "no": "手順I",
+          "text": "直前が体言・連体形か、終止形（ラ変は連体形）か確認する。"
+        },
+        {
+          "no": "手順II",
+          "text": "接続と意味を合わせて断定か伝聞推定かを決める。"
+        }
+      ]
+    },
+    {
+      "id": "particle",
+      "name": "助詞の識別",
+      "sub": "終助詞・接続助詞・副助詞",
+      "steps": [
+        {
+          "no": "手順I",
+          "text": "語の位置と直前の活用形を確認する。"
+        },
+        {
+          "no": "手順II",
+          "text": "文を終えるか、文をつなぐか、範囲を限定するかを判断する。"
+        }
+      ]
+    },
+    {
+      "id": "homograph",
+      "name": "同形語の識別",
+      "sub": "ぬ・ね・る・れ・なり・なむ・に",
+      "steps": [
+        {
+          "no": "手順I",
+          "text": "直前の語の活用形と、後ろに続く語を確認する。"
+        },
+        {
+          "no": "手順II",
+          "text": "接続が決まらない場合は文中の意味と役割を確認する。"
+        }
+      ]
+    },
+    {
+      "id": "keigo",
+      "name": "敬語の識別",
+      "sub": "尊敬・謙譲・丁寧と主体・対象",
+      "steps": [
+        {
+          "no": "手順I",
+          "text": "誰の動作を高め、誰に向けてへりくだっているかを確認する。"
+        },
+        {
+          "no": "手順II",
+          "text": "敬語の種類と動作主を対応させる。"
+        }
+      ]
     }
   ],
   "shikibetsuQuestions": [
@@ -1108,6 +1213,422 @@
         }
       ],
       "explanation": "疑問詞を伴う → ためらいの意志。手順Iだけで意味が決まる。"
+    },
+    {
+      "id": "sb-keri-proc1",
+      "topic": "けりの識別",
+      "step": "手順I",
+      "questionType": "procedure",
+      "coverageId": "sb-keri-proc1",
+      "question": "文末の『けり』で最初に確認することはどれか。",
+      "choices": [
+        "気づきや感動があるか",
+        "主語が二人称か",
+        "後ろに体言があるか",
+        "打消語があるか"
+      ],
+      "answerIndex": 0,
+      "explanation": "文末のけりは、過去だけでなく詠嘆の可能性がある。"
+    },
+    {
+      "id": "sb-keri-cond1",
+      "topic": "けりの識別",
+      "step": "過去と詠嘆",
+      "questionType": "condition",
+      "coverageId": "sb-keri-cond1",
+      "question": "『昔、都に住みけり』の『けり』の意味はどれか。",
+      "choices": [
+        "過去",
+        "詠嘆",
+        "推量",
+        "当然"
+      ],
+      "answerIndex": 0,
+      "explanation": "回想する事実なので過去。"
+    },
+    {
+      "id": "sb-keri-int1",
+      "topic": "けりの識別",
+      "step": "統合",
+      "questionType": "integration",
+      "coverageId": "sb-keri-int1",
+      "question": "『ああ、春は来にけり』の『けり』の意味はどれか。",
+      "choices": [
+        "詠嘆",
+        "過去の伝聞",
+        "可能",
+        "打消意志"
+      ],
+      "answerIndex": 0,
+      "explanation": "『ああ』とともに気づき・感動を表すため詠嘆。"
+    },
+    {
+      "id": "sb-ramu-proc1",
+      "topic": "らむの識別",
+      "step": "手順I",
+      "questionType": "procedure",
+      "coverageId": "sb-ramu-proc1",
+      "question": "現在の『らむ』を識別するとき、まず何を見るか。",
+      "choices": [
+        "現在の事実について推量しているか",
+        "文末が命令形か",
+        "体言を修飾しているか",
+        "受け手の『に』があるか"
+      ],
+      "answerIndex": 0,
+      "explanation": "らむは現在に関する推量を表す。"
+    },
+    {
+      "id": "sb-ramu-cond1",
+      "topic": "らむの識別",
+      "step": "現在原因推量",
+      "questionType": "condition",
+      "coverageId": "sb-ramu-cond1",
+      "question": "『なぜ鳥は鳴くらむ』の『らむ』の意味はどれか。",
+      "choices": [
+        "現在の原因推量",
+        "過去",
+        "意志",
+        "尊敬"
+      ],
+      "answerIndex": 0,
+      "explanation": "疑問語とともに、今そうなっている原因を推量している。"
+    },
+    {
+      "id": "sb-ramu-int1",
+      "topic": "らむの識別",
+      "step": "統合",
+      "questionType": "integration",
+      "coverageId": "sb-ramu-int1",
+      "question": "『都には人多からむ』の『らむ』の意味はどれか。",
+      "choices": [
+        "現在推量",
+        "反実仮想",
+        "完了",
+        "願望"
+      ],
+      "answerIndex": 0,
+      "explanation": "現在の状態を推量している。"
+    },
+    {
+      "id": "sb-beshi-proc1",
+      "topic": "べしの識別",
+      "step": "手順I",
+      "questionType": "procedure",
+      "coverageId": "sb-beshi-proc1",
+      "question": "『べし』の意味を分けるとき、最初に確認する組み合わせはどれか。",
+      "choices": [
+        "主語と文脈",
+        "音便の有無",
+        "係助詞こそだけ",
+        "文の文字数"
+      ],
+      "answerIndex": 0,
+      "explanation": "べしは主語・文脈で意味が大きく変わる。"
+    },
+    {
+      "id": "sb-beshi-cond1",
+      "topic": "べしの識別",
+      "step": "当然・命令",
+      "questionType": "condition",
+      "coverageId": "sb-beshi-cond1",
+      "question": "『心得るべし』の『べし』はどの意味か。",
+      "choices": [
+        "当然・命令",
+        "過去",
+        "自発",
+        "婉曲"
+      ],
+      "answerIndex": 0,
+      "explanation": "規則・命令と結び付くため当然・命令。"
+    },
+    {
+      "id": "sb-beshi-int1",
+      "topic": "べしの識別",
+      "step": "統合",
+      "questionType": "integration",
+      "coverageId": "sb-beshi-int1",
+      "question": "『われ明日参るべし』の『べし』はどの意味か。",
+      "choices": [
+        "意志",
+        "可能",
+        "当然",
+        "推量（過去）"
+      ],
+      "answerIndex": 0,
+      "explanation": "一人称の決意なので意志。"
+    },
+    {
+      "id": "sb-nari-proc1",
+      "topic": "なりの識別",
+      "step": "手順I",
+      "questionType": "procedure",
+      "coverageId": "sb-nari-proc1",
+      "question": "『なり』を識別する最初の手がかりはどれか。",
+      "choices": [
+        "直前の語の活用形",
+        "主語の人数だけ",
+        "文末の句読点だけ",
+        "後ろの助詞の種類だけ"
+      ],
+      "answerIndex": 0,
+      "explanation": "断定のなりと伝聞推定のなりは接続が異なる。"
+    },
+    {
+      "id": "sb-nari-cond1",
+      "topic": "なりの識別",
+      "step": "接続",
+      "questionType": "condition",
+      "coverageId": "sb-nari-cond1",
+      "question": "体言に接続する『なり』の意味はどれか。",
+      "choices": [
+        "断定",
+        "伝聞推定",
+        "完了",
+        "打消"
+      ],
+      "answerIndex": 0,
+      "explanation": "断定のなりは体言・連体形に接続する。"
+    },
+    {
+      "id": "sb-nari-int1",
+      "topic": "なりの識別",
+      "step": "統合",
+      "questionType": "integration",
+      "coverageId": "sb-nari-int1",
+      "question": "『人来るなり』の『なり』を終止形接続として読む場合の意味はどれか。",
+      "choices": [
+        "伝聞推定",
+        "断定",
+        "使役",
+        "可能"
+      ],
+      "answerIndex": 0,
+      "explanation": "終止形接続のなりは伝聞・推定。"
+    },
+    {
+      "id": "sb-particle-proc1",
+      "topic": "助詞の識別",
+      "step": "手順I",
+      "questionType": "procedure",
+      "coverageId": "sb-particle-proc1",
+      "question": "助詞を識別するとき、最初に見るべきものはどれか。",
+      "choices": [
+        "位置と直前の活用形",
+        "漢字の有無",
+        "文の長さ",
+        "主語の身分だけ"
+      ],
+      "answerIndex": 0,
+      "explanation": "助詞は接続と文中の位置が重要。"
+    },
+    {
+      "id": "sb-particle-cond1",
+      "topic": "助詞の識別",
+      "step": "ば",
+      "questionType": "condition",
+      "coverageId": "sb-particle-cond1",
+      "question": "未然形＋『ば』の意味はどれか。",
+      "choices": [
+        "仮定条件",
+        "確定条件",
+        "逆接",
+        "願望"
+      ],
+      "answerIndex": 0,
+      "explanation": "未然形＋ばは仮定条件。"
+    },
+    {
+      "id": "sb-particle-cond2",
+      "topic": "助詞の識別",
+      "step": "ながら",
+      "questionType": "condition",
+      "coverageId": "sb-particle-cond2",
+      "question": "『ながら』が逆接の場合の訳はどれか。",
+      "choices": [
+        "〜けれども",
+        "〜ので",
+        "〜たい",
+        "〜できる"
+      ],
+      "answerIndex": 0,
+      "explanation": "ながらは文脈により同時動作または逆接。"
+    },
+    {
+      "id": "sb-particle-int1",
+      "topic": "助詞の識別",
+      "step": "統合",
+      "questionType": "integration",
+      "coverageId": "sb-particle-int1",
+      "question": "『花咲けば、鳥も歌ふ』の『ば』の意味はどれか。",
+      "choices": [
+        "仮定条件",
+        "確定条件・原因",
+        "願望",
+        "限定"
+      ],
+      "answerIndex": 1,
+      "explanation": "已然形『咲け』＋ばは確定条件・原因。"
+    },
+    {
+      "id": "sb-homograph-proc1",
+      "topic": "同形語の識別",
+      "step": "手順I",
+      "questionType": "procedure",
+      "coverageId": "sb-homograph-proc1",
+      "question": "同じ表記の助動詞・助詞を識別する最初の手がかりはどれか。",
+      "choices": [
+        "直前と直後の接続",
+        "現代語訳だけ",
+        "句読点だけ",
+        "語の長さ"
+      ],
+      "answerIndex": 0,
+      "explanation": "同形語は接続と後続語を確認する。"
+    },
+    {
+      "id": "sb-homograph-cond1",
+      "topic": "同形語の識別",
+      "step": "ぬ・ね",
+      "questionType": "condition",
+      "coverageId": "sb-homograph-cond1",
+      "question": "『花散りぬ』の『ぬ』の意味はどれか。",
+      "choices": [
+        "完了",
+        "打消",
+        "断定",
+        "尊敬"
+      ],
+      "answerIndex": 0,
+      "explanation": "連用形接続で動作の完了を表すぬ。"
+    },
+    {
+      "id": "sb-homograph-cond2",
+      "topic": "同形語の識別",
+      "step": "る・れ",
+      "questionType": "condition",
+      "coverageId": "sb-homograph-cond2",
+      "question": "『見られず』の『れ』を助動詞として見るときの意味はどれか。",
+      "choices": [
+        "可能",
+        "完了",
+        "断定",
+        "詠嘆"
+      ],
+      "answerIndex": 0,
+      "explanation": "未然形接続のらるで、打消を伴う可能。"
+    },
+    {
+      "id": "sb-homograph-cond3",
+      "topic": "同形語の識別",
+      "step": "なり・なむ",
+      "questionType": "condition",
+      "coverageId": "sb-homograph-cond3",
+      "question": "『静かなり』の『なり』の意味はどれか。",
+      "choices": [
+        "断定",
+        "伝聞推定",
+        "完了",
+        "受身"
+      ],
+      "answerIndex": 0,
+      "explanation": "体言・連体形接続の断定のなり。"
+    },
+    {
+      "id": "sb-homograph-int1",
+      "topic": "同形語の識別",
+      "step": "統合",
+      "questionType": "integration",
+      "coverageId": "sb-homograph-int1",
+      "question": "『まだ知らぬ人』の『ぬ』の説明として正しいものはどれか。",
+      "choices": [
+        "打消の助動詞の連体形",
+        "完了の助動詞の終止形",
+        "断定の助動詞",
+        "願望の終助詞"
+      ],
+      "answerIndex": 0,
+      "explanation": "体言『人』を修飾する打消のずの連体形ぬ。"
+    },
+    {
+      "id": "sb-keigo-proc1",
+      "topic": "敬語の識別",
+      "step": "手順I",
+      "questionType": "procedure",
+      "coverageId": "sb-keigo-proc1",
+      "question": "敬語を識別するとき、最初に確認することはどれか。",
+      "choices": [
+        "動作主と敬意の向かう相手",
+        "文の長さ",
+        "助詞の数",
+        "漢字の種類"
+      ],
+      "answerIndex": 0,
+      "explanation": "敬語は主体と対象の関係から判断する。"
+    },
+    {
+      "id": "sb-keigo-cond1",
+      "topic": "敬語の識別",
+      "step": "尊敬",
+      "questionType": "condition",
+      "coverageId": "sb-keigo-cond1",
+      "question": "『帝、御覧ず』の敬語の種類はどれか。",
+      "choices": [
+        "尊敬語",
+        "謙譲語",
+        "丁寧語",
+        "美化語"
+      ],
+      "answerIndex": 0,
+      "explanation": "帝の動作を高めているので尊敬語。"
+    },
+    {
+      "id": "sb-keigo-cond2",
+      "topic": "敬語の識別",
+      "step": "謙譲",
+      "questionType": "condition",
+      "coverageId": "sb-keigo-cond2",
+      "question": "『臣、参上す』の『参上す』はどの種類か。",
+      "choices": [
+        "謙譲語",
+        "尊敬語",
+        "丁寧語",
+        "打消"
+      ],
+      "answerIndex": 0,
+      "explanation": "話し手側の動作を低めて相手を立てる謙譲語。"
+    },
+    {
+      "id": "sb-keigo-cond3",
+      "topic": "敬語の識別",
+      "step": "たまふ",
+      "questionType": "condition",
+      "coverageId": "sb-keigo-cond3",
+      "question": "補助動詞『たまふ』が動作主を高める場合の種類はどれか。",
+      "choices": [
+        "尊敬語",
+        "謙譲語",
+        "過去",
+        "完了"
+      ],
+      "answerIndex": 0,
+      "explanation": "補助動詞のたまふは、主語の動作を高める尊敬語。"
+    },
+    {
+      "id": "sb-keigo-int1",
+      "topic": "敬語の識別",
+      "step": "統合",
+      "questionType": "integration",
+      "coverageId": "sb-keigo-int1",
+      "question": "『御文を奉る』の『奉る』の働きとして最も適切なものはどれか。",
+      "choices": [
+        "相手に対する謙譲",
+        "主語への尊敬",
+        "過去の完了",
+        "可能"
+      ],
+      "answerIndex": 0,
+      "explanation": "奉るは、主語の差し上げる動作をへりくだる謙譲語。"
     }
   ],
   "shikibetsuGroups": [
@@ -1181,9 +1702,84 @@
       ]
     },
     {
+      "id": "sb-keri",
+      "name": "けりの識別",
+      "sub": "過去・詠嘆",
+      "ids": [
+        "sb-keri-proc1",
+        "sb-keri-cond1",
+        "sb-keri-int1"
+      ]
+    },
+    {
+      "id": "sb-ramu",
+      "name": "らむの識別",
+      "sub": "現在推量・現在原因推量・伝聞・婉曲",
+      "ids": [
+        "sb-ramu-proc1",
+        "sb-ramu-cond1",
+        "sb-ramu-int1"
+      ]
+    },
+    {
+      "id": "sb-beshi",
+      "name": "べしの識別",
+      "sub": "推量・意志・可能・当然・命令・適当",
+      "ids": [
+        "sb-beshi-proc1",
+        "sb-beshi-cond1",
+        "sb-beshi-int1"
+      ]
+    },
+    {
+      "id": "sb-nari",
+      "name": "なりの識別",
+      "sub": "断定・伝聞推定",
+      "ids": [
+        "sb-nari-proc1",
+        "sb-nari-cond1",
+        "sb-nari-int1"
+      ]
+    },
+    {
+      "id": "sb-particle",
+      "name": "助詞の識別",
+      "sub": "終助詞・接続助詞・副助詞",
+      "ids": [
+        "sb-particle-proc1",
+        "sb-particle-cond1",
+        "sb-particle-cond2",
+        "sb-particle-int1"
+      ]
+    },
+    {
+      "id": "sb-homograph",
+      "name": "同形語の識別",
+      "sub": "ぬ・ね・る・れ・なり・なむ・に",
+      "ids": [
+        "sb-homograph-proc1",
+        "sb-homograph-cond1",
+        "sb-homograph-cond2",
+        "sb-homograph-cond3",
+        "sb-homograph-int1"
+      ]
+    },
+    {
+      "id": "sb-keigo",
+      "name": "敬語の識別",
+      "sub": "尊敬・謙譲・丁寧と主体・対象",
+      "ids": [
+        "sb-keigo-proc1",
+        "sb-keigo-cond1",
+        "sb-keigo-cond2",
+        "sb-keigo-cond3",
+        "sb-keigo-int1"
+      ]
+    },
+    {
       "id": "sb-all",
-      "name": "総仕上げ：識別34問",
-      "sub": "5つの識別手順をすべてランダム出題",
+      "name": "総仕上げ：67問",
+      "sub": "助動詞・助詞・同形語・敬語の識別をランダム出題",
       "shuffle": true,
       "ids": [
         "sb-rareru-proc1",
@@ -1226,7 +1822,33 @@
         "sb-mashi-cond2",
         "sb-mashi-cont1",
         "sb-mashi-int1",
-        "sb-mashi-int-tamerai"
+        "sb-mashi-int-tamerai",
+        "sb-keri-proc1",
+        "sb-keri-cond1",
+        "sb-keri-int1",
+        "sb-ramu-proc1",
+        "sb-ramu-cond1",
+        "sb-ramu-int1",
+        "sb-beshi-proc1",
+        "sb-beshi-cond1",
+        "sb-beshi-int1",
+        "sb-nari-proc1",
+        "sb-nari-cond1",
+        "sb-nari-int1",
+        "sb-particle-proc1",
+        "sb-particle-cond1",
+        "sb-particle-cond2",
+        "sb-particle-int1",
+        "sb-homograph-proc1",
+        "sb-homograph-cond1",
+        "sb-homograph-cond2",
+        "sb-homograph-cond3",
+        "sb-homograph-int1",
+        "sb-keigo-proc1",
+        "sb-keigo-cond1",
+        "sb-keigo-cond2",
+        "sb-keigo-cond3",
+        "sb-keigo-int1"
       ]
     }
   ],
@@ -1452,6 +2074,171 @@
         {
           "id": "sb-mashi-int-tamerai",
           "label": "統合②",
+          "questionType": "integration"
+        }
+      ]
+    },
+    {
+      "topic": "けりの識別",
+      "items": [
+        {
+          "id": "sb-keri-proc1",
+          "label": "手順I",
+          "questionType": "procedure"
+        },
+        {
+          "id": "sb-keri-cond1",
+          "label": "過去と詠嘆",
+          "questionType": "condition"
+        },
+        {
+          "id": "sb-keri-int1",
+          "label": "統合",
+          "questionType": "integration"
+        }
+      ]
+    },
+    {
+      "topic": "らむの識別",
+      "items": [
+        {
+          "id": "sb-ramu-proc1",
+          "label": "手順I",
+          "questionType": "procedure"
+        },
+        {
+          "id": "sb-ramu-cond1",
+          "label": "現在原因推量",
+          "questionType": "condition"
+        },
+        {
+          "id": "sb-ramu-int1",
+          "label": "統合",
+          "questionType": "integration"
+        }
+      ]
+    },
+    {
+      "topic": "べしの識別",
+      "items": [
+        {
+          "id": "sb-beshi-proc1",
+          "label": "手順I",
+          "questionType": "procedure"
+        },
+        {
+          "id": "sb-beshi-cond1",
+          "label": "当然・命令",
+          "questionType": "condition"
+        },
+        {
+          "id": "sb-beshi-int1",
+          "label": "統合",
+          "questionType": "integration"
+        }
+      ]
+    },
+    {
+      "topic": "なりの識別",
+      "items": [
+        {
+          "id": "sb-nari-proc1",
+          "label": "手順I",
+          "questionType": "procedure"
+        },
+        {
+          "id": "sb-nari-cond1",
+          "label": "接続",
+          "questionType": "condition"
+        },
+        {
+          "id": "sb-nari-int1",
+          "label": "統合",
+          "questionType": "integration"
+        }
+      ]
+    },
+    {
+      "topic": "助詞の識別",
+      "items": [
+        {
+          "id": "sb-particle-proc1",
+          "label": "手順I",
+          "questionType": "procedure"
+        },
+        {
+          "id": "sb-particle-cond1",
+          "label": "ば",
+          "questionType": "condition"
+        },
+        {
+          "id": "sb-particle-cond2",
+          "label": "ながら",
+          "questionType": "condition"
+        },
+        {
+          "id": "sb-particle-int1",
+          "label": "統合",
+          "questionType": "integration"
+        }
+      ]
+    },
+    {
+      "topic": "同形語の識別",
+      "items": [
+        {
+          "id": "sb-homograph-proc1",
+          "label": "手順I",
+          "questionType": "procedure"
+        },
+        {
+          "id": "sb-homograph-cond1",
+          "label": "ぬ・ね",
+          "questionType": "condition"
+        },
+        {
+          "id": "sb-homograph-cond2",
+          "label": "る・れ",
+          "questionType": "condition"
+        },
+        {
+          "id": "sb-homograph-cond3",
+          "label": "なり・なむ",
+          "questionType": "condition"
+        },
+        {
+          "id": "sb-homograph-int1",
+          "label": "統合",
+          "questionType": "integration"
+        }
+      ]
+    },
+    {
+      "topic": "敬語の識別",
+      "items": [
+        {
+          "id": "sb-keigo-proc1",
+          "label": "手順I",
+          "questionType": "procedure"
+        },
+        {
+          "id": "sb-keigo-cond1",
+          "label": "尊敬",
+          "questionType": "condition"
+        },
+        {
+          "id": "sb-keigo-cond2",
+          "label": "謙譲",
+          "questionType": "condition"
+        },
+        {
+          "id": "sb-keigo-cond3",
+          "label": "たまふ",
+          "questionType": "condition"
+        },
+        {
+          "id": "sb-keigo-int1",
+          "label": "統合",
           "questionType": "integration"
         }
       ]
