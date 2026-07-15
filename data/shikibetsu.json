@@ -49,22 +49,30 @@
     {
       "id": "mu",
       "name": "む・むずの識別",
-      "sub": "意志・推量・適当勧誘",
+      "sub": "意志・推量・適当勧誘・婉曲・仮定",
       "steps": [
         {
           "no": "手順I",
-          "text": "主語が一人称・二人称・三人称のどれかを確認する。"
+          "text": "「む」が連体形で、下に体言（名詞）を伴っているか確認する。伴っていれば婉曲と判断し、「〜ような」と訳す。"
         },
         {
           "no": "手順II",
-          "text": "一人称なら意志、三人称なら推量と判断する。"
+          "text": "体言を伴わない場合、「むは」「むには」など仮定条件を表す形になっているか確認する。なっていれば仮定と判断し、「もし〜としたら」と訳す。"
         },
         {
           "no": "手順III",
-          "text": "二人称の場合は、意志ではなく適当・勧誘と判断する。"
+          "text": "婉曲・仮定のどちらでもない場合、主語が一人称・二人称・三人称のどれかを確認する。"
         },
         {
           "no": "手順IV",
+          "text": "一人称なら意志、三人称なら推量と判断する。"
+        },
+        {
+          "no": "手順V",
+          "text": "二人称の場合は、意志ではなく適当・勧誘と判断する。"
+        },
+        {
+          "no": "手順VI",
           "text": "人称だけで決まらないときは、「むと」の形（〜しようと）は意志で使われやすい、など周辺の語との結び付きも手がかりにする。"
         }
       ]
@@ -549,10 +557,42 @@
     {
       "id": "sb-mu-proc1",
       "topic": "む・むずの識別",
-      "step": "手順I主語の人称",
+      "step": "手順I体言を伴うかの確認",
       "questionType": "procedure",
       "coverageId": "sb-mu-proc1",
-      "question": "助動詞「む・むず」の意味を判断するとき、まず確認する重要な手がかりはどれか。",
+      "question": "助動詞「む」の意味を判断するとき、人称を見る前にまず確認しておくべき手がかりはどれか。",
+      "choices": [
+        "「む」が連体形で、下に体言（名詞）を伴っているか",
+        "主語が一人称・二人称・三人称のどれか",
+        "文中の漢字の数はいくつか",
+        "文末が必ず疑問形かどうか"
+      ],
+      "answerIndex": 0,
+      "explanation": "「む」が連体形で下に体言を伴う場合は婉曲。まずこの形になっていないかを確認してから、述語として使われている場合の人称による判断に進む。"
+    },
+    {
+      "id": "sb-mu-proc-katei",
+      "topic": "む・むずの識別",
+      "step": "手順II仮定条件の確認",
+      "questionType": "procedure",
+      "coverageId": "sb-mu-proc-katei",
+      "question": "「む」が体言を伴わない場合、次に確認する手がかりはどれか。",
+      "choices": [
+        "「むは」「むには」など仮定条件を表す形になっているか",
+        "主語が二人称かどうか",
+        "文末が命令形かどうか",
+        "上に打消の語があるかどうか"
+      ],
+      "answerIndex": 0,
+      "explanation": "体言を伴わない場合は、「むは・むには」のように仮定条件を表す形になっていないかを確認する。なっていれば仮定と判断する。"
+    },
+    {
+      "id": "sb-mu-proc-person",
+      "topic": "む・むずの識別",
+      "step": "手順III主語の人称の確認",
+      "questionType": "procedure",
+      "coverageId": "sb-mu-proc-person",
+      "question": "「む」が婉曲・仮定のいずれの形でもない場合、次に確認する重要な手がかりはどれか。",
       "choices": [
         "主語が一人称・二人称・三人称のどれか",
         "文中の漢字の数はいくつか",
@@ -560,12 +600,12 @@
         "文末が必ず疑問形かどうか"
       ],
       "answerIndex": 0,
-      "explanation": "「む・むず」は、主語が一人称なら意志、二人称なら適当・勧誘、三人称なら推量を基本の手がかりとして訳し分ける。"
+      "explanation": "婉曲・仮定のどちらでもない場合、「む・むず」は主語が一人称なら意志、二人称なら適当・勧誘、三人称なら推量を基本の手がかりとして訳し分ける。"
     },
     {
       "id": "sb-mu-proc2",
       "topic": "む・むずの識別",
-      "step": "手順IV周辺表現との結び付き",
+      "step": "手順VI周辺表現との結び付き",
       "questionType": "procedure",
       "coverageId": "sb-mu-proc2",
       "question": "「む」の主語の人称を確認してもなお意味に迷う場合、次に見るとよい手がかりはどれか。",
@@ -627,6 +667,38 @@
       "explanation": "二人称が主語なら適当・勧誘。「〜するのがよい・〜しませんか」と訳す。一人称なら意志、三人称なら推量になる。"
     },
     {
+      "id": "sb-mu-cond-enkyoku",
+      "topic": "む・むずの識別",
+      "step": "連体形+体言＝婉曲",
+      "questionType": "condition",
+      "coverageId": "sb-mu-cond-enkyoku",
+      "question": "「む」が連体形で、下に体言（名詞）を伴っている場合の意味はどれか。",
+      "choices": [
+        "婉曲",
+        "意志",
+        "推量",
+        "仮定"
+      ],
+      "answerIndex": 0,
+      "explanation": "「言はむ人（言うような人）」のように、連体形の「む」が体言を修飾する場合は婉曲。「〜ような」と訳す。"
+    },
+    {
+      "id": "sb-mu-cond-katei",
+      "topic": "む・むずの識別",
+      "step": "「むは・むには」＝仮定",
+      "questionType": "condition",
+      "coverageId": "sb-mu-cond-katei",
+      "question": "「むは」「むには」のように仮定条件を表す形になっている場合の「む」の意味はどれか。",
+      "choices": [
+        "仮定",
+        "意志",
+        "推量",
+        "婉曲"
+      ],
+      "answerIndex": 0,
+      "explanation": "「言はむには（言うとしたら）」のように、仮定条件を表す形になっている場合は仮定。「もし〜としたら」と訳す。"
+    },
+    {
       "id": "sb-mu-cont1",
       "topic": "む・むずの識別",
       "step": "意志との訳し分け",
@@ -643,6 +715,22 @@
       "explanation": "決め手は主語の人称。二人称は相手に向けた適当・勧誘になる。「〜しよう」と訳すと話し手自身の意志になってしまい、主語がずれる。"
     },
     {
+      "id": "sb-mu-cont-enkyoku",
+      "topic": "む・むずの識別",
+      "step": "婉曲と推量の見分け",
+      "questionType": "contrast",
+      "coverageId": "sb-mu-cont-enkyoku",
+      "question": "「思はむ人」のように「む」の直後に体言（名詞）が続く場合、単純な推量ではなく婉曲と判断するのはなぜか。",
+      "choices": [
+        "「む」が連体形として体言を修飾しているから",
+        "主語が三人称だから",
+        "打消の語を伴っているから",
+        "係助詞「こそ」があるから"
+      ],
+      "answerIndex": 0,
+      "explanation": "「む」が体言を修飾する連体形として使われている場合は、人称にかかわらず婉曲（〜ような）と訳す。人称を確認して推量・意志・適当勧誘を判断するのは、あくまで述語として使われる「む」に対してである。"
+    },
+    {
       "id": "sb-mu-int1",
       "topic": "む・むずの識別",
       "step": "統合①",
@@ -652,7 +740,25 @@
       "target": "む",
       "steps": [
         {
-          "prompt": "手順I：主語は一人称・二人称・三人称のどれか。",
+          "prompt": "手順I：「む」の直後に体言（名詞）が続いているか。",
+          "choices": [
+            "続いている → 婉曲",
+            "続いていない → 次の手順へ"
+          ],
+          "answerIndex": 1,
+          "explanation": "「む」は文末にあり、直後に体言は続いていない。"
+        },
+        {
+          "prompt": "手順II：「むは・むには」など仮定条件を表す形になっているか。",
+          "choices": [
+            "なっている → 仮定",
+            "なっていない → 次の手順へ"
+          ],
+          "answerIndex": 1,
+          "explanation": "仮定条件を表す形にはなっていない。"
+        },
+        {
+          "prompt": "手順III：主語は一人称・二人称・三人称のどれか。",
           "choices": [
             "一人称",
             "二人称",
@@ -667,13 +773,13 @@
             "意志",
             "推量",
             "適当・勧誘",
-            "打消"
+            "婉曲"
           ],
           "answerIndex": 0,
           "explanation": "一人称の主語なので意志。「私は明日必ず参上しよう」と訳す。"
         }
       ],
-      "explanation": "主語の人称を確認するだけで、この「む」は意志と決まる。"
+      "explanation": "婉曲・仮定の手がかりが無いことを確認したうえで主語の人称を見る → 意志。"
     },
     {
       "id": "sb-mu-int-suiryou",
@@ -685,7 +791,25 @@
       "target": "む",
       "steps": [
         {
-          "prompt": "手順I：主語は一人称・二人称・三人称のどれか。",
+          "prompt": "手順I：「む」の直後に体言（名詞）が続いているか。",
+          "choices": [
+            "続いている → 婉曲",
+            "続いていない → 次の手順へ"
+          ],
+          "answerIndex": 1,
+          "explanation": "「む」は文末にあり、直後に体言は続いていない。"
+        },
+        {
+          "prompt": "手順II：「むは・むには」など仮定条件を表す形になっているか。",
+          "choices": [
+            "なっている → 仮定",
+            "なっていない → 次の手順へ"
+          ],
+          "answerIndex": 1,
+          "explanation": "仮定条件を表す形にはなっていない。"
+        },
+        {
+          "prompt": "手順III：主語は一人称・二人称・三人称のどれか。",
           "choices": [
             "一人称",
             "二人称",
@@ -700,13 +824,13 @@
             "意志",
             "推量",
             "適当・勧誘",
-            "打消"
+            "婉曲"
           ],
           "answerIndex": 1,
           "explanation": "三人称の主語なので推量。「明日は雨も降るだろう」と訳す。"
         }
       ],
-      "explanation": "主語の人称を確認するだけで、この「む」は推量と決まる。"
+      "explanation": "婉曲・仮定の手がかりが無いことを確認したうえで主語の人称を見る → 推量。"
     },
     {
       "id": "sb-mu-int-kanyuu",
@@ -718,7 +842,25 @@
       "target": "む",
       "steps": [
         {
-          "prompt": "手順I：主語は一人称・二人称・三人称のどれか。",
+          "prompt": "手順I：「む」の直後に体言（名詞）が続いているか。",
+          "choices": [
+            "続いている → 婉曲",
+            "続いていない → 次の手順へ"
+          ],
+          "answerIndex": 1,
+          "explanation": "「む」は文末にあり、直後に体言は続いていない。"
+        },
+        {
+          "prompt": "手順II：「むは・むには」など仮定条件を表す形になっているか。",
+          "choices": [
+            "なっている → 仮定",
+            "なっていない → 次の手順へ"
+          ],
+          "answerIndex": 1,
+          "explanation": "仮定条件を表す形にはなっていない。"
+        },
+        {
+          "prompt": "手順III：主語は一人称・二人称・三人称のどれか。",
           "choices": [
             "一人称",
             "二人称",
@@ -733,13 +875,86 @@
             "意志",
             "推量",
             "適当・勧誘",
-            "打消"
+            "婉曲"
           ],
           "answerIndex": 2,
           "explanation": "二人称の主語なので適当・勧誘。「あなたも一緒に参るのがよい」と訳す。"
         }
       ],
-      "explanation": "主語の人称を確認するだけで、この「む」は適当・勧誘と決まる。"
+      "explanation": "婉曲・仮定の手がかりが無いことを確認したうえで主語の人称を見る → 適当・勧誘。"
+    },
+    {
+      "id": "sb-mu-int-enkyoku",
+      "topic": "む・むずの識別",
+      "step": "統合④",
+      "questionType": "integration",
+      "coverageId": "sb-mu-int-enkyoku",
+      "passage": "情け深からむ人にぞ、頼りたく思ふ。",
+      "target": "む",
+      "steps": [
+        {
+          "prompt": "手順I：「む」の直後に体言（名詞）が続いているか。",
+          "choices": [
+            "続いている → 婉曲",
+            "続いていない → 次の手順へ"
+          ],
+          "answerIndex": 0,
+          "explanation": "「む」の直後に体言「人」が続いている。"
+        },
+        {
+          "prompt": "最終判断：この「む」の意味は。",
+          "choices": [
+            "婉曲",
+            "意志",
+            "推量",
+            "仮定"
+          ],
+          "answerIndex": 0,
+          "explanation": "体言「人」を修飾する連体形の「む」なので婉曲。「情け深いような人にこそ、頼りたく思う」と訳す。"
+        }
+      ],
+      "explanation": "「む」の直後に体言がある → 婉曲。人称を確認するまでもなく、この形だけで意味が決まる。"
+    },
+    {
+      "id": "sb-mu-int-katei",
+      "topic": "む・むずの識別",
+      "step": "統合⑤",
+      "questionType": "integration",
+      "coverageId": "sb-mu-int-katei",
+      "passage": "命長らへむには、恥多かるべし。",
+      "target": "む",
+      "steps": [
+        {
+          "prompt": "手順I：「む」の直後に体言（名詞）が続いているか。",
+          "choices": [
+            "続いている → 婉曲",
+            "続いていない → 次の手順へ"
+          ],
+          "answerIndex": 1,
+          "explanation": "体言は続いていない。"
+        },
+        {
+          "prompt": "手順II：「むは・むには」など仮定条件を表す形になっているか。",
+          "choices": [
+            "なっている → 仮定",
+            "なっていない → 次の手順へ"
+          ],
+          "answerIndex": 0,
+          "explanation": "「長らへむには」と、仮定条件を表す形になっている。"
+        },
+        {
+          "prompt": "最終判断：この「む」の意味は。",
+          "choices": [
+            "仮定",
+            "婉曲",
+            "意志",
+            "推量"
+          ],
+          "answerIndex": 0,
+          "explanation": "仮定条件を表す形なので仮定。「もし長生きしたとしたら、恥が多いだろう」と訳す。"
+        }
+      ],
+      "explanation": "「むには」の形 → 仮定。婉曲の手がかりが無いことを確認したうえで判断する。"
     },
     {
       "id": "sb-mashi-proc1",
@@ -931,17 +1146,24 @@
     {
       "id": "sb-mu",
       "name": "む・むずの識別",
-      "sub": "意志・推量・適当勧誘（手順→条件→対比→統合）",
+      "sub": "意志・推量・適当勧誘・婉曲・仮定（手順→条件→対比→統合）",
       "ids": [
         "sb-mu-proc1",
+        "sb-mu-proc-katei",
+        "sb-mu-proc-person",
         "sb-mu-proc2",
         "sb-mu-cond1",
         "sb-mu-cond2",
         "sb-mu-cond3",
+        "sb-mu-cond-enkyoku",
+        "sb-mu-cond-katei",
         "sb-mu-cont1",
+        "sb-mu-cont-enkyoku",
         "sb-mu-int1",
         "sb-mu-int-suiryou",
-        "sb-mu-int-kanyuu"
+        "sb-mu-int-kanyuu",
+        "sb-mu-int-enkyoku",
+        "sb-mu-int-katei"
       ]
     },
     {
@@ -983,14 +1205,21 @@
         "sb-sasu-int1",
         "sb-sasu-int-sonkei",
         "sb-mu-proc1",
+        "sb-mu-proc-katei",
+        "sb-mu-proc-person",
         "sb-mu-proc2",
         "sb-mu-cond1",
         "sb-mu-cond2",
         "sb-mu-cond3",
+        "sb-mu-cond-enkyoku",
+        "sb-mu-cond-katei",
         "sb-mu-cont1",
+        "sb-mu-cont-enkyoku",
         "sb-mu-int1",
         "sb-mu-int-suiryou",
         "sb-mu-int-kanyuu",
+        "sb-mu-int-enkyoku",
+        "sb-mu-int-katei",
         "sb-mashi-proc1",
         "sb-mashi-proc2",
         "sb-mashi-cond1",
@@ -1107,6 +1336,16 @@
       "items": [
         {
           "id": "sb-mu-proc1",
+          "label": "体言を伴うかの確認",
+          "questionType": "procedure"
+        },
+        {
+          "id": "sb-mu-proc-katei",
+          "label": "仮定条件の確認",
+          "questionType": "procedure"
+        },
+        {
+          "id": "sb-mu-proc-person",
           "label": "人称の確認",
           "questionType": "procedure"
         },
@@ -1131,8 +1370,23 @@
           "questionType": "condition"
         },
         {
+          "id": "sb-mu-cond-enkyoku",
+          "label": "婉曲（体言修飾）",
+          "questionType": "condition"
+        },
+        {
+          "id": "sb-mu-cond-katei",
+          "label": "仮定（むは・むには）",
+          "questionType": "condition"
+        },
+        {
           "id": "sb-mu-cont1",
           "label": "意志との訳し分け",
+          "questionType": "contrast"
+        },
+        {
+          "id": "sb-mu-cont-enkyoku",
+          "label": "婉曲と推量の見分け",
           "questionType": "contrast"
         },
         {
@@ -1148,6 +1402,16 @@
         {
           "id": "sb-mu-int-kanyuu",
           "label": "統合③",
+          "questionType": "integration"
+        },
+        {
+          "id": "sb-mu-int-enkyoku",
+          "label": "統合④",
+          "questionType": "integration"
+        },
+        {
+          "id": "sb-mu-int-katei",
+          "label": "統合⑤",
           "questionType": "integration"
         }
       ]
