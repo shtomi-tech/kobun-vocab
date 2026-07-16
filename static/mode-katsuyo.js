@@ -997,6 +997,14 @@ const KatsuyoApp = (function () {
         else if (i === idx) btn.classList.add("wrong");
       });
 
+      if (!ok) {
+        const wf = el("div", "feedback ng stepInlineFb");
+        addAnswer(wf, "解説", step.explanation);
+        const why = q.distractorRationale && q.distractorRationale[step.choices[idx]];
+        if (why) addAnswer(wf, "誤答の理由", why);
+        stepBox.appendChild(wf);
+      }
+
       const isLastStep = stepIdx >= q.steps.length - 1;
       const nextRow = el("div", "nextRow");
       const next = el("button", "cta", isLastStep ? (session.queue.length > 1 ? "次の問題へ" : "結果を見る") : "次の手順へ");
@@ -1230,6 +1238,10 @@ const KatsuyoApp = (function () {
     const fb = el("div", "feedback " + (allOk ? "ok" : "ng"));
     fb.appendChild(el("h3", null, allOk ? "正解" : "不正解"));
     addAnswer(fb, "正解", q.choices[q.answerIndex]);
+    if (!allOk && q.distractorRationale) {
+      const why = q.distractorRationale[q.choices[chosen]];
+      if (why) addAnswer(fb, "誤答の理由", why);
+    }
     addAnswer(fb, "解説", q.explanation);
     box.appendChild(fb);
 
@@ -1332,7 +1344,7 @@ const KatsuyoApp = (function () {
         .then(r => { if (!r.ok) throw new Error("katsuyo data load failed: " + r.status); return r.json(); }),
       fetch("data/multiple_choice.json?v=20260716-1")
         .then(r => { if (!r.ok) throw new Error("choice data load failed: " + r.status); return r.json(); }),
-      fetch("data/shikibetsu.json?v=20260716-1")
+      fetch("data/shikibetsu.json?v=20260716-2")
         .then(r => { if (!r.ok) throw new Error("shikibetsu data load failed: " + r.status); return r.json(); })
     ])
       .then(async ([d, choiceData, shikibetsuData]) => {

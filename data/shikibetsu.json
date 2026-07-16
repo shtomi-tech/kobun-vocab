@@ -2107,6 +2107,457 @@
         "聞き手への丁寧": "謙譲を丁寧と取り違えている",
         "過去の完了": "敬語を完了の助動詞と取り違えている"
       }
+    },
+    {
+      "id": "pn-rareru-ukemi-sonkei",
+      "topic": "る・らるの識別",
+      "step": "競合：受け手と身分",
+      "questionType": "integration",
+      "coverageId": "pn-rareru-ukemi-sonkei",
+      "passage": "帝、老いたる家臣にいさめらる。",
+      "target": "らる",
+      "steps": [
+        {
+          "prompt": "手順I：上に動作の受け手「（誰々）に」を補えるか。",
+          "choices": [
+            "補える → 受身",
+            "補えない → 次の手順へ"
+          ],
+          "answerIndex": 0,
+          "explanation": "「家臣に」と動作の受け手が示されている。"
+        },
+        {
+          "prompt": "最終判断：この語の意味は。",
+          "choices": [
+            "受身",
+            "可能",
+            "自発",
+            "尊敬"
+          ],
+          "answerIndex": 0,
+          "explanation": "受け手「家臣に」があるので受身。主語が帝でも、手順の最初で受身と決まる。「帝が年老いた家臣にいさめられる」と訳す。"
+        }
+      ],
+      "explanation": "受け手『に』が示されれば、主語が高貴でも受身を優先する。手順の優先順位（受身→可能→自発→尊敬）を試す。",
+      "distractorRationale": {
+        "可能": "下に打消の語がないのに可能としている",
+        "自発": "心情語・知覚動詞ではないのに自発としている",
+        "尊敬": "主語が帝であることに引きずられ、受け手『に』があるのに尊敬としている"
+      }
+    },
+    {
+      "id": "pn-rareru-retamafu",
+      "topic": "る・らるの識別",
+      "step": "例外：れ給ふ",
+      "questionType": "integration",
+      "coverageId": "pn-rareru-retamafu",
+      "passage": "中納言、道にて盗人に襲はれ給ふ。",
+      "target": "れ",
+      "steps": [
+        {
+          "prompt": "手順I：上に動作の受け手「（誰々）に」を補えるか。",
+          "choices": [
+            "補える → 受身",
+            "補えない → 次の手順へ"
+          ],
+          "answerIndex": 0,
+          "explanation": "「盗人に」と動作の受け手が示されている。"
+        },
+        {
+          "prompt": "最終判断：この語の意味は。",
+          "choices": [
+            "受身",
+            "可能",
+            "自発",
+            "尊敬"
+          ],
+          "answerIndex": 0,
+          "explanation": "受け手『盗人に』があるので受身。下に『給ふ』があっても『れ給ふ』の『れ』は尊敬にならない。「中納言が道で盗人に襲われなさる」と訳す。"
+        }
+      ],
+      "explanation": "『れ給ふ・られ給ふ』の『れ・られ』は尊敬にならない。下の尊敬語に惑わされない。",
+      "distractorRationale": {
+        "可能": "下に打消の語がないのに可能としている",
+        "自発": "心情語・知覚動詞ではないのに自発としている",
+        "尊敬": "下の『給ふ』に引きずられ、れ給ふの『れ』を尊敬としている（尊敬にならない）"
+      }
+    },
+    {
+      "id": "pn-rareru-ezu",
+      "topic": "る・らるの識別",
+      "step": "競合：え〜ず",
+      "questionType": "integration",
+      "coverageId": "pn-rareru-ezu",
+      "passage": "旅の空にては、思ふことも心のままにえ言はれず。",
+      "target": "れ",
+      "steps": [
+        {
+          "prompt": "手順I：上に動作の受け手「（誰々）に」を補えるか。",
+          "choices": [
+            "補える → 受身",
+            "補えない → 次の手順へ"
+          ],
+          "answerIndex": 1,
+          "explanation": "動作の受け手を示す語はない。"
+        },
+        {
+          "prompt": "手順II：下に打消の語があるか。",
+          "choices": [
+            "ある → 可能",
+            "ない → 次の手順へ"
+          ],
+          "answerIndex": 0,
+          "explanation": "下に打消の語『ず』が続いている（呼応の副詞『え』を伴う）。"
+        },
+        {
+          "prompt": "最終判断：この語の意味は。",
+          "choices": [
+            "受身",
+            "可能",
+            "自発",
+            "尊敬"
+          ],
+          "answerIndex": 1,
+          "explanation": "『え』＋打消『ず』で不可能を表し、可能。「思うことも思いのままに言うことができない」と訳す。"
+        }
+      ],
+      "explanation": "呼応『え〜ず』は不可能を表し、打消を伴う可能の典型。",
+      "distractorRationale": {
+        "受身": "呼応『え〜ず』を見落とし、受身『言われない』と訳している",
+        "自発": "心情語・知覚動詞ではないのに自発としている",
+        "尊敬": "主語の身分だけで判断して尊敬としている"
+      }
+    },
+    {
+      "id": "pn-rareru-shiraru",
+      "topic": "る・らるの識別",
+      "step": "競合：知覚動詞",
+      "questionType": "integration",
+      "coverageId": "pn-rareru-shiraru",
+      "passage": "鐘の音に、夜の更けぬることの知らる。",
+      "target": "る",
+      "steps": [
+        {
+          "prompt": "手順I：上に動作の受け手「（誰々）に」を補えるか。",
+          "choices": [
+            "補える → 受身",
+            "補えない → 次の手順へ"
+          ],
+          "answerIndex": 1,
+          "explanation": "動作の受け手を示す語はない。"
+        },
+        {
+          "prompt": "手順II：下に打消の語があるか。",
+          "choices": [
+            "ある → 可能",
+            "ない → 次の手順へ"
+          ],
+          "answerIndex": 1,
+          "explanation": "打消の語は続いていない。"
+        },
+        {
+          "prompt": "手順III：上に心情語・知覚動詞があるか。",
+          "choices": [
+            "ある → 自発",
+            "ない → 次の手順へ"
+          ],
+          "answerIndex": 0,
+          "explanation": "「知る」は知覚を表す動詞である。"
+        },
+        {
+          "prompt": "最終判断：この語の意味は。",
+          "choices": [
+            "受身",
+            "可能",
+            "自発",
+            "尊敬"
+          ],
+          "answerIndex": 2,
+          "explanation": "知覚動詞『知る』に付くので自発。「鐘の音で、夜が更けたことが自然と知られる」と訳す。"
+        }
+      ],
+      "explanation": "知覚動詞＋る・らるは自発。受身『知られる』との訳し分けを試す。",
+      "distractorRationale": {
+        "受身": "知覚動詞『知る』＋るを受身『知られる』と訳している",
+        "可能": "下に打消の語がないのに可能としている",
+        "尊敬": "主語の身分だけで判断して尊敬としている"
+      }
+    },
+    {
+      "id": "pn-rareru-jihatsu-sonkei",
+      "topic": "る・らるの識別",
+      "step": "競合：心情語と身分",
+      "questionType": "integration",
+      "coverageId": "pn-rareru-jihatsu-sonkei",
+      "passage": "女御、故里の秋を思ひ出でらる。",
+      "target": "らる",
+      "steps": [
+        {
+          "prompt": "手順I：上に動作の受け手「（誰々）に」を補えるか。",
+          "choices": [
+            "補える → 受身",
+            "補えない → 次の手順へ"
+          ],
+          "answerIndex": 1,
+          "explanation": "動作の受け手を示す語はない。"
+        },
+        {
+          "prompt": "手順II：下に打消の語があるか。",
+          "choices": [
+            "ある → 可能",
+            "ない → 次の手順へ"
+          ],
+          "answerIndex": 1,
+          "explanation": "打消の語は続いていない。"
+        },
+        {
+          "prompt": "手順III：上に心情語・知覚動詞があるか。",
+          "choices": [
+            "ある → 自発",
+            "ない → 次の手順へ"
+          ],
+          "answerIndex": 0,
+          "explanation": "「思ひ出づ」は心情を表す動詞である。"
+        },
+        {
+          "prompt": "最終判断：この語の意味は。",
+          "choices": [
+            "受身",
+            "可能",
+            "自発",
+            "尊敬"
+          ],
+          "answerIndex": 2,
+          "explanation": "心情語『思ひ出づ』に付くので自発。主語が高貴でも、心情語→自発（手順III）が身分→尊敬（手順IV）より先。「女御が故郷の秋を自然と思い出される」と訳す。"
+        }
+      ],
+      "explanation": "心情語→自発は、身分→尊敬より手順が先。手がかりの優先順位を試す。",
+      "distractorRationale": {
+        "受身": "受け手『（誰々）に』がないのに受身としている",
+        "可能": "下に打消の語がないのに可能としている",
+        "尊敬": "主語が高貴なので尊敬と早合点し、心情語→自発（手順III）を先に適用していない"
+      }
+    },
+    {
+      "id": "pn-sasu-sonkei-noaite",
+      "topic": "す・さす・しむの識別",
+      "step": "尊敬：二重尊敬",
+      "questionType": "integration",
+      "coverageId": "pn-sasu-sonkei-noaite",
+      "passage": "院、南殿より立たせ給ふ。",
+      "target": "せ",
+      "steps": [
+        {
+          "prompt": "手順I：下に尊敬語（給ふ 等）が続くか。",
+          "choices": [
+            "続く → 尊敬の可能性を検討",
+            "続かない → 使役"
+          ],
+          "answerIndex": 0,
+          "explanation": "下に「給ふ」が続いている。"
+        },
+        {
+          "prompt": "手順II：動作をさせる相手「（誰々）に」が示されているか。",
+          "choices": [
+            "示されている → 使役",
+            "示されていない → 尊敬"
+          ],
+          "answerIndex": 1,
+          "explanation": "させる相手を示す語はない（『より』は起点を表す）。"
+        },
+        {
+          "prompt": "最終判断：この語の意味は。",
+          "choices": [
+            "使役",
+            "尊敬",
+            "受身",
+            "自発"
+          ],
+          "answerIndex": 1,
+          "explanation": "尊敬語を伴い、させる相手も示されないので尊敬（二重尊敬）。「院が南殿からお立ちになる」と訳す。"
+        }
+      ],
+      "explanation": "させる相手がなければ『せ給ふ』は尊敬。『より』を相手と誤認しないかを試す。",
+      "distractorRationale": {
+        "使役": "させる相手がないのに使役とし、起点の『より』を相手と誤認している",
+        "受身": "す・さす・しむに受身の意味はない",
+        "自発": "す・さす・しむに自発の意味はない"
+      }
+    },
+    {
+      "id": "pn-sasu-shimu-shieki",
+      "topic": "す・さす・しむの識別",
+      "step": "使役：しむ・尊敬語なし",
+      "questionType": "integration",
+      "coverageId": "pn-sasu-shimu-shieki",
+      "passage": "師、弟子に古き文を写さしむ。",
+      "target": "しむ",
+      "steps": [
+        {
+          "prompt": "手順I：下に尊敬語（給ふ 等）が続くか。",
+          "choices": [
+            "続く → 尊敬の可能性を検討",
+            "続かない → 使役"
+          ],
+          "answerIndex": 1,
+          "explanation": "下に尊敬語は続いていない。"
+        },
+        {
+          "prompt": "最終判断：この語の意味は。",
+          "choices": [
+            "使役",
+            "尊敬",
+            "受身",
+            "自発"
+          ],
+          "answerIndex": 0,
+          "explanation": "下に尊敬語が続かないので使役。「師が弟子に古い文を写させる」と訳す。"
+        }
+      ],
+      "explanation": "『しむ』も、尊敬語が続かなければ使役。",
+      "distractorRationale": {
+        "尊敬": "しむを漢文訓読調の尊敬と早合点し、尊敬語が続かないことを見落としている",
+        "受身": "す・さす・しむに受身の意味はない",
+        "自発": "す・さす・しむに自発の意味はない"
+      }
+    },
+    {
+      "id": "pn-sasu-shime-tamafu",
+      "topic": "す・さす・しむの識別",
+      "step": "競合：しめ給ふ＋相手",
+      "questionType": "integration",
+      "coverageId": "pn-sasu-shime-tamafu",
+      "passage": "帝、博士に詩を作らしめ給ふ。",
+      "target": "しめ",
+      "steps": [
+        {
+          "prompt": "手順I：下に尊敬語（給ふ 等）が続くか。",
+          "choices": [
+            "続く → 尊敬の可能性を検討",
+            "続かない → 使役"
+          ],
+          "answerIndex": 0,
+          "explanation": "下に「給ふ」が続いている。"
+        },
+        {
+          "prompt": "手順II：動作をさせる相手「（誰々）に」が示されているか。",
+          "choices": [
+            "示されている → 使役",
+            "示されていない → 尊敬"
+          ],
+          "answerIndex": 0,
+          "explanation": "「博士に」と、させる相手が示されている。"
+        },
+        {
+          "prompt": "最終判断：この語の意味は。",
+          "choices": [
+            "使役",
+            "尊敬",
+            "受身",
+            "自発"
+          ],
+          "answerIndex": 0,
+          "explanation": "尊敬語を伴っても、させる相手『博士に』があるので使役。「帝が博士に詩をお作らせになる」と訳す。"
+        }
+      ],
+      "explanation": "『しめ給ふ』でも、させる相手があれば使役。",
+      "distractorRationale": {
+        "尊敬": "しめ給ふを二重尊敬とし、させる相手『博士に』を見落としている",
+        "受身": "す・さす・しむに受身の意味はない",
+        "自発": "す・さす・しむに自発の意味はない"
+      }
+    },
+    {
+      "id": "pn-sasu-sase-sonkei",
+      "topic": "す・さす・しむの識別",
+      "step": "尊敬：させ給ふ",
+      "questionType": "integration",
+      "coverageId": "pn-sasu-sase-sonkei",
+      "passage": "春宮、やがて起きさせ給ふ。",
+      "target": "させ",
+      "steps": [
+        {
+          "prompt": "手順I：下に尊敬語（給ふ 等）が続くか。",
+          "choices": [
+            "続く → 尊敬の可能性を検討",
+            "続かない → 使役"
+          ],
+          "answerIndex": 0,
+          "explanation": "下に「給ふ」が続いている。"
+        },
+        {
+          "prompt": "手順II：動作をさせる相手「（誰々）に」が示されているか。",
+          "choices": [
+            "示されている → 使役",
+            "示されていない → 尊敬"
+          ],
+          "answerIndex": 1,
+          "explanation": "させる相手を示す語はない。"
+        },
+        {
+          "prompt": "最終判断：この語の意味は。",
+          "choices": [
+            "使役",
+            "尊敬",
+            "受身",
+            "自発"
+          ],
+          "answerIndex": 1,
+          "explanation": "尊敬語を伴い、させる相手も示されないので尊敬。「春宮がすぐにお起きになる」と訳す。"
+        }
+      ],
+      "explanation": "『させ給ふ』も、相手がなければ尊敬。上二段動詞に付く『させ』の識別も兼ねる。",
+      "distractorRationale": {
+        "使役": "させ給ふを使役と決めつけ、させる相手がないことを見落としている",
+        "受身": "す・さす・しむに受身の意味はない",
+        "自発": "す・さす・しむに自発の意味はない"
+      }
+    },
+    {
+      "id": "pn-sasu-basho-ni",
+      "topic": "す・さす・しむの識別",
+      "step": "競合：場所の『に』",
+      "questionType": "integration",
+      "coverageId": "pn-sasu-basho-ni",
+      "passage": "大臣、東の対に渡らせ給ふ。",
+      "target": "せ",
+      "steps": [
+        {
+          "prompt": "手順I：下に尊敬語（給ふ 等）が続くか。",
+          "choices": [
+            "続く → 尊敬の可能性を検討",
+            "続かない → 使役"
+          ],
+          "answerIndex": 0,
+          "explanation": "下に「給ふ」が続いている。"
+        },
+        {
+          "prompt": "手順II：動作をさせる相手「（誰々）に」が示されているか。",
+          "choices": [
+            "示されている → 使役",
+            "示されていない → 尊敬"
+          ],
+          "answerIndex": 1,
+          "explanation": "「東の対に」は移動先の場所を表し、動作をさせる相手ではない。"
+        },
+        {
+          "prompt": "最終判断：この語の意味は。",
+          "choices": [
+            "使役",
+            "尊敬",
+            "受身",
+            "自発"
+          ],
+          "answerIndex": 1,
+          "explanation": "『東の対に』は場所で、させる相手ではない。相手が示されないので尊敬。「大臣が東の対にお渡りになる」と訳す。"
+        }
+      ],
+      "explanation": "『に』が“させる相手”か“場所・方向”かを見分ける、最も紛らわしい競合。",
+      "distractorRationale": {
+        "使役": "『に』があるだけで使役とし、『東の対に』が場所・方向であることを見落としている",
+        "受身": "す・さす・しむに受身の意味はない",
+        "自発": "す・さす・しむに自発の意味はない"
+      }
     }
   ],
   "shikibetsuGroups": [
@@ -2125,7 +2576,12 @@
         "sb-rareru-int-ukemi",
         "sb-rareru-int-kanou",
         "sb-rareru-int1",
-        "sb-rareru-int-sonkei"
+        "sb-rareru-int-sonkei",
+        "pn-rareru-ukemi-sonkei",
+        "pn-rareru-retamafu",
+        "pn-rareru-ezu",
+        "pn-rareru-shiraru",
+        "pn-rareru-jihatsu-sonkei"
       ]
     },
     {
@@ -2139,7 +2595,12 @@
         "sb-sasu-cond2",
         "sb-sasu-cont1",
         "sb-sasu-int1",
-        "sb-sasu-int-sonkei"
+        "sb-sasu-int-sonkei",
+        "pn-sasu-sonkei-noaite",
+        "pn-sasu-shimu-shieki",
+        "pn-sasu-shime-tamafu",
+        "pn-sasu-sase-sonkei",
+        "pn-sasu-basho-ni"
       ]
     },
     {
@@ -2256,7 +2717,7 @@
     },
     {
       "id": "sb-all",
-      "name": "総仕上げ：67問",
+      "name": "総仕上げ：77問",
       "sub": "助動詞・助詞・同形語・敬語の識別をランダム出題",
       "shuffle": true,
       "ids": [
@@ -2326,7 +2787,17 @@
         "sb-keigo-cond1",
         "sb-keigo-cond2",
         "sb-keigo-cond3",
-        "sb-keigo-int1"
+        "sb-keigo-int1",
+        "pn-rareru-ukemi-sonkei",
+        "pn-rareru-retamafu",
+        "pn-rareru-ezu",
+        "pn-rareru-shiraru",
+        "pn-rareru-jihatsu-sonkei",
+        "pn-sasu-sonkei-noaite",
+        "pn-sasu-shimu-shieki",
+        "pn-sasu-shime-tamafu",
+        "pn-sasu-sase-sonkei",
+        "pn-sasu-basho-ni"
       ]
     }
   ],
@@ -2388,6 +2859,31 @@
           "id": "sb-rareru-int-sonkei",
           "label": "統合④",
           "questionType": "integration"
+        },
+        {
+          "id": "pn-rareru-ukemi-sonkei",
+          "label": "競合：受け手と身分",
+          "questionType": "integration"
+        },
+        {
+          "id": "pn-rareru-retamafu",
+          "label": "例外：れ給ふ",
+          "questionType": "integration"
+        },
+        {
+          "id": "pn-rareru-ezu",
+          "label": "競合：え〜ず",
+          "questionType": "integration"
+        },
+        {
+          "id": "pn-rareru-shiraru",
+          "label": "競合：知覚動詞",
+          "questionType": "integration"
+        },
+        {
+          "id": "pn-rareru-jihatsu-sonkei",
+          "label": "競合：心情語と身分",
+          "questionType": "integration"
         }
       ]
     },
@@ -2427,6 +2923,31 @@
         {
           "id": "sb-sasu-int-sonkei",
           "label": "統合②",
+          "questionType": "integration"
+        },
+        {
+          "id": "pn-sasu-sonkei-noaite",
+          "label": "尊敬：二重尊敬",
+          "questionType": "integration"
+        },
+        {
+          "id": "pn-sasu-shimu-shieki",
+          "label": "使役：しむ・尊敬語なし",
+          "questionType": "integration"
+        },
+        {
+          "id": "pn-sasu-shime-tamafu",
+          "label": "競合：しめ給ふ＋相手",
+          "questionType": "integration"
+        },
+        {
+          "id": "pn-sasu-sase-sonkei",
+          "label": "尊敬：させ給ふ",
+          "questionType": "integration"
+        },
+        {
+          "id": "pn-sasu-basho-ni",
+          "label": "競合：場所の『に』",
           "questionType": "integration"
         }
       ]

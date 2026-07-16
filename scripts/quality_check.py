@@ -4,11 +4,16 @@
 対象: data/multiple_choice.json, data/shikibetsu.json
 UTF-8で標準出力に日本語で結果を出す。冪等・数秒以内。
 
+使い方:
+  py scripts/quality_check.py           詳細レポートを出す（常に0終了）
+  py scripts/quality_check.py --check   合否のみ。問題があれば非ゼロ終了（コミット前・CIのゲート用）
+
 注記: 選択肢は static/mode-katsuyo.js の描画時に shuffle される
       （line 917: q.choices.map((text, originalIndex) => ...) → shuffle）。
       したがって answerIndex のデータ上の位置は UI 表示順には影響しない。
       本スクリプトの「正解位置分布」はあくまでデータ生成側の偏り把握用。
 """
+import difflib
 import io
 import json
 import os
@@ -46,6 +51,21 @@ def is_longest_correct(choices, ans):
 
 def pct(n, d):
     return "0.0%" if d == 0 else f"{100.0 * n / d:.1f}% ({n}/{d})"
+
+
+def is_uniquely_longest_correct(choices, ans, ratio=1.6):
+    """正解が「一意に最長」かつ最短の ratio 倍以上か（＝『長い方を選ぶ』で当たる悪用可能な問題）。"""
+    if not choices or ans is None or ans < 0 or ans >= len(choices):
+        return False
+    lens = [clen(c) for c in choices]
+    nonzero = [l for l in lens if l > 0]
+    if not nonzero:
+        return False
+    mx = max(lens)
+    mn = min(nonzero)
+    if lens.count(mx) != 1 or lens[ans] != mx:
+        return False
+    return mx >= mn * ratio
 
 
 # ---------------------------------------------------------------------------
@@ -224,6 +244,29 @@ def normalize(s):
     return "".join(s.split()).replace("、", "").replace("。", "").replace("「", "").replace("」", "")
 
 
+def near_duplicate_integration(questions, threshold=0.75):
+    """統合問題のうち、傍線部が同じで例文がほぼ同一のペアを返す。
+
+    閾値0.75は実測に基づく: 主語だけ違う実質重複が0.82、
+    「同じ動詞だが別の罠を扱う正当な問題」が最大0.61だったため、その間を取る。
+    なお、例文が十分違っても“ねらい”が重複する場合はこの検査では拾えない
+    （文字列では判別できない）。最終的な要否は人が判断すること。
+    """
+    integ = [q for q in questions if q.get("questionType") == "integration"]
+    pairs = []
+    for i in range(len(integ)):
+        for j in range(i + 1, len(integ)):
+            a, b = integ[i], integ[j]
+            if a.get("target") != b.get("target"):
+                continue
+            ratio = difflib.SequenceMatcher(
+                None, normalize(a.get("passage", "")), normalize(b.get("passage", ""))
+            ).ratio()
+            if ratio >= threshold:
+                pairs.append((a["id"], b["id"], ratio))
+    return pairs
+
+
 def find_duplicates(items):
     """items = [(id, text)] のうち正規化後同一のペアを返す。"""
     seen = {}
@@ -246,6 +289,83 @@ def section(title):
     print("\n" + "=" * 60)
     print(title)
     print("=" * 60)
+
+
+# 「正解が一意に最長」だが内容上不可避で、あえて許容している問題。
+# 語群の列挙（正解が本当に多くの語を含む）や複合標準用語（適当・勧誘 等）で、
+# 誤答を無理に長くすると誤った文法情報を作るため変更しない。
+ALLOWED_LONGEST = {
+    "c2-012",      # 上一段の語群（ひいきにみゐる）は語数が多い
+    "c2-014",      # カ変は「来（く）」一語＝読み添えで長くなる
+    "c2-016",      # ナ変「死ぬ・往ぬ（去ぬ）」の2語
+    "c3-003",      # 未然形接続の助動詞は実際に最も多い
+    "c3-005",      # 終止形接続の助動詞群
+    "c7-003",      # 未然形＋ば／已然形＋ばの対比は2節必要（誤答[1]とほぼ同長）
+    "sb-mu-cond3",  # 二人称＝「適当・勧誘」は複合標準用語
+}
+
+
+def run_check():
+    """CI／コミット前ゲート用。問題を検出したら 1 を返す。"""
+    mc = load(MC_PATH)
+    sb = load(SB_PATH)
+    mcq = mc.get("choiceQuestions", [])
+    sbq = sb.get("shikibetsuQuestions", [])
+    problems = []
+
+    # 1. スキーマ
+    problems += [f"[スキーマ] {e}" for e in check_mc_schema(mcq)]
+    problems += [f"[スキーマ] {e}" for e in check_sb_schema(sbq)]
+
+    # 2. 新たな「正解が一意に最長」（＝長い方を選べば当たる）の退行
+    for q in mcq:
+        if not isinstance(q.get("choices"), list):
+            continue
+        if q["id"] in ALLOWED_LONGEST:
+            continue
+        if is_uniquely_longest_correct(q["choices"], q.get("answerIndex")):
+            problems.append(f"[最長バイアス] {q['id']}: 正解が一意に最長。誤答を具体化して長さを揃えること")
+    for q in sbq:
+        if q.get("questionType") == "integration" or not isinstance(q.get("choices"), list):
+            continue
+        if q["id"] in ALLOWED_LONGEST:
+            continue
+        if is_uniquely_longest_correct(q["choices"], q.get("answerIndex")):
+            problems.append(f"[最長バイアス] {q['id']}: 正解が一意に最長。誤答を具体化して長さを揃えること")
+
+    # 3. distractorRationale 欠落
+    for q in mcq:
+        if not q.get("distractorRationale"):
+            problems.append(f"[誤答根拠] {q['id']}: distractorRationale が無い")
+    for q in sbq:
+        if not q.get("distractorRationale"):
+            problems.append(f"[誤答根拠] {q['id']}: distractorRationale が無い")
+
+    # 4. 誤答根拠のキーが実際の誤答と対応しているか
+    for q in mcq:
+        dr = q.get("distractorRationale") or {}
+        ch, ai = q.get("choices"), q.get("answerIndex")
+        if not (isinstance(ch, list) and isinstance(ai, int) and 0 <= ai < len(ch)):
+            continue
+        for i, c in enumerate(ch):
+            if i != ai and c not in dr:
+                problems.append(f"[誤答根拠] {q['id']}: 誤答「{c}」の根拠が無い")
+            if i == ai and c in dr:
+                problems.append(f"[誤答根拠] {q['id']}: 正解「{c}」に根拠が付いている")
+
+    # 5. 重複
+    for a, b in find_duplicates([(q["id"], q.get("question", "")) for q in mcq]):
+        problems.append(f"[重複] 4択 {a} ≒ {b}")
+    for a, b, r in near_duplicate_integration(sbq):
+        problems.append(f"[近似重複] 識別 {a} ≒ {b}（例文が{r:.0%}一致・傍線部も同じ）")
+
+    if problems:
+        print("品質ゲート: 不合格（{} 件）".format(len(problems)))
+        for p in problems:
+            print("  - " + p)
+        return 1
+    print("品質ゲート: 合格（スキーマ・最長バイアス・誤答根拠・重複いずれも問題なし）")
+    return 0
 
 
 def main():
@@ -320,16 +440,23 @@ def main():
     sb_items += [(q["id"], q.get("passage", "") + "／" + q.get("target", ""))
                  for q in sbq if q.get("questionType") == "integration"]
     sb_dup = find_duplicates(sb_items)
-    if not mc_dup and not sb_dup:
+    sb_near = near_duplicate_integration(sbq)
+    if not mc_dup and not sb_dup and not sb_near:
         print("ほぼ同一の問題文ペアは検出されず。")
     else:
         for a, b in mc_dup:
             print(f"  [4択] {a} ≒ {b}")
         for a, b in sb_dup:
             print(f"  [識別] {a} ≒ {b}")
+        for a, b, r in sb_near:
+            print(f"  [識別・統合] {a} ≒ {b}（例文が{r:.0%}一致・傍線部も同じ）")
 
     print("\n検査完了。")
 
 
 if __name__ == "__main__":
+    # --check: 詳細レポートの代わりに合否だけを出し、問題があれば非ゼロ終了する。
+    #          コミット前チェックやCIのゲートとして使う。
+    if "--check" in sys.argv:
+        sys.exit(run_check())
     main()
