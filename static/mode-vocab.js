@@ -570,7 +570,7 @@ const VocabApp = (function () {
 
     el("sessionPanel").innerHTML = `
       <section class="doneBanner">
-        <p class="label" style="color:rgba(250,249,246,.72)">Session Complete</p>
+        <p class="label" style="color:rgba(255,255,255,.72)">Session Complete</p>
         <div class="big">${score} / ${total}</div>
         <div class="sub">正答率 ${pct}%</div>
       </section>

@@ -1280,7 +1280,7 @@ const KatsuyoApp = (function () {
 
     const banner = el("div", "doneBanner");
     banner.appendChild(el("p", "label", "Session Complete"));
-    banner.querySelector(".label").style.color = "rgba(250,249,246,.72)";
+    banner.querySelector(".label").style.color = "rgba(255,255,255,.72)";
     banner.appendChild(el("div", "big", score + " / " + total));
     banner.appendChild(el("div", "sub", "正答率 " + pct + "%"));
     sessionPanel.appendChild(banner);
