@@ -11,6 +11,7 @@ const VocabApp = (function () {
   const DATA_URL = "data/vocab.json";
   const STORE_KEY = "kobun_vocab_progress_v1";
   const RANGE_KEY = "kobun_vocab_range_v1";
+  const SESSION_KEY = "kobun_vocab_session_v1";
   const APP_ID = "kobun-vocab";
   const NEXT_KEY_COOLDOWN_MS = 500; // 解答直後の数字キー連打を「次へ」と誤認しない猶予
 
@@ -47,6 +48,42 @@ const VocabApp = (function () {
   function saveRange(start, end) {
     try { localStorage.setItem(RANGE_KEY, JSON.stringify({ start, end })); }
     catch (e) { /* ignore */ }
+  }
+  // 中断・リロードからの再開用に、現在のセッションの位置だけを保存する（語ごとの正誤とは別枠）
+  function saveSession() {
+    const s = state.session;
+    if (!s) return;
+    try {
+      localStorage.setItem(SESSION_KEY, JSON.stringify({
+        wordIds: s.queue.map(w => w.id),
+        idx: s.idx,
+        correctCount: s.correctCount,
+        wrongIds: s.wrongIds,
+        wrongLog: s.wrongLog.map(entry => ({ wordId: entry.word.id, picked: entry.picked })),
+        title: s.title,
+      }));
+    } catch (e) { /* ignore */ }
+  }
+  function clearSavedSession() {
+    try { localStorage.removeItem(SESSION_KEY); } catch (e) { /* ignore */ }
+  }
+  // 保存されたセッションを読み込む。単語データと整合しない場合は再開不可としてnullを返す
+  function loadSavedSession() {
+    try {
+      const raw = localStorage.getItem(SESSION_KEY);
+      if (!raw) return null;
+      const data = JSON.parse(raw);
+      const queue = data.wordIds.map(id => state.words.find(w => w.id === id));
+      const finished = data.idx >= queue.length && !data.wrongLog.length; // 全問終了後の一瞬だけ残りうる状態
+      if (!queue.length || queue.includes(undefined) || finished) return null;
+      const wrongLog = data.wrongLog
+        .map(entry => {
+          const word = state.words.find(w => w.id === entry.wordId);
+          return word ? { word, picked: entry.picked } : null;
+        })
+        .filter(Boolean);
+      return { queue, idx: data.idx, correctCount: data.correctCount, wrongIds: data.wrongIds, wrongLog, title: data.title };
+    } catch (e) { return null; }
   }
 
   /* ============================================================
@@ -170,8 +207,20 @@ const VocabApp = (function () {
     const todayPool = firstUnmastered(state.words);
     const todayCount = Math.min(20, todayPool.length || total);
     const sharedMode = !!(cloud && cloud.isEnabled());
+    const savedSession = loadSavedSession();
 
     home.innerHTML = `
+      ${savedSession ? `
+      <section class="card">
+        <p class="label">Resume</p>
+        <h2>前回の続きがあります</h2>
+        <p class="hint">${esc(savedSession.title)}・${Math.min(savedSession.idx, savedSession.queue.length)}/${savedSession.queue.length}問まで完了${savedSession.idx < savedSession.queue.length ? `・次は「${esc(savedSession.queue[savedSession.idx].kana)}」` : ""}</p>
+        <div class="actions">
+          <button class="cta" id="resumeSessionBtn" type="button">続きから再開する</button>
+          <button class="ghost smallGhost" id="discardSessionBtn" type="button">破棄して新しく始める</button>
+        </div>
+      </section>` : ""}
+
       <section class="card hero">
         <p class="label">Kobun Vocabulary</p>
         <h2>今日の20語から、408語を着実に回す</h2>
@@ -261,19 +310,26 @@ const VocabApp = (function () {
       </section>`}
     `;
 
+    if (savedSession) {
+      el("resumeSessionBtn").addEventListener("click", () => resumeSession(savedSession));
+      el("discardSessionBtn").addEventListener("click", () => {
+        clearSavedSession();
+        renderHome();
+      });
+    }
     el("startToday").addEventListener("click", () => {
       const pool = todayPool.length ? todayPool : state.words;
-      startSession(takeForSession(pool, 20), "つづきから20語");
+      startSession(takeForSession(pool, 20), "今日の20語");
     });
     if (weak.length) {
-      el("startWeak").addEventListener("click", () => startSession(weak, "間違えた語を復習"));
+      el("startWeak").addEventListener("click", () => startSession(takeForSession(weak, 20), "間違えた語を復習"));
     }
     document.querySelectorAll(".chapterBtn").forEach(btn => {
       btn.addEventListener("click", () => {
         const c = chapterEntries[parseInt(btn.dataset.ci, 10)];
         if (c && c.words.length) {
           const pool = firstUnmastered(c.words);
-          startSession(pool.length ? pool : c.words, c.name);
+          startSession(takeForSession(pool.length ? pool : c.words, 20), c.name);
         }
       });
     });
@@ -305,13 +361,14 @@ const VocabApp = (function () {
       if (!words.length) return;
       saveRange(lo, hi);
       const pool = firstUnmastered(words);
-      startSession(pool.length ? pool : words, `単語${lo}〜${hi}`);
+      startSession(takeForSession(pool.length ? pool : words, 20), `単語${lo}〜${hi}`);
     });
     if (!sharedMode) {
       el("resetBtn").addEventListener("click", () => {
         if (confirm("すべての進捗（正答・誤答の記録）を削除しますか？")) {
           state.progress = {};
           saveProgress();
+          clearSavedSession();
           renderHome();
         }
       });
@@ -366,6 +423,24 @@ const VocabApp = (function () {
     };
     el("homePanel").classList.add("hide");
     el("sessionPanel").classList.remove("hide");
+    saveSession();
+    renderQuestion();
+  }
+
+  // 保存済みセッション（loadSavedSessionの戻り値）から演習画面を復元する
+  function resumeSession(saved) {
+    state.session = {
+      queue: saved.queue,
+      idx: saved.idx,
+      correctCount: saved.correctCount,
+      wrongIds: saved.wrongIds,
+      wrongLog: saved.wrongLog,
+      reviewed: false,
+      answered: false,
+      title: saved.title,
+    };
+    el("homePanel").classList.add("hide");
+    el("sessionPanel").classList.remove("hide");
     renderQuestion();
   }
 
@@ -409,7 +484,7 @@ const VocabApp = (function () {
       <section class="quizBox">
         <div class="quizTop">
           <span class="askLabel">意味として最も適切なものは？</span>
-          <span class="streak">${esc(word.group || "")}　正${currentStat.correct}／誤${currentStat.wrong}</span>
+          <span class="streak">正${currentStat.correct}／誤${currentStat.wrong}</span>
         </div>
         <p class="askWord">${esc(word.kana)}${kanjiTag}</p>
         <p class="askMeta"><span class="pos">${esc(word.pos)}</span>1〜4のキーで解答／解答後は1〜4またはEnterで次へ</p>
@@ -426,7 +501,10 @@ const VocabApp = (function () {
       </section>
     `;
 
-    el("quitSession").addEventListener("click", renderHome);
+    el("quitSession").addEventListener("click", () => {
+      clearSavedSession();
+      renderHome();
+    });
     document.querySelectorAll("#choices .choiceBtn").forEach(btn => {
       btn.addEventListener("click", () => selectAnswer(parseInt(btn.dataset.i, 10)));
     });
@@ -451,6 +529,7 @@ const VocabApp = (function () {
     }
     state.progress[word.id] = stat;
     saveProgress();
+    saveSession();
 
     // ボタンの色付け＋無効化
     document.querySelectorAll("#choices .choiceBtn").forEach(btn => {
@@ -489,6 +568,7 @@ const VocabApp = (function () {
 
   function nextQuestion() {
     state.session.idx += 1;
+    saveSession();
     renderQuestion();
   }
 
@@ -561,6 +641,7 @@ const VocabApp = (function () {
   }
 
   function renderDone() {
+    clearSavedSession();
     const s = state.session;
     const total = s.idx;
     const score = s.correctCount;
@@ -579,7 +660,7 @@ const VocabApp = (function () {
         <p class="resultText">このセッション内の習得語は${masteredNow}語。${wrongWords.length ? `間違えた語はホームの「間違えた語を復習する」に残ります。` : ""}</p>
         <div class="actions">
           ${wrongWords.length ? `<button class="cta reviewCta" id="retryWrong" type="button">間違えた${wrongWords.length}語をもう一度</button>` : ""}
-          <button class="${wrongWords.length ? "ghost inlineGhost" : "cta"}" id="nextTwenty" type="button">つづきから20語</button>
+          <button class="${wrongWords.length ? "ghost inlineGhost" : "cta"}" id="nextTwenty" type="button">今日の20語</button>
           <button class="ghost smallGhost" id="backHome" type="button">ホームに戻る</button>
         </div>
         ${wrongWords.length ? `<div class="wrongList">
@@ -593,7 +674,7 @@ const VocabApp = (function () {
     }
     el("nextTwenty").addEventListener("click", () => {
       const pool = firstUnmastered(state.words);
-      startSession(takeForSession(pool.length ? pool : state.words, 20), "つづきから20語");
+      startSession(takeForSession(pool.length ? pool : state.words, 20), "今日の20語");
     });
     el("backHome").addEventListener("click", renderHome);
     window.scrollTo({ top: 0, behavior: "smooth" });

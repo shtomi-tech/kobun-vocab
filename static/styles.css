@@ -696,6 +696,7 @@ h2 {
 }
 .reviewCard.reviewCardDone { border-left-color: var(--line); opacity: .6; }
 .reviewCardHead { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.reviewCheckBtn { min-height: 44px; }
 .reviewCard .word { font-size: 20px; font-weight: 600; margin: 0; }
 .reviewCard .word small { font-size: 13px; font-weight: 400; color: var(--muted); margin-left: 8px; }
 .reviewCard ul { margin: 8px 0 0; padding-left: 20px; }
