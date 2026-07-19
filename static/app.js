@@ -1,16 +1,13 @@
 "use strict";
 
 /* ============================================================
-   古文演習 — 単語／助動詞／用言／文法4択 を切り替える薄いシェル。
-   各モードは static/mode-*.js に IIFE で閉じており、ここでは
-   フラットな1段タブの切替と、表示中モードへのキー入力の橋渡しのみを担当する。
+   古文演習 — 古文単語／古典文法を切り替える薄いシェル。
+   古典文法内の「活用表／文法4択／識別」は mode-katsuyo.js 側で切り替える。
    ============================================================ */
 
 const APPS = [
-  { id: "vocab", tag: "VOCAB QUIZ", label: "単語4択", title: "古文単語 4択演習", mount: () => VocabApp.mount(), handleKey: (e) => VocabApp.handleKey(e) },
-  { id: "katsuyo", tag: "KATSUYO", label: "活用表", title: "古文 助動詞・用言 活用ドリル", mount: () => KatsuyoApp.mount("katsuyo"), handleKey: (e) => KatsuyoApp.handleKey(e) },
-  { id: "choice", tag: "MULTIPLE CHOICE", label: "文法4択", title: "古文 文法4択", mount: () => KatsuyoApp.mount("choice"), handleKey: (e) => KatsuyoApp.handleKey(e) },
-  { id: "shikibetsu", tag: "IDENTIFY", label: "識別", title: "古文 識別演習", mount: () => KatsuyoApp.mount("shikibetsu"), handleKey: (e) => KatsuyoApp.handleKey(e) },
+  { id: "vocab", tag: "VOCABULARY", label: "古文単語", title: "古文単語 4択演習", mount: () => VocabApp.mount(), handleKey: (e) => VocabApp.handleKey(e) },
+  { id: "grammar", tag: "GRAMMAR", label: "古典文法", title: "古典文法演習", mount: () => KatsuyoApp.mount("grammar"), handleKey: (e) => KatsuyoApp.handleKey(e) },
 ];
 
 let currentAppId = null;

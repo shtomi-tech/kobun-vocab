@@ -14,7 +14,8 @@ const KatsuyoApp = (function () {
   let byId = {};
   let cloud = null;
   let flow = null; // 識別セクションの学習フロー文脈（理解→4択→実践）
-  let combinedKatsuyoMode = false; // 「活用」タブ（助動詞＋用言の統合ホーム）から来たセッションかどうか
+  let grammarMode = false; // 上段の「古典文法」モードかどうか
+  let activeGrammarMode = "katsuyo"; // 古典文法内の現在の練習モード
 
   /* ---------- progress (localStorage) ---------- */
   function loadProgress() {
@@ -142,8 +143,42 @@ const KatsuyoApp = (function () {
     return result;
   }
   function goHome() {
-    if (combinedKatsuyoMode) renderKatsuyoHome();
+    if (grammarMode && activeGrammarMode === "katsuyo") renderKatsuyoHome();
     else renderHome();
+  }
+
+  function renderGrammarNav() {
+    const nav = el("nav", "appNav grammarNav");
+    nav.setAttribute("aria-label", "古典文法の練習モード");
+    [
+      { id: "katsuyo", tag: "INFLECTION", label: "活用表" },
+      { id: "choice", tag: "MULTIPLE CHOICE", label: "文法4択" },
+      { id: "shikibetsu", tag: "IDENTIFY", label: "識別" },
+    ].forEach(mode => {
+      const btn = el("button", "appTab");
+      btn.type = "button";
+      btn.setAttribute("aria-pressed", mode.id === activeGrammarMode ? "true" : "false");
+      btn.appendChild(el("span", null, mode.tag));
+      btn.appendChild(document.createTextNode(mode.label));
+      btn.addEventListener("click", () => selectGrammarMode(mode.id));
+      nav.appendChild(btn);
+    });
+    return nav;
+  }
+
+  function attachGrammarNav() {
+    if (grammarMode) homePanel.prepend(renderGrammarNav());
+  }
+
+  function selectGrammarMode(id) {
+    activeGrammarMode = id;
+    if (id === "katsuyo") {
+      currentSet = null;
+      renderKatsuyoHome();
+      return;
+    }
+    currentSet = DATA.practiceSets.find(set => set.id === id) || DATA.practiceSets[0];
+    renderHome();
   }
 
   function renderKatsuyoHome() {
@@ -291,6 +326,7 @@ const KatsuyoApp = (function () {
       moreCard.appendChild(details);
       homePanel.appendChild(moreCard);
     }
+    attachGrammarNav();
   }
 
   /* ---------- 識別セクション：学習フロー（理解→4択→実践） ---------- */
@@ -520,6 +556,7 @@ const KatsuyoApp = (function () {
       moreCard.appendChild(details);
       homePanel.appendChild(moreCard);
     }
+    attachGrammarNav();
   }
 
   // 識別セクション専用：手順ごとに「学習する」ボタン（理解→4択→実践のフロー開始）と
@@ -1439,8 +1476,8 @@ const KatsuyoApp = (function () {
       await bootPromise;
     }
     if (!DATA) return; // データ読み込み失敗
-    combinedKatsuyoMode = (setId === "katsuyo");
-    if (combinedKatsuyoMode) {
+    grammarMode = (setId === "grammar");
+    if (grammarMode) {
       currentSet = null;
       renderKatsuyoHome();
       return;

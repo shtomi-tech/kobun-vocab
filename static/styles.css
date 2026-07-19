@@ -117,7 +117,7 @@ h2 {
 
 .hint { color: var(--muted); font-size: 13px; margin: 8px 0 0; }
 
-/* ---- App nav（単語／助動詞／用言／文法4択のピル型タブ） ---- */
+/* ---- App nav（上段のモード／古典文法内の練習モード） ---- */
 .appNav {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
