@@ -23,7 +23,7 @@ function renderAppNav() {
     if (locked) {
       btn.classList.add("locked");
       btn.setAttribute("aria-disabled", "true");
-      btn.title = "コア200語を完了すると解放されます";
+      btn.title = "200語からの確認テストに合格すると解放されます";
     }
     btn.setAttribute("aria-pressed", a.id === currentAppId ? "true" : "false");
     const tag = document.createElement("span");

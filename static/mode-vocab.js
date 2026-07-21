@@ -8,12 +8,17 @@
    ============================================================ */
 
 const VocabApp = (function () {
-  const DATA_URL = "data/vocab.json?v=0.3.0";
+  const DATA_URL = "data/vocab.json?v=0.4.0";
   const STORE_KEY = "kobun_vocab_progress_v1";
   const RANGE_KEY = "kobun_vocab_range_v1";
-  const SESSION_KEY = "kobun_vocab_session_v2"; // 200語・10セット制への移行で旧300語セッションを再開しない
+  const SESSION_KEY = "kobun_vocab_session_v3"; // セット進行・確認テストの導入で旧セッションを再開しない
+  const SET_PROGRESS_KEY = "kobun_vocab_sets_v1";
+  const GATE_KEY = "kobun_vocab_gate_v1";
+  const PROGRESS_META_KEY = "__kobunStage1";
   const APP_ID = "kobun-vocab";
   const SESSION_SIZE = 20;
+  const GATE_SIZE = 30;
+  const GATE_PASS_RATE = 0.8;
   const CORE_MASTERY_REQUIRED = 1;
   const NEXT_KEY_COOLDOWN_MS = 500; // 解答直後の数字キー連打を「次へ」と誤認しない猶予
 
@@ -63,6 +68,8 @@ const VocabApp = (function () {
         wrongIds: s.wrongIds,
         wrongLog: s.wrongLog.map(entry => ({ wordId: entry.word.id, picked: entry.picked })),
         title: s.title,
+        kind: s.kind,
+        setIndex: s.setIndex,
       }));
     } catch (e) { /* ignore */ }
   }
@@ -84,15 +91,101 @@ const VocabApp = (function () {
           return word ? { word, picked: entry.picked } : null;
         })
         .filter(Boolean);
-      return { queue, idx: data.idx, correctCount: data.correctCount, wrongIds: data.wrongIds, wrongLog, title: data.title };
+      return {
+        queue,
+        idx: data.idx,
+        correctCount: data.correctCount,
+        wrongIds: data.wrongIds,
+        wrongLog,
+        title: data.title,
+        kind: data.kind,
+        setIndex: Number.isInteger(data.setIndex) ? data.setIndex : null,
+      };
     } catch (e) { return null; }
+  }
+
+  function loadSetProgress() {
+    const total = buildCoreSets().length;
+    const sharedMeta = state.progress[PROGRESS_META_KEY];
+    if (sharedMeta && Number.isInteger(sharedMeta.setsCompleted)) {
+      return { completed: Math.min(total, Math.max(0, sharedMeta.setsCompleted)) };
+    }
+    try {
+      if (!(cloud && cloud.isEnabled())) {
+        const raw = localStorage.getItem(SET_PROGRESS_KEY);
+        if (raw) {
+          const data = JSON.parse(raw);
+          if (Number.isInteger(data.completed)) {
+            return { completed: Math.min(total, Math.max(0, data.completed)) };
+          }
+        }
+      }
+    } catch (e) { /* ignore */ }
+
+    // 旧版の語ごとの正答記録から、連続して完了済みのセットだけを引き継ぐ。
+    const sets = buildCoreSets();
+    let completed = 0;
+    for (const words of sets) {
+      if (!words.length || words.some(w => !isCoreMastered(w.id))) break;
+      completed += 1;
+    }
+    saveSetProgress(completed);
+    return { completed };
+  }
+  function saveSetProgress(completed) {
+    try { localStorage.setItem(SET_PROGRESS_KEY, JSON.stringify({ completed })); }
+    catch (e) { /* ignore */ }
+    state.progress[PROGRESS_META_KEY] = {
+      ...(state.progress[PROGRESS_META_KEY] || {}),
+      setsCompleted: completed,
+    };
+    saveProgress();
+  }
+  function loadGateStatus() {
+    const sharedMeta = state.progress[PROGRESS_META_KEY];
+    if (sharedMeta && typeof sharedMeta.gateCleared === "boolean") {
+      return {
+        cleared: sharedMeta.gateCleared,
+        attempts: Number.isInteger(sharedMeta.gateAttempts) ? sharedMeta.gateAttempts : 0,
+        lastScore: Number.isInteger(sharedMeta.gateLastScore) ? sharedMeta.gateLastScore : null,
+        lastTotal: Number.isInteger(sharedMeta.gateLastTotal) ? sharedMeta.gateLastTotal : null,
+      };
+    }
+    try {
+      if (!(cloud && cloud.isEnabled())) {
+        const raw = localStorage.getItem(GATE_KEY);
+        if (raw) {
+          const data = JSON.parse(raw);
+          return {
+            cleared: data.cleared === true,
+            attempts: Number.isInteger(data.attempts) ? data.attempts : 0,
+            lastScore: Number.isInteger(data.lastScore) ? data.lastScore : null,
+            lastTotal: Number.isInteger(data.lastTotal) ? data.lastTotal : null,
+          };
+        }
+      }
+    } catch (e) { /* ignore */ }
+    return { cleared: false, attempts: 0, lastScore: null, lastTotal: null };
+  }
+  function saveGateStatus(status) {
+    try { localStorage.setItem(GATE_KEY, JSON.stringify(status)); }
+    catch (e) { /* ignore */ }
+    state.progress[PROGRESS_META_KEY] = {
+      ...(state.progress[PROGRESS_META_KEY] || {}),
+      gateCleared: status.cleared,
+      gateAttempts: status.attempts,
+      gateLastScore: status.lastScore,
+      gateLastTotal: status.lastTotal,
+    };
+    saveProgress();
   }
 
   /* ============================================================
      cloud sync（生徒別・共有URL ?s=&t=）— harness/cloud.js を利用
      共通スキーマ app_students / app_progress（app="kobun-vocab"）。
      config.json が無ければ no-op で、従来どおり匿名ローカル動作（無回帰）。
-     進捗は語ごとの { correct, wrong } マップをそのまま1つのjsonbに保存。
+     進捗は語ごとの { correct, wrong } マップを保存し、セット／確認テスト状態は
+     予約キー __kobunStage1 に同居させる（共有URLでも生徒別に同期するため）。
      ============================================================ */
   function setShareStatus(message, tone = "") {
     const slot = el("shareStatus");
@@ -180,18 +273,34 @@ const VocabApp = (function () {
     const spec = state.meta.core || {};
     return Number.isInteger(spec.setSize) && spec.setSize > 0 ? spec.setSize : SESSION_SIZE;
   }
-  function coreSetInfo() {
+  function gateQuestionCount() {
+    const spec = state.meta.core || {};
+    return Number.isInteger(spec.gateQuestions) && spec.gateQuestions > 0 ? spec.gateQuestions : GATE_SIZE;
+  }
+  function gatePassRate() {
+    const spec = state.meta.core || {};
+    return typeof spec.gatePassRate === "number" ? spec.gatePassRate : GATE_PASS_RATE;
+  }
+  function gatePassCount() {
+    return Math.ceil(gateQuestionCount() * gatePassRate());
+  }
+  function buildCoreSets() {
     const core = coreWords();
     const size = coreSetSize();
     const sets = [];
     for (let i = 0; i < core.length; i += size) sets.push(core.slice(i, i + size));
-    const index = sets.findIndex(words => progressSummary(words, isCoreMastered).remaining > 0);
-    const currentIndex = index >= 0 ? index : Math.max(0, sets.length - 1);
+    return sets;
+  }
+  function coreSetInfo() {
+    const sets = buildCoreSets();
+    const setProgress = loadSetProgress();
+    const currentIndex = Math.min(setProgress.completed, Math.max(0, sets.length - 1));
     return {
       sets,
       index: currentIndex,
       words: sets[currentIndex] || [],
-      complete: index < 0,
+      completed: setProgress.completed,
+      complete: setProgress.completed >= sets.length,
     };
   }
   function supplementalWords() {
@@ -199,45 +308,54 @@ const VocabApp = (function () {
     return state.words.filter(w => !coreIds.has(w.id));
   }
   function focusPlan() {
-    const core = coreWords();
-    const coreProgress = progressSummary(core, isCoreMastered);
-    if (coreProgress.remaining > 0) {
-      const set = coreSetInfo();
+    const set = coreSetInfo();
+    if (!set.complete) {
       const setNumber = set.index + 1;
       return {
         words: set.words,
         title: `${coreLabel()}・セット${setNumber}/${set.sets.length}`,
         cta: `セット${setNumber}/${set.sets.length}を続ける`,
         complete: false,
+        kind: "coreSet",
         setNumber,
         setTotal: set.sets.length,
+        setIndex: set.index,
       };
     }
-    const extra = supplementalWords();
-    const extraProgress = progressSummary(extra);
-    if (extraProgress.remaining > 0) {
+    const gate = loadGateStatus();
+    if (!gate.cleared) {
       return {
-        words: firstUnmastered(extra),
-        title: "追加語",
-        cta: "追加語を続ける",
-        complete: true,
+        words: [],
+        title: "段階1確認テスト",
+        cta: `${gateQuestionCount()}問の確認テストを始める`,
+        complete: false,
+        kind: "gate",
+        setTotal: set.sets.length,
+        gateQuestions: gateQuestionCount(),
+        gatePassCount: gatePassCount(),
       };
     }
     return {
-      words: core,
-      title: `${coreLabel()}の復習`,
-      cta: `${coreLabel()}を復習する`,
+      words: [],
+      title: "古典文法",
+      cta: "古典文法へ進む",
       complete: true,
+      kind: "grammar",
+      setTotal: set.sets.length,
     };
   }
   function stage1Status() {
-    const core = coreWords();
-    const progress = progressSummary(core, isCoreMastered);
+    const progress = progressSummary(coreWords(), isCoreMastered);
+    const sets = coreSetInfo();
+    const gate = loadGateStatus();
     return {
       total: progress.total,
       mastered: progress.mastered,
       remaining: progress.remaining,
-      complete: progress.total > 0 && progress.remaining === 0,
+      setsCompleted: sets.completed,
+      setsTotal: sets.sets.length,
+      gate,
+      complete: gate.cleared,
     };
   }
   function notifyStageStatusChanged() {
@@ -245,6 +363,9 @@ const VocabApp = (function () {
   }
   function showStageGate() {
     const status = stage1Status();
+    const gateHint = status.setsCompleted < status.setsTotal
+      ? `まず${status.setsTotal}セット（1セット${SESSION_SIZE}問）を終えてください。`
+      : `${coreLabel()}から${gateQuestionCount()}問の確認テストで${gatePassCount()}問以上正解すると、古典文法へ進めます。`;
     state.session = null;
     el("sessionPanel").classList.add("hide");
     el("sessionPanel").innerHTML = "";
@@ -254,11 +375,11 @@ const VocabApp = (function () {
       <section class="card hero">
         <p class="label">STAGE 2 / GRAMMAR</p>
         <h2>文法は、単語のあとに進みます</h2>
-        <p class="hint">${coreLabel()}を10セット（1セット${SESSION_SIZE}問）で終え、必須語をすべて1回正解すると、用言の活用から解放されます。</p>
+        <p class="hint">${gateHint}</p>
       </section>
       <section class="card">
         <p class="label">段階1の終了条件</p>
-        <p class="resultText">${coreLabel()}の習得 ${status.mastered} / ${status.total}。残り${status.remaining}語です。</p>
+        <p class="resultText">セット ${status.setsCompleted} / ${status.setsTotal}。${status.gate.cleared ? `確認テスト ${status.gate.lastScore}/${status.gate.lastTotal} で合格済みです。` : `習得の参考値 ${status.mastered} / ${status.total}。`}</p>
         <div class="actions">
           <button class="cta" id="returnToStage1" type="button">段階1の単語へ戻る</button>
         </div>
@@ -277,6 +398,30 @@ const VocabApp = (function () {
     const chapters = new Set(words.map(w => w.chapter || "その他"));
     if (chapters.size === 1) return [...chapters][0];
     return fallback;
+  }
+  function startGateSession() {
+    startSession(
+      takeForSession(coreWords(), gateQuestionCount()),
+      "段階1確認テスト",
+      { kind: "gate" },
+    );
+  }
+  function startFocusSession(focus) {
+    if (focus.kind === "grammar") {
+      if (typeof switchApp === "function") switchApp("grammar");
+      return;
+    }
+    if (focus.kind === "gate") {
+      startGateSession();
+      return;
+    }
+    const pool = focus.words.length ? focus.words : coreWords();
+    const limit = focus.kind === "coreSet" ? coreSetSize() : SESSION_SIZE;
+    startSession(
+      takeForSession(pool, limit),
+      focus.title,
+      { kind: focus.kind, setIndex: focus.setIndex },
+    );
   }
 
   /* ---------- 選択肢生成 ---------- */
@@ -325,9 +470,30 @@ const VocabApp = (function () {
     const rangeStart = clampInt(savedRange && savedRange.start, idMin, idMax, idMin);
     const rangeEnd = clampInt(savedRange && savedRange.end, idMin, idMax, idMax);
     const focus = focusPlan();
-    const todayPool = focus.words;
+    const setInfo = coreSetInfo();
+    const gateStatus = loadGateStatus();
     const sharedMode = !!(cloud && cloud.isEnabled());
     const savedSession = loadSavedSession();
+    const heroTitle = focus.kind === "coreSet"
+      ? `${coreLabel()}を10セットで進める`
+      : focus.kind === "gate"
+        ? `最後に${gateQuestionCount()}問の確認テスト`
+        : `${coreLabel()}を完了しました`;
+    const heroTag = focus.kind === "coreSet"
+      ? `おすすめ・${SESSION_SIZE}問`
+      : focus.kind === "gate"
+        ? `仕上げ・${gateQuestionCount()}問`
+        : "段階1の次";
+    const heroHint = focus.kind === "coreSet"
+      ? `古語 → 現代語訳の4択。必須${coreProgress.total}語を${focus.setTotal}セットに分け、1セット${SESSION_SIZE}問で進めます。誤答があってもセットは${SESSION_SIZE}問で終了し、次のセットへ進みます。`
+      : focus.kind === "gate"
+        ? `${setInfo.sets.length}セット完了後、${coreLabel()}から${gateQuestionCount()}問をランダム出題します。${gatePassCount()}問以上（${Math.round(gatePassRate() * 100)}%以上）で古典文法へ進めます。`
+        : `確認テストに合格済みです。古典文法へ進めます。追加${extraProgress.total}語は補助練習として残っています。`;
+    const progressHint = setInfo.completed < setInfo.sets.length
+      ? `必須語の現在地：セット${setInfo.completed + 1}/${setInfo.sets.length}`
+      : gateStatus.cleared
+        ? `必須語の現在地：確認テスト合格済み（${gateStatus.lastScore}/${gateStatus.lastTotal}）`
+        : "必須語の現在地：10セット完了・確認テスト待ち";
 
     home.innerHTML = `
       ${savedSession ? `
@@ -343,12 +509,12 @@ const VocabApp = (function () {
 
       <section class="card hero">
         <p class="label">Kobun Vocabulary ・ 段階1</p>
-        <h2>${coreProgress.remaining > 0 ? `${coreLabel()}を10セットで固める` : `${coreLabel()}を完了しました`}</h2>
+        <h2>${heroTitle}</h2>
         <button class="cta primaryCta" id="startToday" type="button">
-          <span class="ctaTag">${coreProgress.remaining > 0 ? `おすすめ・${SESSION_SIZE}問` : "段階1の次"}</span>
+          <span class="ctaTag">${heroTag}</span>
           <span class="ctaMain">${esc(focus.cta)}</span>
         </button>
-        <p class="hint">古語 → 現代語訳の4択。必須${coreProgress.total}語を${focus.setTotal || Math.ceil(coreProgress.total / SESSION_SIZE)}セットに分け、1セット${SESSION_SIZE}問で進めます。必須語は1回正解で習得扱い、誤答があるセットは同じセットを再確認します。${coreProgress.remaining > 0 ? "文法は必須語完了後に進みます。" : `追加${extraProgress.total}語は補助練習として続けられます。`}</p>
+        <p class="hint">${heroHint}</p>
       </section>
 
       <section class="card">
@@ -374,7 +540,7 @@ const VocabApp = (function () {
         <div class="actions">
           <button class="cta reviewCta" id="startWeak" type="button">間違えた${weak.length}語を復習する</button>
         </div>` : ""}
-        <p class="hint">必須語の残り${coreProgress.remaining}語。${focus.setNumber ? `現在はセット${focus.setNumber}/${focus.setTotal}です。` : ""}追加語は${extraProgress.mastered}/${extraProgress.total}語を習得。</p>
+        <p class="hint">${progressHint}。習得の参考値 ${coreProgress.mastered}/${coreProgress.total}。追加語は${extraProgress.mastered}/${extraProgress.total}語を習得。</p>
       </section>
 
       <section class="card">
@@ -438,8 +604,7 @@ const VocabApp = (function () {
       });
     }
     el("startToday").addEventListener("click", () => {
-      const pool = todayPool.length ? todayPool : core;
-      startSession(takeForSession(pool, SESSION_SIZE), focus.title);
+      startFocusSession(focus);
     });
     if (weak.length) {
       el("startWeak").addEventListener("click", () => startSession(takeForSession(weak, SESSION_SIZE), "間違えた語を復習"));
@@ -489,6 +654,8 @@ const VocabApp = (function () {
           state.progress = {};
           saveProgress();
           clearSavedSession();
+          try { localStorage.removeItem(SET_PROGRESS_KEY); } catch (e) { /* ignore */ }
+          try { localStorage.removeItem(GATE_KEY); } catch (e) { /* ignore */ }
           renderHome();
         }
       });
@@ -531,7 +698,7 @@ const VocabApp = (function () {
   }
 
   /* ---------- 演習セッション ---------- */
-  function startSession(words, title = "") {
+  function startSession(words, title = "", options = {}) {
     state.session = {
       queue: shuffle(words),
       idx: 0,
@@ -541,6 +708,8 @@ const VocabApp = (function () {
       reviewed: false,
       answered: false,
       title: title || sessionTitle(words, "演習"),
+      kind: options.kind || "practice",
+      setIndex: Number.isInteger(options.setIndex) ? options.setIndex : null,
     };
     el("homePanel").classList.add("hide");
     el("sessionPanel").classList.remove("hide");
@@ -559,6 +728,8 @@ const VocabApp = (function () {
       reviewed: false,
       answered: false,
       title: saved.title,
+      kind: saved.kind || "practice",
+      setIndex: Number.isInteger(saved.setIndex) ? saved.setIndex : null,
     };
     el("homePanel").classList.add("hide");
     el("sessionPanel").classList.remove("hide");
@@ -570,7 +741,8 @@ const VocabApp = (function () {
     const panel = el("sessionPanel");
 
     if (s.idx >= s.queue.length) {
-      if (s.wrongLog.length && !s.reviewed) {
+      const reviewRequired = s.kind !== "coreSet" && s.kind !== "gate";
+      if (s.wrongLog.length && !s.reviewed && reviewRequired) {
         renderReview();
       } else {
         renderDone();
@@ -766,20 +938,88 @@ const VocabApp = (function () {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
+  function completeCoreSet(setIndex) {
+    if (!Number.isInteger(setIndex)) return;
+    const total = buildCoreSets().length;
+    const current = loadSetProgress().completed;
+    const completed = Math.min(total, Math.max(current, setIndex + 1));
+    saveSetProgress(completed);
+    notifyStageStatusChanged();
+  }
+
+  function recordGateResult(session) {
+    const previous = loadGateStatus();
+    const required = Math.ceil(session.queue.length * gatePassRate());
+    const passed = session.correctCount >= required;
+    const status = {
+      cleared: previous.cleared || passed,
+      attempts: previous.attempts + 1,
+      lastScore: session.correctCount,
+      lastTotal: session.queue.length,
+    };
+    saveGateStatus(status);
+    notifyStageStatusChanged();
+    return { passed, required, status };
+  }
+
+  function renderGateDone() {
+    const s = state.session;
+    const result = recordGateResult(s);
+    const pct = Math.round((s.correctCount / s.queue.length) * 100);
+    const retryText = result.passed
+      ? `${coreLabel()}から${s.queue.length}問の確認テストに${s.correctCount}問正解し、${pct}%で合格しました。`
+      : `${s.queue.length}問中${s.correctCount}問正解（${pct}%）でした。${result.required}問以上が必要です。`;
+
+    el("sessionPanel").innerHTML = `
+      <section class="doneBanner">
+        <p class="label" style="color:rgba(255,255,255,.72)">STAGE 1 CHECK</p>
+        <div class="big">${s.correctCount} / ${s.queue.length}</div>
+        <div class="sub">正答率 ${pct}% ・ ${result.passed ? "合格" : "再挑戦"}</div>
+      </section>
+      <section class="card">
+        <p class="label">${result.passed ? "古典文法へ" : "確認テスト"}</p>
+        <p class="resultText">${retryText}</p>
+        <div class="actions">
+          ${result.passed
+            ? `<button class="cta" id="goGrammar" type="button">古典文法へ進む</button>`
+            : `<button class="cta" id="retryGate" type="button">${gateQuestionCount()}問をもう一度受ける</button>`}
+          <button class="ghost smallGhost" id="backHome" type="button">ホームに戻る</button>
+        </div>
+      </section>
+    `;
+
+    if (result.passed) {
+      el("goGrammar").addEventListener("click", () => {
+        if (typeof switchApp === "function") switchApp("grammar");
+      });
+    } else {
+      el("retryGate").addEventListener("click", startGateSession);
+    }
+    el("backHome").addEventListener("click", renderHome);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
   function renderDone() {
     clearSavedSession();
     const s = state.session;
+    if (s.kind === "gate") {
+      renderGateDone();
+      return;
+    }
+    if (s.kind === "coreSet") completeCoreSet(s.setIndex);
     const total = s.idx;
     const score = s.correctCount;
     const pct = Math.round((score / total) * 100);
     const wrongWords = state.words.filter(w => s.wrongIds.includes(w.id));
     const masteredNow = s.queue.filter(w => masteryForId(w.id)).length;
     const focus = focusPlan();
-    const coreProgress = progressSummary(coreWords(), isCoreMastered);
     const set = coreSetInfo();
-    const stageMessage = coreProgress.remaining > 0
-      ? `${coreLabel()}の残りは${coreProgress.remaining}語です。次はセット${set.index + 1}/${set.sets.length}です。`
-      : `${coreLabel()}は完了しています。`;
+    const gate = loadGateStatus();
+    const stageMessage = set.completed < set.sets.length
+      ? `次はセット${set.completed + 1}/${set.sets.length}です。`
+      : gate.cleared
+        ? `${coreLabel()}の確認テストに合格しています。`
+        : `${set.sets.length}セット完了。次は${gateQuestionCount()}問の確認テストです。`;
 
     el("sessionPanel").innerHTML = `
       <section class="doneBanner">
@@ -805,8 +1045,7 @@ const VocabApp = (function () {
       el("retryWrong").addEventListener("click", () => startSession(wrongWords, "間違えた語を復習"));
     }
     el("nextTwenty").addEventListener("click", () => {
-      const pool = focus.words.length ? focus.words : coreWords();
-      startSession(takeForSession(pool, SESSION_SIZE), focus.title);
+      startFocusSession(focus);
     });
     el("backHome").addEventListener("click", renderHome);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -838,7 +1077,10 @@ const VocabApp = (function () {
       const data = await res.json();
       state.meta = data.meta || {};
       state.words = (data.words || []).filter(w => w.meanings && w.meanings.length);
-      state.progress = loadProgress();
+      const loadedProgress = loadProgress();
+      state.progress = loadedProgress && typeof loadedProgress === "object" && !Array.isArray(loadedProgress)
+        ? loadedProgress
+        : {};
 
       // 生徒別クラウド同期（共有URL ?s=&t= があり config.json が揃うときのみ有効）
       cloud = createCloud({

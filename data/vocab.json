@@ -9,6 +9,8 @@
       "idEnd": 200,
       "setSize": 20,
       "setCount": 10,
+      "gateQuestions": 30,
+      "gatePassRate": 0.8,
       "selectionStatus": "暫定（単語番号順。教材レビュー後に更新）"
     },
     "chapters": [
