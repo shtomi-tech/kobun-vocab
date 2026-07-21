@@ -627,8 +627,9 @@ const VocabApp = (function () {
     const { word } = s.current;
     const last = s.idx === s.queue.length - 1;
     const kanji = word.kanji ? `（${esc(word.kanji)}）` : "";
+    const feedbackArea = el("feedbackArea");
 
-    el("feedbackArea").innerHTML = `
+    feedbackArea.innerHTML = `
       <div class="feedback ${correct ? "ok" : "ng"}">
         <h3>${correct ? "正解" : "不正解"}</h3>
         <p class="word">${esc(word.kana)}${kanji} <small>${esc(word.pos)}</small></p>
@@ -643,7 +644,11 @@ const VocabApp = (function () {
     `;
     const nextBtn = el("nextBtn");
     nextBtn.addEventListener("click", nextQuestion);
-    nextBtn.focus();
+    nextBtn.focus({ preventScroll: true });
+    if (typeof feedbackArea.scrollIntoView === "function") {
+      const behavior = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+      requestAnimationFrame(() => feedbackArea.scrollIntoView({ behavior, block: "start" }));
+    }
   }
 
   function nextQuestion() {
