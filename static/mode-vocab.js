@@ -8,11 +8,13 @@
    ============================================================ */
 
 const VocabApp = (function () {
-  const DATA_URL = "data/vocab.json";
+  const DATA_URL = "data/vocab.json?v=0.3.0";
   const STORE_KEY = "kobun_vocab_progress_v1";
   const RANGE_KEY = "kobun_vocab_range_v1";
-  const SESSION_KEY = "kobun_vocab_session_v1";
+  const SESSION_KEY = "kobun_vocab_session_v2"; // 200語・10セット制への移行で旧300語セッションを再開しない
   const APP_ID = "kobun-vocab";
+  const SESSION_SIZE = 20;
+  const CORE_MASTERY_REQUIRED = 1;
   const NEXT_KEY_COOLDOWN_MS = 500; // 解答直後の数字キー連打を「次へ」と誤認しない猶予
 
   const state = {
@@ -118,6 +120,10 @@ const VocabApp = (function () {
     return statOf(id).correct >= 2; // 2回連続でなく累計2回正解で習得扱い
   }
 
+  function isCoreMastered(id) {
+    return statOf(id).correct >= CORE_MASTERY_REQUIRED;
+  }
+
   /* ---------- utils ---------- */
   function shuffle(arr) {
     const a = arr.slice();
@@ -138,24 +144,55 @@ const VocabApp = (function () {
     if (Number.isNaN(n)) return fallback;
     return Math.min(max, Math.max(min, n));
   }
-  function progressSummary(words = state.words) {
+  function progressSummary(words = state.words, masteryCheck = masteryForId) {
     const total = words.length;
-    const mastered = words.filter(w => isMastered(w.id)).length;
+    const mastered = words.filter(w => masteryCheck(w.id)).length;
     const attempted = words.filter(w => {
       const s = statOf(w.id);
       return s.correct + s.wrong > 0;
     }).length;
     const weak = words.filter(w => {
       const s = statOf(w.id);
-      return s.wrong > 0 && !isMastered(w.id);
+      return s.wrong > 0 && !masteryCheck(w.id);
     }).length;
     return { total, mastered, attempted, weak, remaining: Math.max(0, total - mastered) };
   }
   function coreWords() {
     const spec = state.meta.core || {};
     const start = Number.isInteger(spec.idStart) ? spec.idStart : 1;
-    const end = Number.isInteger(spec.idEnd) ? spec.idEnd : 300;
+    const end = Number.isInteger(spec.idEnd) ? spec.idEnd : 200;
     return state.words.filter(w => w.id >= start && w.id <= end);
+  }
+  function isCoreId(id) {
+    const spec = state.meta.core || {};
+    const start = Number.isInteger(spec.idStart) ? spec.idStart : 1;
+    const end = Number.isInteger(spec.idEnd) ? spec.idEnd : 200;
+    return id >= start && id <= end;
+  }
+  function masteryForId(id) {
+    return isCoreId(id) ? isCoreMastered(id) : isMastered(id);
+  }
+  function coreLabel() {
+    const spec = state.meta.core || {};
+    return spec.label || `コア${coreWords().length}語`;
+  }
+  function coreSetSize() {
+    const spec = state.meta.core || {};
+    return Number.isInteger(spec.setSize) && spec.setSize > 0 ? spec.setSize : SESSION_SIZE;
+  }
+  function coreSetInfo() {
+    const core = coreWords();
+    const size = coreSetSize();
+    const sets = [];
+    for (let i = 0; i < core.length; i += size) sets.push(core.slice(i, i + size));
+    const index = sets.findIndex(words => progressSummary(words, isCoreMastered).remaining > 0);
+    const currentIndex = index >= 0 ? index : Math.max(0, sets.length - 1);
+    return {
+      sets,
+      index: currentIndex,
+      words: sets[currentIndex] || [],
+      complete: index < 0,
+    };
   }
   function supplementalWords() {
     const coreIds = new Set(coreWords().map(w => w.id));
@@ -163,13 +200,17 @@ const VocabApp = (function () {
   }
   function focusPlan() {
     const core = coreWords();
-    const coreProgress = progressSummary(core);
+    const coreProgress = progressSummary(core, isCoreMastered);
     if (coreProgress.remaining > 0) {
+      const set = coreSetInfo();
+      const setNumber = set.index + 1;
       return {
-        words: firstUnmastered(core),
-        title: "コア300語",
-        cta: "コア300語を続ける",
+        words: set.words,
+        title: `${coreLabel()}・セット${setNumber}/${set.sets.length}`,
+        cta: `セット${setNumber}/${set.sets.length}を続ける`,
         complete: false,
+        setNumber,
+        setTotal: set.sets.length,
       };
     }
     const extra = supplementalWords();
@@ -184,14 +225,14 @@ const VocabApp = (function () {
     }
     return {
       words: core,
-      title: "コア300語の復習",
-      cta: "コア300語を復習する",
+      title: `${coreLabel()}の復習`,
+      cta: `${coreLabel()}を復習する`,
       complete: true,
     };
   }
   function stage1Status() {
     const core = coreWords();
-    const progress = progressSummary(core);
+    const progress = progressSummary(core, isCoreMastered);
     return {
       total: progress.total,
       mastered: progress.mastered,
@@ -213,11 +254,11 @@ const VocabApp = (function () {
       <section class="card hero">
         <p class="label">STAGE 2 / GRAMMAR</p>
         <h2>文法は、単語のあとに進みます</h2>
-        <p class="hint">コア300語をすべて2回正解すると、用言の活用から解放されます。</p>
+        <p class="hint">${coreLabel()}を10セット（1セット${SESSION_SIZE}問）で終え、必須語をすべて1回正解すると、用言の活用から解放されます。</p>
       </section>
       <section class="card">
         <p class="label">段階1の終了条件</p>
-        <p class="resultText">コア語の習得 ${status.mastered} / ${status.total}。残り${status.remaining}語です。</p>
+        <p class="resultText">${coreLabel()}の習得 ${status.mastered} / ${status.total}。残り${status.remaining}語です。</p>
         <div class="actions">
           <button class="cta" id="returnToStage1" type="button">段階1の単語へ戻る</button>
         </div>
@@ -226,7 +267,7 @@ const VocabApp = (function () {
     el("returnToStage1").addEventListener("click", renderHome);
   }
   function firstUnmastered(words) {
-    return words.filter(w => !isMastered(w.id));
+    return words.filter(w => !masteryForId(w.id));
   }
   function takeForSession(words, limit) {
     return shuffle(words).slice(0, Math.min(limit, words.length));
@@ -271,11 +312,11 @@ const VocabApp = (function () {
     home.classList.remove("hide");
 
     const core = coreWords();
-    const coreProgress = progressSummary(core);
+    const coreProgress = progressSummary(core, isCoreMastered);
     const extraProgress = progressSummary(supplementalWords());
     const weak = core.filter(w => {
       const s = statOf(w.id);
-      return s.wrong > 0 && !isMastered(w.id);
+      return s.wrong > 0 && !isCoreMastered(w.id);
     });
     const chapters = chapterGroups();
     const chapterEntries = [{ name: "すべての章", words: state.words, isAll: true }, ...chapters];
@@ -302,12 +343,12 @@ const VocabApp = (function () {
 
       <section class="card hero">
         <p class="label">Kobun Vocabulary ・ 段階1</p>
-        <h2>${coreProgress.remaining > 0 ? "まず、コア300語を固める" : "コア300語を完了しました"}</h2>
+        <h2>${coreProgress.remaining > 0 ? `${coreLabel()}を10セットで固める` : `${coreLabel()}を完了しました`}</h2>
         <button class="cta primaryCta" id="startToday" type="button">
-          <span class="ctaTag">${coreProgress.remaining > 0 ? "おすすめ・約3分" : "段階1の次"}</span>
+          <span class="ctaTag">${coreProgress.remaining > 0 ? `おすすめ・${SESSION_SIZE}問` : "段階1の次"}</span>
           <span class="ctaMain">${esc(focus.cta)}</span>
         </button>
-        <p class="hint">古語 → 現代語訳の4択。単語番号1〜300をコア語として扱います（暫定）。コア語は2回正解で習得扱い、間違えた語はセッションの最後にまとめて復習します。${coreProgress.remaining > 0 ? "文法はコア語完了後に進みます。" : `追加${extraProgress.total}語は補助練習として続けられます。`}</p>
+        <p class="hint">古語 → 現代語訳の4択。必須${coreProgress.total}語を${focus.setTotal || Math.ceil(coreProgress.total / SESSION_SIZE)}セットに分け、1セット${SESSION_SIZE}問で進めます。必須語は1回正解で習得扱い、誤答があるセットは同じセットを再確認します。${coreProgress.remaining > 0 ? "文法は必須語完了後に進みます。" : `追加${extraProgress.total}語は補助練習として続けられます。`}</p>
       </section>
 
       <section class="card">
@@ -326,14 +367,14 @@ const VocabApp = (function () {
             <div class="statCaption">WEAK・要復習</div>
           </div>
         </div>
-        <div class="masteryBar" aria-label="コア300語の習得率 ${coreProgress.mastered}/${coreProgress.total}">
+        <div class="masteryBar" aria-label="${coreLabel()}の習得率 ${coreProgress.mastered}/${coreProgress.total}">
           <div class="masteryFill" style="width:${coreProgress.total ? Math.round((coreProgress.mastered / coreProgress.total) * 100) : 0}%"></div>
         </div>
         ${weak.length ? `
         <div class="actions">
           <button class="cta reviewCta" id="startWeak" type="button">間違えた${weak.length}語を復習する</button>
         </div>` : ""}
-        <p class="hint">コア語の残り${coreProgress.remaining}語。追加語は${extraProgress.mastered}/${extraProgress.total}語を習得。</p>
+        <p class="hint">必須語の残り${coreProgress.remaining}語。${focus.setNumber ? `現在はセット${focus.setNumber}/${focus.setTotal}です。` : ""}追加語は${extraProgress.mastered}/${extraProgress.total}語を習得。</p>
       </section>
 
       <section class="card">
@@ -398,17 +439,17 @@ const VocabApp = (function () {
     }
     el("startToday").addEventListener("click", () => {
       const pool = todayPool.length ? todayPool : core;
-      startSession(takeForSession(pool, 20), focus.title);
+      startSession(takeForSession(pool, SESSION_SIZE), focus.title);
     });
     if (weak.length) {
-      el("startWeak").addEventListener("click", () => startSession(takeForSession(weak, 20), "間違えた語を復習"));
+      el("startWeak").addEventListener("click", () => startSession(takeForSession(weak, SESSION_SIZE), "間違えた語を復習"));
     }
     document.querySelectorAll(".chapterBtn").forEach(btn => {
       btn.addEventListener("click", () => {
         const c = chapterEntries[parseInt(btn.dataset.ci, 10)];
         if (c && c.words.length) {
           const pool = firstUnmastered(c.words);
-          startSession(takeForSession(pool.length ? pool : c.words, 20), c.name);
+          startSession(takeForSession(pool.length ? pool : c.words, SESSION_SIZE), c.name);
         }
       });
     });
@@ -440,7 +481,7 @@ const VocabApp = (function () {
       if (!words.length) return;
       saveRange(lo, hi);
       const pool = firstUnmastered(words);
-      startSession(takeForSession(pool.length ? pool : words, 20), `単語${lo}〜${hi}`);
+      startSession(takeForSession(pool.length ? pool : words, SESSION_SIZE), `単語${lo}〜${hi}`);
     });
     if (!sharedMode) {
       el("resetBtn").addEventListener("click", () => {
@@ -485,7 +526,7 @@ const VocabApp = (function () {
   function weakWords() {
     return state.words.filter(w => {
       const s = statOf(w.id);
-      return s.wrong > 0 && !isMastered(w.id);
+      return s.wrong > 0 && !masteryForId(w.id);
     });
   }
 
@@ -732,12 +773,13 @@ const VocabApp = (function () {
     const score = s.correctCount;
     const pct = Math.round((score / total) * 100);
     const wrongWords = state.words.filter(w => s.wrongIds.includes(w.id));
-    const masteredNow = s.queue.filter(w => isMastered(w.id)).length;
+    const masteredNow = s.queue.filter(w => masteryForId(w.id)).length;
     const focus = focusPlan();
-    const coreProgress = progressSummary(coreWords());
+    const coreProgress = progressSummary(coreWords(), isCoreMastered);
+    const set = coreSetInfo();
     const stageMessage = coreProgress.remaining > 0
-      ? `コア語の残りは${coreProgress.remaining}語です。`
-      : "コア300語は完了しています。";
+      ? `${coreLabel()}の残りは${coreProgress.remaining}語です。次はセット${set.index + 1}/${set.sets.length}です。`
+      : `${coreLabel()}は完了しています。`;
 
     el("sessionPanel").innerHTML = `
       <section class="doneBanner">
@@ -764,7 +806,7 @@ const VocabApp = (function () {
     }
     el("nextTwenty").addEventListener("click", () => {
       const pool = focus.words.length ? focus.words : coreWords();
-      startSession(takeForSession(pool, 20), focus.title);
+      startSession(takeForSession(pool, SESSION_SIZE), focus.title);
     });
     el("backHome").addEventListener("click", renderHome);
     window.scrollTo({ top: 0, behavior: "smooth" });

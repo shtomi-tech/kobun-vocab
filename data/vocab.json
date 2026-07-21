@@ -4,9 +4,11 @@
     "source": "掲載単語まとめ（word list）001〜408",
     "note": "古語→意味の4択。誤答は他語の意味から自動生成。敬語の語義は（謙／尊／丁・補＝補助動詞）と元の語を簡潔に付記。",
     "core": {
-      "label": "コア300語",
+      "label": "コア200語",
       "idStart": 1,
-      "idEnd": 300,
+      "idEnd": 200,
+      "setSize": 20,
+      "setCount": 10,
       "selectionStatus": "暫定（単語番号順。教材レビュー後に更新）"
     },
     "chapters": [
