@@ -1,8 +1,8 @@
 "use strict";
 
 /* ============================================================
-   古文演習 — 古文単語／古典文法を切り替える薄いシェル。
-   古典文法内の「活用表／文法4択／識別」は mode-katsuyo.js 側で切り替える。
+   古文演習 — 段階1の古文単語／段階2の古典文法を切り替える薄いシェル。
+   文法ロードマップと内部の練習UIは mode-katsuyo.js 側で管理する。
    ============================================================ */
 
 const APPS = [
@@ -19,6 +19,12 @@ function renderAppNav() {
     const btn = document.createElement("button");
     btn.type = "button";
     btn.className = "appTab";
+    const locked = a.id === "grammar" && !VocabApp.isStage1Complete();
+    if (locked) {
+      btn.classList.add("locked");
+      btn.setAttribute("aria-disabled", "true");
+      btn.title = "コア300語を完了すると解放されます";
+    }
     btn.setAttribute("aria-pressed", a.id === currentAppId ? "true" : "false");
     const tag = document.createElement("span");
     tag.textContent = a.tag;
@@ -30,6 +36,14 @@ function renderAppNav() {
 }
 
 function switchApp(id) {
+  if (id === "grammar" && !VocabApp.isStage1Complete()) {
+    currentAppId = "vocab";
+    document.getElementById("appTitle").textContent = APPS[0].title;
+    document.title = APPS[0].title;
+    renderAppNav();
+    VocabApp.showStageGate();
+    return;
+  }
   if (currentAppId === id) return;
   currentAppId = id;
   const next = APPS.find(a => a.id === id);

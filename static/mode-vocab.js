@@ -151,6 +151,80 @@ const VocabApp = (function () {
     }).length;
     return { total, mastered, attempted, weak, remaining: Math.max(0, total - mastered) };
   }
+  function coreWords() {
+    const spec = state.meta.core || {};
+    const start = Number.isInteger(spec.idStart) ? spec.idStart : 1;
+    const end = Number.isInteger(spec.idEnd) ? spec.idEnd : 300;
+    return state.words.filter(w => w.id >= start && w.id <= end);
+  }
+  function supplementalWords() {
+    const coreIds = new Set(coreWords().map(w => w.id));
+    return state.words.filter(w => !coreIds.has(w.id));
+  }
+  function focusPlan() {
+    const core = coreWords();
+    const coreProgress = progressSummary(core);
+    if (coreProgress.remaining > 0) {
+      return {
+        words: firstUnmastered(core),
+        title: "コア300語",
+        cta: "コア300語を続ける",
+        complete: false,
+      };
+    }
+    const extra = supplementalWords();
+    const extraProgress = progressSummary(extra);
+    if (extraProgress.remaining > 0) {
+      return {
+        words: firstUnmastered(extra),
+        title: "追加語",
+        cta: "追加語を続ける",
+        complete: true,
+      };
+    }
+    return {
+      words: core,
+      title: "コア300語の復習",
+      cta: "コア300語を復習する",
+      complete: true,
+    };
+  }
+  function stage1Status() {
+    const core = coreWords();
+    const progress = progressSummary(core);
+    return {
+      total: progress.total,
+      mastered: progress.mastered,
+      remaining: progress.remaining,
+      complete: progress.total > 0 && progress.remaining === 0,
+    };
+  }
+  function notifyStageStatusChanged() {
+    if (typeof renderAppNav === "function") renderAppNav();
+  }
+  function showStageGate() {
+    const status = stage1Status();
+    state.session = null;
+    el("sessionPanel").classList.add("hide");
+    el("sessionPanel").innerHTML = "";
+    const home = el("homePanel");
+    home.classList.remove("hide");
+    home.innerHTML = `
+      <section class="card hero">
+        <p class="label">STAGE 2 / GRAMMAR</p>
+        <h2>文法は、単語のあとに進みます</h2>
+        <p class="hint">コア300語をすべて2回正解すると、用言の活用から解放されます。</p>
+      </section>
+      <section class="card">
+        <p class="label">段階1の終了条件</p>
+        <p class="resultText">コア語の習得 ${status.mastered} / ${status.total}。残り${status.remaining}語です。</p>
+        <div class="actions">
+          <button class="cta" id="returnToStage1" type="button">段階1の単語へ戻る</button>
+        </div>
+      </section>
+    `;
+    el("returnToStage1").addEventListener("click", renderHome);
+  }
   function firstUnmastered(words) {
     return words.filter(w => !isMastered(w.id));
   }
@@ -196,16 +270,21 @@ const VocabApp = (function () {
     const home = el("homePanel");
     home.classList.remove("hide");
 
-    const { total, mastered, attempted, remaining } = progressSummary();
-    const weak = weakWords();
+    const core = coreWords();
+    const coreProgress = progressSummary(core);
+    const extraProgress = progressSummary(supplementalWords());
+    const weak = core.filter(w => {
+      const s = statOf(w.id);
+      return s.wrong > 0 && !isMastered(w.id);
+    });
     const chapters = chapterGroups();
     const chapterEntries = [{ name: "すべての章", words: state.words, isAll: true }, ...chapters];
     const { min: idMin, max: idMax } = idBounds();
     const savedRange = loadRange();
     const rangeStart = clampInt(savedRange && savedRange.start, idMin, idMax, idMin);
     const rangeEnd = clampInt(savedRange && savedRange.end, idMin, idMax, idMax);
-    const todayPool = firstUnmastered(state.words);
-    const todayCount = Math.min(20, todayPool.length || total);
+    const focus = focusPlan();
+    const todayPool = focus.words;
     const sharedMode = !!(cloud && cloud.isEnabled());
     const savedSession = loadSavedSession();
 
@@ -222,24 +301,24 @@ const VocabApp = (function () {
       </section>` : ""}
 
       <section class="card hero">
-        <p class="label">Kobun Vocabulary</p>
-        <h2>今日の20語から、408語を着実に回す</h2>
+        <p class="label">Kobun Vocabulary ・ 段階1</p>
+        <h2>${coreProgress.remaining > 0 ? "まず、コア300語を固める" : "コア300語を完了しました"}</h2>
         <button class="cta primaryCta" id="startToday" type="button">
-          <span class="ctaTag">おすすめ・約3分</span>
-          <span class="ctaMain">今日の20語を始める</span>
+          <span class="ctaTag">${coreProgress.remaining > 0 ? "おすすめ・約3分" : "段階1の次"}</span>
+          <span class="ctaMain">${esc(focus.cta)}</span>
         </button>
-        <p class="hint">古語 → 現代語訳の4択。2回正解で習得扱い、間違えた語はセッションの最後にまとめて復習します。</p>
+        <p class="hint">古語 → 現代語訳の4択。単語番号1〜300をコア語として扱います（暫定）。コア語は2回正解で習得扱い、間違えた語はセッションの最後にまとめて復習します。${coreProgress.remaining > 0 ? "文法はコア語完了後に進みます。" : `追加${extraProgress.total}語は補助練習として続けられます。`}</p>
       </section>
 
       <section class="card">
-        <p class="label">Progress</p>
+        <p class="label">段階1の進捗</p>
         <div class="statGrid">
           <div class="statCell">
-            <div class="statNum">${mastered}<small>/${total}</small></div>
+            <div class="statNum">${coreProgress.mastered}<small>/${coreProgress.total}</small></div>
             <div class="statCaption">MASTERED・習得</div>
           </div>
           <div class="statCell">
-            <div class="statNum">${attempted}<small>/${total}</small></div>
+            <div class="statNum">${coreProgress.attempted}<small>/${coreProgress.total}</small></div>
             <div class="statCaption">STARTED・着手</div>
           </div>
           <div class="statCell">
@@ -247,19 +326,19 @@ const VocabApp = (function () {
             <div class="statCaption">WEAK・要復習</div>
           </div>
         </div>
-        <div class="masteryBar" aria-label="習得率 ${mastered}/${total}">
-          <div class="masteryFill" style="width:${total ? Math.round((mastered / total) * 100) : 0}%"></div>
+        <div class="masteryBar" aria-label="コア300語の習得率 ${coreProgress.mastered}/${coreProgress.total}">
+          <div class="masteryFill" style="width:${coreProgress.total ? Math.round((coreProgress.mastered / coreProgress.total) * 100) : 0}%"></div>
         </div>
         ${weak.length ? `
         <div class="actions">
           <button class="cta reviewCta" id="startWeak" type="button">間違えた${weak.length}語を復習する</button>
         </div>` : ""}
-        <p class="hint">残り${remaining}語。</p>
+        <p class="hint">コア語の残り${coreProgress.remaining}語。追加語は${extraProgress.mastered}/${extraProgress.total}語を習得。</p>
       </section>
 
       <section class="card">
         <details class="chapterDetails">
-          <summary class="label">章から選ぶ（全${chapters.length}章）</summary>
+          <summary class="label">補助：章から選ぶ（全${chapters.length}章）</summary>
           <div class="chapterList">
             ${chapterEntries.map((c, i) => {
               const cp = progressSummary(c.words);
@@ -278,7 +357,7 @@ const VocabApp = (function () {
 
       <section class="card">
         <details class="chapterDetails">
-          <summary class="label">単語番号で選ぶ（${idMin}〜${idMax}）</summary>
+          <summary class="label">補助：単語番号で選ぶ（${idMin}〜${idMax}）</summary>
           <div class="rangePicker">
             <div class="rangeRow">
               <label class="rangeField">
@@ -318,8 +397,8 @@ const VocabApp = (function () {
       });
     }
     el("startToday").addEventListener("click", () => {
-      const pool = todayPool.length ? todayPool : state.words;
-      startSession(takeForSession(pool, 20), "今日の20語");
+      const pool = todayPool.length ? todayPool : core;
+      startSession(takeForSession(pool, 20), focus.title);
     });
     if (weak.length) {
       el("startWeak").addEventListener("click", () => startSession(takeForSession(weak, 20), "間違えた語を復習"));
@@ -373,6 +452,7 @@ const VocabApp = (function () {
         }
       });
     }
+    notifyStageStatusChanged();
   }
 
   // id の最小・最大（単語番号の範囲指定に使う）
@@ -648,6 +728,11 @@ const VocabApp = (function () {
     const pct = Math.round((score / total) * 100);
     const wrongWords = state.words.filter(w => s.wrongIds.includes(w.id));
     const masteredNow = s.queue.filter(w => isMastered(w.id)).length;
+    const focus = focusPlan();
+    const coreProgress = progressSummary(coreWords());
+    const stageMessage = coreProgress.remaining > 0
+      ? `コア語の残りは${coreProgress.remaining}語です。`
+      : "コア300語は完了しています。";
 
     el("sessionPanel").innerHTML = `
       <section class="doneBanner">
@@ -657,10 +742,10 @@ const VocabApp = (function () {
       </section>
       <section class="card">
         <p class="label">Next</p>
-        <p class="resultText">このセッション内の習得語は${masteredNow}語。${wrongWords.length ? `間違えた語はホームの「間違えた語を復習する」に残ります。` : ""}</p>
+        <p class="resultText">このセッション内の習得語は${masteredNow}語。${stageMessage}${wrongWords.length ? `間違えた語はホームの「間違えた語を復習する」に残ります。` : ""}</p>
         <div class="actions">
           ${wrongWords.length ? `<button class="cta reviewCta" id="retryWrong" type="button">間違えた${wrongWords.length}語をもう一度</button>` : ""}
-          <button class="${wrongWords.length ? "ghost inlineGhost" : "cta"}" id="nextTwenty" type="button">今日の20語</button>
+          <button class="${wrongWords.length ? "ghost inlineGhost" : "cta"}" id="nextTwenty" type="button">${esc(focus.cta)}</button>
           <button class="ghost smallGhost" id="backHome" type="button">ホームに戻る</button>
         </div>
         ${wrongWords.length ? `<div class="wrongList">
@@ -673,8 +758,8 @@ const VocabApp = (function () {
       el("retryWrong").addEventListener("click", () => startSession(wrongWords, "間違えた語を復習"));
     }
     el("nextTwenty").addEventListener("click", () => {
-      const pool = firstUnmastered(state.words);
-      startSession(takeForSession(pool.length ? pool : state.words, 20), "今日の20語");
+      const pool = focus.words.length ? focus.words : coreWords();
+      startSession(takeForSession(pool, 20), focus.title);
     });
     el("backHome").addEventListener("click", renderHome);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -730,5 +815,5 @@ const VocabApp = (function () {
     await boot();
   }
 
-  return { mount, handleKey };
+  return { mount, handleKey, isStage1Complete: () => stage1Status().complete, showStageGate };
 })();

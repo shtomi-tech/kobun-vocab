@@ -15,7 +15,63 @@ const KatsuyoApp = (function () {
   let cloud = null;
   let flow = null; // 識別セクションの学習フロー文脈（理解→4択→実践）
   let grammarMode = false; // 上段の「古典文法」モードかどうか
-  let activeGrammarMode = "katsuyo"; // 古典文法内の現在の練習モード
+  let activeGrammarMode = "roadmap"; // 古典文法内の現在の練習モード
+  let activeGrammarPathTask = null; // 文法ロードマップから開始した必修タスク
+  const PATH_STORE_KEY = "kobun-katsuyo-path-v1";
+  const GRAMMAR_PATH = [
+    {
+      id: "yougo",
+      label: "1. 用言の活用・基礎",
+      description: "用言の活用表と、品詞・活用形の基礎を固める",
+      tasks: [
+        { id: "yougo-table", kind: "group", setId: "yougo", groupId: "yougo-all", label: "用言13語の活用表" },
+        { id: "choice-ch1", kind: "group", setId: "choice", groupId: "qa-chapter-1", label: "品詞・活用・係り結び 11問" },
+        { id: "choice-ch2", kind: "group", setId: "choice", groupId: "qa-chapter-2", label: "用言の攻略 26問" },
+      ],
+    },
+    {
+      id: "jodoshi",
+      label: "2. 助動詞の活用・接続",
+      description: "助動詞の活用表を埋め、接続と活用を4択で確認する",
+      tasks: [
+        { id: "jodoshi-table", kind: "group", setId: "jodoshi", groupId: "all", label: "助動詞28語の活用表" },
+        { id: "choice-ch3", kind: "group", setId: "choice", groupId: "qa-chapter-3", label: "助動詞の攻略① 15問" },
+        { id: "choice-ch5", kind: "group", setId: "choice", groupId: "qa-chapter-5", label: "助動詞の攻略③ 9問" },
+      ],
+    },
+    {
+      id: "shikibetsu",
+      label: "3. 助動詞の識別",
+      description: "内容理解→4択→実践の順で、8種類の助動詞を識別する",
+      tasks: [
+        { id: "proc-rareru", kind: "procedure", procId: "rareru", label: "る・らるの識別" },
+        { id: "proc-sasu", kind: "procedure", procId: "sasu", label: "す・さす・しむの識別" },
+        { id: "proc-mu", kind: "procedure", procId: "mu", label: "む・むずの識別" },
+        { id: "proc-mashi", kind: "procedure", procId: "mashi", label: "ましの識別" },
+        { id: "proc-keri", kind: "procedure", procId: "keri", label: "けりの識別" },
+        { id: "proc-ramu", kind: "procedure", procId: "ramu", label: "らむの識別" },
+        { id: "proc-beshi", kind: "procedure", procId: "beshi", label: "べしの識別" },
+        { id: "proc-nari", kind: "procedure", procId: "nari", label: "なりの識別" },
+      ],
+    },
+    {
+      id: "keigo",
+      label: "4. 敬語の基礎",
+      description: "敬語の種類・敬意の方向・本動詞と補助動詞を確認する",
+      tasks: [
+        { id: "choice-ch9", kind: "group", setId: "choice", groupId: "qa-chapter-9", label: "敬語の攻略 12問" },
+        { id: "proc-keigo", kind: "procedure", procId: "keigo", label: "敬語の識別" },
+      ],
+    },
+    {
+      id: "grammar-checkpoint",
+      label: "文法混合確認",
+      description: "必修範囲からランダムに出題し、文法全体を確認する",
+      tasks: [
+        { id: "grammar-checkpoint", kind: "checkpoint", label: "文法混合確認30問" },
+      ],
+    },
+  ];
 
   /* ---------- progress (localStorage) ---------- */
   function loadProgress() {
@@ -143,26 +199,21 @@ const KatsuyoApp = (function () {
     return result;
   }
   function goHome() {
-    if (grammarMode && activeGrammarMode === "katsuyo") renderKatsuyoHome();
+    if (grammarMode && activeGrammarMode === "roadmap") renderGrammarRoadmapHome();
+    else if (grammarMode && activeGrammarMode === "katsuyo") renderKatsuyoHome();
     else renderHome();
   }
 
   function renderGrammarNav() {
     const nav = el("nav", "appNav grammarNav");
     nav.setAttribute("aria-label", "古典文法の練習モード");
-    [
-      { id: "katsuyo", tag: "INFLECTION", label: "活用表" },
-      { id: "choice", tag: "MULTIPLE CHOICE", label: "文法4択" },
-      { id: "shikibetsu", tag: "IDENTIFY", label: "識別" },
-    ].forEach(mode => {
-      const btn = el("button", "appTab");
-      btn.type = "button";
-      btn.setAttribute("aria-pressed", mode.id === activeGrammarMode ? "true" : "false");
-      btn.appendChild(el("span", null, mode.tag));
-      btn.appendChild(document.createTextNode(mode.label));
-      btn.addEventListener("click", () => selectGrammarMode(mode.id));
-      nav.appendChild(btn);
-    });
+    const btn = el("button", "appTab");
+    btn.type = "button";
+    btn.setAttribute("aria-pressed", activeGrammarMode === "roadmap" ? "true" : "false");
+    btn.appendChild(el("span", null, "STAGE 2"));
+    btn.appendChild(document.createTextNode("文法ロードマップ"));
+    btn.addEventListener("click", () => selectGrammarMode("roadmap"));
+    nav.appendChild(btn);
     return nav;
   }
 
@@ -172,6 +223,10 @@ const KatsuyoApp = (function () {
 
   function selectGrammarMode(id) {
     activeGrammarMode = id;
+    if (id === "roadmap") {
+      renderGrammarRoadmapHome();
+      return;
+    }
     if (id === "katsuyo") {
       currentSet = null;
       renderKatsuyoHome();
@@ -368,6 +423,222 @@ const KatsuyoApp = (function () {
   }
   function firstIncompleteProcedure() {
     return shikibetsuProcedures().find(proc => !shikibetsuProcStatus(proc.id).complete) || null;
+  }
+
+  /* ---------- 文法ロードマップ（第2段階） ---------- */
+  function loadPathState() {
+    try {
+      const raw = localStorage.getItem(PATH_STORE_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch (_) { return {}; }
+  }
+  function savePathState(state) {
+    try { localStorage.setItem(PATH_STORE_KEY, JSON.stringify(state)); } catch (_) {}
+  }
+  function practiceSetById(id) {
+    return DATA.practiceSets.find(set => set.id === id) || null;
+  }
+  function taskGroup(task) {
+    const prev = currentSet;
+    const set = practiceSetById(task.setId);
+    if (!set) return null;
+    currentSet = set;
+    const group = getGroups().find(g => g.id === task.groupId) || null;
+    currentSet = prev;
+    return group;
+  }
+  function taskIds(task) {
+    const group = taskGroup(task);
+    return group ? group.ids.slice() : [];
+  }
+  function taskStatus(task) {
+    if (task.kind === "procedure") {
+      const prev = currentSet;
+      currentSet = practiceSetById("shikibetsu");
+      const status = shikibetsuProcStatus(task.procId);
+      currentSet = prev;
+      return {
+        done: status.quizDone + status.practiceDone,
+        total: status.quizIds.length + status.practiceIds.length,
+        complete: status.complete,
+      };
+    }
+    if (task.kind === "checkpoint") {
+      const checkpoint = loadPathState().grammarCheckpoint || {};
+      const total = Number(checkpoint.total) || 30;
+      const score = Number(checkpoint.score) || 0;
+      return { done: checkpoint.passed ? total : score, total, complete: checkpoint.passed };
+    }
+    const prev = currentSet;
+    const set = practiceSetById(task.setId);
+    if (!set) return { done: 0, total: 0, complete: false };
+    currentSet = set;
+    const p = loadProgress();
+    const ids = taskIds(task);
+    const done = ids.filter(id => isMastered(progressRecord(p, id))).length;
+    currentSet = prev;
+    return { done, total: ids.length, complete: ids.length > 0 && done === ids.length };
+  }
+  function grammarPathStatus() {
+    let previousComplete = true;
+    return GRAMMAR_PATH.map(stage => {
+      const tasks = stage.tasks.map(task => Object.assign({}, task, { status: taskStatus(task) }));
+      const complete = tasks.every(task => task.status.complete);
+      const available = previousComplete;
+      previousComplete = previousComplete && complete;
+      return Object.assign({}, stage, { tasks, complete, available });
+    });
+  }
+  function firstIncompleteGrammarTask() {
+    const stages = grammarPathStatus();
+    for (const stage of stages) {
+      if (!stage.available || stage.complete) continue;
+      const task = stage.tasks.find(item => !item.status.complete);
+      if (task) return { stage, task };
+    }
+    return null;
+  }
+  function requiredChoiceIds() {
+    const ids = [];
+    GRAMMAR_PATH.forEach(stage => stage.tasks.forEach(task => {
+      if (task.kind === "group" && task.setId === "choice") ids.push(...taskIds(task));
+    }));
+    return [...new Set(ids)];
+  }
+  function startRequiredTask(task, review = false) {
+    activeGrammarMode = "roadmap";
+    activeGrammarPathTask = task.id;
+    if (task.kind === "procedure") {
+      currentSet = practiceSetById("shikibetsu");
+      startShikibetsuFlow(task.procId);
+      return;
+    }
+    if (task.kind === "checkpoint") {
+      currentSet = practiceSetById("choice");
+      const ids = shuffle(requiredChoiceIds()).slice(0, 30);
+      startSession(ids, task.label, { pathTask: task.id });
+      return;
+    }
+    const set = practiceSetById(task.setId);
+    const ids = taskIds(task);
+    const p = loadProgress();
+    currentSet = set;
+    const pending = review ? ids : ids.filter(id => !isMastered(progressRecord(p, id)));
+    startSession(pending.length ? pending : ids, task.label, { pathTask: task.id });
+  }
+  function renderGrammarRoadmapHome() {
+    flow = null;
+    session = null;
+    currentSet = null;
+    activeGrammarMode = "roadmap";
+    activeGrammarPathTask = null;
+    sessionPanel.classList.add("hide");
+    sessionPanel.innerHTML = "";
+    homePanel.classList.remove("hide");
+    homePanel.innerHTML = "";
+
+    const stages = grammarPathStatus();
+    const next = firstIncompleteGrammarTask();
+    const completedStages = stages.filter(stage => stage.complete).length;
+    const hero = el("section", "card hero");
+    hero.appendChild(el("span", "label", "STAGE 2 / GRAMMAR"));
+    hero.appendChild(el("h2", null, next ? "文法を順番に固める" : "第2段階の文法を完了しました"));
+    hero.appendChild(el("p", "hint", "用言 → 助動詞 → 助動詞識別 → 敬語基礎の順で進みます。後の項目は、前の必修を終えるまで解放されません。"));
+    if (next) {
+      const primary = el("button", "cta primaryCta", "");
+      primary.type = "button";
+      primary.appendChild(el("span", "ctaTag", "次にやること"));
+      primary.appendChild(el("span", "ctaMain", next.task.label));
+      primary.addEventListener("click", () => startRequiredTask(next.task));
+      hero.appendChild(primary);
+    } else {
+      hero.appendChild(el("p", "hint", "第3段階（敬語読解）は次の実装で接続します。復習は下の完了済み項目から行えます。"));
+    }
+    homePanel.appendChild(hero);
+
+    const progress = el("section", "card");
+    progress.appendChild(el("span", "label", "第2段階の進捗"));
+    const grid = el("div", "statGrid");
+    [[String(completedStages), "/ " + stages.length, "COMPLETE・完了"], [String(stages.length - completedStages), "", "REMAINING・残り"], [String(requiredChoiceIds().length), "", "確認対象の4択"]]
+      .forEach(([num, small, cap]) => {
+        const cell = el("div", "statCell");
+        const n = el("div", "statNum");
+        n.appendChild(document.createTextNode(num));
+        if (small) n.appendChild(el("small", null, small));
+        cell.appendChild(n);
+        cell.appendChild(el("div", "statCaption", cap));
+        grid.appendChild(cell);
+      });
+    progress.appendChild(grid);
+    const bar = el("div", "masteryBar");
+    bar.setAttribute("aria-label", "第2段階の完了 " + completedStages + "/" + stages.length);
+    const fill = el("div", "masteryFill");
+    fill.style.width = Math.round(completedStages / stages.length * 100) + "%";
+    bar.appendChild(fill);
+    progress.appendChild(bar);
+    progress.appendChild(el("p", "hint", "通常問題は各項目2回正解、識別フローは4択・実践を全問1回正解で完了扱いです。最後に文法混合確認30問を行います。"));
+    homePanel.appendChild(progress);
+
+    const list = el("div", "pathStages");
+    stages.forEach((stage, stageIndex) => {
+      const card = el("section", "card pathStageCard" + (stage.available && !stage.complete ? " current" : ""));
+      const head = el("div", "pathStageHead");
+      const info = el("div");
+      info.appendChild(el("span", "label", "必修 " + (stageIndex + 1)));
+      info.appendChild(el("h3", null, stage.label));
+      info.appendChild(el("p", "hint", stage.description));
+      head.appendChild(info);
+      const statusLabel = stage.complete ? "完了" : stage.available ? "進行中" : "未解放";
+      head.appendChild(el("span", "pathStageStatus", statusLabel));
+      card.appendChild(head);
+
+      const taskList = el("div", "pathTaskList");
+      stage.tasks.forEach(task => {
+        const row = el("div", "pathTaskRow" + (task.status.complete ? " done" : ""));
+        row.appendChild(el("span", "pathTaskMark", task.status.complete ? "✓" : "□"));
+        row.appendChild(el("span", "pathTaskLabel", task.label));
+        row.appendChild(el("span", "pathTaskStat", task.status.done + "/" + task.status.total));
+        taskList.appendChild(row);
+      });
+      card.appendChild(taskList);
+
+      if (stage.complete) {
+        const actions = el("div", "actions");
+        const review = el("button", "ghost smallGhost", "この必修を復習する");
+        review.type = "button";
+        review.addEventListener("click", () => startRequiredTask(stage.tasks[0], true));
+        actions.appendChild(review);
+        card.appendChild(actions);
+      } else if (!stage.available) {
+        card.appendChild(el("p", "hint pathLockHint", "前の必修を完了すると解放されます。"));
+      }
+      list.appendChild(card);
+    });
+    homePanel.appendChild(list);
+    if (!sharedMode) {
+      const moreCard = el("section", "card");
+      const details = document.createElement("details");
+      details.className = "moreDetails";
+      const summary = document.createElement("summary");
+      summary.className = "label";
+      summary.textContent = "データ管理";
+      details.appendChild(summary);
+      const actions = el("div", "actions");
+      const reset = el("button", "ghost destructive", "文法の進捗をすべて削除");
+      reset.type = "button";
+      reset.addEventListener("click", () => {
+        if (confirm("文法の習得・苦手・確認テストの記録をすべて削除しますか？")) {
+          localStorage.removeItem(STORE_KEY);
+          localStorage.removeItem(PATH_STORE_KEY);
+          renderGrammarRoadmapHome();
+        }
+      });
+      actions.appendChild(reset);
+      details.appendChild(actions);
+      moreCard.appendChild(details);
+      homePanel.appendChild(moreCard);
+    }
+    attachGrammarNav();
   }
 
   /* ---------- cloud sync（生徒別・共有URL ?s=&t= — harness/cloud.js を利用） ---------- */
@@ -670,6 +941,7 @@ const KatsuyoApp = (function () {
       answered: false,
       choiceSelect: null,
       flow: (opts && opts.flow) || null, // 識別の学習フロー内で開始されたセッションかどうか
+      pathTask: (opts && opts.pathTask) || activeGrammarPathTask,
     };
     homePanel.classList.add("hide");
     sessionPanel.classList.remove("hide");
@@ -783,11 +1055,18 @@ const KatsuyoApp = (function () {
       actions.appendChild(next);
     } else {
       card.appendChild(el("p", "resultText", proc.name + "の学習が完了しました。"));
+      const pathNext = session.pathTask ? firstIncompleteGrammarTask() : null;
       const nextProc = firstIncompleteProcedure();
-      if (nextProc) {
-        const next = el("button", "cta", "次の手順を学習する（" + nextProc.name + "） →");
+      const nextTask = pathNext ? pathNext.task : (nextProc ? { label: nextProc.name, procId: nextProc.id, kind: "procedure" } : null);
+      if (nextTask) {
+        const next = el("button", "cta", session.pathTask ? "次の必修へ（" + nextTask.label + "） →" : "次の手順を学習する（" + nextTask.label + "） →");
         next.type = "button";
-        next.addEventListener("click", () => startShikibetsuFlow(nextProc.id));
+        next.addEventListener("click", () => session.pathTask ? startRequiredTask(nextTask) : startShikibetsuFlow(nextTask.procId));
+        actions.appendChild(next);
+      } else if (session.pathTask) {
+        const next = el("button", "cta", "文法ロードマップを見る");
+        next.type = "button";
+        next.addEventListener("click", renderGrammarRoadmapHome);
         actions.appendChild(next);
       }
     }
@@ -1315,6 +1594,16 @@ const KatsuyoApp = (function () {
     const score = session.firstTryOk;
     const pct = total ? Math.round((score / total) * 100) : 0;
 
+    if (session.pathTask === "grammar-checkpoint") {
+      const pathState = loadPathState();
+      pathState.grammarCheckpoint = {
+        score,
+        total,
+        passed: score >= Math.ceil(total * 0.8),
+      };
+      savePathState(pathState);
+    }
+
     const banner = el("div", "doneBanner");
     banner.appendChild(el("p", "label", "Session Complete"));
     banner.querySelector(".label").style.color = "rgba(255,255,255,.72)";
@@ -1327,6 +1616,34 @@ const KatsuyoApp = (function () {
     const card = el("section", "card");
     card.appendChild(el("span", "label", "Next"));
     const wrongCount = session.wrongNos.size;
+    if (session.pathTask) {
+      const next = firstIncompleteGrammarTask();
+      const checkpoint = session.pathTask === "grammar-checkpoint";
+      const passed = checkpoint && score >= Math.ceil(total * 0.8);
+      const result = checkpoint
+        ? (passed ? "文法混合確認に合格しました。" : "文法混合確認は不合格です。24 / 30以上で次へ進めます。")
+        : "この必修タスクを完了しました。";
+      card.appendChild(el("p", "resultText", result + (wrongCount ? "誤答はすべて解き直し済みです。" : "")));
+      const pathActions = el("div", "actions");
+      if (next) {
+        const nextBtn = el("button", "cta", "次の必修へ（" + next.task.label + "） →");
+        nextBtn.type = "button";
+        nextBtn.addEventListener("click", () => startRequiredTask(next.task));
+        pathActions.appendChild(nextBtn);
+      } else {
+        const roadmapBtn = el("button", "cta", "文法ロードマップを見る");
+        roadmapBtn.type = "button";
+        roadmapBtn.addEventListener("click", renderGrammarRoadmapHome);
+        pathActions.appendChild(roadmapBtn);
+      }
+      const homeBtn = el("button", "ghost smallGhost", "ホームに戻る");
+      homeBtn.type = "button";
+      homeBtn.addEventListener("click", goHome);
+      pathActions.appendChild(homeBtn);
+      card.appendChild(pathActions);
+      sessionPanel.appendChild(card);
+      return;
+    }
     card.appendChild(el("p", "resultText", "一発正解は" + score + currentSet.unit + "。" + (wrongCount ? "間違えた" + currentSet.unit + "はホームの「間違えた" + currentSet.unit + "を復習する」に残ります。" : "")));
 
     const actions = el("div", "actions");
@@ -1479,7 +1796,7 @@ const KatsuyoApp = (function () {
     grammarMode = (setId === "grammar");
     if (grammarMode) {
       currentSet = null;
-      renderKatsuyoHome();
+      renderGrammarRoadmapHome();
       return;
     }
     currentSet = DATA.practiceSets.find(s => s.id === setId) || DATA.practiceSets[0];
