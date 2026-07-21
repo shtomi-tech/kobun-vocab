@@ -1,0 +1,388 @@
+{
+  "meta": {
+    "status": "live",
+    "title": "敬語読解",
+    "source": "オリジナル自作文",
+    "note": "敬語の種類・敬意の方向・省略主語を、短い古文の中で判断するための読解問題。市販教材の本文・設問は転記していない。"
+  },
+  "keigoDokkaiQuestions": [
+    {
+      "id": "kd-direction-01",
+      "topic": "敬語読解・敬意の方向",
+      "step": "動作主と相手",
+      "questionType": "integration",
+      "passage": "臣、御文を帝に奉る。",
+      "target": "奉る",
+      "steps": [
+        {
+          "prompt": "傍線部の動作をする人は誰か。",
+          "choices": ["臣", "帝"],
+          "answerIndex": 0,
+          "explanation": "文の主語は「臣」。帝は「に」で示された動作の相手である。"
+        },
+        {
+          "prompt": "「奉る」の敬意は、どちらへ向くか。",
+          "choices": ["臣から帝へ", "帝から臣へ"],
+          "answerIndex": 0,
+          "explanation": "臣の動作を低め、相手の帝を高める謙譲語である。"
+        },
+        {
+          "prompt": "文の内容として正しいものはどれか。",
+          "choices": ["臣が帝に御文を差し上げる", "帝が臣に御文を差し上げる"],
+          "answerIndex": 0,
+          "explanation": "「奉る」はここでは差し上げる意の謙譲語。主語は臣、相手は帝である。"
+        }
+      ],
+      "explanation": "敬語の種類を決める前に、動作主と動作の相手を分けて読む。"
+    },
+    {
+      "id": "kd-direction-02",
+      "topic": "敬語読解・敬意の方向",
+      "step": "主語への尊敬",
+      "questionType": "integration",
+      "passage": "帝、御覧じて、笑ひ給ふ。",
+      "target": "給ふ",
+      "steps": [
+        {
+          "prompt": "傍線部を含む動作の主体は誰か。",
+          "choices": ["帝", "臣"],
+          "answerIndex": 0,
+          "explanation": "文頭の「帝」が、「御覧じ」「笑ひ」の動作主である。"
+        },
+        {
+          "prompt": "「笑ひ給ふ」は、誰を高めているか。",
+          "choices": ["動作主の帝", "動作の相手である臣"],
+          "answerIndex": 0,
+          "explanation": "尊敬語は動作主を高める。ここでは帝の動作に敬意を添えている。"
+        },
+        {
+          "prompt": "文の内容として正しいものはどれか。",
+          "choices": ["帝が御覧になって、お笑いになる", "臣が帝を見て、笑い申し上げる"],
+          "answerIndex": 0,
+          "explanation": "「給ふ」は尊敬の補助動詞。主語である帝の動作を高める。"
+        }
+      ],
+      "explanation": "尊敬語は主語を高める。語の意味だけでなく、誰の動作かを先に確定する。"
+    },
+    {
+      "id": "kd-direction-03",
+      "topic": "敬語読解・敬意の方向",
+      "step": "謙譲の主語",
+      "questionType": "integration",
+      "passage": "侍従、御前に参りて、御返事を申す。",
+      "target": "申す",
+      "steps": [
+        {
+          "prompt": "「申す」の動作主は誰か。",
+          "choices": ["侍従", "御前にいる高貴な人"],
+          "answerIndex": 0,
+          "explanation": "文の主語は「侍従」。御前の人物は動作の相手である。"
+        },
+        {
+          "prompt": "「申す」の敬意の向きとして正しいものはどれか。",
+          "choices": ["侍従から御前の人物へ", "御前の人物から侍従へ"],
+          "answerIndex": 0,
+          "explanation": "侍従が自分の発言を低め、御前の人物を立てている。"
+        },
+        {
+          "prompt": "文の内容として正しいものはどれか。",
+          "choices": ["侍従が御前の人物に返事を申し上げる", "御前の人物が侍従に返事をおっしゃる"],
+          "answerIndex": 0,
+          "explanation": "「申す」は「言ふ」の謙譲語。主語は侍従である。"
+        }
+      ],
+      "explanation": "謙譲語では、へりくだる動作主と高める相手を別々に押さえる。"
+    },
+    {
+      "id": "kd-direction-04",
+      "topic": "敬語読解・敬意の方向",
+      "step": "本動詞の尊敬",
+      "questionType": "integration",
+      "passage": "中宮、御簾の内におはします。",
+      "target": "おはします",
+      "steps": [
+        {
+          "prompt": "傍線部の動作主は誰か。",
+          "choices": ["中宮", "御簾の外にいる女房"],
+          "answerIndex": 0,
+          "explanation": "文頭の「中宮」が「おはします」の主語である。"
+        },
+        {
+          "prompt": "「おはします」は、どの働きで使われているか。",
+          "choices": ["中宮の存在を高める尊敬語", "女房の動作を低める謙譲語"],
+          "answerIndex": 0,
+          "explanation": "「おはします」は「あり・ゐる・行く・来」の尊敬語として使われる。"
+        },
+        {
+          "prompt": "文の内容として正しいものはどれか。",
+          "choices": ["中宮が御簾の内にいらっしゃる", "女房が中宮を御簾の内へお連れする"],
+          "answerIndex": 0,
+          "explanation": "本動詞の尊敬語なので、主語の存在を高めて「いらっしゃる」と訳す。"
+        }
+      ],
+      "explanation": "敬語動詞が単独で具体的な動作を表すときは、本動詞として主語を読む。"
+    },
+    {
+      "id": "kd-subject-01",
+      "topic": "敬語読解・省略主語",
+      "step": "前文から主語を補う",
+      "questionType": "integration",
+      "passage": "帝、御座所に入り給ふ。やがて御文を御覧じ、臣に返事を賜ふ。",
+      "target": "賜ふ",
+      "steps": [
+        {
+          "prompt": "二文目の「御覧じ」「賜ふ」の省略された主語は誰か。",
+          "choices": ["帝", "臣"],
+          "answerIndex": 0,
+          "explanation": "直前の文の主語「帝」が、二文目にも継続している。"
+        },
+        {
+          "prompt": "「臣に」は、誰を示す語か。",
+          "choices": ["返事を受ける相手", "返事をする動作主"],
+          "answerIndex": 0,
+          "explanation": "「臣に」は、帝から返事を受ける相手を示す。"
+        },
+        {
+          "prompt": "二文目の内容として正しいものはどれか。",
+          "choices": ["帝が御文を御覧になり、臣に返事をお与えになる", "臣が御文を御覧になり、帝に返事を差し上げる"],
+          "answerIndex": 0,
+          "explanation": "主語は帝のまま。「賜ふ」は高い人物から相手へ与える動作を表す。"
+        }
+      ],
+      "explanation": "主語が省略されても、前文の主語と敬語の方向をつないで読む。"
+    },
+    {
+      "id": "kd-subject-02",
+      "topic": "敬語読解・省略主語",
+      "step": "謙譲語から主語を補う",
+      "questionType": "integration",
+      "passage": "臣、御前に参る。御文を奉りて、退出す。",
+      "target": "奉り",
+      "steps": [
+        {
+          "prompt": "二文目の「奉り」の省略された主語は誰か。",
+          "choices": ["臣", "御前の高貴な人物"],
+          "answerIndex": 0,
+          "explanation": "前文の主語「臣」が、二文目でも動作を続けている。"
+        },
+        {
+          "prompt": "「奉り」は、どの敬意の向きを示すか。",
+          "choices": ["臣の動作を低め、御前の人物を立てる", "御前の人物の動作を低め、臣を立てる"],
+          "answerIndex": 0,
+          "explanation": "「奉る」は謙譲語。御前の人物に対する臣の動作をへりくだっている。"
+        },
+        {
+          "prompt": "二文目の内容として正しいものはどれか。",
+          "choices": ["臣が御文を差し上げて、退出する", "御前の人物が御文を差し上げて、退出する"],
+          "answerIndex": 0,
+          "explanation": "主語は前文から臣。謙譲語の主語を高貴な相手と取り違えない。"
+        }
+      ],
+      "explanation": "謙譲語の動作主は低い側に置かれることが多く、省略主語の手がかりになる。"
+    },
+    {
+      "id": "kd-subject-03",
+      "topic": "敬語読解・省略主語",
+      "step": "使役と尊敬の重なり",
+      "questionType": "integration",
+      "passage": "中宮、女房を召して、御文を書かせ給ふ。",
+      "target": "せ給ふ",
+      "steps": [
+        {
+          "prompt": "「書かせ給ふ」で、実際に書く動作をする人は誰か。",
+          "choices": ["女房", "中宮"],
+          "answerIndex": 0,
+          "explanation": "「女房を」召して書かせるので、書く動作の実行者は女房である。"
+        },
+        {
+          "prompt": "文全体の主語で、敬意を受けるのは誰か。",
+          "choices": ["中宮", "女房"],
+          "answerIndex": 0,
+          "explanation": "「給ふ」は主語である中宮への尊敬を添える。"
+        },
+        {
+          "prompt": "文の内容として正しいものはどれか。",
+          "choices": ["中宮が女房に御文を書かせなさる", "女房が中宮に御文を書かせ申し上げる"],
+          "answerIndex": 0,
+          "explanation": "「せ」は使役、「給ふ」は中宮への尊敬。二つの動作主を分けて読む。"
+        }
+      ],
+      "explanation": "使役と尊敬が重なる文では、実際の動作主と文全体の主語を分ける。"
+    },
+    {
+      "id": "kd-subject-04",
+      "topic": "敬語読解・省略主語",
+      "step": "前文の人物を引き継ぐ",
+      "questionType": "integration",
+      "passage": "女房、院の御前に参る。歌を詠み奉り、御返事を待つ。",
+      "target": "奉り",
+      "steps": [
+        {
+          "prompt": "二文目の「詠み奉り」の省略された主語は誰か。",
+          "choices": ["女房", "院"],
+          "answerIndex": 0,
+          "explanation": "前文の主語「女房」が、二文目でも歌を詠む動作を続けている。"
+        },
+        {
+          "prompt": "「奉り」は、どちらからどちらへの謙譲か。",
+          "choices": ["女房から院へ", "院から女房へ"],
+          "answerIndex": 0,
+          "explanation": "「奉る」は謙譲語。女房の動作を低め、歌を奉る相手の院を高める。"
+        },
+        {
+          "prompt": "二文目の内容として正しいものはどれか。",
+          "choices": ["女房が院に歌を差し上げ、御返事を待つ", "院が女房に歌を差し上げ、返事を待つ"],
+          "answerIndex": 0,
+          "explanation": "主語は前文の女房。場所を表す「院の御前に」が主語ではなく、謙譲の相手が院である。"
+        }
+      ],
+      "explanation": "「に」が場所や相手を示していても主語ではない。前文の主語を保持して読む。"
+    },
+    {
+      "id": "kd-reading-01",
+      "topic": "敬語読解・短文統合",
+      "step": "二つの敬語をつなぐ",
+      "questionType": "integration",
+      "passage": "帝、御文を御覧じて、臣に返事を賜ひ、退出し給ふ。",
+      "target": "賜ひ",
+      "steps": [
+        {
+          "prompt": "「御覧じ」「賜ひ」「給ふ」に共通する動作主は誰か。",
+          "choices": ["帝", "臣"],
+          "answerIndex": 0,
+          "explanation": "三つの動作はいずれも文頭の帝を主語とする。"
+        },
+        {
+          "prompt": "帝から臣への動作として読めるのはどれか。",
+          "choices": ["返事を賜ふ", "御文を御覧ず"],
+          "answerIndex": 0,
+          "explanation": "「臣に」が相手を示すので、返事を与える動作が帝から臣へ向かう。"
+        },
+        {
+          "prompt": "文の内容として正しいものはどれか。",
+          "choices": ["帝が御文を御覧になり、臣に返事をお与えになって退出する", "臣が御文を拝見し、帝に返事を差し上げて退出する"],
+          "answerIndex": 0,
+          "explanation": "主語を帝のまま保ち、三つの動作を一続きに読む。"
+        }
+      ],
+      "explanation": "複数の敬語が続く文では、各語を別々に訳さず主語を維持して出来事をつなぐ。"
+    },
+    {
+      "id": "kd-reading-02",
+      "topic": "敬語読解・短文統合",
+      "step": "謙譲語の連続",
+      "questionType": "integration",
+      "passage": "臣、御前に参りて、御文を奉り、御返事を承る。",
+      "target": "奉り",
+      "steps": [
+        {
+          "prompt": "三つの動作をする人物は誰か。",
+          "choices": ["臣", "御前の高貴な人物"],
+          "answerIndex": 0,
+          "explanation": "文の主語は臣で、「参り」「奉り」「承る」を続けて行う。"
+        },
+        {
+          "prompt": "「御前に」「御返事を」は、どの役割を持つか。",
+          "choices": ["相手や受け取るものを示す", "三つの動作の主語を示す"],
+          "answerIndex": 0,
+          "explanation": "「御前に」は参上する先、「御返事を」は承る対象で、主語ではない。"
+        },
+        {
+          "prompt": "文の内容として正しいものはどれか。",
+          "choices": ["臣が参上し、御文を差し上げ、返事を承る", "高貴な人物が参上し、臣に御文を差し上げ、返事を承る"],
+          "answerIndex": 0,
+          "explanation": "謙譲語が連続しても、主語は臣のまま。相手を主語に置き換えない。"
+        }
+      ],
+      "explanation": "敬語の方向と助詞の役割を同時に見て、主語を取り違えない。"
+    },
+    {
+      "id": "kd-reading-03",
+      "topic": "敬語読解・短文統合",
+      "step": "使役者と実行者",
+      "questionType": "integration",
+      "passage": "大臣、女房に歌を詠ませ給ひ、みづから御覧ず。",
+      "target": "せ給ひ",
+      "steps": [
+        {
+          "prompt": "歌を実際に詠むのは誰か。",
+          "choices": ["女房", "大臣"],
+          "answerIndex": 0,
+          "explanation": "「女房に」詠ませるので、歌を詠む実行者は女房である。"
+        },
+        {
+          "prompt": "「給ひ」「御覧ず」が高める人物は誰か。",
+          "choices": ["大臣", "女房"],
+          "answerIndex": 0,
+          "explanation": "「給ふ」「御覧ず」は文全体の主語である大臣への尊敬を示す。"
+        },
+        {
+          "prompt": "文の内容として正しいものはどれか。",
+          "choices": ["大臣が女房に歌を詠ませなさり、自分で御覧になる", "女房が大臣に歌を詠ませ申し上げ、自分で御覧になる"],
+          "answerIndex": 0,
+          "explanation": "使役の実行者と、敬意を受ける文全体の主語を分けて訳す。"
+        }
+      ],
+      "explanation": "「〜せ給ふ」は、使役される人と、尊敬される主語が別になることがある。"
+    },
+    {
+      "id": "kd-reading-04",
+      "topic": "敬語読解・短文統合",
+      "step": "人物交代を追う",
+      "questionType": "integration",
+      "passage": "中宮、御簾を上げ給ふ。女房、御前に侍りて、御文を奉る。",
+      "target": "奉る",
+      "steps": [
+        {
+          "prompt": "傍線部の動作主は、前文の中宮か、後文の女房か。",
+          "choices": ["女房", "中宮"],
+          "answerIndex": 0,
+          "explanation": "後文は「女房」が主語。文が変わると主語も切り替わる。"
+        },
+        {
+          "prompt": "「奉る」の相手は誰か。",
+          "choices": ["中宮", "女房"],
+          "answerIndex": 0,
+          "explanation": "女房が「御前」である中宮に御文を差し上げる。"
+        },
+        {
+          "prompt": "文全体の内容として正しいものはどれか。",
+          "choices": ["中宮が御簾をお上げになり、女房が御文を差し上げる", "女房が御簾をお上げになり、中宮が御文を差し上げる"],
+          "answerIndex": 0,
+          "explanation": "前文は中宮への尊敬、後文は女房から中宮への謙譲である。"
+        }
+      ],
+      "explanation": "段落内で人物が交代する場合も、各文の主語と敬意の向きを別々に確認する。"
+    }
+  ],
+  "keigoDokkaiGroups": [
+    {
+      "id": "reading-direction",
+      "name": "敬意の方向を読む 4問",
+      "sub": "動作主・相手・敬語の種類を分けて確認",
+      "shuffle": false,
+      "ids": ["kd-direction-01", "kd-direction-02", "kd-direction-03", "kd-direction-04"]
+    },
+    {
+      "id": "reading-subject",
+      "name": "省略主語を補う 4問",
+      "sub": "前文の主語と敬語の向きから人物をつなぐ",
+      "shuffle": false,
+      "ids": ["kd-subject-01", "kd-subject-02", "kd-subject-03", "kd-subject-04"]
+    },
+    {
+      "id": "reading-mixed",
+      "name": "短文読解で統合する 4問",
+      "sub": "複数の敬語と人物の交代を追う",
+      "shuffle": true,
+      "ids": ["kd-reading-01", "kd-reading-02", "kd-reading-03", "kd-reading-04"]
+    },
+    {
+      "id": "reading-all",
+      "name": "総仕上げ：敬語読解12問",
+      "sub": "3つの手がかりをランダム順で確認",
+      "shuffle": true,
+      "ids": ["kd-direction-01", "kd-direction-02", "kd-direction-03", "kd-direction-04", "kd-subject-01", "kd-subject-02", "kd-subject-03", "kd-subject-04", "kd-reading-01", "kd-reading-02", "kd-reading-03", "kd-reading-04"]
+    }
+  ]
+}
