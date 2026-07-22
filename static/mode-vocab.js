@@ -19,8 +19,6 @@ const VocabApp = (function () {
   const SESSION_SIZE = 20;
   const GATE_SIZE = 30;
   const GATE_PASS_RATE = 0.8;
-  const CYCLE_SET_COUNT = 3;
-  const CYCLE_RANDOM_ROUNDS = 3;
   const CYCLE_SESSION_SIZE = 15;
   const CORE_MASTERY_REQUIRED = 1;
   const NEXT_KEY_COOLDOWN_MS = 500; // 解答直後の数字キー連打を「次へ」と誤認しない猶予
@@ -86,6 +84,10 @@ const VocabApp = (function () {
       const raw = localStorage.getItem(SESSION_KEY);
       if (!raw) return null;
       const data = JSON.parse(raw);
+      if (data.kind === "cycleRandom") {
+        clearSavedSession();
+        return null;
+      }
       const queue = data.wordIds.map(id => state.words.find(w => w.id === id));
       const finished = data.idx >= queue.length && !data.wrongLog.length; // 全問終了後の一瞬だけ残りうる状態
       if (!queue.length || queue.includes(undefined) || finished) return null;
@@ -213,12 +215,11 @@ const VocabApp = (function () {
     saveProgress();
   }
 
-  /* ---------- 累積・ランダム出題サイクル ---------- */
+  /* ---------- 累積出題サイクル ---------- */
   function defaultCycleState() {
     return {
       version: 1,
       pendingCumulativeSet: null,
-      randomRoundsCompleted: 0,
       practiceHistory: [],
     };
   }
@@ -234,17 +235,13 @@ const VocabApp = (function () {
         ...defaultCycleState(),
         ...saved,
         pendingCumulativeSet: Number.isInteger(saved.pendingCumulativeSet) ? saved.pendingCumulativeSet : null,
-        randomRoundsCompleted: Math.max(0, Math.min(CYCLE_RANDOM_ROUNDS, Number(saved.randomRoundsCompleted) || 0)),
         practiceHistory: Array.isArray(saved.practiceHistory) ? saved.practiceHistory : [],
       };
     }
 
     // 既存利用者は、過去に完了したセットを再要求せず、新しいサイクルから続けられるようにする。
     const completed = loadSetProgress().completed;
-    const migrated = {
-      ...defaultCycleState(),
-      randomRoundsCompleted: completed > 0 && completed % CYCLE_SET_COUNT === 0 ? CYCLE_RANDOM_ROUNDS : 0,
-    };
+    const migrated = { ...defaultCycleState() };
     saveCycleState(migrated);
     return migrated;
   }
@@ -256,12 +253,6 @@ const VocabApp = (function () {
       coreSelectionVersion: coreSelectionVersion(),
     };
     saveProgress();
-  }
-
-  function cyclePoolWords(completedSets) {
-    const sets = buildCoreSets();
-    const start = Math.max(0, completedSets - CYCLE_SET_COUNT);
-    return sets.slice(start, completedSets).flat();
   }
 
   function cycleFocusPlan(setInfo) {
@@ -280,20 +271,6 @@ const VocabApp = (function () {
       }
     }
 
-    if (setInfo.completed > 0
-      && setInfo.completed % CYCLE_SET_COUNT === 0
-      && cycle.randomRoundsCompleted < CYCLE_RANDOM_ROUNDS) {
-      const words = cyclePoolWords(setInfo.completed);
-      if (words.length) {
-        return {
-          kind: "cycleRandom",
-          words,
-          title: `ランダム復習 ${cycle.randomRoundsCompleted + 1}/${CYCLE_RANDOM_ROUNDS}`,
-          cta: `${Math.min(CYCLE_SESSION_SIZE, words.length)}問のランダム復習をする`,
-          cycleRound: cycle.randomRoundsCompleted + 1,
-        };
-      }
-    }
     return null;
   }
 
@@ -543,7 +520,7 @@ const VocabApp = (function () {
       startGateSession();
       return;
     }
-    if (focus.kind === "cycleCumulative" || focus.kind === "cycleRandom") {
+    if (focus.kind === "cycleCumulative") {
       startSession(
         takeForSession(focus.words, CYCLE_SESSION_SIZE),
         focus.title,
@@ -622,29 +599,23 @@ const VocabApp = (function () {
       ? `${coreLabel()}を10セットで進める`
       : focus.kind === "cycleCumulative"
         ? focus.title
-        : focus.kind === "cycleRandom"
-          ? focus.title
-          : focus.kind === "gate"
-            ? `最後に${gateQuestionCount()}問の確認テスト`
-            : `${coreLabel()}を完了しました`;
+        : focus.kind === "gate"
+          ? `最後に${gateQuestionCount()}問の確認テスト`
+          : `${coreLabel()}を完了しました`;
     const heroTag = focus.kind === "coreSet"
       ? `おすすめ・${SESSION_SIZE}問`
       : focus.kind === "cycleCumulative"
         ? "途中は練習"
-        : focus.kind === "cycleRandom"
-          ? "全範囲から復習"
-          : focus.kind === "gate"
-            ? `仕上げ・${gateQuestionCount()}問`
-            : "段階1の次";
+        : focus.kind === "gate"
+          ? `仕上げ・${gateQuestionCount()}問`
+          : "段階1の次";
     const heroHint = focus.kind === "coreSet"
       ? `古語 → 現代語訳の4択。必須${coreProgress.total}語を${focus.setTotal}セットに分け、1セット${SESSION_SIZE}問で進めます。誤答があってもセットは${SESSION_SIZE}問で終了し、次のセットへ進みます。`
       : focus.kind === "cycleCumulative"
         ? `セット${focus.setIndex + 1}までの既習範囲から出題します。点数は練習記録で、確認テストの合否には影響しません。`
-        : focus.kind === "cycleRandom"
-          ? `直近${CYCLE_SET_COUNT}セットの全範囲からランダムに出題します。これは練習で、最終確認テストとは別です。`
-          : focus.kind === "gate"
-            ? `${setInfo.sets.length}セット完了後、${coreLabel()}から${gateQuestionCount()}問をランダム出題します。${gatePassCount()}問以上（${Math.round(gatePassRate() * 100)}%以上）で古典文法へ進めます。`
-            : `確認テストに合格済みです。古典文法へ進めます。追加${extraProgress.total}語は補助練習として残っています。`;
+        : focus.kind === "gate"
+          ? `${setInfo.sets.length}セット完了後、${coreLabel()}から${gateQuestionCount()}問をランダム出題します。${gatePassCount()}問以上（${Math.round(gatePassRate() * 100)}%以上）で古典文法へ進めます。`
+          : `確認テストに合格済みです。古典文法へ進めます。追加${extraProgress.total}語は補助練習として残っています。`;
     const progressHint = setInfo.completed < setInfo.sets.length
       ? `必須語の現在地：セット${setInfo.completed + 1}/${setInfo.sets.length}`
       : gateStatus.cleared
@@ -1104,13 +1075,12 @@ const VocabApp = (function () {
     saveSetProgress(completed);
     const cycle = loadCycleState();
     cycle.pendingCumulativeSet = setIndex;
-    if (completed > 0 && completed % CYCLE_SET_COUNT === 0) cycle.randomRoundsCompleted = 0;
     saveCycleState(cycle);
     notifyStageStatusChanged();
   }
 
   function recordCyclePractice(session) {
-    if (!session || (session.kind !== "cycleCumulative" && session.kind !== "cycleRandom")) return;
+    if (!session || session.kind !== "cycleCumulative") return;
     const cycle = loadCycleState();
     const entry = {
       kind: session.kind,
@@ -1123,8 +1093,6 @@ const VocabApp = (function () {
     cycle.practiceHistory = [...cycle.practiceHistory, entry].slice(-30);
     if (session.kind === "cycleCumulative") {
       cycle.pendingCumulativeSet = null;
-    } else {
-      cycle.randomRoundsCompleted = Math.min(CYCLE_RANDOM_ROUNDS, cycle.randomRoundsCompleted + 1);
     }
     saveCycleState(cycle);
   }
@@ -1189,7 +1157,7 @@ const VocabApp = (function () {
       return;
     }
     if (s.kind === "coreSet") completeCoreSet(s.setIndex);
-    if ((s.kind === "cycleCumulative" || s.kind === "cycleRandom") && !s.cycleRecorded) {
+    if (s.kind === "cycleCumulative" && !s.cycleRecorded) {
       recordCyclePractice(s);
       s.cycleRecorded = true;
     }
@@ -1208,9 +1176,7 @@ const VocabApp = (function () {
         : `${set.sets.length}セット完了。次は${gateQuestionCount()}問の確認テストです。`;
     const cycleMessage = s.kind === "cycleCumulative"
       ? "今回の累積練習は記録しました。"
-      : s.kind === "cycleRandom"
-        ? "今回のランダム復習は記録しました。"
-        : "";
+      : "";
 
     el("sessionPanel").innerHTML = `
       <section class="doneBanner">
