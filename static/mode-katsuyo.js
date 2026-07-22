@@ -2015,7 +2015,7 @@ const KatsuyoApp = (function () {
   let bootPromise = null;
   function boot() {
     bootPromise = Promise.all([
-      fetch("data/katsuyo.json?v=20260709-5")
+      fetch("data/katsuyo.json?v=20260723-1")
         .then(r => { if (!r.ok) throw new Error("katsuyo data load failed: " + r.status); return r.json(); }),
       fetch("data/multiple_choice.json?v=20260716-1")
         .then(r => { if (!r.ok) throw new Error("choice data load failed: " + r.status); return r.json(); }),
