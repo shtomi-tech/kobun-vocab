@@ -725,12 +725,23 @@ const KatsuyoApp = (function () {
     }
     const cycle = grammarTaskCycle(task.id);
     if (!cycle.passCompleted) {
-      startSession(ids, task.label + "・通し演習", {
-        pathTask: task.id,
-        pathPhase: "pass",
-        requeueWrong: false,
+      // 通し演習は語数が多く一度に終えるのが負担なので、途中中断できるようにする。
+      // 1問ごとの正誤は recordResult で保存されるため、再開時は正解済みを除いた
+      // 残りの語だけを出題する。全語を1周し終えていれば通しを完了扱いにする。
+      const p = loadProgress();
+      const pending = ids.filter(id => {
+        const rec = progressRecord(p, id);
+        return !(rec && rec.c >= 1);
       });
-      return;
+      if (pending.length > 0) {
+        startSession(pending, task.label + "・通し演習", {
+          pathTask: task.id,
+          pathPhase: "pass",
+          requeueWrong: false,
+        });
+        return;
+      }
+      saveGrammarTaskCycle(task.id, { passCompleted: true });
     }
     const cumulativeIds = shuffle(cumulativeTaskIds(task)).slice(0, PATH_CUMULATIVE_SIZE);
     startSession(cumulativeIds, task.label + "・累積10問", {
