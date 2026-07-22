@@ -8,10 +8,10 @@
    ============================================================ */
 
 const VocabApp = (function () {
-  const DATA_URL = "data/vocab.json?v=0.4.0";
+  const DATA_URL = "data/vocab.json?v=0.5.0";
   const STORE_KEY = "kobun_vocab_progress_v1";
   const RANGE_KEY = "kobun_vocab_range_v1";
-  const SESSION_KEY = "kobun_vocab_session_v3"; // セット進行・確認テストの導入で旧セッションを再開しない
+  const SESSION_KEY = "kobun_vocab_session_v4"; // コア200語の選定変更で旧セッションを再開しない
   const SET_PROGRESS_KEY = "kobun_vocab_sets_v1";
   const GATE_KEY = "kobun_vocab_gate_v1";
   const PROGRESS_META_KEY = "__kobunStage1";
@@ -109,10 +109,28 @@ const VocabApp = (function () {
     } catch (e) { return null; }
   }
 
+  function resetCoreSelectionStateIfNeeded() {
+    const selectionVersion = coreSelectionVersion();
+    const sharedMeta = state.progress[PROGRESS_META_KEY];
+    if (!sharedMeta || sharedMeta.coreSelectionVersion === selectionVersion) return;
+    const nextMeta = { ...sharedMeta, coreSelectionVersion: selectionVersion };
+    delete nextMeta.setsCompleted;
+    delete nextMeta.gateCleared;
+    delete nextMeta.gateAttempts;
+    delete nextMeta.gateLastScore;
+    delete nextMeta.gateLastTotal;
+    delete nextMeta.cycle;
+    state.progress[PROGRESS_META_KEY] = nextMeta;
+  }
+
   function loadSetProgress() {
+    resetCoreSelectionStateIfNeeded();
     const total = buildCoreSets().length;
     const sharedMeta = state.progress[PROGRESS_META_KEY];
-    if (sharedMeta && Number.isInteger(sharedMeta.setsCompleted)) {
+    const selectionVersion = coreSelectionVersion();
+    if (sharedMeta
+      && sharedMeta.coreSelectionVersion === selectionVersion
+      && Number.isInteger(sharedMeta.setsCompleted)) {
       return { completed: Math.min(total, Math.max(0, sharedMeta.setsCompleted)) };
     }
     try {
@@ -120,7 +138,7 @@ const VocabApp = (function () {
         const raw = localStorage.getItem(SET_PROGRESS_KEY);
         if (raw) {
           const data = JSON.parse(raw);
-          if (Number.isInteger(data.completed)) {
+          if (data.selectionVersion === selectionVersion && Number.isInteger(data.completed)) {
             return { completed: Math.min(total, Math.max(0, data.completed)) };
           }
         }
@@ -138,17 +156,23 @@ const VocabApp = (function () {
     return { completed };
   }
   function saveSetProgress(completed) {
-    try { localStorage.setItem(SET_PROGRESS_KEY, JSON.stringify({ completed })); }
+    const selectionVersion = coreSelectionVersion();
+    try { localStorage.setItem(SET_PROGRESS_KEY, JSON.stringify({ completed, selectionVersion })); }
     catch (e) { /* ignore */ }
     state.progress[PROGRESS_META_KEY] = {
       ...(state.progress[PROGRESS_META_KEY] || {}),
       setsCompleted: completed,
+      coreSelectionVersion: selectionVersion,
     };
     saveProgress();
   }
   function loadGateStatus() {
+    resetCoreSelectionStateIfNeeded();
     const sharedMeta = state.progress[PROGRESS_META_KEY];
-    if (sharedMeta && typeof sharedMeta.gateCleared === "boolean") {
+    const selectionVersion = coreSelectionVersion();
+    if (sharedMeta
+      && sharedMeta.coreSelectionVersion === selectionVersion
+      && typeof sharedMeta.gateCleared === "boolean") {
       return {
         cleared: sharedMeta.gateCleared,
         attempts: Number.isInteger(sharedMeta.gateAttempts) ? sharedMeta.gateAttempts : 0,
@@ -161,19 +185,22 @@ const VocabApp = (function () {
         const raw = localStorage.getItem(GATE_KEY);
         if (raw) {
           const data = JSON.parse(raw);
-          return {
-            cleared: data.cleared === true,
-            attempts: Number.isInteger(data.attempts) ? data.attempts : 0,
-            lastScore: Number.isInteger(data.lastScore) ? data.lastScore : null,
-            lastTotal: Number.isInteger(data.lastTotal) ? data.lastTotal : null,
-          };
+          if (data.selectionVersion === selectionVersion) {
+            return {
+              cleared: data.cleared === true,
+              attempts: Number.isInteger(data.attempts) ? data.attempts : 0,
+              lastScore: Number.isInteger(data.lastScore) ? data.lastScore : null,
+              lastTotal: Number.isInteger(data.lastTotal) ? data.lastTotal : null,
+            };
+          }
         }
       }
     } catch (e) { /* ignore */ }
     return { cleared: false, attempts: 0, lastScore: null, lastTotal: null };
   }
   function saveGateStatus(status) {
-    try { localStorage.setItem(GATE_KEY, JSON.stringify(status)); }
+    const selectionVersion = coreSelectionVersion();
+    try { localStorage.setItem(GATE_KEY, JSON.stringify({ ...status, selectionVersion })); }
     catch (e) { /* ignore */ }
     state.progress[PROGRESS_META_KEY] = {
       ...(state.progress[PROGRESS_META_KEY] || {}),
@@ -181,6 +208,7 @@ const VocabApp = (function () {
       gateAttempts: status.attempts,
       gateLastScore: status.lastScore,
       gateLastTotal: status.lastTotal,
+      coreSelectionVersion: selectionVersion,
     };
     saveProgress();
   }
@@ -196,9 +224,12 @@ const VocabApp = (function () {
   }
 
   function loadCycleState() {
+    resetCoreSelectionStateIfNeeded();
     const sharedMeta = state.progress[PROGRESS_META_KEY];
     const saved = sharedMeta && sharedMeta.cycle;
-    if (saved && saved.version === 1) {
+    if (saved
+      && saved.version === 1
+      && sharedMeta.coreSelectionVersion === coreSelectionVersion()) {
       return {
         ...defaultCycleState(),
         ...saved,
@@ -222,6 +253,7 @@ const VocabApp = (function () {
     state.progress[PROGRESS_META_KEY] = {
       ...(state.progress[PROGRESS_META_KEY] || {}),
       cycle: cycle || defaultCycleState(),
+      coreSelectionVersion: coreSelectionVersion(),
     };
     saveProgress();
   }
@@ -335,14 +367,23 @@ const VocabApp = (function () {
     }).length;
     return { total, mastered, attempted, weak, remaining: Math.max(0, total - mastered) };
   }
+  function coreSelectionVersion() {
+    const version = Number(state.meta.core && state.meta.core.selectionVersion);
+    return Number.isInteger(version) && version > 0 ? version : 1;
+  }
   function coreWords() {
     const spec = state.meta.core || {};
+    if (Array.isArray(spec.ids)) {
+      const ids = new Set(spec.ids);
+      return state.words.filter(w => ids.has(w.id));
+    }
     const start = Number.isInteger(spec.idStart) ? spec.idStart : 1;
     const end = Number.isInteger(spec.idEnd) ? spec.idEnd : 200;
     return state.words.filter(w => w.id >= start && w.id <= end);
   }
   function isCoreId(id) {
     const spec = state.meta.core || {};
+    if (Array.isArray(spec.ids)) return spec.ids.includes(id);
     const start = Number.isInteger(spec.idStart) ? spec.idStart : 1;
     const end = Number.isInteger(spec.idEnd) ? spec.idEnd : 200;
     return id >= start && id <= end;
