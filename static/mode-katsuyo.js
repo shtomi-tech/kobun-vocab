@@ -1125,6 +1125,16 @@ const KatsuyoApp = (function () {
     renderRow();
   }
 
+  function scrollToSessionTop() {
+    const behavior = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+    window.scrollTo({ top: 0, behavior });
+  }
+
+  function renderNextQuestion() {
+    renderRow();
+    requestAnimationFrame(scrollToSessionTop);
+  }
+
   // 識別セクションの学習フロー：手順本文の理解 → 4択問題 → 実践問題（統合）の順に進む。
   function startShikibetsuFlow(procId) {
     const proc = shikibetsuProcedures().find(pr => pr.id === procId);
@@ -1551,7 +1561,7 @@ const KatsuyoApp = (function () {
     session.stepIdx = 0;
     session.stepFailed = false;
     session.stepHistory = [];
-    renderRow();
+    renderNextQuestion();
   }
 
   function buildSingleField(name, options, onPick, state, key) {
@@ -1698,7 +1708,7 @@ const KatsuyoApp = (function () {
     const nextRow = el("div", "nextRow");
     const next = el("button", "cta", session.queue.length ? "次の問題へ" : "結果を見る");
     next.id = "katsuyoNextBtn";
-    next.addEventListener("click", renderRow);
+    next.addEventListener("click", renderNextQuestion);
     nextRow.appendChild(next);
     box.appendChild(nextRow);
     next.focus();
@@ -1741,7 +1751,7 @@ const KatsuyoApp = (function () {
     const nextRow = el("div", "nextRow");
     const next = el("button", "cta", session.queue.length ? "次の問題へ" : "結果を見る");
     next.id = "katsuyoNextBtn";
-    next.addEventListener("click", renderRow);
+    next.addEventListener("click", renderNextQuestion);
     nextRow.appendChild(next);
     box.appendChild(nextRow);
     next.focus();
