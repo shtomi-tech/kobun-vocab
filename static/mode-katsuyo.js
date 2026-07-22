@@ -1401,6 +1401,10 @@ const KatsuyoApp = (function () {
       box.appendChild(buildSingleField("接続", DATA.setsuzokuOptions, v => state.setsuzoku = v, state, "setsuzoku"));
     }
 
+    // 活用の型
+    const typeOptions = Array.from(new Set(getItems().map(item => item.type))).filter(Boolean);
+    box.appendChild(buildTypeField("活用の型", typeOptions.length ? typeOptions : DATA.typeOptions, v => state.type = v, state, "type"));
+
     // 活用形
     j.forms.forEach((forms, i) => {
       const row = el("div", "fieldRow");
@@ -1427,10 +1431,6 @@ const KatsuyoApp = (function () {
       row.appendChild(wrap);
       box.appendChild(row);
     });
-
-    // 活用の型
-    const typeOptions = Array.from(new Set(getItems().map(item => item.type))).filter(Boolean);
-    box.appendChild(buildTypeField("活用の型", typeOptions.length ? typeOptions : DATA.typeOptions, v => state.type = v, state, "type"));
 
     // 意味
     const mChips = [];
