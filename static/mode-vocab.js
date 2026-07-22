@@ -542,13 +542,17 @@ const VocabApp = (function () {
   }
 
   /* ---------- 選択肢生成 ---------- */
-  // 正解語 word に対する4択（意味）を作る。
-  function buildChoices(word) {
-    // keyMeaning が指定された語は、入試で問われる語義を正解にする（未指定なら先頭）。
+  function representativeMeaning(word) {
     const key = Number.isInteger(word.keyMeaning) && word.keyMeaning >= 0 && word.keyMeaning < word.meanings.length
       ? word.keyMeaning
       : 0;
-    const correct = word.meanings[key];
+    return word.meanings[key] || word.meanings[0] || "";
+  }
+
+  // 正解語 word に対する4択（意味）を作る。
+  function buildChoices(word) {
+    // keyMeaning が指定された語は、入試で問われる語義を正解にする（未指定なら先頭）。
+    const correct = representativeMeaning(word);
     // 正解語のいずれかの意味と重複しないダミーを他語から集める
     const ownSet = new Set(word.meanings);
     const pool = [];
@@ -961,24 +965,30 @@ const VocabApp = (function () {
       else if (bi === i) btn.classList.add("wrong");
     });
 
-    renderFeedback(correct);
+    renderFeedback(correct, choices[i]);
   }
 
-  function renderFeedback(correct) {
+  function renderFeedback(correct, picked) {
     const s = state.session;
     const { word } = s.current;
     const last = s.idx === s.queue.length - 1;
     const kanji = word.kanji ? `（${esc(word.kanji)}）` : "";
+    const correctMeaning = representativeMeaning(word);
+    const owner = !correct && picked ? findOwnerOf(picked, word.id) : null;
     const feedbackArea = el("feedbackArea");
 
     feedbackArea.innerHTML = `
       <div class="feedback ${correct ? "ok" : "ng"}">
         <h3>${correct ? "正解" : "不正解"}</h3>
         <p class="word">${esc(word.kana)}${kanji} <small>${esc(word.pos)}</small></p>
+        ${!correct ? `<p class="answerLine ng"><span class="k">あなたの解答</span>${esc(picked || "")}${owner ? `　→　これは「${esc(owner.kana)}」の意味です` : ""}</p>` : ""}
+        <p class="answerLine"><span class="k">正しい代表語義</span>${esc(correctMeaning)}</p>
         <ul>
           ${word.meanings.map(m => `<li>${esc(m)}</li>`).join("")}
         </ul>
-        ${correct ? "" : `<p class="hint">この語はあとでまとめて復習します。</p>`}
+        ${word.note ? `<p class="reviewNote"><span class="k">POINT</span>${esc(word.note)}</p>` : ""}
+        ${word.example ? `<p class="reviewExample"><span class="k">例文</span><span class="exJp">${esc(word.example.jp)}</span><span class="exYaku">${esc(word.example.yaku)}</span></p>` : ""}
+        ${correct ? "" : `<p class="hint">この解説は後の復習画面でも確認できます。</p>`}
       </div>
       <div class="nextRow">
         <button class="cta" id="nextBtn" type="button">${last ? "結果を見る" : "次の問題へ"}</button>
@@ -1032,6 +1042,7 @@ const VocabApp = (function () {
               <ul>
                 ${word.meanings.map(m => `<li>${esc(m)}</li>`).join("")}
               </ul>
+              <p class="answerLine"><span class="k">正しい代表語義</span>${esc(representativeMeaning(word))}</p>
               ${word.note ? `<p class="reviewNote"><span class="k">POINT</span>${esc(word.note)}</p>` : ""}
               ${word.example ? `<p class="reviewExample"><span class="k">例文</span><span class="exJp">${esc(word.example.jp)}</span><span class="exYaku">${esc(word.example.yaku)}</span></p>` : ""}
               <p class="answerLine ng"><span class="k">選んだ意味</span>${esc(picked)}${owner ? `　→　これは「${esc(owner.kana)}」の意味です` : ""}</p>
