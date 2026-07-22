@@ -567,7 +567,11 @@ const VocabApp = (function () {
   /* ---------- 選択肢生成 ---------- */
   // 正解語 word に対する4択（意味）を作る。
   function buildChoices(word) {
-    const correct = word.meanings[0];
+    // keyMeaning が指定された語は、入試で問われる語義を正解にする（未指定なら先頭）。
+    const key = Number.isInteger(word.keyMeaning) && word.keyMeaning >= 0 && word.keyMeaning < word.meanings.length
+      ? word.keyMeaning
+      : 0;
+    const correct = word.meanings[key];
     // 正解語のいずれかの意味と重複しないダミーを他語から集める
     const ownSet = new Set(word.meanings);
     const pool = [];
