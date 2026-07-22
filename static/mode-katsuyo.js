@@ -5,6 +5,7 @@ const KatsuyoApp = (function () {
   const STORE_KEY = "kobun-katsuyo-progress-v1";
   const APP_ID = "kobun-katsuyo";
   const MASTERY_THRESHOLD = 2; // 単語モードと同じ「累計2回正解」で習得扱いに揃える
+  const PATH_CUMULATIVE_SIZE = 10;
 
   const homePanel = document.getElementById("homePanel");
   const sessionPanel = document.getElementById("sessionPanel");
@@ -506,6 +507,23 @@ const KatsuyoApp = (function () {
   function savePathState(state) {
     try { localStorage.setItem(PATH_STORE_KEY, JSON.stringify(state)); } catch (_) {}
   }
+  function grammarTaskCycles(state) {
+    if (!state.grammarTaskCycles || typeof state.grammarTaskCycles !== "object") {
+      state.grammarTaskCycles = {};
+    }
+    return state.grammarTaskCycles;
+  }
+  function grammarTaskCycle(taskId) {
+    const state = loadPathState();
+    const cycle = grammarTaskCycles(state)[taskId];
+    return cycle && typeof cycle === "object" ? cycle : {};
+  }
+  function saveGrammarTaskCycle(taskId, patch) {
+    const state = loadPathState();
+    const cycles = grammarTaskCycles(state);
+    cycles[taskId] = Object.assign({}, cycles[taskId] || {}, patch);
+    savePathState(state);
+  }
   function practiceSetById(id) {
     return DATA.practiceSets.find(set => set.id === id) || null;
   }
@@ -521,6 +539,26 @@ const KatsuyoApp = (function () {
   function taskIds(task) {
     const group = taskGroup(task);
     return group ? group.ids.slice() : [];
+  }
+  function isGrammarCumulativeTask(task) {
+    return task.kind === "group" && ["yougo", "jodoshi", "choice"].includes(task.setId);
+  }
+  function cumulativeTaskIds(task) {
+    const ids = [];
+    let reached = false;
+    for (const stage of GRAMMAR_PATH) {
+      for (const candidate of stage.tasks) {
+        if (candidate.kind === "group" && candidate.setId === task.setId) {
+          ids.push(...taskIds(candidate));
+        }
+        if (candidate.id === task.id) {
+          reached = true;
+          break;
+        }
+      }
+      if (reached) break;
+    }
+    return [...new Set(ids)];
   }
   function taskStatus(task) {
     if (task.kind === "procedure") {
@@ -547,9 +585,28 @@ const KatsuyoApp = (function () {
     currentSet = set;
     const p = loadProgress();
     const ids = taskIds(task);
-    const done = ids.filter(id => isMastered(progressRecord(p, id))).length;
+    if (!isGrammarCumulativeTask(task)) {
+      const done = ids.filter(id => isMastered(progressRecord(p, id))).length;
+      currentSet = prev;
+      return { done, total: ids.length, complete: ids.length > 0 && done === ids.length };
+    }
+    const cycle = grammarTaskCycle(task.id);
+    const legacyComplete = ids.length > 0 && ids.every(id => isMastered(progressRecord(p, id)));
+    const complete = !!cycle.cumulativeCompleted || legacyComplete;
+    const passCompleted = !!cycle.passCompleted || legacyComplete;
+    const done = complete || passCompleted
+      ? ids.length
+      : ids.filter(id => {
+          const rec = progressRecord(p, id);
+          return !!rec && rec.c >= 1;
+        }).length;
     currentSet = prev;
-    return { done, total: ids.length, complete: ids.length > 0 && done === ids.length };
+    return {
+      done,
+      total: ids.length,
+      complete: ids.length > 0 && complete,
+      phase: complete ? "完了" : passCompleted ? "累積10問" : "通し"
+    };
   }
   function grammarPathStatus() {
     let previousComplete = true;
@@ -655,10 +712,32 @@ const KatsuyoApp = (function () {
     }
     const set = practiceSetById(task.setId);
     const ids = taskIds(task);
-    const p = loadProgress();
     currentSet = set;
-    const pending = review ? ids : ids.filter(id => !isMastered(progressRecord(p, id)));
-    startSession(pending.length ? pending : ids, task.label, { pathTask: task.id });
+    if (!isGrammarCumulativeTask(task)) {
+      const p = loadProgress();
+      const pending = review ? ids : ids.filter(id => !isMastered(progressRecord(p, id)));
+      startSession(pending.length ? pending : ids, task.label, { pathTask: task.id });
+      return;
+    }
+    if (review) {
+      startSession(ids, task.label, { pathTask: task.id });
+      return;
+    }
+    const cycle = grammarTaskCycle(task.id);
+    if (!cycle.passCompleted) {
+      startSession(ids, task.label + "・通し演習", {
+        pathTask: task.id,
+        pathPhase: "pass",
+        requeueWrong: false,
+      });
+      return;
+    }
+    const cumulativeIds = shuffle(cumulativeTaskIds(task)).slice(0, PATH_CUMULATIVE_SIZE);
+    startSession(cumulativeIds, task.label + "・累積10問", {
+      pathTask: task.id,
+      pathPhase: "cumulative",
+      requeueWrong: false,
+    });
   }
   function appendPathSection(title, stages, stats, hintText, lockText) {
     const progress = el("section", "card");
@@ -702,7 +781,7 @@ const KatsuyoApp = (function () {
         const row = el("div", "pathTaskRow" + (task.status.complete ? " done" : ""));
         row.appendChild(el("span", "pathTaskMark", task.status.complete ? "✓" : "□"));
         row.appendChild(el("span", "pathTaskLabel", task.label));
-        row.appendChild(el("span", "pathTaskStat", task.status.done + "/" + task.status.total));
+        row.appendChild(el("span", "pathTaskStat", task.status.done + "/" + task.status.total + (task.status.phase ? "・" + task.status.phase : "")));
         taskList.appendChild(row);
       });
       card.appendChild(taskList);
@@ -779,7 +858,7 @@ const KatsuyoApp = (function () {
     const grammarCompleted = grammarStages.filter(stage => stage.complete).length;
     appendPathSection("第2段階", grammarStages,
       [[String(grammarCompleted), "/ " + grammarStages.length, "COMPLETE・完了"], [String(grammarStages.length - grammarCompleted), "", "REMAINING・残り"], [String(requiredChoiceIds().length), "", "確認対象の4択"]],
-      "通常問題は各項目2回正解、識別フローは4択・実践を全問1回正解で完了扱いです。最後に文法混合確認30問を行います。",
+      "通常問題は1周後に既習範囲から累積10問、識別フローは4択・実践を全問1回正解で完了扱いです。最後に文法混合確認30問を行います。",
       "前の文法必修を完了すると解放されます。");
 
     const readingCompleted = readingStages.filter(stage => stage.complete).length;
@@ -1117,8 +1196,10 @@ const KatsuyoApp = (function () {
       wrongNos: new Set(),
       answered: false,
       choiceSelect: null,
+      requeueWrong: !(opts && opts.requeueWrong === false),
       flow: (opts && opts.flow) || null, // 識別の学習フロー内で開始されたセッションかどうか
       pathTask: (opts && opts.pathTask) || activeGrammarPathTask,
+      pathPhase: (opts && opts.pathPhase) || null,
     };
     homePanel.classList.add("hide");
     sessionPanel.classList.remove("hide");
@@ -1687,11 +1768,13 @@ const KatsuyoApp = (function () {
       if (!wasRequeued) session.firstTryOk += 1;
     } else {
       session.wrongNos.add(id);
-      if (!wasRequeued) {
-        session.requeued.add(id);
-        session.queue.push(id); // retry at end (once)
-      } else {
-        session.queue.push(id); // keep retrying until correct
+      if (session.requeueWrong) {
+        if (!wasRequeued) {
+          session.requeued.add(id);
+          session.queue.push(id); // retry at end (once)
+        } else {
+          session.queue.push(id); // keep retrying until correct
+        }
       }
     }
 
@@ -1734,8 +1817,10 @@ const KatsuyoApp = (function () {
       if (!wasRequeued) session.firstTryOk += 1;
     } else {
       session.wrongNos.add(id);
-      if (!wasRequeued) session.requeued.add(id);
-      session.queue.push(id);
+      if (session.requeueWrong) {
+        if (!wasRequeued) session.requeued.add(id);
+        session.queue.push(id);
+      }
     }
 
     const fb = el("div", "feedback " + (allOk ? "ok" : "ng"));
@@ -1775,6 +1860,41 @@ const KatsuyoApp = (function () {
     });
   }
 
+  function renderPathPassDone(taskDef) {
+    saveGrammarTaskCycle(taskDef.id, { passCompleted: true });
+    sessionPanel.innerHTML = "";
+    const score = session.firstTryOk;
+    const total = session.total;
+    const pct = total ? Math.round((score / total) * 100) : 0;
+    const banner = el("div", "doneBanner");
+    banner.appendChild(el("p", "label", "通し演習 完了"));
+    banner.querySelector(".label").style.color = "rgba(255,255,255,.72)";
+    banner.appendChild(el("div", "big", score + " / " + total));
+    banner.appendChild(el("div", "sub", "正答率 " + pct + "%"));
+    sessionPanel.appendChild(banner);
+
+    const card = el("section", "card");
+    card.appendChild(el("span", "label", "Next"));
+    card.appendChild(el("p", "resultText", taskDef.label + "を1周しました。次は既習範囲から古典文法の累積10問です。"));
+    const actions = el("div", "actions");
+    const next = el("button", "cta", "累積10問へ進む →");
+    next.type = "button";
+    next.addEventListener("click", () => startRequiredTask(taskDef));
+    actions.appendChild(next);
+    if (session.wrongNos.size) {
+      const retry = el("button", "ghost", "間違えた" + session.wrongNos.size + currentSet.unit + "を復習する");
+      retry.type = "button";
+      retry.addEventListener("click", () => startSession(shuffle(Array.from(session.wrongNos)), taskDef.label + "・苦手復習"));
+      actions.appendChild(retry);
+    }
+    const home = el("button", "ghost smallGhost", "ホームに戻る");
+    home.type = "button";
+    home.addEventListener("click", goHome);
+    actions.appendChild(home);
+    card.appendChild(actions);
+    sessionPanel.appendChild(card);
+  }
+
   function renderDone() {
     sessionPanel.innerHTML = "";
     const total = session.total;
@@ -1782,6 +1902,13 @@ const KatsuyoApp = (function () {
     const pct = total ? Math.round((score / total) * 100) : 0;
 
     const pathTaskDef = session.pathTask ? allPathTasks().find(task => task.id === session.pathTask) : null;
+    if (pathTaskDef && session.pathPhase === "pass") {
+      renderPathPassDone(pathTaskDef);
+      return;
+    }
+    if (pathTaskDef && session.pathPhase === "cumulative") {
+      saveGrammarTaskCycle(pathTaskDef.id, { passCompleted: true, cumulativeCompleted: true });
+    }
     if (pathTaskDef && pathTaskDef.kind === "checkpoint") {
       const pathState = loadPathState();
       const checkpointKey = pathTaskDef.checkpointKey || "grammarCheckpoint";
@@ -1805,14 +1932,19 @@ const KatsuyoApp = (function () {
     const card = el("section", "card");
     card.appendChild(el("span", "label", "Next"));
     const wrongCount = session.wrongNos.size;
+    const wrongResult = wrongCount
+      ? (session.requeueWrong ? "誤答はすべて解き直し済みです。" : "誤答は復習に記録されています。")
+      : "";
     if (session.pathTask) {
       const next = firstIncompleteRequiredTask();
       const checkpoint = !!(pathTaskDef && pathTaskDef.kind === "checkpoint");
       const passed = checkpoint && score >= Math.ceil(total * 0.8);
       const result = checkpoint
         ? (passed ? pathTaskDef.label + "に合格しました。" : pathTaskDef.label + "は不合格です。" + Math.ceil(total * 0.8) + " / " + total + "以上で次へ進めます。")
-        : "この必修タスクを完了しました。";
-      card.appendChild(el("p", "resultText", result + (wrongCount ? "誤答はすべて解き直し済みです。" : "")));
+        : session.pathPhase === "cumulative"
+          ? pathTaskDef.label + "の通し演習と累積10問を完了しました。"
+          : "この必修タスクを完了しました。";
+      card.appendChild(el("p", "resultText", result + wrongResult));
       const pathActions = el("div", "actions");
       if (next) {
         const nextBtn = el("button", "cta", "次の必修へ（" + next.task.label + "） →");
