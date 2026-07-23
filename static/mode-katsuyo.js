@@ -276,38 +276,6 @@ const KatsuyoApp = (function () {
     else renderHome();
   }
 
-  function renderGrammarNav() {
-    const nav = el("nav", "appNav grammarNav");
-    nav.setAttribute("aria-label", "古典文法の練習モード");
-    const btn = el("button", "appTab");
-    btn.type = "button";
-    btn.setAttribute("aria-pressed", activeGrammarMode === "roadmap" ? "true" : "false");
-    btn.appendChild(el("span", null, "STAGE 2"));
-    btn.appendChild(document.createTextNode("文法ロードマップ"));
-    btn.addEventListener("click", () => selectGrammarMode("roadmap"));
-    nav.appendChild(btn);
-    return nav;
-  }
-
-  function attachGrammarNav() {
-    if (grammarMode) homePanel.prepend(renderGrammarNav());
-  }
-
-  function selectGrammarMode(id) {
-    activeGrammarMode = id;
-    if (id === "roadmap") {
-      renderGrammarRoadmapHome();
-      return;
-    }
-    if (id === "katsuyo") {
-      currentSet = null;
-      renderKatsuyoHome();
-      return;
-    }
-    currentSet = DATA.practiceSets.find(set => set.id === id) || DATA.practiceSets[0];
-    renderHome();
-  }
-
   function renderKatsuyoHome() {
     flow = null;
     sessionPanel.classList.add("hide");
@@ -453,7 +421,6 @@ const KatsuyoApp = (function () {
       moreCard.appendChild(details);
       homePanel.appendChild(moreCard);
     }
-    attachGrammarNav();
   }
 
   /* ---------- 識別セクション：学習フロー（理解→4択→実践） ---------- */
@@ -912,7 +879,6 @@ const KatsuyoApp = (function () {
       moreCard.appendChild(details);
       homePanel.appendChild(moreCard);
     }
-    attachGrammarNav();
   }
 
   /* ---------- cloud sync（生徒別・共有URL ?s=&t= — harness/cloud.js を利用） ---------- */
@@ -1101,7 +1067,6 @@ const KatsuyoApp = (function () {
       moreCard.appendChild(details);
       homePanel.appendChild(moreCard);
     }
-    attachGrammarNav();
   }
 
   // 識別セクション専用：手順ごとに「学習する」ボタン（理解→4択→実践のフロー開始）と
