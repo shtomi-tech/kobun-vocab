@@ -627,6 +627,7 @@ const VocabApp = (function () {
         : "必須語の現在地：10セット完了・確認テスト待ち";
 
     home.innerHTML = `
+      <section id="learningMapSlot"></section>
       ${savedSession ? `
       <section class="card">
         <p class="label">Resume</p>
@@ -790,6 +791,9 @@ const VocabApp = (function () {
           renderHome();
         }
       });
+    }
+    if (typeof LearningMap !== "undefined") {
+      LearningMap.render(el("learningMapSlot"), { activeApp: "vocab" });
     }
     notifyStageStatusChanged();
   }
@@ -1272,5 +1276,11 @@ const VocabApp = (function () {
     await boot();
   }
 
-  return { mount, handleKey, isStage1Complete: () => stage1Status().complete, showStageGate };
+  return {
+    mount, handleKey,
+    isStage1Complete: () => stage1Status().complete,
+    showStageGate,
+    stage1Status,
+    nextHint: () => focusPlan().cta,
+  };
 })();

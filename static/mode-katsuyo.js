@@ -822,6 +822,13 @@ const KatsuyoApp = (function () {
     homePanel.classList.remove("hide");
     homePanel.innerHTML = "";
 
+    if (typeof LearningMap !== "undefined") {
+      const mapSlot = el("section");
+      mapSlot.id = "learningMapSlot";
+      homePanel.appendChild(mapSlot);
+      LearningMap.render(mapSlot, { activeApp: "grammar" });
+    }
+
     const grammarStages = grammarPathStatus();
     const grammarComplete = grammarStages.every(stage => stage.complete);
     const readingStages = readingPathStatus();
@@ -2163,5 +2170,27 @@ const KatsuyoApp = (function () {
     renderHome();
   }
 
-  return { mount, handleKey };
+  // 学習マップ用：段階2〜4（文法・敬語読解・古文常識）の完了状況と次タスクを返す。
+  // DATA 未読込のときは ready:false。ensureData() で読み込める。
+  function pathOverview() {
+    if (!DATA) return { ready: false };
+    const g = grammarPathStatus();
+    const r = readingPathStatus();
+    const c = culturePathStatus();
+    const next = firstIncompleteRequiredTask();
+    return {
+      ready: true,
+      grammarComplete: g.every(s => s.complete),
+      readingComplete: r.every(s => s.complete),
+      cultureComplete: c.every(s => s.complete),
+      next: next ? { taskLabel: next.task.label, stageLabel: next.stage.label } : null,
+    };
+  }
+  // 画面を描画せずデータだけ読み込む（学習マップの遅延取得用）。
+  function ensureData() {
+    if (!booted) { booted = true; return boot(); }
+    return bootPromise || Promise.resolve();
+  }
+
+  return { mount, handleKey, pathOverview, ensureData };
 })();
