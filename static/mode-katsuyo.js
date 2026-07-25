@@ -5,7 +5,6 @@ const KatsuyoApp = (function () {
   const STORE_KEY = "kobun-katsuyo-progress-v1";
   const APP_ID = "kobun-katsuyo";
   const MASTERY_THRESHOLD = 2; // 単語モードと同じ「累計2回正解」で習得扱いに揃える
-  const PATH_CUMULATIVE_SIZE = 10;
 
   const homePanel = document.getElementById("homePanel");
   const sessionPanel = document.getElementById("sessionPanel");
@@ -552,35 +551,12 @@ const KatsuyoApp = (function () {
     const group = taskGroup(task);
     return group ? group.ids.slice() : [];
   }
-  function isGrammarCumulativeTask(task) {
+  function isGrammarOnePassTask(task) {
     return task.kind === "group" && ["kiso", "yougo", "jodoshi", "choice"].includes(task.setId);
   }
   function setModeById(setId) {
     const set = practiceSetById(setId);
     return set ? setMode(set) : null;
-  }
-  // 累積10問の出題母集団。分散学習のため、同じ練習セット内だけでなく
-  // それまでに終えた必修の group タスクからも集める（{id, setId} の組で返す）。
-  // ただし出題形式は揃える。4択の累積に活用表の行埋めが混ざると、
-  // 1セッション内で解き方が変わって負担が跳ね上がるため。
-  function cumulativeTaskEntries(task) {
-    const wantMode = setModeById(task.setId);
-    const entries = [];
-    let reached = false;
-    for (const stage of GRAMMAR_PATH) {
-      for (const candidate of stage.tasks) {
-        if (candidate.kind === "group" && setModeById(candidate.setId) === wantMode) {
-          taskIds(candidate).forEach(id => entries.push({ id, setId: candidate.setId }));
-        }
-        if (candidate.id === task.id) {
-          reached = true;
-          break;
-        }
-      }
-      if (reached) break;
-    }
-    const seen = new Set();
-    return entries.filter(e => (seen.has(e.id) ? false : (seen.add(e.id), true)));
   }
   function entriesToSetMap(entries) {
     const map = {};
@@ -612,27 +588,24 @@ const KatsuyoApp = (function () {
     currentSet = set;
     const p = loadProgress();
     const ids = taskIds(task);
-    if (!isGrammarCumulativeTask(task)) {
+    if (!isGrammarOnePassTask(task)) {
       const done = ids.filter(id => isMastered(progressRecord(p, id))).length;
       currentSet = prev;
       return { done, total: ids.length, complete: ids.length > 0 && done === ids.length };
     }
     const cycle = grammarTaskCycle(task.id);
-    const legacyComplete = ids.length > 0 && ids.every(id => isMastered(progressRecord(p, id)));
-    const complete = !!cycle.cumulativeCompleted || legacyComplete;
-    const passCompleted = !!cycle.passCompleted || legacyComplete;
-    const done = complete || passCompleted
-      ? ids.length
-      : ids.filter(id => {
-          const rec = progressRecord(p, id);
-          return !!rec && rec.c >= 1;
-        }).length;
+    const done = ids.filter(id => {
+      const rec = progressRecord(p, id);
+      return !!rec && rec.c >= 1;
+    }).length;
+    const legacyComplete = ids.length > 0 && done === ids.length;
+    const complete = !!cycle.passCompleted || legacyComplete;
     currentSet = prev;
     return {
       done,
       total: ids.length,
       complete: ids.length > 0 && complete,
-      phase: complete ? "完了" : passCompleted ? "累積10問" : "通し"
+      phase: complete ? "完了" : "通し"
     };
   }
   function grammarPathStatus() {
@@ -761,43 +734,25 @@ const KatsuyoApp = (function () {
     const set = practiceSetById(task.setId);
     const ids = taskIds(task);
     currentSet = set;
-    if (!isGrammarCumulativeTask(task)) {
+    if (!isGrammarOnePassTask(task)) {
       const p = loadProgress();
       const pending = review ? ids : ids.filter(id => !isMastered(progressRecord(p, id)));
       startSession(pending.length ? pending : ids, task.label, { pathTask: task.id });
       return;
     }
-    if (review) {
-      startSession(ids, task.label, { pathTask: task.id });
-      return;
-    }
-    const cycle = grammarTaskCycle(task.id);
-    if (!cycle.passCompleted) {
-      // 通し演習は語数が多く一度に終えるのが負担なので、途中中断できるようにする。
-      // 1問ごとの正誤は recordResult で保存されるため、再開時は正解済みを除いた
-      // 残りの語だけを出題する。全語を1周し終えていれば通しを完了扱いにする。
-      const p = loadProgress();
-      const pending = ids.filter(id => {
-        const rec = progressRecord(p, id);
-        return !(rec && rec.c >= 1);
-      });
-      if (pending.length > 0) {
-        startSession(pending, task.label + "・通し演習", {
-          pathTask: task.id,
-          pathPhase: "pass",
-          requeueWrong: false,
+    // 通し演習で、各問題を1回以上正解した時点で必修タスクを完了にする。
+    // 正答記録は1問ごとに保存されるため、途中で離脱しても未正解だけ再開できる。
+    const p = loadProgress();
+    const pending = review
+      ? ids
+      : ids.filter(id => {
+          const rec = progressRecord(p, id);
+          return !(rec && rec.c >= 1);
         });
-        return;
-      }
-      saveGrammarTaskCycle(task.id, { passCompleted: true });
-    }
-    const cumulative = shuffle(cumulativeTaskEntries(task)).slice(0, PATH_CUMULATIVE_SIZE);
-    if (cumulative.length) currentSet = practiceSetById(cumulative[0].setId);
-    startSession(cumulative.map(e => e.id), task.label + "・累積10問", {
+    startSession(pending.length ? pending : ids, task.label + "・通し演習", {
       pathTask: task.id,
-      pathPhase: "cumulative",
+      pathPhase: "pass",
       requeueWrong: false,
-      setMap: entriesToSetMap(cumulative),
     });
   }
   function appendPathSection(title, stages, stats, hintText, lockText) {
@@ -926,7 +881,7 @@ const KatsuyoApp = (function () {
     const grammarCompleted = grammarStages.filter(stage => stage.complete).length;
     appendPathSection("第2段階", grammarStages,
       [[String(grammarCompleted), "/ " + grammarStages.length, "COMPLETE・完了"], [String(grammarStages.length - grammarCompleted), "", "REMAINING・残り"], [String(requiredChoiceIds().length), "", "確認対象の4択"]],
-      "通常問題は1周後に既習範囲から累積10問（それまでの必修をまたいで出題）、識別フローは4択・実践を全問1回正解で完了扱いです。最後に文法混合確認30問を行います。",
+      "通常問題は通し演習で各問題を1回以上正解すると完了、識別フローは4択・実践を全問1回正解で完了扱いです。最後に文法混合確認30問を行います。",
       "前の文法必修を完了すると解放されます。");
 
     const readingCompleted = readingStages.filter(stage => stage.complete).length;
@@ -1266,7 +1221,7 @@ const KatsuyoApp = (function () {
       flow: (opts && opts.flow) || null, // 識別の学習フロー内で開始されたセッションかどうか
       pathTask: (opts && opts.pathTask) || activeGrammarPathTask,
       pathPhase: (opts && opts.pathPhase) || null,
-      // 累積10問・混合確認は複数の練習セットから出題するため、問題ごとに所属セットを持たせる。
+      // 混合確認は複数の練習セットから出題するため、問題ごとに所属セットを持たせる。
       // 問題IDは全セットで接頭辞が異なるので、フラットな id→setId の対応で衝突しない。
       setMap: (opts && opts.setMap) || null,
     };
@@ -1956,12 +1911,20 @@ const KatsuyoApp = (function () {
 
     const card = el("section", "card");
     card.appendChild(el("span", "label", "Next"));
-    card.appendChild(el("p", "resultText", taskDef.label + "を1周しました。次は既習範囲から古典文法の累積10問です。"));
+    card.appendChild(el("p", "resultText", taskDef.label + "を完了しました。"));
     const actions = el("div", "actions");
-    const next = el("button", "cta", "累積10問へ進む →");
-    next.type = "button";
-    next.addEventListener("click", () => startRequiredTask(taskDef));
-    actions.appendChild(next);
+    const nextTask = firstIncompleteRequiredTask();
+    if (nextTask) {
+      const next = el("button", "cta", "次の必修へ（" + nextTask.task.label + "） →");
+      next.type = "button";
+      next.addEventListener("click", () => startRequiredTask(nextTask.task));
+      actions.appendChild(next);
+    } else {
+      const roadmap = el("button", "cta", "学習ロードマップを見る");
+      roadmap.type = "button";
+      roadmap.addEventListener("click", renderGrammarRoadmapHome);
+      actions.appendChild(roadmap);
+    }
     if (session.wrongNos.size) {
       const retry = el("button", "ghost", "間違えた" + session.wrongNos.size + currentSet.unit + "を復習する");
       retry.type = "button";
@@ -1986,9 +1949,6 @@ const KatsuyoApp = (function () {
     if (pathTaskDef && session.pathPhase === "pass") {
       renderPathPassDone(pathTaskDef);
       return;
-    }
-    if (pathTaskDef && session.pathPhase === "cumulative") {
-      saveGrammarTaskCycle(pathTaskDef.id, { passCompleted: true, cumulativeCompleted: true });
     }
     if (pathTaskDef && pathTaskDef.kind === "checkpoint") {
       const pathState = loadPathState();
@@ -2022,9 +1982,7 @@ const KatsuyoApp = (function () {
       const passed = checkpoint && score >= Math.ceil(total * 0.8);
       const result = checkpoint
         ? (passed ? pathTaskDef.label + "に合格しました。" : pathTaskDef.label + "は不合格です。" + Math.ceil(total * 0.8) + " / " + total + "以上で次へ進めます。")
-        : session.pathPhase === "cumulative"
-          ? pathTaskDef.label + "の通し演習と累積10問を完了しました。"
-          : "この必修タスクを完了しました。";
+        : "この必修タスクを完了しました。";
       card.appendChild(el("p", "resultText", result + wrongResult));
       const pathActions = el("div", "actions");
       if (next) {
