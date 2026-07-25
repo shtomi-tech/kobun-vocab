@@ -4,6 +4,12 @@
     "note": "2026-07-25新設。段階2の最初の必修「文法の入口」。用言の活用に入る前に、生徒が自力で『この語は何形か』『上に何が付くか』を言える状態にするための土台。市販教材の設問文は転記していない。",
     "principleNote": "この範囲は docs/kobun-principles に対応する原則カードがまだ無い。内容は高校学校文法の標準的な導入事項に限定し、解釈が割れうる論点（音便の分類名、上代特殊仮名遣いなど）は扱わない。原則カード化の候補は docs/kobun-principles/INBOX.md に記録した。"
   },
+  "kisoRequiredQuestionIds": [
+    "k-yomi-02", "k-yomi-03", "k-yomi-04", "k-yomi-05", "k-yomi-06", "k-yomi-07", "k-yomi-08",
+    "k-bun-01", "k-bun-02", "k-bun-03", "k-bun-04", "k-bun-05", "k-bun-06",
+    "k-kei-02", "k-kei-03", "k-kei-04", "k-kei-05", "k-kei-06", "k-kei-07", "k-kei-08", "k-kei-09",
+    "k-set-01", "k-set-02", "k-set-03", "k-set-04", "k-set-05"
+  ],
   "kisoGroups": [
     {
       "id": "kiso-yomi",

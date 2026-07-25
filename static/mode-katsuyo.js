@@ -27,9 +27,9 @@ const KatsuyoApp = (function () {
       label: "1. 文法の入口",
       description: "読み方・文節・活用形・接続という、文法を読むための土台を作る",
       tasks: [
-        { id: "kiso-yomi", kind: "group", setId: "kiso", groupId: "kiso-yomi", label: "歴史的仮名遣いと読み 8問" },
+        { id: "kiso-yomi", kind: "group", setId: "kiso", groupId: "kiso-yomi", label: "歴史的仮名遣いと読み 7問" },
         { id: "kiso-bunsetsu", kind: "group", setId: "kiso", groupId: "kiso-bunsetsu", label: "文節・自立語と付属語 6問" },
-        { id: "kiso-katsuyokei", kind: "group", setId: "kiso", groupId: "kiso-katsuyokei", label: "活用形の見分け 9問" },
+        { id: "kiso-katsuyokei", kind: "group", setId: "kiso", groupId: "kiso-katsuyokei", label: "活用形の見分け 8問" },
         { id: "kiso-setsuzoku", kind: "group", setId: "kiso", groupId: "kiso-setsuzoku", label: "接続という考え方 5問" },
       ],
     },
@@ -39,8 +39,8 @@ const KatsuyoApp = (function () {
       description: "用言の活用表と、品詞・活用形・係り結びの基礎を固める",
       tasks: [
         { id: "yougo-table", kind: "group", setId: "yougo", groupId: "yougo-all", label: "用言13語の活用表" },
-        { id: "choice-ch1", kind: "group", setId: "choice", groupId: "qa-chapter-1", label: "品詞・活用・係り結び 11問" },
-        { id: "choice-ch2", kind: "group", setId: "choice", groupId: "qa-chapter-2", label: "用言の攻略 26問" },
+        { id: "choice-ch1", kind: "group", setId: "choice", groupId: "qa-chapter-1", label: "品詞・活用・係り結び 8問" },
+        { id: "choice-ch2", kind: "group", setId: "choice", groupId: "qa-chapter-2", label: "用言の攻略 20問" },
       ],
     },
     {
@@ -49,8 +49,8 @@ const KatsuyoApp = (function () {
       description: "助動詞の活用表を埋め、接続と活用を4択で確認する",
       tasks: [
         { id: "jodoshi-table", kind: "group", setId: "jodoshi", groupId: "all", label: "助動詞28語の活用表" },
-        { id: "choice-ch3", kind: "group", setId: "choice", groupId: "qa-chapter-3", label: "助動詞の攻略① 15問" },
-        { id: "choice-ch5", kind: "group", setId: "choice", groupId: "qa-chapter-5", label: "助動詞の攻略③ 9問" },
+        { id: "choice-ch3", kind: "group", setId: "choice", groupId: "qa-chapter-3", label: "助動詞の攻略① 12問" },
+        { id: "choice-ch5", kind: "group", setId: "choice", groupId: "qa-chapter-5", label: "助動詞の攻略③ 8問" },
       ],
     },
     {
@@ -75,7 +75,7 @@ const KatsuyoApp = (function () {
       label: "5. 助詞",
       description: "助詞の知識を確認し、ば・より・だに・係り結び・終助詞を手順で訳し分ける",
       tasks: [
-        { id: "choice-ch7", kind: "group", setId: "choice", groupId: "qa-chapter-7", label: "助詞の攻略 17問" },
+        { id: "choice-ch7", kind: "group", setId: "choice", groupId: "qa-chapter-7", label: "助詞の攻略 10問" },
         { id: "proc-ba", kind: "procedure", setId: "joshi", procId: "ba", label: "ばの識別" },
         { id: "proc-yori", kind: "procedure", setId: "joshi", procId: "yori", label: "よりの識別" },
         { id: "proc-dani", kind: "procedure", setId: "joshi", procId: "dani", label: "だにの識別" },
@@ -100,7 +100,7 @@ const KatsuyoApp = (function () {
       label: "7. 敬語",
       description: "敬語の知識を確認し、給ふ・奉る・侍り・補助動詞・敬意の方向を手順で決める",
       tasks: [
-        { id: "choice-ch9", kind: "group", setId: "choice", groupId: "qa-chapter-9", label: "敬語の攻略 12問" },
+        { id: "choice-ch9", kind: "group", setId: "choice", groupId: "qa-chapter-9", label: "敬語の攻略 8問" },
         { id: "proc-k-tamau", kind: "procedure", setId: "keigo-shikibetsu", procId: "k-tamau", label: "給ふの識別" },
         { id: "proc-k-tatematsuru", kind: "procedure", setId: "keigo-shikibetsu", procId: "k-tatematsuru", label: "奉る・参るの識別" },
         { id: "proc-k-haberi", kind: "procedure", setId: "keigo-shikibetsu", procId: "k-haberi", label: "侍り・候ふの識別" },
@@ -215,6 +215,10 @@ const KatsuyoApp = (function () {
   function itemId(item) {
     return item.id || item.no;
   }
+  function progressItemIds() {
+    if (currentSet && (currentSet.proceduresKey || currentSet.requiredQuestionIdsKey)) return shikibetsuRequiredIds();
+    return getItems().map(itemId);
+  }
   function recordResult(id, ok) {
     const p = loadProgress();
     const key = itemKey(id);
@@ -229,17 +233,24 @@ const KatsuyoApp = (function () {
   }
   function weakIds() {
     const p = loadProgress();
-    return getItems().filter(item => (progressRecord(p, itemId(item)) || {}).weak).map(itemId);
+    return progressItemIds().filter(id => (progressRecord(p, id) || {}).weak);
   }
   function masteredCount() {
     const p = loadProgress();
-    return getItems().filter(item => isMastered(progressRecord(p, itemId(item)))).length;
+    return progressItemIds().filter(id => isMastered(progressRecord(p, id))).length;
   }
-  function groupDoneCount(g, p) {
-    return g.ids.filter(id => isMastered(progressRecord(p, id))).length;
+  function groupIdsForSet(g, set = currentSet) {
+    const required = set && set.requiredQuestionIdsKey
+      ? new Set(shikibetsuRequiredIds(set))
+      : null;
+    return required ? g.ids.filter(id => required.has(id)) : g.ids.slice();
   }
-  function sessionIdsForGroup(g) {
-    return g.shuffle ? shuffle(g.ids) : g.ids.slice();
+  function groupDoneCount(g, p, set = currentSet) {
+    return groupIdsForSet(g, set).filter(id => isMastered(progressRecord(p, id))).length;
+  }
+  function sessionIdsForGroup(g, set = currentSet) {
+    const ids = groupIdsForSet(g, set);
+    return g.shuffle ? shuffle(ids) : ids;
   }
 
   /* ---------- 知識項目カバレッジ ---------- */
@@ -266,12 +277,14 @@ const KatsuyoApp = (function () {
     const p = loadProgress();
     const focused = groups.slice(0, -1);
     for (const g of focused) {
-      const done = groupDoneCount(g, p);
-      if (done < g.ids.length) return { group: g, done };
+      const ids = groupIdsForSet(g);
+      const done = ids.filter(id => isMastered(progressRecord(p, id))).length;
+      if (done < ids.length) return { group: g, done, total: ids.length };
     }
     const last = groups[groups.length - 1];
-    const doneLast = groupDoneCount(last, p);
-    if (doneLast < last.ids.length) return { group: last, done: doneLast };
+    const lastIds = groupIdsForSet(last);
+    const doneLast = lastIds.filter(id => isMastered(progressRecord(p, id))).length;
+    if (doneLast < lastIds.length) return { group: last, done: doneLast, total: lastIds.length };
     return null;
   }
   function setMode(set) {
@@ -283,7 +296,8 @@ const KatsuyoApp = (function () {
   function statsForSet(set) {
     const prev = currentSet;
     currentSet = set;
-    const total = getItems().length;
+    const requiredIds = progressItemIds();
+    const total = requiredIds.length;
     const mastered = masteredCount();
     const weak = weakIds().length;
     currentSet = prev;
@@ -306,8 +320,8 @@ const KatsuyoApp = (function () {
       if (inc) {
         result = {
           tag: "つづきから",
-          main: set.name + "：" + inc.group.name + "（" + inc.done + " / " + inc.group.ids.length + "）",
-          action: () => { currentSet = set; startSession(sessionIdsForGroup(inc.group), inc.group.name); },
+          main: set.name + "：" + inc.group.name + "（" + inc.done + " / " + inc.total + "）",
+          action: () => { currentSet = set; startSession(sessionIdsForGroup(inc.group, set), inc.group.name); },
         };
       }
     }
@@ -471,18 +485,40 @@ const KatsuyoApp = (function () {
   function shikibetsuProcedures() {
     return DATA[currentSet.proceduresKey] || [];
   }
+  // 必修ルートは、全問題（総仕上げ・追加練習を含む）から代表問題を選んだ集合で進める。
+  // セットごとに必修IDのキーを持たせ、助動詞の設定が他の識別へ混ざらないようにする。
+  // 必修IDが無い旧データでは、総仕上げグループを除く全問題へフォールバックする。
+  function shikibetsuRequiredIds(set = currentSet) {
+    const configuredKey = set && set.requiredQuestionIdsKey;
+    const configured = configuredKey && DATA && DATA[configuredKey];
+    if (Array.isArray(configured) && configured.length) return configured.slice();
+    const groups = set && DATA ? (DATA[set.groups] || []) : [];
+    return groups
+      .filter(g => !String(g.id || "").endsWith("-all"))
+      .flatMap(g => g.ids || []);
+  }
+  function shikibetsuRequiredIdSet(set = currentSet) {
+    return new Set(shikibetsuRequiredIds(set));
+  }
+  function shikibetsuSupplementalIds(set = currentSet) {
+    const required = shikibetsuRequiredIdSet(set);
+    const items = set && DATA ? (DATA[set.collection] || []) : [];
+    return items.map(itemId).filter(id => !required.has(id));
+  }
   function shikibetsuGroupForProc(procId) {
     return getGroups().find(g => g.id === "sb-" + procId);
   }
   function shikibetsuQuizIds(procId) {
     const g = shikibetsuGroupForProc(procId);
     if (!g) return [];
-    return g.ids.filter(id => (byId[itemKey(id)] || {}).questionType !== "integration");
+    const required = shikibetsuRequiredIdSet();
+    return g.ids.filter(id => required.has(id) && (byId[itemKey(id)] || {}).questionType !== "integration");
   }
   function shikibetsuPracticeIds(procId) {
     const g = shikibetsuGroupForProc(procId);
     if (!g) return [];
-    return g.ids.filter(id => (byId[itemKey(id)] || {}).questionType === "integration");
+    const required = shikibetsuRequiredIdSet();
+    return g.ids.filter(id => required.has(id) && (byId[itemKey(id)] || {}).questionType === "integration");
   }
   // 「習得済み」（isMastered、累計2回正解）は苦手復習・進捗バー用の基準。
   // フローの完了判定はセッションを1周し終えた（1回でも正解した）ことだけを基準にする。
@@ -549,7 +585,8 @@ const KatsuyoApp = (function () {
   }
   function taskIds(task) {
     const group = taskGroup(task);
-    return group ? group.ids.slice() : [];
+    const set = practiceSetById(task.setId);
+    return group ? groupIdsForSet(group, set) : [];
   }
   function isGrammarOnePassTask(task) {
     return task.kind === "group" && ["kiso", "yougo", "jodoshi", "choice"].includes(task.setId);
@@ -894,6 +931,7 @@ const KatsuyoApp = (function () {
       [[String(cultureCompleted), "/ " + cultureStages.length, "COMPLETE・完了"], [String(cultureStages.length - cultureCompleted), "", "REMAINING・残り"], [String(requiredCultureIds().length), "", "古文常識の確認"]],
       "古文常識は各短文を2回正解し、最後に12問中10問以上のチェックポイントに合格すると完了です。",
       "第3段階の敬語読解を完了すると解放されます。");
+    renderSupplementalPracticeCard();
     if (!sharedMode) {
       const moreCard = el("section", "card");
       const details = document.createElement("details");
@@ -963,7 +1001,8 @@ const KatsuyoApp = (function () {
     homePanel.classList.remove("hide");
     homePanel.innerHTML = "";
 
-    const total = getItems().length;
+    const requiredIds = progressItemIds();
+    const total = requiredIds.length;
     const mastered = masteredCount();
     const weak = weakIds().length;
     const sharedMode = !!(cloud && cloud.isEnabled());
@@ -994,9 +1033,9 @@ const KatsuyoApp = (function () {
         };
       } else if (total > 0) {
         primary = {
-          tag: "総仕上げ",
+          tag: "必修総仕上げ",
           main: total + currentSet.unit + "をランダム出題",
-          action: () => startSession(shuffle(getItems().map(itemId)), "総仕上げ"),
+          action: () => startSession(shuffle(requiredIds), "必修総仕上げ"),
         };
       }
     } else {
@@ -1004,14 +1043,14 @@ const KatsuyoApp = (function () {
       if (inc) {
         primary = {
           tag: "つづきから",
-          main: inc.group.name + "（" + inc.done + " / " + inc.group.ids.length + "）",
-          action: () => startSession(sessionIdsForGroup(inc.group), inc.group.name),
+          main: inc.group.name + "（" + inc.done + " / " + inc.total + "）",
+          action: () => startSession(sessionIdsForGroup(inc.group, currentSet), inc.group.name),
         };
       } else if (total > 0) {
         primary = {
-          tag: "総仕上げ",
+          tag: currentSet.requiredQuestionIdsKey ? "必修総仕上げ" : "総仕上げ",
           main: total + currentSet.unit + "をランダム出題",
-          action: () => startSession(shuffle(getItems().map(itemId)), "総仕上げ"),
+          action: () => startSession(shuffle(requiredIds), currentSet.requiredQuestionIdsKey ? "必修総仕上げ" : "総仕上げ"),
         };
       }
     }
@@ -1056,7 +1095,10 @@ const KatsuyoApp = (function () {
     progressCard.appendChild(el("p", "hint", "残り" + Math.max(0, total - mastered) + currentSet.unit + "。"));
     homePanel.appendChild(progressCard);
 
-    if (currentSet.proceduresKey) renderProcedureStepsCard();
+    if (currentSet.proceduresKey || currentSet.requiredQuestionIdsKey) {
+      if (currentSet.proceduresKey) renderProcedureStepsCard();
+      renderSupplementalPracticeCard(currentSet);
+    }
 
     // 識別タブは手順学習カード（つづきから・この手順を学習する）が唯一の導線のため、
     // 知識項目チェック・グループ一覧（練習グループを選ぶ）は表示しない。
@@ -1071,11 +1113,12 @@ const KatsuyoApp = (function () {
       getGroups().forEach(g => {
         const btn = el("button", "groupBtn");
         btn.type = "button";
-        const done = groupDoneCount(g, p);
+        const ids = groupIdsForSet(g, currentSet);
+        const done = groupDoneCount(g, p, currentSet);
         btn.appendChild(el("span", "groupName", g.name));
         btn.appendChild(el("span", "groupSub", g.sub));
-        btn.appendChild(el("span", "groupStat", "習得 " + done + " / " + g.ids.length));
-        btn.addEventListener("click", () => startSession(sessionIdsForGroup(g), g.name));
+        btn.appendChild(el("span", "groupStat", "習得 " + done + " / " + ids.length));
+        btn.addEventListener("click", () => startSession(sessionIdsForGroup(g, currentSet), g.name));
         list.appendChild(btn);
       });
       listCard.appendChild(list);
@@ -1152,6 +1195,38 @@ const KatsuyoApp = (function () {
       card.appendChild(block);
     });
     homePanel.appendChild(card);
+  }
+
+  // 必修ルートから外した問題は削除せず、完了条件に含めない追加練習として残す。
+  function renderSupplementalPracticeCard(targetSet = currentSet) {
+    const prev = currentSet;
+    const set = targetSet || practiceSetById("shikibetsu");
+    if (!set) return;
+    currentSet = set;
+    const ids = shikibetsuSupplementalIds();
+    if (!ids.length) {
+      currentSet = prev;
+      return;
+    }
+    const p = loadProgress();
+    const mastered = ids.filter(id => isMastered(progressRecord(p, id))).length;
+    const weak = ids.filter(id => (progressRecord(p, id) || {}).weak).length;
+    const card = el("section", "card");
+    card.appendChild(el("span", "label", "追加練習"));
+    card.appendChild(el("p", "hint", "必修ルート外の" + ids.length + "問です。文法の完了条件には含めず、必要なときだけ練習できます。"));
+    card.appendChild(el("p", "procedureLearnStat", "習得 " + mastered + " / " + ids.length + (weak ? "　苦手 " + weak : "")));
+    const actions = el("div", "actions");
+    const startBtn = el("button", "ghost", "追加練習を始める");
+    startBtn.type = "button";
+    startBtn.addEventListener("click", () => {
+      currentSet = set;
+      activeGrammarPathTask = null;
+      startSession(shuffle(ids), "追加練習（" + ids.length + "問）");
+    });
+    actions.appendChild(startBtn);
+    card.appendChild(actions);
+    homePanel.appendChild(card);
+    currentSet = prev;
   }
 
   // 「知識項目×問題形式」の対応表。どの手順が確認済みで、どこが抜けているかを一覧する。
@@ -2056,21 +2131,21 @@ const KatsuyoApp = (function () {
     bootPromise = Promise.all([
       fetch("data/katsuyo.json?v=20260724-2")
         .then(r => { if (!r.ok) throw new Error("katsuyo data load failed: " + r.status); return r.json(); }),
-      fetch("data/multiple_choice.json?v=20260716-1")
+      fetch("data/multiple_choice.json?v=20260725-2")
         .then(r => { if (!r.ok) throw new Error("choice data load failed: " + r.status); return r.json(); }),
-      fetch("data/shikibetsu.json?v=20260724-1")
+      fetch("data/shikibetsu.json?v=20260725-2")
         .then(r => { if (!r.ok) throw new Error("shikibetsu data load failed: " + r.status); return r.json(); }),
       fetch("data/keigo-dokkai.json?v=20260721-1")
         .then(r => { if (!r.ok) throw new Error("keigo-dokkai data load failed: " + r.status); return r.json(); }),
       fetch("data/kobun-joshiki.json?v=20260721-1")
         .then(r => { if (!r.ok) throw new Error("kobun-joshiki data load failed: " + r.status); return r.json(); }),
-      fetch("data/kiso.json?v=20260725-1")
+      fetch("data/kiso.json?v=20260725-2")
         .then(r => { if (!r.ok) throw new Error("kiso data load failed: " + r.status); return r.json(); }),
-      fetch("data/shikibetsu-joshi.json?v=20260725-1")
+      fetch("data/shikibetsu-joshi.json?v=20260725-2")
         .then(r => { if (!r.ok) throw new Error("joshi data load failed: " + r.status); return r.json(); }),
-      fetch("data/shikibetsu-homograph.json?v=20260725-1")
+      fetch("data/shikibetsu-homograph.json?v=20260725-2")
         .then(r => { if (!r.ok) throw new Error("homograph data load failed: " + r.status); return r.json(); }),
-      fetch("data/shikibetsu-keigo.json?v=20260725-1")
+      fetch("data/shikibetsu-keigo.json?v=20260725-2")
         .then(r => { if (!r.ok) throw new Error("keigo-shikibetsu data load failed: " + r.status); return r.json(); })
     ])
       .then(async ([d, choiceData, shikibetsuData, keigoDokkaiData, kobunJoshikiData,
@@ -2115,6 +2190,7 @@ const KatsuyoApp = (function () {
           description: "章ごとの文法知識を4択で確認する",
           collection: "choiceQuestions",
           groups: "choiceGroups",
+          requiredQuestionIdsKey: "choiceRequiredQuestionIds",
           askLabel: "正しい選択肢を選べ",
           unit: "問",
           mode: "choice",
@@ -2128,6 +2204,7 @@ const KatsuyoApp = (function () {
           collection: "shikibetsuQuestions",
           groups: "shikibetsuGroups",
           proceduresKey: "procedures",
+          requiredQuestionIdsKey: "requiredQuestionIds",
           askLabel: "正しい選択肢を選べ",
           unit: "問",
           mode: "choice",
@@ -2166,6 +2243,7 @@ const KatsuyoApp = (function () {
           description: "読み方・文節・活用形・接続の基礎を4択で確認する",
           collection: "kisoQuestions",
           groups: "kisoGroups",
+          requiredQuestionIdsKey: "kisoRequiredQuestionIds",
           askLabel: "正しい選択肢を選べ",
           unit: "問",
           mode: "choice",
@@ -2180,6 +2258,7 @@ const KatsuyoApp = (function () {
           collection: "joshiQuestions",
           groups: "joshiGroups",
           proceduresKey: "joshiProcedures",
+          requiredQuestionIdsKey: "joshiRequiredQuestionIds",
           askLabel: "正しい選択肢を選べ",
           unit: "問",
           mode: "choice",
@@ -2193,6 +2272,7 @@ const KatsuyoApp = (function () {
           collection: "homographQuestions",
           groups: "homographGroups",
           proceduresKey: "homographProcedures",
+          requiredQuestionIdsKey: "homographRequiredQuestionIds",
           askLabel: "正しい選択肢を選べ",
           unit: "問",
           mode: "choice",
@@ -2206,6 +2286,7 @@ const KatsuyoApp = (function () {
           collection: "keigoQuestions",
           groups: "keigoGroups",
           proceduresKey: "keigoProcedures",
+          requiredQuestionIdsKey: "keigoRequiredQuestionIds",
           askLabel: "正しい選択肢を選べ",
           unit: "問",
           mode: "choice",

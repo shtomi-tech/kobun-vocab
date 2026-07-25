@@ -28,7 +28,11 @@ except Exception:
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MC_PATH = os.path.join(ROOT, "data", "multiple_choice.json")
+KISO_PATH = os.path.join(ROOT, "data", "kiso.json")
 SB_PATH = os.path.join(ROOT, "data", "shikibetsu.json")
+JOSHI_PATH = os.path.join(ROOT, "data", "shikibetsu-joshi.json")
+HOMOGRAPH_PATH = os.path.join(ROOT, "data", "shikibetsu-homograph.json")
+KEIGO_PATH = os.path.join(ROOT, "data", "shikibetsu-keigo.json")
 
 
 def load(path):
@@ -130,6 +134,88 @@ def check_sb_schema(questions):
                     if not (isinstance(c, str) and c.strip()):
                         errors.append(f"{qid}: choices[{i}] が空")
     return errors
+
+
+def check_required_question_ids_for_set(data, required_key, questions_key,
+                                        expected_count, expected_types, label):
+    """指定セットの必修IDが、登録問題の実在するIDだけで構成されているか。"""
+    errors = []
+    required = data.get(required_key)
+    questions = data.get(questions_key, [])
+    if not isinstance(required, list):
+        return [f"{required_key} が配列でない"]
+
+    question_ids = [q.get("id") for q in questions]
+    question_id_set = set(question_ids)
+    required_set = set(required)
+    duplicates = [qid for qid, n in Counter(required).items() if n > 1]
+    missing = [qid for qid in required if qid not in question_id_set]
+    unknown = [qid for qid in question_ids if qid not in required_set]
+    if len(required) != expected_count:
+        errors.append(f"{label}の必修問題数が{expected_count}でない（{len(required)}）")
+    if duplicates:
+        errors.append(f"{required_key} に重複: " + ", ".join(duplicates))
+    if missing:
+        errors.append(f"{required_key} に存在しないID: " + ", ".join(missing))
+    supplemental_count = len(questions) - len(required_set)
+    if len(unknown) != supplemental_count:
+        errors.append(f"追加練習問題数が実データと一致しない（{len(unknown)} / {supplemental_count}）")
+
+    by_id = {q.get("id"): q for q in questions}
+    if expected_types is not None:
+        type_counts = Counter(by_id[qid].get("questionType") for qid in required if qid in by_id)
+        expected = Counter(expected_types)
+        if type_counts != expected:
+            errors.append(f"{label}必修問題の形式内訳が不一致（{dict(type_counts)}）")
+    return errors
+
+
+def check_required_question_ids(data):
+    return check_required_question_ids_for_set(
+        data, "requiredQuestionIds", "shikibetsuQuestions", 82,
+        {"procedure": 10, "condition": 29, "contrast": 8, "integration": 35},
+        "助動詞識別",
+    )
+
+
+def check_joshi_required_question_ids(data):
+    return check_required_question_ids_for_set(
+        data, "joshiRequiredQuestionIds", "joshiQuestions", 35,
+        {"procedure": 5, "condition": 17, "contrast": 4, "integration": 9},
+        "助詞識別",
+    )
+
+
+def check_homograph_required_question_ids(data):
+    return check_required_question_ids_for_set(
+        data, "homographRequiredQuestionIds", "homographQuestions", 45,
+        {"procedure": 5, "condition": 23, "contrast": 5, "integration": 12},
+        "同形語識別",
+    )
+
+
+def check_keigo_required_question_ids(data):
+    return check_required_question_ids_for_set(
+        data, "keigoRequiredQuestionIds", "keigoQuestions", 39,
+        {"procedure": 5, "condition": 19, "contrast": 5, "integration": 10},
+        "敬語識別",
+    )
+
+
+def check_kiso_required_question_ids(data):
+    return check_required_question_ids_for_set(
+        data, "kisoRequiredQuestionIds", "kisoQuestions", 26,
+        None,
+        "文法の入口",
+    )
+
+
+def check_choice_required_question_ids(data):
+    return check_required_question_ids_for_set(
+        data, "choiceRequiredQuestionIds", "choiceQuestions", 66,
+        None,
+        "文法4択",
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -381,6 +467,19 @@ def run_check():
         for a, b, r in near_duplicate_integration(questions):
             problems.append(f"[近似重複] {fname} {a} ≒ {b}（例文が{r:.0%}一致・傍線部も同じ）")
 
+    for error in check_required_question_ids(load(SB_PATH)):
+        problems.append(f"[必修ルート] shikibetsu.json {error}")
+    for error in check_joshi_required_question_ids(load(JOSHI_PATH)):
+        problems.append(f"[必修ルート] shikibetsu-joshi.json {error}")
+    for error in check_homograph_required_question_ids(load(HOMOGRAPH_PATH)):
+        problems.append(f"[必修ルート] shikibetsu-homograph.json {error}")
+    for error in check_keigo_required_question_ids(load(KEIGO_PATH)):
+        problems.append(f"[必修ルート] shikibetsu-keigo.json {error}")
+    for error in check_kiso_required_question_ids(load(KISO_PATH)):
+        problems.append(f"[必修ルート] kiso.json {error}")
+    for error in check_choice_required_question_ids(load(MC_PATH)):
+        problems.append(f"[必修ルート] multiple_choice.json {error}")
+
     if problems:
         print("品質ゲート: 不合格（{} 件）".format(len(problems)))
         for p in problems:
@@ -392,7 +491,11 @@ def run_check():
 
 def main():
     mc = load(MC_PATH)
+    kiso = load(KISO_PATH)
     sb = load(SB_PATH)
+    joshi = load(JOSHI_PATH)
+    homograph = load(HOMOGRAPH_PATH)
+    keigo = load(KEIGO_PATH)
     mcq = mc.get("choiceQuestions", [])
     sbq = sb.get("shikibetsuQuestions", [])
 
@@ -403,7 +506,13 @@ def main():
     section("1. スキーマ健全性")
     mc_err = check_mc_schema(mcq)
     sb_err = check_sb_schema(sbq)
-    if not mc_err and not sb_err:
+    required_err = check_required_question_ids(sb)
+    joshi_required_err = check_joshi_required_question_ids(joshi)
+    homograph_required_err = check_homograph_required_question_ids(homograph)
+    keigo_required_err = check_keigo_required_question_ids(keigo)
+    kiso_required_err = check_kiso_required_question_ids(kiso)
+    choice_required_err = check_choice_required_question_ids(mc)
+    if not mc_err and not sb_err and not required_err and not joshi_required_err and not homograph_required_err and not keigo_required_err and not kiso_required_err and not choice_required_err:
         print("違反なし。全問が必須フィールドを満たす。")
     else:
         print(f"[4択] 違反 {len(mc_err)} 件")
@@ -412,6 +521,47 @@ def main():
         print(f"[識別] 違反 {len(sb_err)} 件")
         for e in sb_err:
             print("  - " + e)
+        print(f"[必修ルート] 違反 {len(required_err)} 件")
+        for e in required_err:
+            print("  - " + e)
+        print(f"[助詞必修ルート] 違反 {len(joshi_required_err)} 件")
+        for e in joshi_required_err:
+            print("  - " + e)
+        print(f"[同形語必修ルート] 違反 {len(homograph_required_err)} 件")
+        for e in homograph_required_err:
+            print("  - " + e)
+        print(f"[敬語必修ルート] 違反 {len(keigo_required_err)} 件")
+        for e in keigo_required_err:
+            print("  - " + e)
+        print(f"[文法の入口必修ルート] 違反 {len(kiso_required_err)} 件")
+        for e in kiso_required_err:
+            print("  - " + e)
+        print(f"[文法4択必修ルート] 違反 {len(choice_required_err)} 件")
+        for e in choice_required_err:
+            print("  - " + e)
+    if not required_err:
+        sbq_by_id = {q.get("id"): q for q in sbq}
+        required_types = Counter(sbq_by_id[qid].get("questionType") for qid in sb.get("requiredQuestionIds", []))
+        print("必修ルート: 82問（" + ", ".join(f"{k}={v}" for k, v in sorted(required_types.items())) + "）、追加練習: 13問")
+    if not joshi_required_err:
+        joshiq = joshi.get("joshiQuestions", [])
+        joshi_by_id = {q.get("id"): q for q in joshiq}
+        required_types = Counter(joshi_by_id[qid].get("questionType") for qid in joshi.get("joshiRequiredQuestionIds", []))
+        print("助詞必修ルート: 35問（" + ", ".join(f"{k}={v}" for k, v in sorted(required_types.items())) + "）、追加練習: 6問")
+    if not homograph_required_err:
+        homographq = homograph.get("homographQuestions", [])
+        homograph_by_id = {q.get("id"): q for q in homographq}
+        required_types = Counter(homograph_by_id[qid].get("questionType") for qid in homograph.get("homographRequiredQuestionIds", []))
+        print("同形語必修ルート: 45問（" + ", ".join(f"{k}={v}" for k, v in sorted(required_types.items())) + "）、追加練習: 12問")
+    if not keigo_required_err:
+        keigoq = keigo.get("keigoQuestions", [])
+        keigo_by_id = {q.get("id"): q for q in keigoq}
+        required_types = Counter(keigo_by_id[qid].get("questionType") for qid in keigo.get("keigoRequiredQuestionIds", []))
+        print("敬語必修ルート: 39問（" + ", ".join(f"{k}={v}" for k, v in sorted(required_types.items())) + "）、追加練習: 5問")
+    if not kiso_required_err:
+        print("文法の入口必修ルート: 26問、追加練習: 2問")
+    if not choice_required_err:
+        print("文法4択必修ルート: 66問、追加練習: 24問")
 
     # --- 正解最長バイアス ---
     section("2. 正解最長バイアス（正解が最長=同点最長含む の比率）")
