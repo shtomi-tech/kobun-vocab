@@ -19,12 +19,6 @@ function renderAppNav() {
     const btn = document.createElement("button");
     btn.type = "button";
     btn.className = "appTab";
-    const locked = a.id === "grammar" && !VocabApp.isStage1Complete();
-    if (locked) {
-      btn.classList.add("locked");
-      btn.setAttribute("aria-disabled", "true");
-      btn.title = "200語からの確認テストに合格すると解放されます";
-    }
     btn.setAttribute("aria-pressed", a.id === currentAppId ? "true" : "false");
     const tag = document.createElement("span");
     tag.textContent = a.tag;
@@ -36,14 +30,6 @@ function renderAppNav() {
 }
 
 function switchApp(id) {
-  if (id === "grammar" && !VocabApp.isStage1Complete()) {
-    currentAppId = "vocab";
-    document.getElementById("appTitle").textContent = APPS[0].title;
-    document.title = APPS[0].title;
-    renderAppNav();
-    VocabApp.showStageGate();
-    return;
-  }
   if (currentAppId === id) return;
   currentAppId = id;
   const next = APPS.find(a => a.id === id);

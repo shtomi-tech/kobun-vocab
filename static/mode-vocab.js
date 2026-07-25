@@ -466,32 +466,6 @@ const VocabApp = (function () {
   function notifyStageStatusChanged() {
     if (typeof renderAppNav === "function") renderAppNav();
   }
-  function showStageGate() {
-    const status = stage1Status();
-    const gateHint = status.setsCompleted < status.setsTotal
-      ? `まず${status.setsTotal}セット（1セット${SESSION_SIZE}問）を終えてください。`
-      : `${coreLabel()}から${gateQuestionCount()}問の確認テストで${gatePassCount()}問以上正解すると、古典文法へ進めます。`;
-    state.session = null;
-    el("sessionPanel").classList.add("hide");
-    el("sessionPanel").innerHTML = "";
-    const home = el("homePanel");
-    home.classList.remove("hide");
-    home.innerHTML = `
-      <section class="card hero">
-        <p class="label">STAGE 2 / GRAMMAR</p>
-        <h2>文法は、単語のあとに進みます</h2>
-        <p class="hint">${gateHint}</p>
-      </section>
-      <section class="card">
-        <p class="label">段階1の終了条件</p>
-        <p class="resultText">セット ${status.setsCompleted} / ${status.setsTotal}。${status.gate.cleared ? `確認テスト ${status.gate.lastScore}/${status.gate.lastTotal} で合格済みです。` : `習得の参考値 ${status.mastered} / ${status.total}。`}</p>
-        <div class="actions">
-          <button class="cta" id="returnToStage1" type="button">段階1の単語へ戻る</button>
-        </div>
-      </section>
-    `;
-    el("returnToStage1").addEventListener("click", renderHome);
-  }
   function firstUnmastered(words) {
     return words.filter(w => !masteryForId(w.id));
   }
@@ -618,8 +592,8 @@ const VocabApp = (function () {
       : focus.kind === "cycleCumulative"
         ? `セット${focus.setIndex + 1}までの既習範囲から出題します。点数は練習記録で、確認テストの合否には影響しません。`
         : focus.kind === "gate"
-          ? `${setInfo.sets.length}セット完了後、${coreLabel()}から${gateQuestionCount()}問をランダム出題します。${gatePassCount()}問以上（${Math.round(gatePassRate() * 100)}%以上）で古典文法へ進めます。`
-          : `確認テストに合格済みです。古典文法へ進めます。追加${extraProgress.total}語は補助練習として残っています。`;
+          ? `${setInfo.sets.length}セット完了後、${coreLabel()}から${gateQuestionCount()}問をランダム出題します。${gatePassCount()}問以上（${Math.round(gatePassRate() * 100)}%以上）で段階1修了です。古典文法は今から並行して進められます。`
+          : `段階1を修了しました。追加${extraProgress.total}語は補助練習として残っています。`;
     const progressHint = setInfo.completed < setInfo.sets.length
       ? `必須語の現在地：セット${setInfo.completed + 1}/${setInfo.sets.length}`
       : gateStatus.cleared
@@ -1142,7 +1116,7 @@ const VocabApp = (function () {
         <div class="sub">正答率 ${pct}% ・ ${result.passed ? "合格" : "再挑戦"}</div>
       </section>
       <section class="card">
-        <p class="label">${result.passed ? "古典文法へ" : "確認テスト"}</p>
+        <p class="label">${result.passed ? "段階1修了" : "確認テスト"}</p>
         <p class="resultText">${retryText}</p>
         <div class="actions">
           ${result.passed
@@ -1278,8 +1252,6 @@ const VocabApp = (function () {
 
   return {
     mount, handleKey,
-    isStage1Complete: () => stage1Status().complete,
-    showStageGate,
     stage1Status,
     nextHint: () => focusPlan().cta,
   };
