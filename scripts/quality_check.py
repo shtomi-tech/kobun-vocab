@@ -305,59 +305,81 @@ ALLOWED_LONGEST = {
 }
 
 
+# ゲート対象のデータ。(ファイル名, 問題配列のキー, スキーマ種別)
+# "mc" = 4択固定のスキーマ、"sb" = 2択以上＋統合問題ありのスキーマ
+GATE_SOURCES = [
+    ("multiple_choice.json", "choiceQuestions", "mc"),
+    ("kiso.json", "kisoQuestions", "mc"),
+    ("shikibetsu.json", "shikibetsuQuestions", "sb"),
+    ("shikibetsu-joshi.json", "joshiQuestions", "sb"),
+    ("shikibetsu-homograph.json", "homographQuestions", "sb"),
+    ("shikibetsu-keigo.json", "keigoQuestions", "sb"),
+]
+
+
+def gate_datasets():
+    """(表示名, 問題配列, スキーマ種別) を順に返す。存在しないファイルは飛ばす。"""
+    data_dir = os.path.join(ROOT, "data")
+    for fname, key, kind in GATE_SOURCES:
+        path = os.path.join(data_dir, fname)
+        if not os.path.exists(path):
+            continue
+        yield fname, load(path).get(key, []), kind
+
+
 def run_check():
     """CI／コミット前ゲート用。問題を検出したら 1 を返す。"""
-    mc = load(MC_PATH)
-    sb = load(SB_PATH)
-    mcq = mc.get("choiceQuestions", [])
-    sbq = sb.get("shikibetsuQuestions", [])
     problems = []
 
-    # 1. スキーマ
-    problems += [f"[スキーマ] {e}" for e in check_mc_schema(mcq)]
-    problems += [f"[スキーマ] {e}" for e in check_sb_schema(sbq)]
+    for fname, questions, kind in gate_datasets():
+        # 1. スキーマ
+        checker = check_mc_schema if kind == "mc" else check_sb_schema
+        problems += [f"[スキーマ] {fname} {e}" for e in checker(questions)]
 
-    # 2. 新たな「正解が一意に最長」（＝長い方を選べば当たる）の退行
-    for q in mcq:
-        if not isinstance(q.get("choices"), list):
-            continue
-        if q["id"] in ALLOWED_LONGEST:
-            continue
-        if is_uniquely_longest_correct(q["choices"], q.get("answerIndex")):
-            problems.append(f"[最長バイアス] {q['id']}: 正解が一意に最長。誤答を具体化して長さを揃えること")
-    for q in sbq:
-        if q.get("questionType") == "integration" or not isinstance(q.get("choices"), list):
-            continue
-        if q["id"] in ALLOWED_LONGEST:
-            continue
-        if is_uniquely_longest_correct(q["choices"], q.get("answerIndex")):
-            problems.append(f"[最長バイアス] {q['id']}: 正解が一意に最長。誤答を具体化して長さを揃えること")
+        for q in questions:
+            qid = q.get("id", "<no-id>")
+            is_integration = q.get("questionType") == "integration"
 
-    # 3. distractorRationale 欠落
-    for q in mcq:
-        if not q.get("distractorRationale"):
-            problems.append(f"[誤答根拠] {q['id']}: distractorRationale が無い")
-    for q in sbq:
-        if not q.get("distractorRationale"):
-            problems.append(f"[誤答根拠] {q['id']}: distractorRationale が無い")
+            # 2. 「正解が一意に最長」（＝長い方を選べば当たる）の退行
+            if not is_integration and isinstance(q.get("choices"), list) and qid not in ALLOWED_LONGEST:
+                if is_uniquely_longest_correct(q["choices"], q.get("answerIndex")):
+                    problems.append(f"[最長バイアス] {qid}: 正解が一意に最長。誤答を具体化して長さを揃えること")
+            if is_integration:
+                for si, st in enumerate(q.get("steps") or []):
+                    key = f"{qid}#step{si}"
+                    if key in ALLOWED_LONGEST or qid in ALLOWED_LONGEST:
+                        continue
+                    if is_uniquely_longest_correct(st.get("choices"), st.get("answerIndex")):
+                        problems.append(f"[最長バイアス] {key}: 正解が一意に最長。誤答を具体化して長さを揃えること")
 
-    # 4. 誤答根拠のキーが実際の誤答と対応しているか
-    for q in mcq:
-        dr = q.get("distractorRationale") or {}
-        ch, ai = q.get("choices"), q.get("answerIndex")
-        if not (isinstance(ch, list) and isinstance(ai, int) and 0 <= ai < len(ch)):
-            continue
-        for i, c in enumerate(ch):
-            if i != ai and c not in dr:
-                problems.append(f"[誤答根拠] {q['id']}: 誤答「{c}」の根拠が無い")
-            if i == ai and c in dr:
-                problems.append(f"[誤答根拠] {q['id']}: 正解「{c}」に根拠が付いている")
+            # 3. distractorRationale 欠落
+            if not q.get("distractorRationale"):
+                problems.append(f"[誤答根拠] {qid}: distractorRationale が無い")
 
-    # 5. 重複
-    for a, b in find_duplicates([(q["id"], q.get("question", "")) for q in mcq]):
-        problems.append(f"[重複] 4択 {a} ≒ {b}")
-    for a, b, r in near_duplicate_integration(sbq):
-        problems.append(f"[近似重複] 識別 {a} ≒ {b}（例文が{r:.0%}一致・傍線部も同じ）")
+            # 4. 誤答根拠のキーが実際の誤答と対応しているか
+            #    統合問題では最終ステップの選択肢が最終判断にあたるので、そこと突き合わせる。
+            dr = q.get("distractorRationale") or {}
+            if is_integration:
+                steps = q.get("steps") or []
+                if not steps:
+                    continue
+                ch, ai = steps[-1].get("choices"), steps[-1].get("answerIndex")
+            else:
+                ch, ai = q.get("choices"), q.get("answerIndex")
+            if not (isinstance(ch, list) and isinstance(ai, int) and 0 <= ai < len(ch)):
+                continue
+            for i, c in enumerate(ch):
+                if i != ai and c not in dr:
+                    problems.append(f"[誤答根拠] {qid}: 誤答「{c}」の根拠が無い")
+                if i == ai and c in dr:
+                    problems.append(f"[誤答根拠] {qid}: 正解「{c}」に根拠が付いている")
+
+        # 5. 重複
+        plain = [(q["id"], q.get("question", "")) for q in questions if q.get("questionType") != "integration"]
+        for a, b in find_duplicates(plain):
+            problems.append(f"[重複] {fname} {a} ≒ {b}")
+        for a, b, r in near_duplicate_integration(questions):
+            problems.append(f"[近似重複] {fname} {a} ≒ {b}（例文が{r:.0%}一致・傍線部も同じ）")
 
     if problems:
         print("品質ゲート: 不合格（{} 件）".format(len(problems)))

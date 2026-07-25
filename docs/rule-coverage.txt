@@ -1,0 +1,38 @@
+================================================================
+古文原則 × 問題データ 対応レポート
+================================================================
+原則カード: 24 枚（active 24 枚） / 問題: 355 問
+
+--- active カードごとの対応問題数 ---
+   kbp.auxiliaries.beshi-maji-meanings                   13問  「べし・まじ」の訳し分け
+   kbp.auxiliaries.keri-meanings                          3問  「けり」の訳し分け
+   kbp.auxiliaries.mashi-meanings                         7問  「まし」の訳し分け
+   kbp.auxiliaries.mu-muzu-ji-meanings                   19問  「む・むず・じ」の訳し分け
+   kbp.auxiliaries.nari-meanings                          6問  断定・存在の「なり」の訳し分け
+   kbp.auxiliaries.ru-raru-meanings                      19問  「る・らる」の訳し分け
+   kbp.auxiliaries.su-sasu-shimu-meanings                13問  「す・さす・しむ」の訳し分け
+   kbp.auxiliaries.tari-ri-meanings                      10問  「たり・り」の訳し分け
+   kbp.auxiliaries.tsu-nu-meanings                       16問  「つ・ぬ」の訳し分け
+   kbp.disambiguation.namu-identification                13問  「なむ」の識別（願望の終助詞／確述用法／ナ変＋む／強意の係助詞）
+   kbp.disambiguation.nari-identification                15問  「なり」の識別（伝聞推定／断定存在／形容動詞・動詞）
+   kbp.disambiguation.ni-identification                  14問  「に」の識別（完了／断定／格助詞／接続助詞／形容動詞語尾／副詞の一部）
+   kbp.disambiguation.nu-ne-identification               14問  「ぬ・ね」の識別（打消／完了・強意）
+   kbp.disambiguation.ru-re-identification               10問  「る・れ」の識別（受身可能自発尊敬／完了存続）
+   kbp.honorifics.haberi-saburau-identification          10問  「侍り・候ふ」が丁寧か謙譲かの識別
+   kbp.honorifics.hojo-doushi-translation                10問  敬語の補助動詞（動詞の下）の訳し方
+   kbp.honorifics.keii-direction                         14問  敬意の方向（誰から・誰への敬意か）
+   kbp.honorifics.tamau-identification                   13問  「給ふ」が尊敬か謙譲かの識別
+   kbp.honorifics.tatematsuru-mairu-identification       11問  「奉る・参る」が謙譲か尊敬かの識別
+   kbp.particles.ba-meanings                             12問  「ば」の訳し分け
+   kbp.particles.dani-meanings                            6問  「だに」の訳し分け
+   kbp.particles.final-particles-meanings                12問  終助詞の接続と意味
+   kbp.particles.kakari-musubi-special-constructions     11問  係助詞が使われる特殊な構文（こそ已然形逆接／もぞ・もこそ）
+   kbp.particles.yori-meanings                            8問  「より」の訳し分け
+
+--- 原則カードが未整備のまま出題している問題 ---
+  - shikibetsu.json: sb-ramu-proc1（らむの識別）— 対応する原則カードが未整備
+  - shikibetsu.json: sb-ramu-cond1（らむの識別）— 対応する原則カードが未整備
+  - shikibetsu.json: sb-ramu-int1（らむの識別）— 対応する原則カードが未整備
+
+--- 検査結果 ---
+問題なし

@@ -1,0 +1,1937 @@
+{
+  "meta": {
+    "source": "docs/kobun-principles の honorifics 分野の原則カード5枚をもとにしたオリジナル問題",
+    "note": "2026-07-25新設。従来は data/shikibetsu.json の「敬語の識別」1手順（汎用の2ステップ・5問）だけだったが、原則カードは 給ふ／奉る・参る／侍り・候ふ／補助動詞の訳／敬意の方向 の5枚に分かれているため、5手順に分割して作り直した。",
+    "ruleCards": [
+      "kbp.honorifics.tamau-identification",
+      "kbp.honorifics.tatematsuru-mairu-identification",
+      "kbp.honorifics.haberi-saburau-identification",
+      "kbp.honorifics.hojo-doushi-translation",
+      "kbp.honorifics.keii-direction"
+    ],
+    "unresolved": [
+      "終止形「給ふ」を文字数の規則だけで尊敬と決めてよいかは原則カードで未確認のため、終止形「給ふ」を判断対象にする問題は作っていない。",
+      "「参る」に衣・食・乗り物による尊敬への転用を適用してよいかは原則カードで未確認のため、「参る」でこの例外を問う問題は作っていない。",
+      "心内文を会話文に含めるかは原則カードで未確認のため、敬意の方向の問題では心内文を使っていない。"
+    ]
+  },
+  "keigoProcedures": [
+    {
+      "id": "k-tamau",
+      "name": "給ふの識別",
+      "sub": "四段（尊敬）／下二段（謙譲）",
+      "steps": [
+        {
+          "no": "手順I",
+          "text": "対象の語形が「給へ」かどうかをまず確認する。「給へ」だけは文字数では決まらない。"
+        },
+        {
+          "no": "手順II",
+          "text": "「給へ」以外は、語幹の「給」を除いた残りの文字数を数える。1文字（給ふ・給ひ など）なら尊敬（四段）、2文字（給ふる・給ふれ・給へよ など）なら謙譲（下二段）。"
+        },
+        {
+          "no": "手順III",
+          "text": "「給へ」は活用形で判断する。已然形・命令形なら尊敬、未然形・連用形なら謙譲。"
+        },
+        {
+          "no": "手順IV",
+          "text": "下二段の「給ふ」（謙譲）は、主に会話文・手紙文で自分の動作をへりくだって述べるときに使う。地の文の三人称の動作には基本的に現れない。"
+        }
+      ]
+    },
+    {
+      "id": "k-tatematsuru",
+      "name": "奉る・参るの識別",
+      "sub": "謙譲／衣食乗り物による尊敬",
+      "steps": [
+        {
+          "no": "手順I",
+          "text": "「奉る」の上に、衣類・食事・乗り物に関する語があるかを確認する。"
+        },
+        {
+          "no": "手順II",
+          "text": "あれば尊敬（お召しになる・召し上がる・お乗りになる）、なければ謙譲（差し上げる・参上する）と判断する。"
+        },
+        {
+          "no": "手順III",
+          "text": "「参る」にも同じ転用が成り立つかは確認が取れていない。この教材では「参る」に衣・食・乗り物の例外を機械的には適用せず、謙譲（参上する・差し上げる）として扱う。"
+        }
+      ]
+    },
+    {
+      "id": "k-haberi",
+      "name": "侍り・候ふの識別",
+      "sub": "丁寧／謙譲",
+      "steps": [
+        {
+          "no": "手順I",
+          "text": "本動詞か補助動詞かをまず確認する。補助動詞として使われている「侍り・候ふ」は常に丁寧である。"
+        },
+        {
+          "no": "手順II",
+          "text": "本動詞の場合、「お仕え申し上げる」と訳して意味が通るかを確認する。通れば謙譲。"
+        },
+        {
+          "no": "手順III",
+          "text": "通らなければ丁寧と判断し、「あります・おります・ございます」と訳す。"
+        },
+        {
+          "no": "手順IV",
+          "text": "謙譲と判断する場合は、客体（仕える対象）が身分の高い人物であることを本文・文脈から確認する。"
+        }
+      ]
+    },
+    {
+      "id": "k-hojo",
+      "name": "補助動詞の訳し方",
+      "sub": "尊敬・謙譲・丁寧の訳の型",
+      "steps": [
+        {
+          "no": "手順I",
+          "text": "対象の語が、単独の動詞（本動詞）ではなく、他の動詞の下に付く補助動詞かどうかを確認する。"
+        },
+        {
+          "no": "手順II",
+          "text": "補助動詞であれば、その語が尊敬・謙譲・丁寧のどれかを、個別の識別（給ふ／奉る・参る／侍り・候ふ）で決める。"
+        },
+        {
+          "no": "手順III",
+          "text": "種類に応じて訳の型を当てる。謙譲＝「〜し申し上げる」「お〜する」、尊敬＝「〜なさる」「お〜になる」、丁寧＝「〜です」「〜ます」「〜ございます」。"
+        },
+        {
+          "no": "手順IV",
+          "text": "無難な訳（「〜される」など）で済ませず、どの種類か確定してから訳す。謙譲では敬意の対象が訳に出る形にする。"
+        }
+      ]
+    },
+    {
+      "id": "k-keii",
+      "name": "敬意の方向",
+      "sub": "誰から・誰への敬意か",
+      "steps": [
+        {
+          "no": "手順I",
+          "text": "対象の敬語が会話文（鉤括弧の中）にあるか、地の文（鉤括弧の外）にあるかをまず確認する。"
+        },
+        {
+          "no": "手順II",
+          "text": "誰から（敬意の主体）を決める。会話文なら会話の話し手、地の文なら作者。"
+        },
+        {
+          "no": "手順III",
+          "text": "誰へ（敬意の対象）を決める。尊敬なら動作の主体、謙譲なら動作の客体。この2つは会話文か地の文かによらず一定である。"
+        },
+        {
+          "no": "手順IV",
+          "text": "丁寧だけは文の位置で対象が変わる。会話文なら会話の聞き手、地の文なら読者。"
+        }
+      ]
+    }
+  ],
+  "keigoGroups": [
+    {
+      "id": "sb-k-tamau",
+      "name": "給ふの識別",
+      "sub": "四段（尊敬）／下二段（謙譲）",
+      "ids": [
+        "kg-tamau-proc1",
+        "kg-tamau-cond-1moji",
+        "kg-tamau-cond-2moji",
+        "kg-tamau-cond-izen",
+        "kg-tamau-cond-mizen",
+        "kg-tamau-cond-bamen",
+        "kg-tamau-cont1",
+        "kg-tamau-int1",
+        "kg-tamau-int2",
+        "kg-tamau-int3"
+      ]
+    },
+    {
+      "id": "sb-k-tatematsuru",
+      "name": "奉る・参るの識別",
+      "sub": "謙譲／衣食乗り物による尊敬",
+      "ids": [
+        "kg-tate-proc1",
+        "kg-tate-cond-kenjo",
+        "kg-tate-cond-sonkei",
+        "kg-tate-cond-mairu",
+        "kg-tate-cont1",
+        "kg-tate-int1",
+        "kg-tate-int2",
+        "kg-tate-int3"
+      ]
+    },
+    {
+      "id": "sb-k-haberi",
+      "name": "侍り・候ふの識別",
+      "sub": "丁寧／謙譲",
+      "ids": [
+        "kg-hab-proc1",
+        "kg-hab-cond-hojo",
+        "kg-hab-cond-teinei",
+        "kg-hab-cond-kenjo",
+        "kg-hab-cont1",
+        "kg-hab-int1",
+        "kg-hab-int2",
+        "kg-hab-int3"
+      ]
+    },
+    {
+      "id": "sb-k-hojo",
+      "name": "補助動詞の訳し方",
+      "sub": "尊敬・謙譲・丁寧の訳の型",
+      "ids": [
+        "kg-hojo-proc1",
+        "kg-hojo-cond-kenjo",
+        "kg-hojo-cond-sonkei",
+        "kg-hojo-cond-teinei",
+        "kg-hojo-cont1",
+        "kg-hojo-int1",
+        "kg-hojo-int2",
+        "kg-hojo-int3"
+      ]
+    },
+    {
+      "id": "sb-k-keii",
+      "name": "敬意の方向",
+      "sub": "誰から・誰への敬意か",
+      "ids": [
+        "kg-keii-proc1",
+        "kg-keii-cond-kara-kaiwa",
+        "kg-keii-cond-kara-ji",
+        "kg-keii-cond-sonkei",
+        "kg-keii-cond-kenjo",
+        "kg-keii-cond-teinei",
+        "kg-keii-cont1",
+        "kg-keii-int1",
+        "kg-keii-int2",
+        "kg-keii-int3"
+      ]
+    },
+    {
+      "id": "sb-keigo-all",
+      "name": "総仕上げ：敬語の識別44問",
+      "sub": "5手順をまとめてランダム出題",
+      "shuffle": true,
+      "ids": [
+        "kg-tamau-proc1",
+        "kg-tamau-cond-1moji",
+        "kg-tamau-cond-2moji",
+        "kg-tamau-cond-izen",
+        "kg-tamau-cond-mizen",
+        "kg-tamau-cond-bamen",
+        "kg-tamau-cont1",
+        "kg-tamau-int1",
+        "kg-tamau-int2",
+        "kg-tamau-int3",
+        "kg-tate-proc1",
+        "kg-tate-cond-kenjo",
+        "kg-tate-cond-sonkei",
+        "kg-tate-cond-mairu",
+        "kg-tate-cont1",
+        "kg-tate-int1",
+        "kg-tate-int2",
+        "kg-tate-int3",
+        "kg-hab-proc1",
+        "kg-hab-cond-hojo",
+        "kg-hab-cond-teinei",
+        "kg-hab-cond-kenjo",
+        "kg-hab-cont1",
+        "kg-hab-int1",
+        "kg-hab-int2",
+        "kg-hab-int3",
+        "kg-hojo-proc1",
+        "kg-hojo-cond-kenjo",
+        "kg-hojo-cond-sonkei",
+        "kg-hojo-cond-teinei",
+        "kg-hojo-cont1",
+        "kg-hojo-int1",
+        "kg-hojo-int2",
+        "kg-hojo-int3",
+        "kg-keii-proc1",
+        "kg-keii-cond-kara-kaiwa",
+        "kg-keii-cond-kara-ji",
+        "kg-keii-cond-sonkei",
+        "kg-keii-cond-kenjo",
+        "kg-keii-cond-teinei",
+        "kg-keii-cont1",
+        "kg-keii-int1",
+        "kg-keii-int2",
+        "kg-keii-int3"
+      ]
+    }
+  ],
+  "keigoCoverageTopics": [
+    {
+      "topic": "給ふの識別",
+      "items": [
+        {
+          "id": "kg-tamau-proc1",
+          "label": "最初に確認する語形",
+          "questionType": "procedure"
+        },
+        {
+          "id": "kg-tamau-cond-1moji",
+          "label": "1文字は尊敬",
+          "questionType": "condition"
+        },
+        {
+          "id": "kg-tamau-cond-2moji",
+          "label": "2文字は謙譲",
+          "questionType": "condition"
+        },
+        {
+          "id": "kg-tamau-cond-izen",
+          "label": "已然形・命令形の給へ",
+          "questionType": "condition"
+        },
+        {
+          "id": "kg-tamau-cond-mizen",
+          "label": "未然形・連用形の給へ",
+          "questionType": "condition"
+        },
+        {
+          "id": "kg-tamau-cond-bamen",
+          "label": "下二段が現れる場面",
+          "questionType": "condition"
+        },
+        {
+          "id": "kg-tamau-cont1",
+          "label": "給ふると給へ",
+          "questionType": "contrast"
+        },
+        {
+          "id": "kg-tamau-int1",
+          "label": "統合①",
+          "questionType": "integration"
+        },
+        {
+          "id": "kg-tamau-int2",
+          "label": "統合②",
+          "questionType": "integration"
+        },
+        {
+          "id": "kg-tamau-int3",
+          "label": "統合③",
+          "questionType": "integration"
+        }
+      ]
+    },
+    {
+      "topic": "奉る・参るの識別",
+      "items": [
+        {
+          "id": "kg-tate-proc1",
+          "label": "上を見る",
+          "questionType": "procedure"
+        },
+        {
+          "id": "kg-tate-cond-kenjo",
+          "label": "謙譲",
+          "questionType": "condition"
+        },
+        {
+          "id": "kg-tate-cond-sonkei",
+          "label": "尊敬への転用",
+          "questionType": "condition"
+        },
+        {
+          "id": "kg-tate-cond-mairu",
+          "label": "参るの扱い",
+          "questionType": "condition"
+        },
+        {
+          "id": "kg-tate-cont1",
+          "label": "文を奉ると御衣を奉る",
+          "questionType": "contrast"
+        },
+        {
+          "id": "kg-tate-int1",
+          "label": "統合①",
+          "questionType": "integration"
+        },
+        {
+          "id": "kg-tate-int2",
+          "label": "統合②",
+          "questionType": "integration"
+        },
+        {
+          "id": "kg-tate-int3",
+          "label": "統合③",
+          "questionType": "integration"
+        }
+      ]
+    },
+    {
+      "topic": "侍り・候ふの識別",
+      "items": [
+        {
+          "id": "kg-hab-proc1",
+          "label": "本動詞か補助動詞か",
+          "questionType": "procedure"
+        },
+        {
+          "id": "kg-hab-cond-hojo",
+          "label": "補助動詞は常に丁寧",
+          "questionType": "condition"
+        },
+        {
+          "id": "kg-hab-cond-teinei",
+          "label": "丁寧",
+          "questionType": "condition"
+        },
+        {
+          "id": "kg-hab-cond-kenjo",
+          "label": "謙譲",
+          "questionType": "condition"
+        },
+        {
+          "id": "kg-hab-cont1",
+          "label": "訳の対比",
+          "questionType": "contrast"
+        },
+        {
+          "id": "kg-hab-int1",
+          "label": "統合①",
+          "questionType": "integration"
+        },
+        {
+          "id": "kg-hab-int2",
+          "label": "統合②",
+          "questionType": "integration"
+        },
+        {
+          "id": "kg-hab-int3",
+          "label": "統合③",
+          "questionType": "integration"
+        }
+      ]
+    },
+    {
+      "topic": "補助動詞の訳し方",
+      "items": [
+        {
+          "id": "kg-hojo-proc1",
+          "label": "補助動詞かどうか",
+          "questionType": "procedure"
+        },
+        {
+          "id": "kg-hojo-cond-kenjo",
+          "label": "謙譲の訳の型",
+          "questionType": "condition"
+        },
+        {
+          "id": "kg-hojo-cond-sonkei",
+          "label": "尊敬の訳の型",
+          "questionType": "condition"
+        },
+        {
+          "id": "kg-hojo-cond-teinei",
+          "label": "丁寧の訳の型",
+          "questionType": "condition"
+        },
+        {
+          "id": "kg-hojo-cont1",
+          "label": "本動詞との対比",
+          "questionType": "contrast"
+        },
+        {
+          "id": "kg-hojo-int1",
+          "label": "統合①",
+          "questionType": "integration"
+        },
+        {
+          "id": "kg-hojo-int2",
+          "label": "統合②",
+          "questionType": "integration"
+        },
+        {
+          "id": "kg-hojo-int3",
+          "label": "統合③",
+          "questionType": "integration"
+        }
+      ]
+    },
+    {
+      "topic": "敬意の方向",
+      "items": [
+        {
+          "id": "kg-keii-proc1",
+          "label": "最初に見る位置",
+          "questionType": "procedure"
+        },
+        {
+          "id": "kg-keii-cond-kara-kaiwa",
+          "label": "会話文の誰から",
+          "questionType": "condition"
+        },
+        {
+          "id": "kg-keii-cond-kara-ji",
+          "label": "地の文の誰から",
+          "questionType": "condition"
+        },
+        {
+          "id": "kg-keii-cond-sonkei",
+          "label": "尊敬の誰へ",
+          "questionType": "condition"
+        },
+        {
+          "id": "kg-keii-cond-kenjo",
+          "label": "謙譲の誰へ",
+          "questionType": "condition"
+        },
+        {
+          "id": "kg-keii-cond-teinei",
+          "label": "丁寧の誰へ",
+          "questionType": "condition"
+        },
+        {
+          "id": "kg-keii-cont1",
+          "label": "丁寧だけが変わる",
+          "questionType": "contrast"
+        },
+        {
+          "id": "kg-keii-int1",
+          "label": "統合①",
+          "questionType": "integration"
+        },
+        {
+          "id": "kg-keii-int2",
+          "label": "統合②",
+          "questionType": "integration"
+        },
+        {
+          "id": "kg-keii-int3",
+          "label": "統合③",
+          "questionType": "integration"
+        }
+      ]
+    }
+  ],
+  "keigoQuestions": [
+    {
+      "id": "kg-tamau-proc1",
+      "topic": "給ふの識別",
+      "step": "手順I",
+      "questionType": "procedure",
+      "coverageId": "kg-tamau-proc1",
+      "question": "「給ふ」が尊敬か謙譲かを判断するとき、最初に確認することはどれか。",
+      "choices": [
+        "対象の語形が「給へ」かどうか",
+        "主語が身分の高い人物かどうか",
+        "文が会話文か地の文か",
+        "「給ふ」の下に何が続くか"
+      ],
+      "answerIndex": 0,
+      "explanation": "「給へ」以外は語幹「給」を除いた文字数で決まるが、「給へ」だけは四段の已然形・命令形と下二段の未然形・連用形が同じ形になるため、文字数では決まらない。したがって、まず「給へ」かどうかで処理を分ける。",
+      "distractorRationale": {
+        "主語が身分の高い人物かどうか": "身分は判断の裏づけにはなるが、四段か下二段かは語形で決まる",
+        "文が会話文か地の文か": "会話文・手紙文かどうかは下二段が現れやすい場面の目安であり、語形の判断より後に来る",
+        "「給ふ」の下に何が続くか": "下に続く語は「給へ」の活用形を確かめるときに使うが、最初に見るのは語形そのものである"
+      },
+      "ruleRefs": [
+        "kbp.honorifics.tamau-identification"
+      ]
+    },
+    {
+      "id": "kg-tamau-cond-1moji",
+      "topic": "給ふの識別",
+      "step": "条件・1文字",
+      "questionType": "condition",
+      "coverageId": "kg-tamau-cond-1moji",
+      "question": "「給ひ」のように、語幹「給」を除いた残りが1文字の場合、「給ふ」は何を表すか。",
+      "choices": [
+        "尊敬（四段活用）",
+        "謙譲（下二段活用）",
+        "丁寧",
+        "使役"
+      ],
+      "answerIndex": 0,
+      "explanation": "四段活用「給ふ」は「給は・給ひ・給ふ・給ふ・給へ・給へ」と活用し、語幹を除いた残りが1文字になる。したがって「給ひ」は四段で尊敬、「お〜になる・〜なさる」と訳す。",
+      "distractorRationale": {
+        "謙譲（下二段活用）": "下二段の活用形は「給へ・給へ・給ふ・給ふる・給ふれ・給へよ」で、連体形以下は2文字になる",
+        "丁寧": "丁寧を表すのは「侍り」「候ふ」である",
+        "使役": "使役を表すのは「す」「さす」「しむ」である"
+      },
+      "ruleRefs": [
+        "kbp.honorifics.tamau-identification"
+      ]
+    },
+    {
+      "id": "kg-tamau-cond-2moji",
+      "topic": "給ふの識別",
+      "step": "条件・2文字",
+      "questionType": "condition",
+      "coverageId": "kg-tamau-cond-2moji",
+      "question": "「給ふる」「給ふれ」のように、語幹「給」を除いた残りが2文字の場合、「給ふ」は何を表すか。",
+      "choices": [
+        "謙譲（下二段活用）",
+        "尊敬（四段活用）",
+        "丁寧（ございます）",
+        "受身（〜される）"
+      ],
+      "answerIndex": 0,
+      "explanation": "下二段活用「給ふ」の連体形は「給ふる」、已然形は「給ふれ」で、語幹を除いた残りが2文字になる。したがって謙譲で、「〜させていただく」「拝見する」のようにへりくだって訳す。",
+      "distractorRationale": {
+        "尊敬（四段活用）": "四段の活用形は語幹を除いた残りが1文字である",
+        "丁寧（ございます）": "丁寧を表すのは「侍り」「候ふ」である",
+        "受身（〜される）": "受身を表すのは「る」「らる」である"
+      },
+      "ruleRefs": [
+        "kbp.honorifics.tamau-identification"
+      ]
+    },
+    {
+      "id": "kg-tamau-cond-izen",
+      "topic": "給ふの識別",
+      "step": "条件・已然形命令形の給へ",
+      "questionType": "condition",
+      "coverageId": "kg-tamau-cond-izen",
+      "question": "已然形または命令形として働いている「給へ」は何を表すか。",
+      "choices": [
+        "尊敬",
+        "謙譲",
+        "丁寧",
+        "打消"
+      ],
+      "answerIndex": 0,
+      "explanation": "四段活用「給ふ」の已然形・命令形が「給へ」なので、この位置の「給へ」は尊敬。下に「ば」「ど」が続いていれば已然形、言い切って相手に求めていれば命令形と分かる。",
+      "distractorRationale": {
+        "謙譲": "謙譲（下二段）の「給へ」は未然形・連用形として働く場合である",
+        "丁寧": "丁寧を表すのは「侍り」「候ふ」である",
+        "打消": "打消を表すのは「ず」である"
+      },
+      "ruleRefs": [
+        "kbp.honorifics.tamau-identification"
+      ]
+    },
+    {
+      "id": "kg-tamau-cond-mizen",
+      "topic": "給ふの識別",
+      "step": "条件・未然形連用形の給へ",
+      "questionType": "condition",
+      "coverageId": "kg-tamau-cond-mizen",
+      "question": "未然形または連用形として働いている「給へ」は何を表すか。",
+      "choices": [
+        "謙譲",
+        "尊敬",
+        "丁寧",
+        "使役"
+      ],
+      "answerIndex": 0,
+      "explanation": "下二段活用「給ふ」の未然形・連用形が「給へ」なので、この位置の「給へ」は謙譲。下に「ず」「む」が続けば未然形、「て」「たり」が続けば連用形と分かる。",
+      "distractorRationale": {
+        "尊敬": "尊敬（四段）の「給へ」は已然形・命令形として働く場合である",
+        "丁寧": "丁寧を表すのは「侍り」「候ふ」である",
+        "使役": "使役を表すのは「す」「さす」「しむ」である"
+      },
+      "ruleRefs": [
+        "kbp.honorifics.tamau-identification"
+      ]
+    },
+    {
+      "id": "kg-tamau-cond-bamen",
+      "topic": "給ふの識別",
+      "step": "条件・場面",
+      "questionType": "condition",
+      "coverageId": "kg-tamau-cond-bamen",
+      "question": "下二段活用の「給ふ」（謙譲）が主に現れるのはどのような場合か。",
+      "choices": [
+        "会話文・手紙文で、自分の動作をへりくだって述べるとき",
+        "地の文で、身分の高い人物の動作を述べるとき",
+        "和歌の中で、自然の情景を述べるとき",
+        "会話文で、相手の動作を高めて述べるとき"
+      ],
+      "answerIndex": 0,
+      "explanation": "下二段の「給ふ」は、会話文・手紙文で話し手が自分の動作をへりくだって述べるときに使われ、地の文の三人称の動作には基本的に現れない。語形で判断した結果を、この場面の条件で裏づけられる。",
+      "distractorRationale": {
+        "地の文で、身分の高い人物の動作を述べるとき": "これは四段（尊敬）が使われる典型的な場面である",
+        "和歌の中で、自然の情景を述べるとき": "ジャンルによって四段・下二段が決まるわけではない",
+        "会話文で、相手の動作を高めて述べるとき": "相手の動作を高めるのは尊敬であり、四段のほうである"
+      },
+      "ruleRefs": [
+        "kbp.honorifics.tamau-identification"
+      ]
+    },
+    {
+      "id": "kg-tamau-cont1",
+      "topic": "給ふの識別",
+      "step": "対比",
+      "questionType": "contrast",
+      "coverageId": "kg-tamau-cont1",
+      "question": "「給ふる」と「給へ」の判断のしかたの違いとして正しいものはどれか。",
+      "choices": [
+        "「給ふる」は文字数で決まるが、「給へ」は活用形を見ないと決まらない",
+        "「給へ」は文字数で決まるが、「給ふる」は活用形を見ないと決まらない",
+        "どちらも文字数だけで決まる",
+        "どちらも活用形だけで決まる"
+      ],
+      "answerIndex": 0,
+      "explanation": "「給ふる」は語幹を除いた残りが2文字なので、それだけで下二段（謙譲）と決まる。一方「給へ」は四段の已然形・命令形と下二段の未然形・連用形が同形になるため、文中でどの活用形として働いているかを確かめる必要がある。",
+      "distractorRationale": {
+        "「給へ」は文字数で決まるが、「給ふる」は活用形を見ないと決まらない": "「給ふる」と「給へ」の扱いが入れ替わっている",
+        "どちらも文字数だけで決まる": "「給へ」は四段・下二段のどちらにも同じ形があり、文字数では決まらない",
+        "どちらも活用形だけで決まる": "「給ふる」は文字数だけで下二段と決まる"
+      },
+      "ruleRefs": [
+        "kbp.honorifics.tamau-identification"
+      ]
+    },
+    {
+      "id": "kg-tamau-int1",
+      "topic": "給ふの識別",
+      "step": "統合①",
+      "questionType": "integration",
+      "coverageId": "kg-tamau-int1",
+      "passage": "大臣、それを聞きて笑ひ給ひけり。",
+      "target": "給ひ",
+      "steps": [
+        {
+          "prompt": "手順I：対象の語形は「給へ」か。",
+          "choices": [
+            "「給ひ」なので「給へ」ではない → 文字数で判断",
+            "「給へ」である → 活用形で判断"
+          ],
+          "answerIndex": 0,
+          "explanation": "語形は「給ひ」であり、「給へ」ではない。したがって文字数の規則で判断する。"
+        },
+        {
+          "prompt": "手順II：語幹「給」を除いた残りは何文字か。",
+          "choices": [
+            "1文字（ひ） → 尊敬",
+            "2文字 → 謙譲"
+          ],
+          "answerIndex": 0,
+          "explanation": "「給ひ」から語幹「給」を除くと「ひ」の1文字。四段活用の連用形である。"
+        },
+        {
+          "prompt": "最終判断：この「給ひ」は何か。",
+          "choices": [
+            "尊敬の補助動詞（四段）",
+            "謙譲の補助動詞（下二段）",
+            "丁寧の補助動詞",
+            "本動詞の「与ふ」の意"
+          ],
+          "answerIndex": 0,
+          "explanation": "1文字なので四段活用の尊敬。動詞「笑ふ」の下に付く補助動詞なので、訳は「お笑いになった」。"
+        }
+      ],
+      "explanation": "「給ひ」は語幹を除くと1文字なので四段活用で尊敬。動詞「笑ふ」の下に付く補助動詞なので「〜なさる・お〜になる」の型で訳し、「大臣は、それを聞いてお笑いになった」となる。地の文で三人称「大臣」の動作を述べており、下二段が現れにくい場面である点も一致する。",
+      "distractorRationale": {
+        "謙譲の補助動詞（下二段）": "下二段なら語幹を除いた残りが2文字になる",
+        "丁寧の補助動詞": "丁寧を表すのは「侍り」「候ふ」である",
+        "本動詞の「与ふ」の意": "動詞「笑ふ」の下に付いており、単独の動詞としては働いていない"
+      },
+      "ruleRefs": [
+        "kbp.honorifics.tamau-identification",
+        "kbp.honorifics.hojo-doushi-translation"
+      ]
+    },
+    {
+      "id": "kg-tamau-int2",
+      "topic": "給ふの識別",
+      "step": "統合②",
+      "questionType": "integration",
+      "coverageId": "kg-tamau-int2",
+      "passage": "「われも、さこそ思ひ給ふれ」と申す。",
+      "target": "給ふれ",
+      "steps": [
+        {
+          "prompt": "手順I：対象の語形は「給へ」か。",
+          "choices": [
+            "「給ふれ」なので「給へ」ではない → 文字数で判断",
+            "「給へ」である → 活用形で判断"
+          ],
+          "answerIndex": 0,
+          "explanation": "語形は「給ふれ」であり、「給へ」ではない。文字数の規則で判断する。"
+        },
+        {
+          "prompt": "手順II：語幹「給」を除いた残りは何文字か。",
+          "choices": [
+            "2文字（ふれ） → 謙譲",
+            "1文字 → 尊敬"
+          ],
+          "answerIndex": 0,
+          "explanation": "「給ふれ」から語幹「給」を除くと「ふれ」の2文字。下二段活用の已然形である。"
+        },
+        {
+          "prompt": "最終判断：この「給ふれ」は何か。",
+          "choices": [
+            "謙譲の補助動詞（下二段）",
+            "尊敬の補助動詞（四段）",
+            "丁寧の補助動詞（侍り等）",
+            "動詞「賜ふ」の已然形"
+          ],
+          "answerIndex": 0,
+          "explanation": "2文字なので下二段活用の謙譲。訳は「私も、そのように思っております」。会話文で話し手が自分の動作を述べており、下二段が使われる典型的な場面と一致する。"
+        }
+      ],
+      "explanation": "「給ふれ」は語幹を除くと2文字なので下二段活用で謙譲。会話文中で話し手が自分（われ）の動作をへりくだって述べており、場面の条件とも一致する。「こそ」の結びとして已然形になっている。訳は「私も、そのように思っております」。",
+      "distractorRationale": {
+        "尊敬の補助動詞（四段）": "四段なら語幹を除いた残りが1文字になる",
+        "動詞「賜ふ」の已然形": "動詞「思ふ」の下に付く補助動詞であり、単独の本動詞としては働いていない",
+        "丁寧の補助動詞（侍り等）": "丁寧を表すのは「侍り」「候ふ」である"
+      },
+      "ruleRefs": [
+        "kbp.honorifics.tamau-identification",
+        "kbp.particles.kakari-musubi-special-constructions"
+      ]
+    },
+    {
+      "id": "kg-tamau-int3",
+      "topic": "給ふの識別",
+      "step": "統合③",
+      "questionType": "integration",
+      "coverageId": "kg-tamau-int3",
+      "passage": "「はやく出で給へ」と、人々せかす。",
+      "target": "給へ",
+      "steps": [
+        {
+          "prompt": "手順I：対象の語形は「給へ」か。",
+          "choices": [
+            "「給へ」である → 活用形で判断",
+            "「給へ」ではない → 文字数で判断"
+          ],
+          "answerIndex": 0,
+          "explanation": "語形は「給へ」なので、文字数では決まらない。文中でどの活用形として働いているかを確認する。"
+        },
+        {
+          "prompt": "手順III：この「給へ」は何形として働いているか。",
+          "choices": [
+            "命令形（言い切って相手に求めている）",
+            "連用形（下に語が続いている）"
+          ],
+          "answerIndex": 0,
+          "explanation": "「はやく出でよ」と相手に求めて言い切っており、下に語が続いていないので命令形。"
+        },
+        {
+          "prompt": "最終判断：この「給へ」は何か。",
+          "choices": [
+            "尊敬（四段の命令形）",
+            "謙譲（下二段の連用形）",
+            "謙譲（下二段の未然形）",
+            "丁寧"
+          ],
+          "answerIndex": 0,
+          "explanation": "命令形として働いているので四段活用で尊敬。訳は「早くお出になってください」。"
+        }
+      ],
+      "explanation": "「給へ」は四段の已然形・命令形と下二段の未然形・連用形が同形になるため、文字数では決まらない。ここは言い切って相手に求める命令形なので四段活用で尊敬。訳は「『早くお出になってください』と、人々がせかす」。",
+      "distractorRationale": {
+        "謙譲（下二段の連用形）": "連用形なら下に語が続くが、ここは言い切って命令している",
+        "謙譲（下二段の未然形）": "未然形なら下に「ず」「む」などが続くが、ここは言い切って命令している",
+        "丁寧": "丁寧を表すのは「侍り」「候ふ」である"
+      },
+      "ruleRefs": [
+        "kbp.honorifics.tamau-identification"
+      ]
+    },
+    {
+      "id": "kg-tate-proc1",
+      "topic": "奉る・参るの識別",
+      "step": "手順I",
+      "questionType": "procedure",
+      "coverageId": "kg-tate-proc1",
+      "question": "「奉る」が謙譲か尊敬かを判断するとき、確認する位置はどこか。",
+      "choices": [
+        "「奉る」の上にある語",
+        "「奉る」の下にある語",
+        "文末の結びの活用形",
+        "文が会話文か地の文か"
+      ],
+      "answerIndex": 0,
+      "explanation": "「奉る」の上に衣類・食事・乗り物に関する語があれば尊敬（お召しになる・召し上がる・お乗りになる）、なければ謙譲（差し上げる）。上を見るという点が判断の要になる。",
+      "distractorRationale": {
+        "「奉る」の下にある語": "下に何が続くかは補助動詞かどうかの判断材料であり、謙譲・尊敬の別を決めるものではない",
+        "文末の結びの活用形": "結びを見るのは係り結びや「なむ」の識別である",
+        "文が会話文か地の文か": "位置で変わるのは敬意の対象（丁寧の場合）であり、謙譲・尊敬の別ではない"
+      },
+      "ruleRefs": [
+        "kbp.honorifics.tatematsuru-mairu-identification"
+      ]
+    },
+    {
+      "id": "kg-tate-cond-kenjo",
+      "topic": "奉る・参るの識別",
+      "step": "条件・謙譲",
+      "questionType": "condition",
+      "coverageId": "kg-tate-cond-kenjo",
+      "question": "「奉る」の上に衣類・食事・乗り物に関する語がない場合、「奉る」は何を表すか。",
+      "choices": [
+        "謙譲（差し上げる）",
+        "尊敬（お召しになる）",
+        "丁寧（ございます）",
+        "使役（〜させる）"
+      ],
+      "answerIndex": 0,
+      "explanation": "「奉る」の基本は謙譲で、本動詞なら「差し上げる」、補助動詞なら「〜し申し上げる」と訳す。尊敬になるのは上に衣・食・乗り物の語がある場合に限られる。",
+      "distractorRationale": {
+        "尊敬（お召しになる）": "尊敬になるのは上に衣・食・乗り物の語がある場合である",
+        "丁寧（ございます）": "丁寧を表すのは「侍り」「候ふ」である",
+        "使役（〜させる）": "使役を表すのは「す」「さす」「しむ」である"
+      },
+      "ruleRefs": [
+        "kbp.honorifics.tatematsuru-mairu-identification"
+      ]
+    },
+    {
+      "id": "kg-tate-cond-sonkei",
+      "topic": "奉る・参るの識別",
+      "step": "条件・尊敬",
+      "questionType": "condition",
+      "coverageId": "kg-tate-cond-sonkei",
+      "question": "「奉る」の上に衣類・食事・乗り物に関する語がある場合、「奉る」は何を表すか。",
+      "choices": [
+        "尊敬（お召しになる・お乗りになる）",
+        "謙譲（差し上げる・参上する）",
+        "丁寧（あります・ございます）",
+        "受身（〜される・〜られる）"
+      ],
+      "answerIndex": 0,
+      "explanation": "上に衣・食・乗り物の語があるとき、「奉る」は尊敬に転用され、上の語に応じて「お召しになる」「召し上がる」「お乗りになる」と訳し分ける。この場合に「差し上げる」と訳すと、動作の向きが逆になる。",
+      "distractorRationale": {
+        "謙譲（差し上げる・参上する）": "上に衣・食・乗り物の語がある場合は尊敬に転用される",
+        "丁寧（あります・ございます）": "丁寧を表すのは「侍り」「候ふ」である",
+        "受身（〜される・〜られる）": "受身を表すのは「る」「らる」である"
+      },
+      "ruleRefs": [
+        "kbp.honorifics.tatematsuru-mairu-identification"
+      ]
+    },
+    {
+      "id": "kg-tate-cond-mairu",
+      "topic": "奉る・参るの識別",
+      "step": "条件・参るの扱い",
+      "questionType": "condition",
+      "coverageId": "kg-tate-cond-mairu",
+      "question": "「参る」について、この教材での扱いとして正しいものはどれか。",
+      "choices": [
+        "衣・食・乗り物による尊敬への転用は確認が取れていないため、機械的には適用しない",
+        "「奉る」とまったく同じ条件で、必ず尊敬に転用してよい",
+        "どんな場合でも、上の語を確認せずに尊敬語として訳す",
+        "そもそも敬語ではないので、敬意の方向を考えなくてよい"
+      ],
+      "answerIndex": 0,
+      "explanation": "衣・食・乗り物による尊敬への転用は、教材によっては「奉る」に固有の用法として説明される。「参る」にも同じ転用が成り立つかは確認が取れていないため、この教材では「参る」に例外を機械的に当てはめず、謙譲（参上する・差し上げる）として扱う。",
+      "distractorRationale": {
+        "「奉る」とまったく同じ条件で、必ず尊敬に転用してよい": "「参る」への適用は確認できていないため、断定できない",
+        "どんな場合でも、上の語を確認せずに尊敬語として訳す": "「参る」の基本は謙譲である",
+        "そもそも敬語ではないので、敬意の方向を考えなくてよい": "「参る」は謙譲語であり、敬意の対象は動作の客体である"
+      },
+      "ruleRefs": [
+        "kbp.honorifics.tatematsuru-mairu-identification"
+      ]
+    },
+    {
+      "id": "kg-tate-cont1",
+      "topic": "奉る・参るの識別",
+      "step": "対比",
+      "questionType": "contrast",
+      "coverageId": "kg-tate-cont1",
+      "question": "「文を奉る」と「御衣を奉る」の違いとして正しいものはどれか。",
+      "choices": [
+        "前者は謙譲で「差し上げる」、後者は尊敬で「お召しになる」",
+        "前者は尊敬で「お召しになる」、後者は謙譲で「差し上げる」",
+        "どちらも謙譲で、訳は同じ",
+        "どちらも尊敬で、後者のほうが敬意が高い"
+      ],
+      "answerIndex": 0,
+      "explanation": "上の語が衣類かどうかで意味が変わる。「文」は衣・食・乗り物のいずれでもないので謙譲（手紙を差し上げる）、「御衣」は衣類なので尊敬（お召しになる）。同じ「奉る」でも、動作をするのが下位者か上位者かが逆になる。",
+      "distractorRationale": {
+        "前者は尊敬で「お召しになる」、後者は謙譲で「差し上げる」": "謙譲と尊敬が入れ替わっている",
+        "どちらも謙譲で、訳は同じ": "「御衣」は衣類なので尊敬に転用される",
+        "どちらも尊敬で、後者のほうが敬意が高い": "「文」の場合は転用の条件を満たさず、謙譲である"
+      },
+      "ruleRefs": [
+        "kbp.honorifics.tatematsuru-mairu-identification"
+      ]
+    },
+    {
+      "id": "kg-tate-int1",
+      "topic": "奉る・参るの識別",
+      "step": "統合①",
+      "questionType": "integration",
+      "coverageId": "kg-tate-int1",
+      "passage": "女、宮に御文を奉る。",
+      "target": "奉る",
+      "steps": [
+        {
+          "prompt": "手順I：「奉る」の上に衣類・食事・乗り物に関する語があるか。",
+          "choices": [
+            "ない（御文＝手紙） → 謙譲",
+            "ある（衣・食・乗り物） → 尊敬"
+          ],
+          "answerIndex": 0,
+          "explanation": "上にあるのは「御文」で、手紙である。衣類・食事・乗り物のいずれでもない。"
+        },
+        {
+          "prompt": "最終判断：この「奉る」の意味は。",
+          "choices": [
+            "謙譲（差し上げる）",
+            "尊敬（お召しになる）",
+            "丁寧（ございます）",
+            "尊敬（召し上がる）"
+          ],
+          "answerIndex": 0,
+          "explanation": "上に衣・食・乗り物の語がないので謙譲。訳は「女が、宮に手紙を差し上げる」。敬意の対象は動作の客体である宮。"
+        }
+      ],
+      "explanation": "上の「御文」は衣・食・乗り物のいずれでもないので謙譲。本動詞なので「差し上げる」と訳し、「女が、宮に手紙を差し上げる」となる。謙譲語なので敬意の対象は動作の客体である宮。",
+      "distractorRationale": {
+        "尊敬（お召しになる）": "上に衣類の語がないため、転用の条件を満たさない",
+        "丁寧（ございます）": "丁寧を表すのは「侍り」「候ふ」である",
+        "尊敬（召し上がる）": "上に食事の語がないため、転用の条件を満たさない"
+      },
+      "ruleRefs": [
+        "kbp.honorifics.tatematsuru-mairu-identification",
+        "kbp.honorifics.keii-direction"
+      ]
+    },
+    {
+      "id": "kg-tate-int2",
+      "topic": "奉る・参るの識別",
+      "step": "統合②",
+      "questionType": "integration",
+      "coverageId": "kg-tate-int2",
+      "passage": "帝、御衣を奉りて出でさせ給ふ。",
+      "target": "奉り",
+      "steps": [
+        {
+          "prompt": "手順I：「奉り」の上に衣類・食事・乗り物に関する語があるか。",
+          "choices": [
+            "ある（御衣＝衣類） → 尊敬",
+            "ない（衣・食・乗り物でない） → 謙譲"
+          ],
+          "answerIndex": 0,
+          "explanation": "上にあるのは「御衣」で、衣類にあたる。転用の条件を満たす。"
+        },
+        {
+          "prompt": "最終判断：この「奉り」の意味は。",
+          "choices": [
+            "尊敬（お召しになる）",
+            "謙譲（差し上げる）",
+            "尊敬（召し上がる）",
+            "丁寧（ございます）"
+          ],
+          "answerIndex": 0,
+          "explanation": "上が衣類なので尊敬に転用され、「お召しになる」と訳す。訳は「帝は、お着物をお召しになってお出ましになる」。"
+        }
+      ],
+      "explanation": "上の「御衣」は衣類なので尊敬に転用され、「お召しになる」と訳す。ここで「差し上げる」と訳すと、帝が誰かに衣を渡す意味になり、動作の向きが逆になってしまう。訳は「帝は、お着物をお召しになってお出ましになる」。",
+      "distractorRationale": {
+        "謙譲（差し上げる）": "上に衣類の語があるため尊敬に転用される。謙譲と訳すと動作の向きが逆になる",
+        "尊敬（召し上がる）": "尊敬である点は正しいが、上が食事ではなく衣類なので訳し方が合わない",
+        "丁寧（ございます）": "丁寧を表すのは「侍り」「候ふ」である"
+      },
+      "ruleRefs": [
+        "kbp.honorifics.tatematsuru-mairu-identification"
+      ]
+    },
+    {
+      "id": "kg-tate-int3",
+      "topic": "奉る・参るの識別",
+      "step": "統合③",
+      "questionType": "integration",
+      "coverageId": "kg-tate-int3",
+      "passage": "翁、宮の御前に参る。",
+      "target": "参る",
+      "steps": [
+        {
+          "prompt": "手順III：「参る」に衣・食・乗り物の例外を当てはめてよいか。",
+          "choices": [
+            "当てはめない（確認が取れていない） → 謙譲として扱う",
+            "「奉る」と同じに当てはめる → 尊敬"
+          ],
+          "answerIndex": 0,
+          "explanation": "「参る」への転用の可否は確認できていないため、この教材では謙譲として扱う。なお本文の上にあるのは「御前」で、そもそも衣・食・乗り物のいずれでもない。"
+        },
+        {
+          "prompt": "最終判断：この「参る」の意味は。",
+          "choices": [
+            "謙譲（参上する）",
+            "尊敬（お召しになる）",
+            "丁寧（ございます）",
+            "尊敬（お乗りになる）"
+          ],
+          "answerIndex": 0,
+          "explanation": "謙譲で「参上する」と訳す。訳は「翁が、宮の御前に参上する」。敬意の対象は動作の客体である宮。"
+        }
+      ],
+      "explanation": "「参る」は謙譲で「参上する」。上にあるのは「御前」で衣・食・乗り物のいずれでもなく、転用を検討する余地もない。訳は「翁が、宮の御前に参上する」。謙譲語なので敬意の対象は動作の客体である宮。",
+      "distractorRationale": {
+        "尊敬（お召しになる）": "上に衣類の語がなく、また「参る」への転用は適用しない方針である",
+        "丁寧（ございます）": "丁寧を表すのは「侍り」「候ふ」である",
+        "尊敬（お乗りになる）": "上に乗り物の語がなく、また「参る」への転用は適用しない方針である"
+      },
+      "ruleRefs": [
+        "kbp.honorifics.tatematsuru-mairu-identification",
+        "kbp.honorifics.keii-direction"
+      ]
+    },
+    {
+      "id": "kg-hab-proc1",
+      "topic": "侍り・候ふの識別",
+      "step": "手順I",
+      "questionType": "procedure",
+      "coverageId": "kg-hab-proc1",
+      "question": "「侍り・候ふ」の意味を判断するとき、最初に確認することはどれか。",
+      "choices": [
+        "本動詞として使われているか、補助動詞として使われているか",
+        "文中の動作の主語が身分の高い人物かどうか",
+        "その敬語が会話文の中にあるか地の文の中にあるか",
+        "直前の語がどの活用形になっているかの別"
+      ],
+      "answerIndex": 0,
+      "explanation": "補助動詞として使われている「侍り・候ふ」は常に丁寧なので、そこで判断が終わる。謙譲の可能性を検討するのは本動詞の場合だけであり、本動詞か補助動詞かの切り分けを先に行う。",
+      "distractorRationale": {
+        "その敬語が会話文の中にあるか地の文の中にあるか": "位置で変わるのは丁寧の敬意の対象であり、丁寧か謙譲かの別ではない",
+        "文中の動作の主語が身分の高い人物かどうか": "謙譲かどうかで確認するのは客体の身分であり、主語ではない",
+        "直前の語がどの活用形になっているかの別": "活用形で意味が決まるのは助動詞や「に」「ぬ」などの識別である"
+      },
+      "ruleRefs": [
+        "kbp.honorifics.haberi-saburau-identification"
+      ]
+    },
+    {
+      "id": "kg-hab-cond-hojo",
+      "topic": "侍り・候ふの識別",
+      "step": "条件・補助動詞",
+      "questionType": "condition",
+      "coverageId": "kg-hab-cond-hojo",
+      "question": "補助動詞として使われている「侍り・候ふ」は何を表すか。",
+      "choices": [
+        "常に丁寧",
+        "常に謙譲",
+        "常に尊敬",
+        "文脈によって丁寧か謙譲かが変わる"
+      ],
+      "answerIndex": 0,
+      "explanation": "補助動詞の「侍り・候ふ」は常に丁寧で、「〜です」「〜ます」「〜ございます」と訳す。謙譲になる可能性があるのは本動詞として使われている場合だけなので、補助動詞と分かった時点で判断は終わる。",
+      "distractorRationale": {
+        "常に謙譲": "謙譲になるのは本動詞で「お仕え申し上げる」と訳せる場合である",
+        "常に尊敬": "「侍り・候ふ」に尊敬の用法はない",
+        "文脈によって丁寧か謙譲かが変わる": "補助動詞の場合は常に丁寧で、文脈による揺れはない"
+      },
+      "ruleRefs": [
+        "kbp.honorifics.haberi-saburau-identification"
+      ]
+    },
+    {
+      "id": "kg-hab-cond-teinei",
+      "topic": "侍り・候ふの識別",
+      "step": "条件・丁寧",
+      "questionType": "condition",
+      "coverageId": "kg-hab-cond-teinei",
+      "question": "本動詞の「侍り・候ふ」で、「お仕え申し上げる」と訳して意味が通らない場合、「侍り・候ふ」は何を表すか。",
+      "choices": [
+        "丁寧（あります・おります・ございます）",
+        "謙譲（お仕え申し上げる）",
+        "尊敬（いらっしゃる・おいでになる）",
+        "使役（〜させる・〜せる）"
+      ],
+      "answerIndex": 0,
+      "explanation": "本動詞の「侍り・候ふ」の基本は丁寧で、「あります・おります・ございます」と訳す。謙譲になるのは「お仕え申し上げる」で通り、かつ客体が身分の高い人物である場合に限られる。",
+      "distractorRationale": {
+        "謙譲（お仕え申し上げる）": "その訳が通らなかった以上、この段階では除外されている",
+        "尊敬（いらっしゃる・おいでになる）": "「侍り・候ふ」に尊敬の用法はない",
+        "使役（〜させる・〜せる）": "使役を表すのは「す」「さす」「しむ」である"
+      },
+      "ruleRefs": [
+        "kbp.honorifics.haberi-saburau-identification"
+      ]
+    },
+    {
+      "id": "kg-hab-cond-kenjo",
+      "topic": "侍り・候ふの識別",
+      "step": "条件・謙譲",
+      "questionType": "condition",
+      "coverageId": "kg-hab-cond-kenjo",
+      "question": "本動詞の「侍り・候ふ」を謙譲と判断するために必要な条件はどれか。",
+      "choices": [
+        "「お仕え申し上げる」と訳して通り、客体が身分の高い人物であること",
+        "文中の動作の主語が身分の高い人物であること",
+        "地の文ではなく会話文の中で使われていること",
+        "すぐ下に別の敬語が重ねて続いているということ"
+      ],
+      "answerIndex": 0,
+      "explanation": "謙譲と判断するには、「お仕え申し上げる」で訳が通ることと、仕える対象である客体が身分の高い人物であることの両方を確認する。訳だけで決めず、誰に仕えているのかを本文から示せる状態にする。",
+      "distractorRationale": {
+        "文中の動作の主語が身分の高い人物であること": "謙譲では主語がへりくだる側なので、身分を確認するのは客体である",
+        "地の文ではなく会話文の中で使われていること": "位置で変わるのは丁寧の敬意の対象であり、丁寧か謙譲かの別ではない",
+        "すぐ下に別の敬語が重ねて続いているということ": "他の敬語の有無は判断条件ではない"
+      },
+      "ruleRefs": [
+        "kbp.honorifics.haberi-saburau-identification"
+      ]
+    },
+    {
+      "id": "kg-hab-cont1",
+      "topic": "侍り・候ふの識別",
+      "step": "対比",
+      "questionType": "contrast",
+      "coverageId": "kg-hab-cont1",
+      "question": "丁寧の「侍り」と謙譲の「候ふ」の訳の組み合わせとして正しいものはどれか。",
+      "choices": [
+        "丁寧＝ございます／謙譲＝お仕え申し上げる",
+        "丁寧＝お仕え申し上げる／謙譲＝ございます",
+        "丁寧＝いらっしゃる／謙譲＝おります",
+        "丁寧＝差し上げる／謙譲＝召し上がる"
+      ],
+      "answerIndex": 0,
+      "explanation": "丁寧なら「あります・おります・ございます」、謙譲なら「お仕え申し上げる」と訳す。謙譲の訳を「お仕えする」とだけ言うと、誰への敬意かが訳に出ないので、「申し上げる」まで含めて訳す。",
+      "distractorRationale": {
+        "丁寧＝お仕え申し上げる／謙譲＝ございます": "丁寧と謙譲の訳が入れ替わっている",
+        "丁寧＝いらっしゃる／謙譲＝おります": "「いらっしゃる」は尊敬の訳であり、「侍り・候ふ」には尊敬の用法がない",
+        "丁寧＝差し上げる／謙譲＝召し上がる": "どちらも「奉る」の訳であり、「侍り・候ふ」の訳ではない"
+      },
+      "ruleRefs": [
+        "kbp.honorifics.haberi-saburau-identification"
+      ]
+    },
+    {
+      "id": "kg-hab-int1",
+      "topic": "侍り・候ふの識別",
+      "step": "統合①",
+      "questionType": "integration",
+      "coverageId": "kg-hab-int1",
+      "passage": "「宮のありさま、かくてこそ侍れ」と語る。",
+      "target": "侍れ",
+      "steps": [
+        {
+          "prompt": "手順I：この「侍れ」は本動詞か補助動詞か。",
+          "choices": [
+            "本動詞（他の動詞の下に付いていない）",
+            "補助動詞（他の動詞の下に付いている）"
+          ],
+          "answerIndex": 0,
+          "explanation": "上にあるのは副詞「かくて」と係助詞「こそ」であり、動詞の下に付いてはいない。単独の動詞として働いている。"
+        },
+        {
+          "prompt": "手順II：「お仕え申し上げる」と訳して意味が通るか。",
+          "choices": [
+            "通らない → 丁寧",
+            "通る → 謙譲"
+          ],
+          "answerIndex": 0,
+          "explanation": "「宮のありさまは、このようにお仕え申し上げる」では意味をなさない。存在・状態を述べている。"
+        },
+        {
+          "prompt": "最終判断：この「侍れ」の意味は。",
+          "choices": [
+            "丁寧",
+            "謙譲",
+            "尊敬",
+            "使役"
+          ],
+          "answerIndex": 0,
+          "explanation": "本動詞で「お仕え申し上げる」が通らないので丁寧。訳は「宮のご様子は、このようでございます」。「こそ」の結びとして已然形になっている。"
+        }
+      ],
+      "explanation": "本動詞として使われ、「お仕え申し上げる」では訳が通らないので丁寧。訳は「宮のご様子は、このようでございます」。会話文中の丁寧なので、敬意は話し手から聞き手へ向かう。",
+      "distractorRationale": {
+        "謙譲": "「お仕え申し上げる」で訳が通らず、仕える対象も示されていない",
+        "尊敬": "「侍り・候ふ」に尊敬の用法はない",
+        "使役": "使役を表すのは「す」「さす」「しむ」である"
+      },
+      "ruleRefs": [
+        "kbp.honorifics.haberi-saburau-identification",
+        "kbp.honorifics.keii-direction"
+      ]
+    },
+    {
+      "id": "kg-hab-int2",
+      "topic": "侍り・候ふの識別",
+      "step": "統合②",
+      "questionType": "integration",
+      "coverageId": "kg-hab-int2",
+      "passage": "この者、年ごろ帝の御前に候ふ。",
+      "target": "候ふ",
+      "steps": [
+        {
+          "prompt": "手順I：この「候ふ」は本動詞か補助動詞か。",
+          "choices": [
+            "本動詞（他の動詞の下に付いていない）",
+            "補助動詞（他の動詞の下に付いている）"
+          ],
+          "answerIndex": 0,
+          "explanation": "上にあるのは「御前に」という体言＋格助詞であり、動詞の下には付いていない。単独の動詞として働いている。"
+        },
+        {
+          "prompt": "手順II：「お仕え申し上げる」と訳して意味が通るか。",
+          "choices": [
+            "通る → 謙譲",
+            "通らない → 丁寧"
+          ],
+          "answerIndex": 0,
+          "explanation": "「長年、帝の御前にお仕え申し上げる」で意味が通る。"
+        },
+        {
+          "prompt": "手順IV：客体は身分の高い人物か。",
+          "choices": [
+            "帝なので身分が高い → 謙譲で確定",
+            "身分が示されていない → 丁寧"
+          ],
+          "answerIndex": 0,
+          "explanation": "仕える対象は「帝」で、身分の高い人物である。謙譲と判断する条件が揃う。"
+        },
+        {
+          "prompt": "最終判断：この「候ふ」の意味は。",
+          "choices": [
+            "謙譲",
+            "丁寧",
+            "尊敬",
+            "受身"
+          ],
+          "answerIndex": 0,
+          "explanation": "本動詞で「お仕え申し上げる」が通り、客体が帝なので謙譲。訳は「この者は、長年、帝の御前にお仕え申し上げている」。"
+        }
+      ],
+      "explanation": "本動詞で「お仕え申し上げる」が通り、仕える対象が帝という身分の高い人物なので謙譲。訳は「この者は、長年、帝の御前にお仕え申し上げている」。謙譲語なので敬意の対象は客体である帝。",
+      "distractorRationale": {
+        "丁寧": "「お仕え申し上げる」で訳が通り、客体が帝と示されているので謙譲の条件を満たす",
+        "尊敬": "「侍り・候ふ」に尊敬の用法はない",
+        "受身": "受身を表すのは「る」「らる」である"
+      },
+      "ruleRefs": [
+        "kbp.honorifics.haberi-saburau-identification",
+        "kbp.honorifics.keii-direction"
+      ]
+    },
+    {
+      "id": "kg-hab-int3",
+      "topic": "侍り・候ふの識別",
+      "step": "統合③",
+      "questionType": "integration",
+      "coverageId": "kg-hab-int3",
+      "passage": "「この歌、いとめでたく思ひ侍り」と申す。",
+      "target": "侍り",
+      "steps": [
+        {
+          "prompt": "手順I：この「侍り」は本動詞か補助動詞か。",
+          "choices": [
+            "補助動詞（動詞「思ひ」の下に付いている）",
+            "本動詞（単独の動詞として働いている）"
+          ],
+          "answerIndex": 0,
+          "explanation": "直前は動詞「思ふ」の連用形「思ひ」。その下に付いているので補助動詞である。"
+        },
+        {
+          "prompt": "最終判断：この「侍り」の意味は。",
+          "choices": [
+            "丁寧",
+            "謙譲",
+            "尊敬",
+            "存在（あります）の本動詞"
+          ],
+          "answerIndex": 0,
+          "explanation": "補助動詞の「侍り」は常に丁寧。訳は「この歌を、たいそうすばらしいと思います」。"
+        }
+      ],
+      "explanation": "動詞「思ひ」の下に付く補助動詞なので、謙譲の可能性を検討する必要はなく丁寧と決まる。訳は「『この歌を、たいそうすばらしいと思います』と申し上げる」。会話文中の丁寧なので、敬意は話し手から聞き手へ向かう。",
+      "distractorRationale": {
+        "謙譲": "謙譲になる可能性があるのは本動詞の場合だけである",
+        "尊敬": "「侍り・候ふ」に尊敬の用法はない",
+        "存在（あります）の本動詞": "動詞「思ひ」の下に付いており、単独の本動詞としては働いていない"
+      },
+      "ruleRefs": [
+        "kbp.honorifics.haberi-saburau-identification",
+        "kbp.honorifics.hojo-doushi-translation"
+      ]
+    },
+    {
+      "id": "kg-hojo-proc1",
+      "topic": "補助動詞の訳し方",
+      "step": "手順I",
+      "questionType": "procedure",
+      "coverageId": "kg-hojo-proc1",
+      "question": "敬語を補助動詞として訳すかどうかを決める手がかりはどれか。",
+      "choices": [
+        "他の動詞の下に付いているかどうか",
+        "その語が文末にあるかどうか",
+        "主語が身分の高い人物かどうか",
+        "会話文の中にあるかどうか"
+      ],
+      "answerIndex": 0,
+      "explanation": "他の動詞の下に付いていれば補助動詞で、「〜し申し上げる」「〜なさる」「〜ます」のように、上の動詞に添える形で訳す。単独で使われていれば本動詞で、「差し上げる」「いらっしゃる」のように独立した動詞として訳す。",
+      "distractorRationale": {
+        "主語が身分の高い人物かどうか": "身分は敬語の種類を裏づける材料であり、本動詞か補助動詞かの別ではない",
+        "会話文の中にあるかどうか": "位置で変わるのは丁寧の敬意の対象である",
+        "その語が文末にあるかどうか": "本動詞も補助動詞も文末に来ることがあり、位置では決まらない"
+      },
+      "ruleRefs": [
+        "kbp.honorifics.hojo-doushi-translation"
+      ]
+    },
+    {
+      "id": "kg-hojo-cond-kenjo",
+      "topic": "補助動詞の訳し方",
+      "step": "条件・謙譲",
+      "questionType": "condition",
+      "coverageId": "kg-hojo-cond-kenjo",
+      "question": "謙譲の補助動詞は、どの型で訳すか。",
+      "choices": [
+        "〜し申し上げる／お〜する",
+        "〜なさる／お〜になる",
+        "〜です／〜ます／〜ございます",
+        "〜させる／お〜させる"
+      ],
+      "answerIndex": 0,
+      "explanation": "謙譲の補助動詞は「〜し申し上げる」「お〜する」の型で訳す。「〜される」のような無難な訳で済ませると、誰への敬意かが訳に出ない。",
+      "distractorRationale": {
+        "〜なさる／お〜になる": "これは尊敬の補助動詞の訳の型である",
+        "〜させる／お〜させる": "使役の訳であり、敬語の訳の型ではない",
+        "〜です／〜ます／〜ございます": "これは丁寧の補助動詞の訳の型である"
+      },
+      "ruleRefs": [
+        "kbp.honorifics.hojo-doushi-translation"
+      ]
+    },
+    {
+      "id": "kg-hojo-cond-sonkei",
+      "topic": "補助動詞の訳し方",
+      "step": "条件・尊敬",
+      "questionType": "condition",
+      "coverageId": "kg-hojo-cond-sonkei",
+      "question": "尊敬の補助動詞は、どの型で訳すか。",
+      "choices": [
+        "〜なさる／お〜になる",
+        "〜し申し上げる／お〜する",
+        "〜です／〜ございます",
+        "〜てしまう／〜ておく"
+      ],
+      "answerIndex": 0,
+      "explanation": "尊敬の補助動詞は「〜なさる」「お〜になる」の型で訳し、動作の主体を高める。「書き給ふ」なら「お書きになる」となる。",
+      "distractorRationale": {
+        "〜し申し上げる／お〜する": "これは謙譲の補助動詞の訳の型である",
+        "〜です／〜ございます": "これは丁寧の補助動詞の訳の型である",
+        "〜てしまう／〜ておく": "完了の助動詞の訳であり、敬語の訳の型ではない"
+      },
+      "ruleRefs": [
+        "kbp.honorifics.hojo-doushi-translation"
+      ]
+    },
+    {
+      "id": "kg-hojo-cond-teinei",
+      "topic": "補助動詞の訳し方",
+      "step": "条件・丁寧",
+      "questionType": "condition",
+      "coverageId": "kg-hojo-cond-teinei",
+      "question": "丁寧の補助動詞は、どの型で訳すか。",
+      "choices": [
+        "〜です／〜ます／〜ございます",
+        "〜なさる／お〜になる",
+        "〜し申し上げる／お〜する",
+        "〜だろう／〜にちがいない"
+      ],
+      "answerIndex": 0,
+      "explanation": "丁寧の補助動詞は「〜です」「〜ます」「〜ございます」の型で訳し、聞き手（会話文）または読者（地の文）への敬意を表す。",
+      "distractorRationale": {
+        "〜なさる／お〜になる": "これは尊敬の補助動詞の訳の型である",
+        "〜し申し上げる／お〜する": "これは謙譲の補助動詞の訳の型である",
+        "〜だろう／〜にちがいない": "推量の助動詞の訳であり、敬語の訳の型ではない"
+      },
+      "ruleRefs": [
+        "kbp.honorifics.hojo-doushi-translation"
+      ]
+    },
+    {
+      "id": "kg-hojo-cont1",
+      "topic": "補助動詞の訳し方",
+      "step": "対比",
+      "questionType": "contrast",
+      "coverageId": "kg-hojo-cont1",
+      "question": "「文を奉る」と「書き奉る」の「奉る」の訳の違いとして正しいものはどれか。",
+      "choices": [
+        "前者は本動詞で「差し上げる」、後者は補助動詞で「〜し申し上げる」",
+        "前者は補助動詞で「〜し申し上げる」、後者は本動詞で「差し上げる」",
+        "どちらも本動詞で「差し上げる」",
+        "どちらも補助動詞で「お〜になる」"
+      ],
+      "answerIndex": 0,
+      "explanation": "「文を奉る」は「奉る」が単独の動詞として働いているので本動詞で「手紙を差し上げる」、「書き奉る」は動詞「書く」の下に付いているので補助動詞で「書き申し上げる」。どちらも謙譲だが、訳の型が変わる。",
+      "distractorRationale": {
+        "前者は補助動詞で「〜し申し上げる」、後者は本動詞で「差し上げる」": "本動詞と補助動詞が入れ替わっている",
+        "どちらも本動詞で「差し上げる」": "「書き奉る」は動詞「書き」の下に付いており、補助動詞である",
+        "どちらも補助動詞で「お〜になる」": "「お〜になる」は尊敬の訳の型であり、謙譲の「奉る」には当てはまらない"
+      },
+      "ruleRefs": [
+        "kbp.honorifics.hojo-doushi-translation",
+        "kbp.honorifics.tatematsuru-mairu-identification"
+      ]
+    },
+    {
+      "id": "kg-hojo-int1",
+      "topic": "補助動詞の訳し方",
+      "step": "統合①",
+      "questionType": "integration",
+      "coverageId": "kg-hojo-int1",
+      "passage": "この由を宮に知らせむとて、文を書き奉る。",
+      "target": "奉る",
+      "steps": [
+        {
+          "prompt": "手順I：この「奉る」は本動詞か補助動詞か。",
+          "choices": [
+            "補助動詞（動詞「書き」の下に付いている）",
+            "本動詞（単独の動詞として働いている）"
+          ],
+          "answerIndex": 0,
+          "explanation": "直前は動詞「書く」の連用形「書き」。その下に付いているので補助動詞である。"
+        },
+        {
+          "prompt": "手順II：この「奉る」は尊敬・謙譲・丁寧のどれか。",
+          "choices": [
+            "謙譲",
+            "尊敬",
+            "丁寧",
+            "決められない"
+          ],
+          "answerIndex": 0,
+          "explanation": "上に衣・食・乗り物の語がないので「奉る」は謙譲である。"
+        },
+        {
+          "prompt": "最終判断：この「奉る」の訳として適切なものは。",
+          "choices": [
+            "文を書き申し上げる",
+            "文をお書きになる",
+            "文を書きます",
+            "文を書かせる"
+          ],
+          "answerIndex": 0,
+          "explanation": "謙譲の補助動詞なので「〜し申し上げる」の型。訳は「手紙を書き申し上げる」。"
+        }
+      ],
+      "explanation": "動詞「書き」の下に付く補助動詞で、上に衣・食・乗り物の語がないので謙譲。訳の型は「〜し申し上げる」で、「手紙を書き申し上げる」となる。敬意の対象は動作の客体である宮。",
+      "distractorRationale": {
+        "文をお書きになる": "尊敬の訳の型であり、動作の主体を高めてしまう",
+        "文を書きます": "丁寧の訳の型であり、「奉る」の種類と合わない",
+        "文を書かせる": "使役の訳であり、敬語の訳ではない"
+      },
+      "ruleRefs": [
+        "kbp.honorifics.hojo-doushi-translation",
+        "kbp.honorifics.tatematsuru-mairu-identification"
+      ]
+    },
+    {
+      "id": "kg-hojo-int2",
+      "topic": "補助動詞の訳し方",
+      "step": "統合②",
+      "questionType": "integration",
+      "coverageId": "kg-hojo-int2",
+      "passage": "帝、みづから歌を書き給ふ。",
+      "target": "給ふ",
+      "steps": [
+        {
+          "prompt": "手順I：この「給ふ」は本動詞か補助動詞か。",
+          "choices": [
+            "補助動詞（動詞「書き」の下に付いている）",
+            "本動詞（単独の動詞として働いている）"
+          ],
+          "answerIndex": 0,
+          "explanation": "直前は動詞「書く」の連用形「書き」。その下に付いているので補助動詞である。"
+        },
+        {
+          "prompt": "手順II：この「給ふ」は尊敬・謙譲・丁寧のどれか。",
+          "choices": [
+            "尊敬",
+            "謙譲",
+            "丁寧",
+            "決められない"
+          ],
+          "answerIndex": 0,
+          "explanation": "地の文で三人称「帝」の動作を述べており、下二段（謙譲）が現れにくい場面である。四段活用の尊敬と判断する。"
+        },
+        {
+          "prompt": "最終判断：この「給ふ」の訳として適切なものは。",
+          "choices": [
+            "お書きになる",
+            "書き申し上げる",
+            "書きます",
+            "書かれてしまう"
+          ],
+          "answerIndex": 0,
+          "explanation": "尊敬の補助動詞なので「お〜になる」の型。訳は「帝は、自らお歌をお書きになる」。"
+        }
+      ],
+      "explanation": "動詞「書き」の下に付く補助動詞で、地の文で三人称の動作を述べているので尊敬。訳の型は「〜なさる／お〜になる」で、「帝は、自らお歌をお書きになる」となる。敬意の対象は動作の主体である帝。",
+      "distractorRationale": {
+        "書き申し上げる": "謙譲の訳の型であり、動作の主体である帝を低めてしまう",
+        "書きます": "丁寧の訳の型であり、「給ふ」の種類と合わない",
+        "書かれてしまう": "受身・完了の訳であり、敬語の訳ではない"
+      },
+      "ruleRefs": [
+        "kbp.honorifics.hojo-doushi-translation",
+        "kbp.honorifics.tamau-identification"
+      ]
+    },
+    {
+      "id": "kg-hojo-int3",
+      "topic": "補助動詞の訳し方",
+      "step": "統合③",
+      "questionType": "integration",
+      "coverageId": "kg-hojo-int3",
+      "passage": "「都のさま、いと変はりて見え候ふ」と言ふ。",
+      "target": "候ふ",
+      "steps": [
+        {
+          "prompt": "手順I：この「候ふ」は本動詞か補助動詞か。",
+          "choices": [
+            "補助動詞（動詞「見え」の下に付いている）",
+            "本動詞（単独の動詞として働いている）"
+          ],
+          "answerIndex": 0,
+          "explanation": "直前は下二段動詞「見ゆ」の連用形「見え」。その下に付いているので補助動詞である。"
+        },
+        {
+          "prompt": "手順II：補助動詞の「候ふ」は尊敬・謙譲・丁寧のどれか。",
+          "choices": [
+            "丁寧",
+            "尊敬",
+            "謙譲",
+            "文脈で変わる"
+          ],
+          "answerIndex": 0,
+          "explanation": "補助動詞として使われる「侍り・候ふ」は常に丁寧である。"
+        },
+        {
+          "prompt": "最終判断：この「候ふ」の訳として適切なものは。",
+          "choices": [
+            "見えます",
+            "お見えになる",
+            "見え申し上げる",
+            "見せる"
+          ],
+          "answerIndex": 0,
+          "explanation": "丁寧の補助動詞なので「〜です・〜ます」の型。訳は「都の様子は、たいそう変わって見えます」。"
+        }
+      ],
+      "explanation": "動詞「見え」の下に付く補助動詞なので常に丁寧。訳の型は「〜です／〜ます／〜ございます」で、「『都の様子は、たいそう変わって見えます』と言う」となる。会話文中の丁寧なので、敬意は話し手から聞き手へ向かう。",
+      "distractorRationale": {
+        "お見えになる": "尊敬の訳の型であり、「候ふ」に尊敬の用法はない",
+        "見え申し上げる": "謙譲の訳の型であり、補助動詞の「候ふ」は常に丁寧である",
+        "見せる": "使役的な訳であり、敬語の訳ではない"
+      },
+      "ruleRefs": [
+        "kbp.honorifics.hojo-doushi-translation",
+        "kbp.honorifics.haberi-saburau-identification"
+      ]
+    },
+    {
+      "id": "kg-keii-proc1",
+      "topic": "敬意の方向",
+      "step": "手順I",
+      "questionType": "procedure",
+      "coverageId": "kg-keii-proc1",
+      "question": "敬意の方向を判断するとき、最初に確認することはどれか。",
+      "choices": [
+        "その敬語が会話文（鉤括弧の中）にあるか、地の文にあるか",
+        "その敬語が本動詞か補助動詞かどうか",
+        "その敬語がどの活用の種類であるかの別",
+        "文末が連体形で結ばれているかどうか"
+      ],
+      "answerIndex": 0,
+      "explanation": "誰から（敬意の主体）は、会話文なら話し手、地の文なら作者と決まる。また丁寧の場合は誰へ（敬意の対象）も位置によって変わる。したがって、まず文の位置を確認する。",
+      "distractorRationale": {
+        "文末が連体形で結ばれているかどうか": "結びを見るのは係り結びや「なむ」の識別である",
+        "その敬語が本動詞か補助動詞かどうか": "本動詞・補助動詞の別は訳し方に関わるが、敬意の方向は変えない",
+        "その敬語がどの活用の種類であるかの別": "活用の種類は「給ふ」の尊敬・謙譲を分ける材料であり、方向そのものは決めない"
+      },
+      "ruleRefs": [
+        "kbp.honorifics.keii-direction"
+      ]
+    },
+    {
+      "id": "kg-keii-cond-kara-kaiwa",
+      "topic": "敬意の方向",
+      "step": "条件・会話文の誰から",
+      "questionType": "condition",
+      "coverageId": "kg-keii-cond-kara-kaiwa",
+      "question": "会話文（鉤括弧の中）にある敬語は、誰からの敬意を表すか。",
+      "choices": [
+        "会話の話し手",
+        "作品の作者",
+        "作品の読者",
+        "動作の客体"
+      ],
+      "answerIndex": 0,
+      "explanation": "会話文の中の敬語は、その会話を発している話し手からの敬意を表す。地の文なら作者からの敬意になる。敬語の種類（尊敬・謙譲・丁寧）にかかわらず、誰からは文の位置だけで決まる。",
+      "distractorRationale": {
+        "動作の客体": "動作の客体は謙譲における敬意の対象であり、敬意の主体ではない",
+        "作品の作者": "作者からの敬意になるのは地の文の敬語である",
+        "作品の読者": "読者は地の文の丁寧における敬意の対象であり、敬意の主体ではない"
+      },
+      "ruleRefs": [
+        "kbp.honorifics.keii-direction"
+      ]
+    },
+    {
+      "id": "kg-keii-cond-kara-ji",
+      "topic": "敬意の方向",
+      "step": "条件・地の文の誰から",
+      "questionType": "condition",
+      "coverageId": "kg-keii-cond-kara-ji",
+      "question": "地の文（鉤括弧の外）にある敬語は、誰からの敬意を表すか。",
+      "choices": [
+        "作品の作者",
+        "会話の話し手",
+        "会話の聞き手",
+        "動作の主体"
+      ],
+      "answerIndex": 0,
+      "explanation": "地の文の敬語は、その文章を書いている作者からの敬意を表す。会話文なら話し手からの敬意になる。",
+      "distractorRationale": {
+        "会話の話し手": "話し手からの敬意になるのは会話文中の敬語である",
+        "会話の聞き手": "聞き手は会話文中の丁寧における敬意の対象であり、敬意の主体ではない",
+        "動作の主体": "動作の主体は尊敬における敬意の対象であり、敬意の主体ではない"
+      },
+      "ruleRefs": [
+        "kbp.honorifics.keii-direction"
+      ]
+    },
+    {
+      "id": "kg-keii-cond-sonkei",
+      "topic": "敬意の方向",
+      "step": "条件・尊敬の誰へ",
+      "questionType": "condition",
+      "coverageId": "kg-keii-cond-sonkei",
+      "question": "尊敬語は、誰への敬意を表すか。",
+      "choices": [
+        "動作の主体",
+        "動作の客体",
+        "会話の聞き手",
+        "読者"
+      ],
+      "answerIndex": 0,
+      "explanation": "尊敬語は動作をする人（動作の主体）を高めるので、敬意の対象は動作の主体。会話文か地の文かによらず一定である。判断の前に、動作の主体が誰かを本文から確定しておく。",
+      "distractorRationale": {
+        "動作の客体": "動作の客体への敬意は謙譲語である",
+        "会話の聞き手": "会話の聞き手への敬意は会話文中の丁寧語である",
+        "読者": "読者への敬意は地の文の丁寧語である"
+      },
+      "ruleRefs": [
+        "kbp.honorifics.keii-direction"
+      ]
+    },
+    {
+      "id": "kg-keii-cond-kenjo",
+      "topic": "敬意の方向",
+      "step": "条件・謙譲の誰へ",
+      "questionType": "condition",
+      "coverageId": "kg-keii-cond-kenjo",
+      "question": "謙譲語は、誰への敬意を表すか。",
+      "choices": [
+        "動作の客体",
+        "動作の主体",
+        "会話の聞き手",
+        "作者"
+      ],
+      "answerIndex": 0,
+      "explanation": "謙譲語は動作をする側がへりくだることで、動作を受ける相手（動作の客体）を高める。したがって敬意の対象は動作の客体で、会話文か地の文かによらず一定である。",
+      "distractorRationale": {
+        "動作の主体": "動作の主体への敬意は尊敬語である",
+        "会話の聞き手": "会話の聞き手への敬意は会話文中の丁寧語である",
+        "作者": "作者は地の文における敬意の主体であり、対象ではない"
+      },
+      "ruleRefs": [
+        "kbp.honorifics.keii-direction"
+      ]
+    },
+    {
+      "id": "kg-keii-cond-teinei",
+      "topic": "敬意の方向",
+      "step": "条件・丁寧の誰へ",
+      "questionType": "condition",
+      "coverageId": "kg-keii-cond-teinei",
+      "question": "丁寧語の敬意の対象は、どう決まるか。",
+      "choices": [
+        "会話文なら聞き手、地の文なら読者",
+        "会話文でも地の文でも動作の主体",
+        "会話文でも地の文でも動作の客体",
+        "会話文なら読者、地の文なら聞き手"
+      ],
+      "answerIndex": 0,
+      "explanation": "丁寧語だけは、文の位置によって敬意の対象が変わる。会話文中なら会話の聞き手、地の文中なら読者への敬意になる。尊敬・謙譲は位置によらず動作の主体・客体で一定である点と対にして覚える。",
+      "distractorRationale": {
+        "会話文でも地の文でも動作の主体": "動作の主体への敬意は尊敬語である",
+        "会話文でも地の文でも動作の客体": "動作の客体への敬意は謙譲語である",
+        "会話文なら読者、地の文なら聞き手": "聞き手と読者が入れ替わっている"
+      },
+      "ruleRefs": [
+        "kbp.honorifics.keii-direction"
+      ]
+    },
+    {
+      "id": "kg-keii-cont1",
+      "topic": "敬意の方向",
+      "step": "対比",
+      "questionType": "contrast",
+      "coverageId": "kg-keii-cont1",
+      "question": "会話文か地の文かによって敬意の対象が変わるのは、どの種類の敬語か。",
+      "choices": [
+        "丁寧語だけ",
+        "尊敬語だけ",
+        "謙譲語だけ",
+        "尊敬語・謙譲語・丁寧語のすべて"
+      ],
+      "answerIndex": 0,
+      "explanation": "尊敬語の対象は動作の主体、謙譲語の対象は動作の客体で、文の位置によらず一定である。位置によって対象が変わるのは丁寧語だけで、会話文なら聞き手、地の文なら読者になる。なお「誰から」はすべての種類で位置によって変わる。",
+      "distractorRationale": {
+        "尊敬語だけ": "尊敬語の対象は常に動作の主体で、位置によらない",
+        "謙譲語だけ": "謙譲語の対象は常に動作の客体で、位置によらない",
+        "尊敬語・謙譲語・丁寧語のすべて": "対象が位置で変わるのは丁寧語だけである"
+      },
+      "ruleRefs": [
+        "kbp.honorifics.keii-direction"
+      ]
+    },
+    {
+      "id": "kg-keii-int1",
+      "topic": "敬意の方向",
+      "step": "統合①",
+      "questionType": "integration",
+      "coverageId": "kg-keii-int1",
+      "passage": "大臣、内裏に参り給ふ。",
+      "target": "給ふ",
+      "steps": [
+        {
+          "prompt": "手順I：この「給ふ」は会話文と地の文のどちらにあるか。",
+          "choices": [
+            "地の文（鉤括弧の外）",
+            "会話文（鉤括弧の中）"
+          ],
+          "answerIndex": 0,
+          "explanation": "鉤括弧がなく、作者が地の文で出来事を述べている。"
+        },
+        {
+          "prompt": "手順II：誰からの敬意か。",
+          "choices": [
+            "作者",
+            "会話の話し手"
+          ],
+          "answerIndex": 0,
+          "explanation": "地の文の敬語なので、作者からの敬意である。"
+        },
+        {
+          "prompt": "手順III：この「給ふ」は尊敬なので、誰への敬意か。",
+          "choices": [
+            "動作の主体である大臣",
+            "動作の客体である内裏",
+            "読者",
+            "会話の聞き手"
+          ],
+          "answerIndex": 0,
+          "explanation": "尊敬語の敬意の対象は動作の主体。参上しているのは大臣なので、大臣への敬意である。"
+        }
+      ],
+      "explanation": "地の文の尊敬語なので、作者から動作の主体である大臣への敬意。訳は「大臣が、内裏に参上なさる」。尊敬語の敬意の対象は、会話文か地の文かによらず常に動作の主体である。",
+      "distractorRationale": {
+        "動作の客体である内裏": "客体への敬意は謙譲語であり、「給ふ」は尊敬語である",
+        "読者": "読者への敬意は地の文の丁寧語である",
+        "会話の聞き手": "聞き手への敬意は会話文中の丁寧語である"
+      },
+      "ruleRefs": [
+        "kbp.honorifics.keii-direction",
+        "kbp.honorifics.tamau-identification"
+      ]
+    },
+    {
+      "id": "kg-keii-int2",
+      "topic": "敬意の方向",
+      "step": "統合②",
+      "questionType": "integration",
+      "coverageId": "kg-keii-int2",
+      "passage": "翁、「われ、宮に御文を奉る」と言ふ。",
+      "target": "奉る",
+      "steps": [
+        {
+          "prompt": "手順I：この「奉る」は会話文と地の文のどちらにあるか。",
+          "choices": [
+            "会話文（鉤括弧の中）",
+            "地の文（鉤括弧の外）"
+          ],
+          "answerIndex": 0,
+          "explanation": "「われ、宮に御文を奉る」は鉤括弧の中にあり、翁が話している内容である。"
+        },
+        {
+          "prompt": "手順II：誰からの敬意か。",
+          "choices": [
+            "会話の話し手である翁",
+            "地の文を書いている作者"
+          ],
+          "answerIndex": 0,
+          "explanation": "会話文の敬語なので、その会話を発している話し手（翁）からの敬意である。"
+        },
+        {
+          "prompt": "手順III：この「奉る」は謙譲なので、誰への敬意か。",
+          "choices": [
+            "動作の客体である宮",
+            "動作の主体であるわれ（翁）",
+            "会話の聞き手",
+            "読者"
+          ],
+          "answerIndex": 0,
+          "explanation": "謙譲語の敬意の対象は動作の客体。手紙を差し上げる相手は宮なので、宮への敬意である。"
+        }
+      ],
+      "explanation": "会話文中の謙譲語なので、話し手である翁から、動作の客体である宮への敬意。訳は「翁が、『私が、宮に手紙を差し上げる』と言う」。上に衣・食・乗り物の語がないので「奉る」は謙譲である。",
+      "distractorRationale": {
+        "動作の主体であるわれ（翁）": "主体への敬意は尊敬語であり、「奉る」は謙譲語である。謙譲では主体がへりくだる側になる",
+        "会話の聞き手": "聞き手への敬意は丁寧語である",
+        "読者": "読者への敬意は地の文の丁寧語である"
+      },
+      "ruleRefs": [
+        "kbp.honorifics.keii-direction",
+        "kbp.honorifics.tatematsuru-mairu-identification"
+      ]
+    },
+    {
+      "id": "kg-keii-int3",
+      "topic": "敬意の方向",
+      "step": "統合③",
+      "questionType": "integration",
+      "coverageId": "kg-keii-int3",
+      "passage": "昔、かかることも侍りき。",
+      "target": "侍り",
+      "steps": [
+        {
+          "prompt": "手順I：この「侍り」は会話文と地の文のどちらにあるか。",
+          "choices": [
+            "地の文（鉤括弧の外）",
+            "会話文（鉤括弧の中）"
+          ],
+          "answerIndex": 0,
+          "explanation": "鉤括弧がなく、書き手が読者に向けて述べている地の文である。"
+        },
+        {
+          "prompt": "手順II：誰からの敬意か。",
+          "choices": [
+            "作者",
+            "会話の話し手"
+          ],
+          "answerIndex": 0,
+          "explanation": "地の文の敬語なので、作者からの敬意である。"
+        },
+        {
+          "prompt": "手順IV：この「侍り」は丁寧なので、誰への敬意か。",
+          "choices": [
+            "読者",
+            "会話の聞き手",
+            "動作の主体",
+            "動作の客体"
+          ],
+          "answerIndex": 0,
+          "explanation": "丁寧語の敬意の対象は、会話文なら聞き手、地の文なら読者。ここは地の文なので読者への敬意である。"
+        }
+      ],
+      "explanation": "地の文の丁寧語なので、作者から読者への敬意。訳は「昔、このようなこともございました」。丁寧語だけは文の位置によって敬意の対象が変わるので、位置の確認が欠かせない。",
+      "distractorRationale": {
+        "会話の聞き手": "聞き手への敬意になるのは会話文中の丁寧語である",
+        "動作の主体": "主体への敬意は尊敬語である",
+        "動作の客体": "客体への敬意は謙譲語である"
+      },
+      "ruleRefs": [
+        "kbp.honorifics.keii-direction",
+        "kbp.honorifics.haberi-saburau-identification"
+      ]
+    }
+  ]
+}

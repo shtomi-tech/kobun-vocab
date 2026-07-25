@@ -1,0 +1,1758 @@
+{
+  "meta": {
+    "source": "docs/kobun-principles の particles 分野の原則カード5枚をもとにしたオリジナル問題",
+    "note": "2026-07-25新設。助詞は data/multiple_choice.json の Chapter 7（知識の4択）だけでは訳し分けの手順が身につかないため、識別フロー（手順の内容理解→4択→実践）を助動詞と同じ形式で用意した。",
+    "ruleCards": [
+      "kbp.particles.ba-meanings",
+      "kbp.particles.yori-meanings",
+      "kbp.particles.dani-meanings",
+      "kbp.particles.kakari-musubi-special-constructions",
+      "kbp.particles.final-particles-meanings"
+    ]
+  },
+  "joshiProcedures": [
+    {
+      "id": "ba",
+      "name": "ばの識別",
+      "sub": "順接の原因理由・偶然条件・仮定条件",
+      "steps": [
+        {
+          "no": "手順I",
+          "text": "「ば」の上の活用形が已然形か未然形かを確認する。ここを見ずに訳から決めない。"
+        },
+        {
+          "no": "手順II",
+          "text": "已然形なら、まず「〜ので」を当てはめる。意味が通れば順接の原因・理由。"
+        },
+        {
+          "no": "手順III",
+          "text": "「〜ので」が通らなければ、「〜と・〜ところ」を当てはめる。通れば偶然条件。"
+        },
+        {
+          "no": "手順IV",
+          "text": "上が未然形なら「もし〜ならば」（仮定条件）と判断する。"
+        }
+      ]
+    },
+    {
+      "id": "yori",
+      "name": "よりの識別",
+      "sub": "経由・即時・方法手段（起点比較は別扱い）",
+      "steps": [
+        {
+          "no": "手順I",
+          "text": "「〜を通って」と訳して意味が通るか確認する。通れば経由。"
+        },
+        {
+          "no": "手順II",
+          "text": "「より」の直上が連体形で、「〜するとすぐに」と訳せるか確認する。通れば即時。"
+        },
+        {
+          "no": "手順III",
+          "text": "「より」の直上に移動手段を表す語があるか確認する。あれば方法・手段（〜で）。"
+        },
+        {
+          "no": "手順IV",
+          "text": "手順I〜IIIのいずれにも当てはまらない場合は、起点（〜から）・比較の可能性を検討する。この3条件だけを機械的に当てはめて断定しない。"
+        }
+      ]
+    },
+    {
+      "id": "dani",
+      "name": "だにの識別",
+      "sub": "限定・類推",
+      "steps": [
+        {
+          "no": "手順I",
+          "text": "「だに」より下に、希望・願望・命令・意志・仮定を表す語があるかを確認する。"
+        },
+        {
+          "no": "手順II",
+          "text": "あれば限定（せめて〜だけでも）、なければ類推（〜さえ）と判断する。2条件は互いに他方の否定なので、判定に漏れはない。"
+        }
+      ]
+    },
+    {
+      "id": "kakari",
+      "name": "係り結びの特殊構文",
+      "sub": "こそ已然形の逆接・もぞもこその懸念",
+      "steps": [
+        {
+          "no": "手順I",
+          "text": "「こそ」の結びが已然形で、そこで文が終わらず、読点でつながって後ろに文が続いているかを確認する。続いていれば逆接（〜けれども）。"
+        },
+        {
+          "no": "手順II",
+          "text": "「もぞ」＋連体形、または「もこそ」＋已然形の形かを確認する。当てはまれば懸念（〜すると困る・〜すると大変だ）。"
+        },
+        {
+          "no": "手順III",
+          "text": "どちらにも当てはまらなければ、通常の係り結び（強意）として扱う。"
+        }
+      ]
+    },
+    {
+      "id": "shuujoshi",
+      "name": "終助詞の識別",
+      "sub": "願望・禁止・念押し",
+      "steps": [
+        {
+          "no": "手順I",
+          "text": "終助詞そのものではなく、直前の接続（未然形・連用形・体言、「な」の有無）を先に確認する。"
+        },
+        {
+          "no": "手順II",
+          "text": "接続と語形の組み合わせで意味を当てる。未然形＋ばや＝自己の願望、未然形＋なむ＝他への願望、連用形＋てしがな・にしがな＝自己の願望、な＋連用形＋そ＝禁止、体言＋がな・もがな＝願望、〜（ぞ）かし＝念押し。"
+        },
+        {
+          "no": "手順III",
+          "text": "「なむ」は同形語が多い。終助詞かどうかは「なむ」の識別で確定してから、この意味を当てる。"
+        }
+      ]
+    }
+  ],
+  "joshiGroups": [
+    {
+      "id": "sb-ba",
+      "name": "ばの識別",
+      "sub": "順接の原因理由・偶然条件・仮定条件",
+      "ids": [
+        "jb-ba-proc1",
+        "jb-ba-proc2",
+        "jb-ba-cond-node",
+        "jb-ba-cond-tokoro",
+        "jb-ba-cond-katei",
+        "jb-ba-cont1",
+        "jb-ba-int1",
+        "jb-ba-int2",
+        "jb-ba-int3"
+      ]
+    },
+    {
+      "id": "sb-yori",
+      "name": "よりの識別",
+      "sub": "経由・即時・方法手段",
+      "ids": [
+        "jb-yori-proc1",
+        "jb-yori-cond-keiyu",
+        "jb-yori-cond-sokuji",
+        "jb-yori-cond-shudan",
+        "jb-yori-cont1",
+        "jb-yori-int1",
+        "jb-yori-int2",
+        "jb-yori-int3"
+      ]
+    },
+    {
+      "id": "sb-dani",
+      "name": "だにの識別",
+      "sub": "限定・類推",
+      "ids": [
+        "jb-dani-proc1",
+        "jb-dani-cond-gentei",
+        "jb-dani-cond-ruisui",
+        "jb-dani-cont1",
+        "jb-dani-int1",
+        "jb-dani-int2"
+      ]
+    },
+    {
+      "id": "sb-kakari",
+      "name": "係り結びの特殊構文",
+      "sub": "こそ已然形の逆接・もぞもこその懸念",
+      "ids": [
+        "jb-kak-proc1",
+        "jb-kak-cond-gyaku",
+        "jb-kak-cond-mozo",
+        "jb-kak-cond-mokoso",
+        "jb-kak-cont1",
+        "jb-kak-int1",
+        "jb-kak-int2",
+        "jb-kak-int3"
+      ]
+    },
+    {
+      "id": "sb-shuujoshi",
+      "name": "終助詞の識別",
+      "sub": "願望・禁止・念押し",
+      "ids": [
+        "jb-shu-proc1",
+        "jb-shu-cond-baya",
+        "jb-shu-cond-namu",
+        "jb-shu-cond-teshigana",
+        "jb-shu-cond-nasoso",
+        "jb-shu-cond-mogana",
+        "jb-shu-cond-kashi",
+        "jb-shu-int1",
+        "jb-shu-int2",
+        "jb-shu-int3"
+      ]
+    },
+    {
+      "id": "sb-joshi-all",
+      "name": "総仕上げ：助詞の識別41問",
+      "sub": "5手順をまとめてランダム出題",
+      "shuffle": true,
+      "ids": [
+        "jb-ba-proc1",
+        "jb-ba-proc2",
+        "jb-ba-cond-node",
+        "jb-ba-cond-tokoro",
+        "jb-ba-cond-katei",
+        "jb-ba-cont1",
+        "jb-ba-int1",
+        "jb-ba-int2",
+        "jb-ba-int3",
+        "jb-yori-proc1",
+        "jb-yori-cond-keiyu",
+        "jb-yori-cond-sokuji",
+        "jb-yori-cond-shudan",
+        "jb-yori-cont1",
+        "jb-yori-int1",
+        "jb-yori-int2",
+        "jb-yori-int3",
+        "jb-dani-proc1",
+        "jb-dani-cond-gentei",
+        "jb-dani-cond-ruisui",
+        "jb-dani-cont1",
+        "jb-dani-int1",
+        "jb-dani-int2",
+        "jb-kak-proc1",
+        "jb-kak-cond-gyaku",
+        "jb-kak-cond-mozo",
+        "jb-kak-cond-mokoso",
+        "jb-kak-cont1",
+        "jb-kak-int1",
+        "jb-kak-int2",
+        "jb-kak-int3",
+        "jb-shu-proc1",
+        "jb-shu-cond-baya",
+        "jb-shu-cond-namu",
+        "jb-shu-cond-teshigana",
+        "jb-shu-cond-nasoso",
+        "jb-shu-cond-mogana",
+        "jb-shu-cond-kashi",
+        "jb-shu-int1",
+        "jb-shu-int2",
+        "jb-shu-int3"
+      ]
+    }
+  ],
+  "joshiCoverageTopics": [
+    {
+      "topic": "ばの識別",
+      "items": [
+        {
+          "id": "jb-ba-proc1",
+          "label": "最初に見るもの",
+          "questionType": "procedure"
+        },
+        {
+          "id": "jb-ba-proc2",
+          "label": "已然形での試し順",
+          "questionType": "procedure"
+        },
+        {
+          "id": "jb-ba-cond-node",
+          "label": "順接の原因・理由",
+          "questionType": "condition"
+        },
+        {
+          "id": "jb-ba-cond-tokoro",
+          "label": "偶然条件",
+          "questionType": "condition"
+        },
+        {
+          "id": "jb-ba-cond-katei",
+          "label": "仮定条件",
+          "questionType": "condition"
+        },
+        {
+          "id": "jb-ba-cont1",
+          "label": "已然形と未然形の対比",
+          "questionType": "contrast"
+        },
+        {
+          "id": "jb-ba-int1",
+          "label": "統合①",
+          "questionType": "integration"
+        },
+        {
+          "id": "jb-ba-int2",
+          "label": "統合②",
+          "questionType": "integration"
+        },
+        {
+          "id": "jb-ba-int3",
+          "label": "統合③",
+          "questionType": "integration"
+        }
+      ]
+    },
+    {
+      "topic": "よりの識別",
+      "items": [
+        {
+          "id": "jb-yori-proc1",
+          "label": "3条件の限界",
+          "questionType": "procedure"
+        },
+        {
+          "id": "jb-yori-cond-keiyu",
+          "label": "経由",
+          "questionType": "condition"
+        },
+        {
+          "id": "jb-yori-cond-sokuji",
+          "label": "即時",
+          "questionType": "condition"
+        },
+        {
+          "id": "jb-yori-cond-shudan",
+          "label": "方法・手段",
+          "questionType": "condition"
+        },
+        {
+          "id": "jb-yori-cont1",
+          "label": "起点との対比",
+          "questionType": "contrast"
+        },
+        {
+          "id": "jb-yori-int1",
+          "label": "統合①",
+          "questionType": "integration"
+        },
+        {
+          "id": "jb-yori-int2",
+          "label": "統合②",
+          "questionType": "integration"
+        },
+        {
+          "id": "jb-yori-int3",
+          "label": "統合③",
+          "questionType": "integration"
+        }
+      ]
+    },
+    {
+      "topic": "だにの識別",
+      "items": [
+        {
+          "id": "jb-dani-proc1",
+          "label": "手がかりの位置",
+          "questionType": "procedure"
+        },
+        {
+          "id": "jb-dani-cond-gentei",
+          "label": "限定",
+          "questionType": "condition"
+        },
+        {
+          "id": "jb-dani-cond-ruisui",
+          "label": "類推",
+          "questionType": "condition"
+        },
+        {
+          "id": "jb-dani-cont1",
+          "label": "訳の対比",
+          "questionType": "contrast"
+        },
+        {
+          "id": "jb-dani-int1",
+          "label": "統合①",
+          "questionType": "integration"
+        },
+        {
+          "id": "jb-dani-int2",
+          "label": "統合②",
+          "questionType": "integration"
+        }
+      ]
+    },
+    {
+      "topic": "係り結びの特殊構文",
+      "items": [
+        {
+          "id": "jb-kak-proc1",
+          "label": "確認する順序",
+          "questionType": "procedure"
+        },
+        {
+          "id": "jb-kak-cond-gyaku",
+          "label": "こそ已然形の逆接",
+          "questionType": "condition"
+        },
+        {
+          "id": "jb-kak-cond-mozo",
+          "label": "もぞ",
+          "questionType": "condition"
+        },
+        {
+          "id": "jb-kak-cond-mokoso",
+          "label": "もこそ",
+          "questionType": "condition"
+        },
+        {
+          "id": "jb-kak-cont1",
+          "label": "通常の強意との対比",
+          "questionType": "contrast"
+        },
+        {
+          "id": "jb-kak-int1",
+          "label": "統合①",
+          "questionType": "integration"
+        },
+        {
+          "id": "jb-kak-int2",
+          "label": "統合②",
+          "questionType": "integration"
+        },
+        {
+          "id": "jb-kak-int3",
+          "label": "統合③",
+          "questionType": "integration"
+        }
+      ]
+    },
+    {
+      "topic": "終助詞の識別",
+      "items": [
+        {
+          "id": "jb-shu-proc1",
+          "label": "接続を先に見る",
+          "questionType": "procedure"
+        },
+        {
+          "id": "jb-shu-cond-baya",
+          "label": "ばや",
+          "questionType": "condition"
+        },
+        {
+          "id": "jb-shu-cond-namu",
+          "label": "なむ",
+          "questionType": "condition"
+        },
+        {
+          "id": "jb-shu-cond-teshigana",
+          "label": "てしがな",
+          "questionType": "condition"
+        },
+        {
+          "id": "jb-shu-cond-nasoso",
+          "label": "な〜そ",
+          "questionType": "condition"
+        },
+        {
+          "id": "jb-shu-cond-mogana",
+          "label": "もがな",
+          "questionType": "condition"
+        },
+        {
+          "id": "jb-shu-cond-kashi",
+          "label": "かし",
+          "questionType": "condition"
+        },
+        {
+          "id": "jb-shu-int1",
+          "label": "統合①",
+          "questionType": "integration"
+        },
+        {
+          "id": "jb-shu-int2",
+          "label": "統合②",
+          "questionType": "integration"
+        },
+        {
+          "id": "jb-shu-int3",
+          "label": "統合③",
+          "questionType": "integration"
+        }
+      ]
+    }
+  ],
+  "joshiQuestions": [
+    {
+      "id": "jb-ba-proc1",
+      "topic": "ばの識別",
+      "step": "手順I",
+      "questionType": "procedure",
+      "coverageId": "jb-ba-proc1",
+      "question": "接続助詞「ば」の意味を判断するとき、最初に確認するものはどれか。",
+      "choices": [
+        "「ば」の上の活用形",
+        "文全体の主語",
+        "「ば」の下の活用形",
+        "文が会話文かどうか"
+      ],
+      "answerIndex": 0,
+      "explanation": "「ば」は上が已然形か未然形かで意味の系統が分かれる。已然形なら順接の確定条件（原因理由か偶然条件）、未然形なら仮定条件。訳を当てはめる作業はその後で、上の活用形を見ずに訳から決めると未然形と已然形を取り違える。",
+      "distractorRationale": {
+        "文全体の主語": "「ば」の意味は主語の人称では決まらない。人称で決まるのは「む」「べし」である",
+        "「ば」の下の活用形": "「ば」は接続助詞なので、判断材料は下ではなく上の活用形である",
+        "文が会話文かどうか": "会話文か地の文かで決まるのは敬意の方向であり、「ば」の意味ではない"
+      },
+      "ruleRefs": [
+        "kbp.particles.ba-meanings"
+      ]
+    },
+    {
+      "id": "jb-ba-proc2",
+      "topic": "ばの識別",
+      "step": "手順II",
+      "questionType": "procedure",
+      "coverageId": "jb-ba-proc2",
+      "question": "已然形＋「ば」と分かったあと、最初に当てはめてみる訳し方はどれか。",
+      "choices": [
+        "〜ので",
+        "〜と・〜ところ",
+        "もし〜ならば",
+        "〜けれども"
+      ],
+      "answerIndex": 0,
+      "explanation": "已然形＋ばでは、まず「〜ので」（順接の原因・理由）を試し、通らなければ「〜と・〜ところ」（偶然条件）を試す、という順で判断する。順序が決まっているのは、両方が意味の上で成り立ちうる本文があるため。",
+      "distractorRationale": {
+        "〜と・〜ところ": "偶然条件の訳で、「〜ので」が通らなかったときに試す2番目の候補である",
+        "もし〜ならば": "未然形＋ばの仮定条件の訳であり、已然形には当てない",
+        "〜けれども": "逆接の訳。「こそ〜已然形、」の特殊構文で使うもので、「ば」の訳ではない"
+      },
+      "ruleRefs": [
+        "kbp.particles.ba-meanings"
+      ]
+    },
+    {
+      "id": "jb-ba-cond-node",
+      "topic": "ばの識別",
+      "step": "条件・原因理由",
+      "questionType": "condition",
+      "coverageId": "jb-ba-cond-node",
+      "question": "已然形＋「ば」で、「〜ので」を当てはめて意味が通る場合、「ば」は何を表すか。",
+      "choices": [
+        "順接の原因・理由（〜ので）",
+        "偶然条件（〜と・〜ところ）",
+        "仮定条件（もし〜ならば）",
+        "逆接条件（〜けれども）"
+      ],
+      "answerIndex": 0,
+      "explanation": "已然形＋ばで「〜ので」が通れば、順接の原因・理由。已然形は「すでにそうなっている」形なので、確定した事柄を原因・理由として下につなぐ。",
+      "distractorRationale": {
+        "偶然条件（〜と・〜ところ）": "「〜ので」が通らなかったときに検討するもので、順序が逆である",
+        "仮定条件（もし〜ならば）": "仮定条件は未然形＋ばであり、已然形には当てはまらない",
+        "逆接条件（〜けれども）": "已然形＋ばに逆接の用法はない。逆接は「ど・ども」が担う"
+      },
+      "ruleRefs": [
+        "kbp.particles.ba-meanings"
+      ]
+    },
+    {
+      "id": "jb-ba-cond-tokoro",
+      "topic": "ばの識別",
+      "step": "条件・偶然条件",
+      "questionType": "condition",
+      "coverageId": "jb-ba-cond-tokoro",
+      "question": "已然形＋「ば」で、「〜ので」は通らないが「〜と・〜ところ」なら通る場合、「ば」は何を表すか。",
+      "choices": [
+        "偶然条件（〜と・〜ところ）",
+        "順接の原因・理由（〜ので）",
+        "仮定条件（もし〜ならば）",
+        "並列（〜て、〜て）"
+      ],
+      "answerIndex": 0,
+      "explanation": "已然形＋ばで、原因・理由の関係がなく「〜すると」「〜したところ」でつながる場合は偶然条件。ある動作をしたところ、たまたまその事態に出会った、という関係を表す。",
+      "distractorRationale": {
+        "順接の原因・理由（〜ので）": "「〜ので」が通らなかったのだから、この段階では除外されている",
+        "仮定条件（もし〜ならば）": "仮定条件は未然形＋ばであり、已然形には当てはまらない",
+        "並列（〜て、〜て）": "並列を表すのは「て」などで、「ば」の用法ではない"
+      },
+      "ruleRefs": [
+        "kbp.particles.ba-meanings"
+      ]
+    },
+    {
+      "id": "jb-ba-cond-katei",
+      "topic": "ばの識別",
+      "step": "条件・仮定条件",
+      "questionType": "condition",
+      "coverageId": "jb-ba-cond-katei",
+      "question": "未然形＋「ば」は何を表すか。",
+      "choices": [
+        "仮定条件（もし〜ならば）",
+        "順接の原因・理由（〜ので）",
+        "偶然条件（〜と・〜ところ）",
+        "逆接の確定条件（〜けれども）"
+      ],
+      "answerIndex": 0,
+      "explanation": "未然形は「まだそうなっていない」形なので、未然形＋ばは「もし〜ならば」という仮定条件を表す。現代語では「降れば」が仮定に読めるため、古文でも同じだと思い込みやすいが、古文では已然形＋ばが確定条件、未然形＋ばが仮定条件で、対応が逆になる。",
+      "distractorRationale": {
+        "順接の原因・理由（〜ので）": "已然形＋ばの用法である",
+        "偶然条件（〜と・〜ところ）": "已然形＋ばの用法である",
+        "逆接の確定条件（〜けれども）": "逆接を表すのは「ど・ども」であり、「ば」の用法ではない"
+      },
+      "ruleRefs": [
+        "kbp.particles.ba-meanings"
+      ]
+    },
+    {
+      "id": "jb-ba-cont1",
+      "topic": "ばの識別",
+      "step": "対比",
+      "questionType": "contrast",
+      "coverageId": "jb-ba-cont1",
+      "question": "四段活用「降る」を使った「降らば」と「降れば」の違いを説明したものとして正しいものはどれか。",
+      "choices": [
+        "「降らば」は未然形接続で仮定条件、「降れば」は已然形接続で確定条件",
+        "「降らば」は已然形接続で確定条件、「降れば」は未然形接続で仮定条件",
+        "どちらも已然形接続で、意味は文脈で決まる",
+        "どちらも仮定条件で、「降れば」のほうが丁寧な言い方"
+      ],
+      "answerIndex": 0,
+      "explanation": "四段活用「降る」の未然形は「降ら」、已然形は「降れ」。「降らば」は未然形＋ばで「もし降るならば」、「降れば」は已然形＋ばで「降るので／降ると」。この形の違いだけで条件の種類が決まるため、訳より先に活用形を確定する。",
+      "distractorRationale": {
+        "「降らば」は已然形接続で確定条件、「降れば」は未然形接続で仮定条件": "未然形と已然形が入れ替わっている",
+        "どちらも已然形接続で、意味は文脈で決まる": "「降ら」は未然形であり、接続が異なる",
+        "どちらも仮定条件で、「降れば」のほうが丁寧な言い方": "丁寧さの違いではなく、条件の種類の違いである"
+      },
+      "ruleRefs": [
+        "kbp.particles.ba-meanings"
+      ]
+    },
+    {
+      "id": "jb-ba-int1",
+      "topic": "ばの識別",
+      "step": "統合①",
+      "questionType": "integration",
+      "coverageId": "jb-ba-int1",
+      "passage": "雨降れば、え出でず。",
+      "target": "ば",
+      "steps": [
+        {
+          "prompt": "手順I：「ば」の上「降れ」は何形か。",
+          "choices": [
+            "已然形",
+            "未然形"
+          ],
+          "answerIndex": 0,
+          "explanation": "四段活用「降る」の未然形は「降ら」、已然形は「降れ」。ここは「降れ」なので已然形。"
+        },
+        {
+          "prompt": "手順II：「〜ので」を当てはめて意味が通るか。",
+          "choices": [
+            "通る → 順接の原因・理由",
+            "通らない → 次の手順へ"
+          ],
+          "answerIndex": 0,
+          "explanation": "「雨が降るので、出かけられない」と、雨が理由になって下の内容が導かれている。"
+        },
+        {
+          "prompt": "最終判断：この「ば」の意味は。",
+          "choices": [
+            "順接の原因・理由（〜ので）",
+            "偶然条件（〜と・〜ところ）",
+            "仮定条件（もし〜ならば）",
+            "逆接条件（〜けれども）"
+          ],
+          "answerIndex": 0,
+          "explanation": "已然形接続で「〜ので」が通るので順接の原因・理由。訳は「雨が降るので、出かけることができない」。"
+        }
+      ],
+      "explanation": "已然形「降れ」＋ば で、「〜ので」を当てはめて意味が通るため順接の原因・理由。訳は「雨が降るので、出かけることができない」。",
+      "distractorRationale": {
+        "偶然条件（〜と・〜ところ）": "「〜ので」が通るのに、先に偶然条件を選んでいる",
+        "仮定条件（もし〜ならば）": "上が已然形なのに未然形接続の仮定条件と判断している",
+        "逆接条件（〜けれども）": "「ば」に逆接の用法はない"
+      },
+      "ruleRefs": [
+        "kbp.particles.ba-meanings"
+      ]
+    },
+    {
+      "id": "jb-ba-int2",
+      "topic": "ばの識別",
+      "step": "統合②",
+      "questionType": "integration",
+      "coverageId": "jb-ba-int2",
+      "passage": "門を開けて見れば、あやしき人立てり。",
+      "target": "ば",
+      "steps": [
+        {
+          "prompt": "手順I：「ば」の上「見れ」は何形か。",
+          "choices": [
+            "已然形",
+            "未然形"
+          ],
+          "answerIndex": 0,
+          "explanation": "上一段活用「見る」の未然形は「見」、已然形は「見れ」。ここは「見れ」なので已然形。"
+        },
+        {
+          "prompt": "手順II：「〜ので」を当てはめて意味が通るか。",
+          "choices": [
+            "通らない → 次の手順へ",
+            "通る → 順接の原因・理由"
+          ],
+          "answerIndex": 0,
+          "explanation": "「見るので、怪しい人が立っている」では、見たことが人の立っている理由にならず、意味が通らない。"
+        },
+        {
+          "prompt": "手順III：「〜と・〜ところ」を当てはめて意味が通るか。",
+          "choices": [
+            "通る → 偶然条件",
+            "通らない → 仮定条件"
+          ],
+          "answerIndex": 0,
+          "explanation": "「見ると、怪しい人が立っていた」と、見た結果たまたま出会った事態として通る。"
+        },
+        {
+          "prompt": "最終判断：この「ば」の意味は。",
+          "choices": [
+            "偶然条件（〜と・〜ところ）",
+            "順接の原因・理由（〜ので）",
+            "仮定条件（もし〜ならば）",
+            "並列（〜て、〜て）"
+          ],
+          "answerIndex": 0,
+          "explanation": "已然形接続で「〜ので」が通らず「〜と」が通るので偶然条件。訳は「門を開けて見ると、怪しい人が立っていた」。"
+        }
+      ],
+      "explanation": "已然形「見れ」＋ば。原因・理由の関係が成り立たず、「〜と・〜ところ」で通るため偶然条件。訳は「門を開けて見ると、怪しい人が立っていた」。",
+      "distractorRationale": {
+        "順接の原因・理由（〜ので）": "見たことが人の立っている理由にはならないため、この訳は通らない",
+        "仮定条件（もし〜ならば）": "上が已然形なのに未然形接続の仮定条件と判断している",
+        "並列（〜て、〜て）": "「ば」に並列の用法はない"
+      },
+      "ruleRefs": [
+        "kbp.particles.ba-meanings"
+      ]
+    },
+    {
+      "id": "jb-ba-int3",
+      "topic": "ばの識別",
+      "step": "統合③",
+      "questionType": "integration",
+      "coverageId": "jb-ba-int3",
+      "passage": "雨降らば、出でじ。",
+      "target": "ば",
+      "steps": [
+        {
+          "prompt": "手順I：「ば」の上「降ら」は何形か。",
+          "choices": [
+            "未然形",
+            "已然形"
+          ],
+          "answerIndex": 0,
+          "explanation": "四段活用「降る」の未然形は「降ら」。已然形なら「降れ」になる。"
+        },
+        {
+          "prompt": "最終判断：この「ば」の意味は。",
+          "choices": [
+            "仮定条件（もし〜ならば）",
+            "順接の原因・理由（〜ので）",
+            "偶然条件（〜と・〜ところ）",
+            "逆接条件（〜けれども）"
+          ],
+          "answerIndex": 0,
+          "explanation": "未然形接続なので仮定条件。訳は「もし雨が降るならば、出かけまい」。下の「じ」も打消意志で、まだ起きていない事態を述べる文脈と合う。"
+        }
+      ],
+      "explanation": "未然形「降ら」＋ば なので仮定条件。上の活用形だけで決まり、訳の当てはめは不要。訳は「もし雨が降るならば、出かけまい」。",
+      "distractorRationale": {
+        "順接の原因・理由（〜ので）": "已然形接続の用法であり、未然形には当てはまらない",
+        "偶然条件（〜と・〜ところ）": "已然形接続の用法であり、未然形には当てはまらない",
+        "逆接条件（〜けれども）": "「ば」に逆接の用法はない"
+      },
+      "ruleRefs": [
+        "kbp.particles.ba-meanings"
+      ]
+    },
+    {
+      "id": "jb-yori-proc1",
+      "topic": "よりの識別",
+      "step": "手順IV",
+      "questionType": "procedure",
+      "coverageId": "jb-yori-proc1",
+      "question": "「より」が経由・即時・方法手段のどれにも当てはまらないとき、どう扱うのが適切か。",
+      "choices": [
+        "起点（〜から）・比較の可能性を検討し、3条件だけで断定しない",
+        "最も近い意味である経由として訳しておく",
+        "直上の活用形にかかわらず即時として訳す",
+        "意味を決めず、訳出しないままにしておく"
+      ],
+      "answerIndex": 0,
+      "explanation": "この3条件は「より」の全用法ではない。最も基本的な起点（〜から）と比較の基準は3条件に含まれていないため、当てはまらない本文では起点・比較を検討する。3条件を無理に当てはめると誤訳になる。",
+      "distractorRationale": {
+        "直上の活用形にかかわらず即時として訳す": "即時は直上が連体形であることが条件で、これを外すと判断できない",
+        "最も近い意味である経由として訳しておく": "「〜を通って」が通らないのに経由と決めるのは根拠のない当てはめである",
+        "意味を決めず、訳出しないままにしておく": "起点・比較として訳せる場合が多く、訳を放棄する必要はない"
+      },
+      "ruleRefs": [
+        "kbp.particles.yori-meanings"
+      ]
+    },
+    {
+      "id": "jb-yori-cond-keiyu",
+      "topic": "よりの識別",
+      "step": "条件・経由",
+      "questionType": "condition",
+      "coverageId": "jb-yori-cond-keiyu",
+      "question": "「より」を「〜を通って」と訳して意味が通る場合、「より」は何を表すか。",
+      "choices": [
+        "経由（〜を通って）",
+        "即時（〜するとすぐに）",
+        "方法・手段（〜で）",
+        "比較の基準（〜より）"
+      ],
+      "answerIndex": 0,
+      "explanation": "「〜を通って」で意味が通れば経由。通り道・通過点を示す用法で、「山より出づ（山を通って出る）」のように使う。",
+      "distractorRationale": {
+        "即時（〜するとすぐに）": "即時は直上が連体形で「〜するとすぐに」と訳せる場合である",
+        "方法・手段（〜で）": "方法・手段は直上に移動手段を表す語がある場合である",
+        "比較の基準（〜より）": "比較は「〜より…」の形で二者を比べる用法で、通り道を示すものではない"
+      },
+      "ruleRefs": [
+        "kbp.particles.yori-meanings"
+      ]
+    },
+    {
+      "id": "jb-yori-cond-sokuji",
+      "topic": "よりの識別",
+      "step": "条件・即時",
+      "questionType": "condition",
+      "coverageId": "jb-yori-cond-sokuji",
+      "question": "「より」が即時（〜するとすぐに）を表すための条件はどれか。",
+      "choices": [
+        "直上が連体形で、「〜するとすぐに」と訳して通ること",
+        "直上が未然形で、下に推量の語があること",
+        "直上が体言で、場所や方角を表すこと",
+        "直上に移動手段を表す語があること"
+      ],
+      "answerIndex": 0,
+      "explanation": "即時と判断するには、「より」の直上が連体形であることと、「〜するとすぐに」で訳が通ることの両方を確認する。連体形かどうかを見ずに訳だけで決めると、経由や起点と取り違える。",
+      "distractorRationale": {
+        "直上が未然形で、下に推量の語があること": "未然形接続や推量の有無は「より」の判断条件ではない",
+        "直上に移動手段を表す語があること": "これは方法・手段の条件である",
+        "直上が体言で、場所や方角を表すこと": "場所の体言が上にあるのは経由や起点で、即時の条件ではない"
+      },
+      "ruleRefs": [
+        "kbp.particles.yori-meanings"
+      ]
+    },
+    {
+      "id": "jb-yori-cond-shudan",
+      "topic": "よりの識別",
+      "step": "条件・方法手段",
+      "questionType": "condition",
+      "coverageId": "jb-yori-cond-shudan",
+      "question": "「より」の直上に移動手段を表す語がある場合、「より」は何を表すか。",
+      "choices": [
+        "方法・手段（〜で）",
+        "経由（〜を通って）",
+        "即時（〜するとすぐに）",
+        "起点（〜から）"
+      ],
+      "answerIndex": 0,
+      "explanation": "「徒歩より行く（徒歩で行く）」のように、直上に移動手段を表す語があれば方法・手段で、「〜で」と訳す。移動手段が示されているかどうかが決め手になる。",
+      "distractorRationale": {
+        "経由（〜を通って）": "経由は通り道を示す用法で、「〜を通って」と訳せる場合である",
+        "即時（〜するとすぐに）": "即時は直上が連体形の場合であり、体言である移動手段の語では条件が違う",
+        "起点（〜から）": "起点は出発点を示す用法で、手段を示すものではない"
+      },
+      "ruleRefs": [
+        "kbp.particles.yori-meanings"
+      ]
+    },
+    {
+      "id": "jb-yori-cont1",
+      "topic": "よりの識別",
+      "step": "対比",
+      "questionType": "contrast",
+      "coverageId": "jb-yori-cont1",
+      "question": "「都より下る」の「より」について、この識別手順から言えることとして正しいものはどれか。",
+      "choices": [
+        "3条件に当てはまらないので、起点として訳せるかを検討する",
+        "場所を表す体言が上にあるので、経由と断定できる",
+        "移動を表す動詞が下にあるので、方法・手段と断定できる",
+        "「下る」が連体形なので、即時と断定できる"
+      ],
+      "answerIndex": 0,
+      "explanation": "「都を通って下る」では意味が通らず、直上の「都」は連体形でも移動手段でもない。3条件のいずれにも当てはまらないので、この手順だけでは決められず、起点（都から下る）として訳せるかを検討する。手順の適用範囲を知っておくことも識別の一部である。",
+      "distractorRationale": {
+        "場所を表す体言が上にあるので、経由と断定できる": "経由の条件は「〜を通って」と訳せることであり、場所の体言があることではない",
+        "移動を表す動詞が下にあるので、方法・手段と断定できる": "方法・手段の条件は直上に移動手段を表す語があることで、下の動詞ではない",
+        "「下る」が連体形なので、即時と断定できる": "即時で見るのは「より」の直上であり、下の語ではない"
+      },
+      "ruleRefs": [
+        "kbp.particles.yori-meanings"
+      ]
+    },
+    {
+      "id": "jb-yori-int1",
+      "topic": "よりの識別",
+      "step": "統合①",
+      "questionType": "integration",
+      "coverageId": "jb-yori-int1",
+      "passage": "山より出でて、里に至る。",
+      "target": "より",
+      "steps": [
+        {
+          "prompt": "手順I：「〜を通って」と訳して意味が通るか。",
+          "choices": [
+            "通る → 経由",
+            "通らない → 次の手順へ"
+          ],
+          "answerIndex": 0,
+          "explanation": "「山を通って出て」と訳して、山が通り道として意味が通る。"
+        },
+        {
+          "prompt": "最終判断：この「より」の意味は。",
+          "choices": [
+            "経由（〜を通って）",
+            "即時（〜するとすぐに）",
+            "方法・手段（〜で）",
+            "比較の基準（〜より）"
+          ],
+          "answerIndex": 0,
+          "explanation": "「〜を通って」で通るので経由。訳は「山を通って出て、里に着く」。"
+        }
+      ],
+      "explanation": "「〜を通って」で意味が通るため経由。手順Iだけで決まる型。訳は「山を通って出て、里に着く」。",
+      "distractorRationale": {
+        "即時（〜するとすぐに）": "直上「山」は体言で連体形ではないため、即時の条件を満たさない",
+        "方法・手段（〜で）": "「山」は移動手段を表す語ではない",
+        "比較の基準（〜より）": "二者を比べる文脈がない"
+      },
+      "ruleRefs": [
+        "kbp.particles.yori-meanings"
+      ]
+    },
+    {
+      "id": "jb-yori-int2",
+      "topic": "よりの識別",
+      "step": "統合②",
+      "questionType": "integration",
+      "coverageId": "jb-yori-int2",
+      "passage": "その文を見るより、色を失ひぬ。",
+      "target": "より",
+      "steps": [
+        {
+          "prompt": "手順I：「〜を通って」と訳して意味が通るか。",
+          "choices": [
+            "通らない → 次の手順へ",
+            "通る → 経由（〜を通って）"
+          ],
+          "answerIndex": 0,
+          "explanation": "「見るを通って」では日本語として意味をなさない。"
+        },
+        {
+          "prompt": "手順II：直上「見る」は連体形か。また「〜するとすぐに」で訳せるか。",
+          "choices": [
+            "連体形で訳も通る → 即時",
+            "連体形でない → 次の手順へ"
+          ],
+          "answerIndex": 0,
+          "explanation": "上一段活用「見る」の連体形は「見る」。「見るとすぐに」で意味が通る。"
+        },
+        {
+          "prompt": "最終判断：この「より」の意味は。",
+          "choices": [
+            "即時（〜するとすぐに）",
+            "経由（〜を通って）",
+            "方法・手段（〜で）",
+            "起点（〜から）"
+          ],
+          "answerIndex": 0,
+          "explanation": "連体形接続で「〜するとすぐに」が通るので即時。訳は「その手紙を見るとすぐに、顔色を失ってしまった」。"
+        }
+      ],
+      "explanation": "直上「見る」が連体形で、「〜するとすぐに」と訳して通るため即時。訳は「その手紙を見るとすぐに、顔色を失ってしまった」。",
+      "distractorRationale": {
+        "経由（〜を通って）": "「見るを通って」では意味が通らない",
+        "方法・手段（〜で）": "「見る」は移動手段を表す語ではない",
+        "起点（〜から）": "起点は体言に付いて出発点を示す用法で、ここは連体形接続である"
+      },
+      "ruleRefs": [
+        "kbp.particles.yori-meanings"
+      ]
+    },
+    {
+      "id": "jb-yori-int3",
+      "topic": "よりの識別",
+      "step": "統合③",
+      "questionType": "integration",
+      "coverageId": "jb-yori-int3",
+      "passage": "徒歩より行きけり。",
+      "target": "より",
+      "steps": [
+        {
+          "prompt": "手順I：「〜を通って」と訳して意味が通るか。",
+          "choices": [
+            "通らない → 次の手順へ",
+            "通る → 経由（〜を通って）"
+          ],
+          "answerIndex": 0,
+          "explanation": "「徒歩を通って行く」では通り道を示すことにならず、意味が通らない。"
+        },
+        {
+          "prompt": "手順II：直上「徒歩」は連体形か。",
+          "choices": [
+            "体言なので連体形でない → 次の手順へ",
+            "連体形である → 即時と判断する"
+          ],
+          "answerIndex": 0,
+          "explanation": "「徒歩」は体言であり、活用しないので連体形ではない。即時の条件を満たさない。"
+        },
+        {
+          "prompt": "手順III：直上に移動手段を表す語があるか。",
+          "choices": [
+            "ある → 方法・手段",
+            "ない → 起点・比較を検討"
+          ],
+          "answerIndex": 0,
+          "explanation": "「徒歩」は移動の手段を表す語である。"
+        },
+        {
+          "prompt": "最終判断：この「より」の意味は。",
+          "choices": [
+            "方法・手段（〜で）",
+            "経由（〜を通って）",
+            "即時（〜するとすぐに）",
+            "比較の基準（〜より）"
+          ],
+          "answerIndex": 0,
+          "explanation": "直上に移動手段「徒歩」があるので方法・手段。訳は「徒歩で行った」。"
+        }
+      ],
+      "explanation": "直上「徒歩」が移動手段を表す語なので方法・手段。訳は「徒歩で行った」。",
+      "distractorRationale": {
+        "経由（〜を通って）": "「徒歩を通って」では通り道の意味にならない",
+        "即時（〜するとすぐに）": "直上「徒歩」は体言で連体形ではない",
+        "比較の基準（〜より）": "二者を比べる文脈がない"
+      },
+      "ruleRefs": [
+        "kbp.particles.yori-meanings"
+      ]
+    },
+    {
+      "id": "jb-dani-proc1",
+      "topic": "だにの識別",
+      "step": "手順I",
+      "questionType": "procedure",
+      "coverageId": "jb-dani-proc1",
+      "question": "副助詞「だに」の意味を判断するとき、手がかりはどこにあるか。",
+      "choices": [
+        "「だに」より下に続く語",
+        "「だに」の直前の活用形",
+        "文全体の主語の人称",
+        "文が会話文かどうか"
+      ],
+      "answerIndex": 0,
+      "explanation": "「だに」は、下に希望・願望・命令・意志・仮定を表す語があるかどうかで限定か類推かが決まる。上ではなく下を見る点が、接続で決まる助動詞の識別と違う。",
+      "distractorRationale": {
+        "「だに」の直前の活用形": "「だに」は副助詞で、上の活用形では意味が決まらない",
+        "文全体の主語の人称": "人称で意味が決まるのは「む」「べし」である",
+        "文が会話文かどうか": "会話文か地の文かで決まるのは敬意の方向である"
+      },
+      "ruleRefs": [
+        "kbp.particles.dani-meanings"
+      ]
+    },
+    {
+      "id": "jb-dani-cond-gentei",
+      "topic": "だにの識別",
+      "step": "条件・限定",
+      "questionType": "condition",
+      "coverageId": "jb-dani-cond-gentei",
+      "question": "「だに」より下に希望・願望・命令・意志・仮定を表す語がある場合、「だに」は何を表すか。",
+      "choices": [
+        "限定（せめて〜だけでも）",
+        "類推（〜でさえ）",
+        "強意（まさに〜）",
+        "並列（〜も〜も）"
+      ],
+      "answerIndex": 0,
+      "explanation": "下に希望・願望・命令・意志・仮定があれば限定で、「せめて〜だけでも」と訳す。「声をだに聞かせよ（せめて声だけでも聞かせてくれ）」のように、最低限これだけは、という要求を表す。",
+      "distractorRationale": {
+        "強意（まさに〜）": "「だに」に強意の用法はない",
+        "並列（〜も〜も）": "「だに」に並列の用法はない",
+        "類推（〜でさえ）": "類推は、下に希望・願望・命令・意志・仮定がない場合である"
+      },
+      "ruleRefs": [
+        "kbp.particles.dani-meanings"
+      ]
+    },
+    {
+      "id": "jb-dani-cond-ruisui",
+      "topic": "だにの識別",
+      "step": "条件・類推",
+      "questionType": "condition",
+      "coverageId": "jb-dani-cond-ruisui",
+      "question": "「だに」より下に希望・願望・命令・意志・仮定を表す語がない場合、「だに」は何を表すか。",
+      "choices": [
+        "類推（〜さえ）",
+        "限定（せめて〜だけでも）",
+        "疑問（〜か）",
+        "反語（〜だろうか、いや〜ない）"
+      ],
+      "answerIndex": 0,
+      "explanation": "下に該当する語がなければ類推で、「〜さえ」と訳す。程度の軽いものを挙げて、より程度の重いものを推し量らせる用法。「鳥だに鳴かず（鳥さえ鳴かない）」なら、鳥すら鳴かないのだから他は言うまでもない、という含みになる。",
+      "distractorRationale": {
+        "限定（せめて〜だけでも）": "限定は、下に希望・願望・命令・意志・仮定がある場合である",
+        "疑問（〜か）": "疑問を表すのは係助詞「や」「か」である",
+        "反語（〜だろうか、いや〜ない）": "反語を表すのは係助詞「や」「か」である"
+      },
+      "ruleRefs": [
+        "kbp.particles.dani-meanings"
+      ]
+    },
+    {
+      "id": "jb-dani-cont1",
+      "topic": "だにの識別",
+      "step": "対比",
+      "questionType": "contrast",
+      "coverageId": "jb-dani-cont1",
+      "question": "限定の「だに」と類推の「だに」の訳を比べたとき、正しい組み合わせはどれか。",
+      "choices": [
+        "限定＝せめて〜だけでも／類推＝〜さえ",
+        "限定＝〜さえ／類推＝せめて〜だけでも",
+        "限定＝〜だけ／類推＝〜まで",
+        "限定＝〜ばかり／類推＝〜のみ"
+      ],
+      "answerIndex": 0,
+      "explanation": "限定は「せめて〜だけでも」で、最低限の要求を述べる。類推は「〜さえ」で、程度の軽いものを挙げて重いものを推し量らせる。どちらの訳を選ぶかは、下に希望・願望・命令・意志・仮定があるかどうかで決まる。",
+      "distractorRationale": {
+        "限定＝〜さえ／類推＝せめて〜だけでも": "限定と類推の訳が入れ替わっている",
+        "限定＝〜だけ／類推＝〜まで": "「せめて」「さえ」という含みが訳に出ておらず、限定・類推の区別が現れない",
+        "限定＝〜ばかり／類推＝〜のみ": "どちらも単なる限定の訳で、類推の含みが訳に出ていない"
+      },
+      "ruleRefs": [
+        "kbp.particles.dani-meanings"
+      ]
+    },
+    {
+      "id": "jb-dani-int1",
+      "topic": "だにの識別",
+      "step": "統合①",
+      "questionType": "integration",
+      "coverageId": "jb-dani-int1",
+      "passage": "御声をだに聞かせ給へ。",
+      "target": "だに",
+      "steps": [
+        {
+          "prompt": "手順I：「だに」より下に、希望・願望・命令・意志・仮定を表す語があるか。",
+          "choices": [
+            "ある → 限定",
+            "ない → 類推"
+          ],
+          "answerIndex": 0,
+          "explanation": "下の「給へ」は命令形で、相手への求めを表している。"
+        },
+        {
+          "prompt": "最終判断：この「だに」の意味は。",
+          "choices": [
+            "限定",
+            "類推",
+            "強意",
+            "並列"
+          ],
+          "answerIndex": 0,
+          "explanation": "下に命令があるので限定。訳は「せめてお声だけでもお聞かせください」。"
+        }
+      ],
+      "explanation": "下に命令形「給へ」があるので限定。訳は「せめてお声だけでもお聞かせください」。",
+      "distractorRationale": {
+        "類推": "下に命令があるのに類推と判断している",
+        "強意": "「だに」に強意の用法はない",
+        "並列": "「だに」に並列の用法はない"
+      },
+      "ruleRefs": [
+        "kbp.particles.dani-meanings",
+        "kbp.honorifics.tamau-identification"
+      ]
+    },
+    {
+      "id": "jb-dani-int2",
+      "topic": "だにの識別",
+      "step": "統合②",
+      "questionType": "integration",
+      "coverageId": "jb-dani-int2",
+      "passage": "冬の山は、鳥だに鳴かず。",
+      "target": "だに",
+      "steps": [
+        {
+          "prompt": "手順I：「だに」より下に、希望・願望・命令・意志・仮定を表す語があるか。",
+          "choices": [
+            "ない → 類推",
+            "ある → 限定"
+          ],
+          "answerIndex": 0,
+          "explanation": "下は「鳴かず」で、打消の助動詞「ず」による事実の叙述。希望・願望・命令・意志・仮定のいずれでもない。"
+        },
+        {
+          "prompt": "最終判断：この「だに」の意味は。",
+          "choices": [
+            "類推",
+            "限定",
+            "強意",
+            "疑問"
+          ],
+          "answerIndex": 0,
+          "explanation": "下に該当する語がないので類推。訳は「冬の山は、鳥さえ鳴かない」。鳥すら鳴かないのだから他は言うまでもない、という含みになる。"
+        }
+      ],
+      "explanation": "下は打消「ず」による事実の叙述で、希望・願望・命令・意志・仮定のいずれでもないため類推。訳は「冬の山は、鳥さえ鳴かない」。",
+      "distractorRationale": {
+        "限定": "下に希望・願望・命令・意志・仮定がないのに限定と判断している",
+        "強意": "「だに」に強意の用法はない",
+        "疑問": "疑問を表すのは係助詞「や」「か」である"
+      },
+      "ruleRefs": [
+        "kbp.particles.dani-meanings"
+      ]
+    },
+    {
+      "id": "jb-kak-proc1",
+      "topic": "係り結びの特殊構文",
+      "step": "手順I",
+      "questionType": "procedure",
+      "coverageId": "jb-kak-proc1",
+      "question": "「こそ〜已然形」を見たとき、逆接かどうかを決めるために確認すべきことはどれか。",
+      "choices": [
+        "そこで文が終わらず、後ろに文が続いているか",
+        "「こそ」の上が体言かどうかの別",
+        "結びの語が動詞か形容詞かの品詞",
+        "その文が会話文か地の文かの位置"
+      ],
+      "answerIndex": 0,
+      "explanation": "「こそ〜已然形」が文末で完結していれば通常の強意の係り結びで、逆接ではない。読点でつながって後ろに文が続いている場合だけ、「〜けれども」の逆接になる。後続の文の有無を必ず確認する。",
+      "distractorRationale": {
+        "「こそ」の上が体言かどうかの別": "「こそ」は体言にも活用語にも付き、上の品詞では逆接かどうかは決まらない",
+        "結びの語が動詞か形容詞かの品詞": "結びの品詞は判断条件ではない。見るのは活用形と後続の文の有無である",
+        "その文が会話文か地の文かの位置": "会話文か地の文かで決まるのは敬意の方向である"
+      },
+      "ruleRefs": [
+        "kbp.particles.kakari-musubi-special-constructions"
+      ]
+    },
+    {
+      "id": "jb-kak-cond-gyaku",
+      "topic": "係り結びの特殊構文",
+      "step": "条件・逆接",
+      "questionType": "condition",
+      "coverageId": "jb-kak-cond-gyaku",
+      "question": "「こそ〜已然形、…。」のように、已然形の結びの後に読点で文が続く形は何を表すか。",
+      "choices": [
+        "逆接（〜けれども）",
+        "強意（まさに〜）",
+        "懸念（〜すると困る）",
+        "疑問（〜か）"
+      ],
+      "answerIndex": 0,
+      "explanation": "「こそ」の結びが已然形で文が切れず後ろに続く場合、逆接になり「〜けれども」と訳す。「雨こそ降れ、風は吹かず（雨は降っているけれども、風は吹かない）」の型。",
+      "distractorRationale": {
+        "強意（まさに〜）": "強意は結びが文末で完結する通常の係り結びの場合である",
+        "懸念（〜すると困る）": "懸念は「もぞ」「もこそ」の構文である",
+        "疑問（〜か）": "疑問を表すのは係助詞「や」「か」である"
+      },
+      "ruleRefs": [
+        "kbp.particles.kakari-musubi-special-constructions"
+      ]
+    },
+    {
+      "id": "jb-kak-cond-mozo",
+      "topic": "係り結びの特殊構文",
+      "step": "条件・もぞ",
+      "questionType": "condition",
+      "coverageId": "jb-kak-cond-mozo",
+      "question": "「もぞ」＋連体形の形は何を表すか。",
+      "choices": [
+        "懸念（〜すると困る）",
+        "強意（まさに〜）",
+        "逆接（〜けれども）",
+        "願望（〜してほしい）"
+      ],
+      "answerIndex": 0,
+      "explanation": "「もぞ」は連体形で結び、「〜すると困る」という懸念を表す。「人もぞ見る（人が見ると困る）」の型。単なる強意の「ぞ」と違い、望ましくない事態を心配する含みが加わる。",
+      "distractorRationale": {
+        "強意（まさに〜）": "「も」を伴わない通常の「ぞ」の係り結びの場合である",
+        "逆接（〜けれども）": "逆接は「こそ〜已然形、」で後ろに文が続く場合である",
+        "願望（〜してほしい）": "願望を表すのは終助詞「なむ」などである"
+      },
+      "ruleRefs": [
+        "kbp.particles.kakari-musubi-special-constructions"
+      ]
+    },
+    {
+      "id": "jb-kak-cond-mokoso",
+      "topic": "係り結びの特殊構文",
+      "step": "条件・もこそ",
+      "questionType": "condition",
+      "coverageId": "jb-kak-cond-mokoso",
+      "question": "「もこそ」の結びはどの活用形になるか。",
+      "choices": [
+        "已然形",
+        "連体形",
+        "終止形",
+        "命令形"
+      ],
+      "answerIndex": 0,
+      "explanation": "「もこそ」は「こそ」を含むので已然形で結び、「〜すると大変だ」という懸念を表す。「風もこそ吹け（風が吹くと大変だ）」の型。対になる「もぞ」は「ぞ」を含むので連体形で結ぶ。",
+      "distractorRationale": {
+        "連体形": "連体形で結ぶのは「もぞ」のほうである",
+        "終止形": "係助詞がない通常の文末の形である",
+        "命令形": "係り結びで命令形が結びになることはない"
+      },
+      "ruleRefs": [
+        "kbp.particles.kakari-musubi-special-constructions"
+      ]
+    },
+    {
+      "id": "jb-kak-cont1",
+      "topic": "係り結びの特殊構文",
+      "step": "対比",
+      "questionType": "contrast",
+      "coverageId": "jb-kak-cont1",
+      "question": "「花こそ咲け。」と「花こそ咲け、香はなし。」の違いとして正しいものはどれか。",
+      "choices": [
+        "前者は文末で完結するので強意、後者は後ろに文が続くので逆接",
+        "前者は後ろに文が続くので逆接、後者は文末で完結するので強意",
+        "どちらも逆接になり、訳し方に違いはない",
+        "前者は懸念を表し、後者は通常の強意を表す"
+      ],
+      "answerIndex": 0,
+      "explanation": "結びの活用形はどちらも已然形「咲け」で同じだが、文末で完結する前者は通常の強意（花が咲いている）、読点でつながって後ろに文が続く後者は逆接（花は咲いているけれども、香りはない）になる。活用形だけでなく後続の文の有無を見る。",
+      "distractorRationale": {
+        "前者は後ろに文が続くので逆接、後者は文末で完結するので強意": "強意と逆接が入れ替わっている",
+        "どちらも逆接になり、訳し方に違いはない": "後続の文がない場合は逆接にならない",
+        "前者は懸念を表し、後者は通常の強意を表す": "懸念は「もぞ」「もこそ」の構文であり、「こそ」単独では表さない"
+      },
+      "ruleRefs": [
+        "kbp.particles.kakari-musubi-special-constructions"
+      ]
+    },
+    {
+      "id": "jb-kak-int1",
+      "topic": "係り結びの特殊構文",
+      "step": "統合①",
+      "questionType": "integration",
+      "coverageId": "jb-kak-int1",
+      "passage": "雨こそ降れ、風は吹かず。",
+      "target": "こそ",
+      "steps": [
+        {
+          "prompt": "手順I：「こそ」の結び「降れ」は何形か。",
+          "choices": [
+            "已然形",
+            "連体形"
+          ],
+          "answerIndex": 0,
+          "explanation": "「こそ」の結びは已然形。四段活用「降る」の已然形は「降れ」。"
+        },
+        {
+          "prompt": "手順I：結びの後で文が終わっているか。",
+          "choices": [
+            "読点で続いている → 逆接",
+            "句点で終わっている → 強意"
+          ],
+          "answerIndex": 0,
+          "explanation": "「降れ、」と読点でつながり、「風は吹かず」が後ろに続いている。"
+        },
+        {
+          "prompt": "最終判断：この「こそ」の構文の意味は。",
+          "choices": [
+            "逆接",
+            "強意",
+            "懸念",
+            "疑問"
+          ],
+          "answerIndex": 0,
+          "explanation": "已然形結びで後ろに文が続くので逆接。訳は「雨は降っているけれども、風は吹かない」。"
+        }
+      ],
+      "explanation": "已然形「降れ」で結び、読点で後続の文が続いているので逆接。訳は「雨は降っているけれども、風は吹かない」。",
+      "distractorRationale": {
+        "強意": "後続の文があるのに、文末完結の強意と判断している",
+        "懸念": "懸念は「もぞ」「もこそ」の構文である",
+        "疑問": "疑問を表すのは係助詞「や」「か」である"
+      },
+      "ruleRefs": [
+        "kbp.particles.kakari-musubi-special-constructions"
+      ]
+    },
+    {
+      "id": "jb-kak-int2",
+      "topic": "係り結びの特殊構文",
+      "step": "統合②",
+      "questionType": "integration",
+      "coverageId": "jb-kak-int2",
+      "passage": "静かにせよ。人もぞ見る。",
+      "target": "もぞ",
+      "steps": [
+        {
+          "prompt": "手順II：「もぞ」の結び「見る」は何形か。",
+          "choices": [
+            "連体形",
+            "已然形"
+          ],
+          "answerIndex": 0,
+          "explanation": "上一段活用「見る」の連体形は「見る」。「もぞ」は「ぞ」を含むので連体形で結ぶ。"
+        },
+        {
+          "prompt": "最終判断：この「もぞ」の意味は。",
+          "choices": [
+            "懸念",
+            "強意",
+            "逆接",
+            "願望"
+          ],
+          "answerIndex": 0,
+          "explanation": "「もぞ」＋連体形なので懸念。訳は「人が見ると困る」。前文の「静かにせよ」という命令の理由として、心配の内容がつながる。"
+        }
+      ],
+      "explanation": "「もぞ」＋連体形結びなので懸念。訳は「人が見ると困る」。単なる強意の「ぞ」と取り違えると、話し手が何を心配しているのかが訳に出なくなる。",
+      "distractorRationale": {
+        "強意": "「も」を伴う特殊構文なのに、通常の「ぞ」の強意と判断している",
+        "逆接": "逆接は「こそ〜已然形、」で後ろに文が続く場合である",
+        "願望": "願望を表すのは終助詞「なむ」などである"
+      },
+      "ruleRefs": [
+        "kbp.particles.kakari-musubi-special-constructions"
+      ]
+    },
+    {
+      "id": "jb-kak-int3",
+      "topic": "係り結びの特殊構文",
+      "step": "統合③",
+      "questionType": "integration",
+      "coverageId": "jb-kak-int3",
+      "passage": "灯火を隠せ。風もこそ吹け。",
+      "target": "もこそ",
+      "steps": [
+        {
+          "prompt": "手順II：「もこそ」の結び「吹け」は何形か。",
+          "choices": [
+            "已然形",
+            "命令形"
+          ],
+          "answerIndex": 0,
+          "explanation": "「もこそ」は「こそ」を含むので已然形で結ぶ。四段活用「吹く」の已然形は「吹け」。"
+        },
+        {
+          "prompt": "最終判断：この「もこそ」の意味は。",
+          "choices": [
+            "懸念",
+            "強意",
+            "逆接",
+            "命令"
+          ],
+          "answerIndex": 0,
+          "explanation": "「もこそ」＋已然形なので懸念。訳は「風が吹くと大変だ」。前文の「灯火を隠せ」という命令の理由になっている。"
+        }
+      ],
+      "explanation": "「もこそ」＋已然形結びなので懸念。訳は「風が吹くと大変だ」。四段活用では已然形と命令形が同形になるが、「もこそ」の結びであることから已然形と決まる。",
+      "distractorRationale": {
+        "強意": "「も」を伴う特殊構文なのに、通常の「こそ」の強意と判断している",
+        "逆接": "逆接は「こそ〜已然形、」で後ろに文が続く場合で、ここは句点で完結している",
+        "命令": "命令しているのは前文の「隠せ」であり、「吹け」は結びの已然形である"
+      },
+      "ruleRefs": [
+        "kbp.particles.kakari-musubi-special-constructions"
+      ]
+    },
+    {
+      "id": "jb-shu-proc1",
+      "topic": "終助詞の識別",
+      "step": "手順I",
+      "questionType": "procedure",
+      "coverageId": "jb-shu-proc1",
+      "question": "終助詞の意味を判断するとき、終助詞そのものと合わせて確認すべきものはどれか。",
+      "choices": [
+        "直前の接続（未然形・連用形・体言、「な」の有無）",
+        "その文の主語が一人称か二人称か三人称か",
+        "文末が句点で終わるか、読点で続くか",
+        "その文が和歌の中にあるかどうかの別"
+      ],
+      "answerIndex": 0,
+      "explanation": "終助詞は、語形だけでなく接続とセットで意味が決まる。未然形＋ばやなら自己の願望、未然形＋なむなら他への願望、連用形＋てしがな・にしがななら自己の願望、な＋連用形＋そなら禁止、体言＋がな・もがななら願望。接続を見ないと同形語と取り違える。",
+      "distractorRationale": {
+        "その文の主語が一人称か二人称か三人称か": "人称で意味が決まるのは「む」「べし」である",
+        "文末が句点で終わるか、読点で続くか": "句読点の有無で決まるのは「こそ〜已然形」の逆接構文である",
+        "その文が和歌の中にあるかどうかの別": "ジャンルによって終助詞の意味が変わるわけではない"
+      },
+      "ruleRefs": [
+        "kbp.particles.final-particles-meanings"
+      ]
+    },
+    {
+      "id": "jb-shu-cond-baya",
+      "topic": "終助詞の識別",
+      "step": "条件・ばや",
+      "questionType": "condition",
+      "coverageId": "jb-shu-cond-baya",
+      "question": "未然形＋「ばや」は何を表すか。",
+      "choices": [
+        "自己の願望（〜したい）",
+        "他への願望（〜してほしい）",
+        "禁止（〜な）",
+        "念押し（〜だよ）"
+      ],
+      "answerIndex": 0,
+      "explanation": "未然形＋ばやは自己の願望で、「〜したい」と訳す。話し手自身がしたいことを述べる。他への願望「〜してほしい」は未然形＋なむで、同じ未然形接続でも語形が違う。",
+      "distractorRationale": {
+        "他への願望（〜してほしい）": "他への願望は未然形＋なむである",
+        "禁止（〜な）": "禁止は「な＋連用形＋そ」である",
+        "念押し（〜だよ）": "念押しは「かし」である"
+      },
+      "ruleRefs": [
+        "kbp.particles.final-particles-meanings"
+      ]
+    },
+    {
+      "id": "jb-shu-cond-namu",
+      "topic": "終助詞の識別",
+      "step": "条件・なむ",
+      "questionType": "condition",
+      "coverageId": "jb-shu-cond-namu",
+      "question": "終助詞の「なむ」（未然形接続）は何を表すか。",
+      "choices": [
+        "他への願望（〜してほしい）",
+        "自己の願望（〜したい）",
+        "強意＋推量（きっと〜だろう）",
+        "禁止（〜な）"
+      ],
+      "answerIndex": 0,
+      "explanation": "未然形＋なむは他への願望で、「〜してほしい」と訳す。ただし「なむ」は確述用法（連用形＋な＋む）、ナ変動詞＋む、強意の係助詞とも同形になるため、この意味を当てる前に「なむ」の識別で終助詞だと確定させる必要がある。",
+      "distractorRationale": {
+        "自己の願望（〜したい）": "自己の願望は未然形＋ばや、または連用形＋てしがな・にしがなである",
+        "強意＋推量（きっと〜だろう）": "確述用法「な（強意）＋む（推量）」で、連用形接続の場合である",
+        "禁止（〜な）": "禁止は「な＋連用形＋そ」である"
+      },
+      "ruleRefs": [
+        "kbp.particles.final-particles-meanings",
+        "kbp.disambiguation.namu-identification"
+      ]
+    },
+    {
+      "id": "jb-shu-cond-teshigana",
+      "topic": "終助詞の識別",
+      "step": "条件・てしがな",
+      "questionType": "condition",
+      "coverageId": "jb-shu-cond-teshigana",
+      "question": "連用形＋「てしがな」「にしがな」は何を表すか。",
+      "choices": [
+        "自己の願望（〜したいものだなあ）",
+        "他への願望（〜してほしい）",
+        "禁止（〜してはいけない）",
+        "疑問（〜のであろうか）"
+      ],
+      "answerIndex": 0,
+      "explanation": "連用形＋てしがな・にしがなは自己の願望で、「〜したいものだなあ」と訳す。同じ自己の願望でも「ばや」が未然形接続なのに対し、こちらは連用形接続である点で区別できる。",
+      "distractorRationale": {
+        "他への願望（〜してほしい）": "他への願望は未然形＋なむである",
+        "禁止（〜してはいけない）": "禁止は「な＋連用形＋そ」である",
+        "疑問（〜のであろうか）": "疑問を表すのは係助詞「や」「か」である"
+      },
+      "ruleRefs": [
+        "kbp.particles.final-particles-meanings"
+      ]
+    },
+    {
+      "id": "jb-shu-cond-nasoso",
+      "topic": "終助詞の識別",
+      "step": "条件・な〜そ",
+      "questionType": "condition",
+      "coverageId": "jb-shu-cond-nasoso",
+      "question": "「な＋連用形＋そ」の形は何を表すか。",
+      "choices": [
+        "禁止（〜な）",
+        "願望（〜があればなあ）",
+        "念押し（〜だよ）",
+        "自己の願望（〜したい）"
+      ],
+      "answerIndex": 0,
+      "explanation": "「な＋連用形＋そ」は禁止で、「〜するな」と訳す。「な行きそ」なら「行くな」。間に挟まる動詞は連用形だが、カ変・サ変だけは未然形になる点も確認しておく。「な」と「そ」が離れて置かれるため、片方だけを見て判断しないこと。",
+      "distractorRationale": {
+        "願望（〜があればなあ）": "願望は体言＋がな・もがなである",
+        "念押し（〜だよ）": "念押しは「かし」である",
+        "自己の願望（〜したい）": "自己の願望は未然形＋ばや、連用形＋てしがな・にしがなである"
+      },
+      "ruleRefs": [
+        "kbp.particles.final-particles-meanings"
+      ]
+    },
+    {
+      "id": "jb-shu-cond-mogana",
+      "topic": "終助詞の識別",
+      "step": "条件・もがな",
+      "questionType": "condition",
+      "coverageId": "jb-shu-cond-mogana",
+      "question": "体言＋「がな」「もがな」は何を表すか。",
+      "choices": [
+        "願望（〜があればなあ）",
+        "禁止（〜な）",
+        "念押し（〜だよ）",
+        "他への願望（〜してほしい）"
+      ],
+      "answerIndex": 0,
+      "explanation": "体言＋がな・もがなは願望で、「〜があればなあ」と訳す。動作をしてほしいのではなく、物や状態が存在してほしいという願いを表す点が、他の願望の終助詞と異なる。",
+      "distractorRationale": {
+        "禁止（〜な）": "禁止は「な＋連用形＋そ」である",
+        "念押し（〜だよ）": "念押しは「かし」である",
+        "他への願望（〜してほしい）": "他への願望は未然形＋なむで、動作を求める用法である"
+      },
+      "ruleRefs": [
+        "kbp.particles.final-particles-meanings"
+      ]
+    },
+    {
+      "id": "jb-shu-cond-kashi",
+      "topic": "終助詞の識別",
+      "step": "条件・かし",
+      "questionType": "condition",
+      "coverageId": "jb-shu-cond-kashi",
+      "question": "文末の「（ぞ）かし」は何を表すか。",
+      "choices": [
+        "念押し（〜だよ）",
+        "願望（〜があればなあ）",
+        "禁止（〜な）",
+        "疑問（〜か）"
+      ],
+      "answerIndex": 0,
+      "explanation": "「かし」は念押しで、「〜だよ」「〜ね」と訳す。相手に確認・強調する気持ちを添える。訳さずに残してしまいがちだが、念押しの気持ちが訳に出る形にする。",
+      "distractorRationale": {
+        "願望（〜があればなあ）": "願望は体言＋がな・もがなである",
+        "禁止（〜な）": "禁止は「な＋連用形＋そ」である",
+        "疑問（〜か）": "疑問を表すのは係助詞「や」「か」であり、「かし」ではない"
+      },
+      "ruleRefs": [
+        "kbp.particles.final-particles-meanings"
+      ]
+    },
+    {
+      "id": "jb-shu-int1",
+      "topic": "終助詞の識別",
+      "step": "統合①",
+      "questionType": "integration",
+      "coverageId": "jb-shu-int1",
+      "passage": "な急ぎそ。道はまだ遠し。",
+      "target": "そ",
+      "steps": [
+        {
+          "prompt": "手順I：「そ」の上「急ぎ」は何形か。また、その前に「な」があるか。",
+          "choices": [
+            "連用形で、前に「な」がある",
+            "未然形で、前に「な」はない"
+          ],
+          "answerIndex": 0,
+          "explanation": "四段活用「急ぐ」の連用形は「急ぎ」。文頭に「な」があり、「な＋連用形＋そ」の形が成立している。"
+        },
+        {
+          "prompt": "最終判断：この「な〜そ」の意味は。",
+          "choices": [
+            "禁止",
+            "自己の願望",
+            "他への願望",
+            "念押し"
+          ],
+          "answerIndex": 0,
+          "explanation": "「な＋連用形＋そ」なので禁止。訳は「急ぐな。道はまだ遠い」。"
+        }
+      ],
+      "explanation": "「な」と「そ」で連用形「急ぎ」を挟む形なので禁止。訳は「急ぐな。道はまだ遠い」。「そ」だけを見て終助詞の種類を決めず、離れた位置の「な」を確認する。",
+      "distractorRationale": {
+        "自己の願望": "自己の願望は未然形＋ばや、連用形＋てしがな・にしがなである",
+        "他への願望": "他への願望は未然形＋なむである",
+        "念押し": "念押しは「かし」である"
+      },
+      "ruleRefs": [
+        "kbp.particles.final-particles-meanings"
+      ]
+    },
+    {
+      "id": "jb-shu-int2",
+      "topic": "終助詞の識別",
+      "step": "統合②",
+      "questionType": "integration",
+      "coverageId": "jb-shu-int2",
+      "passage": "いつまでも変はらぬ心もがな。",
+      "target": "もがな",
+      "steps": [
+        {
+          "prompt": "手順I：「もがな」の直前「心」は何か。",
+          "choices": [
+            "体言",
+            "動詞の未然形"
+          ],
+          "answerIndex": 0,
+          "explanation": "「心」は名詞なので体言。活用しないため未然形・連用形の区別はない。"
+        },
+        {
+          "prompt": "最終判断：この「もがな」の意味は。",
+          "choices": [
+            "願望",
+            "禁止",
+            "念押し",
+            "他への願望"
+          ],
+          "answerIndex": 0,
+          "explanation": "体言＋もがなは願望で、「〜があればなあ」と訳す。ここは「いつまでも変わらない心があればなあ」。"
+        }
+      ],
+      "explanation": "体言「心」＋もがな なので願望。訳は「いつまでも変わらない心があればなあ」。動作を求める他への願望「なむ」と違い、物や状態の存在を願う用法である。",
+      "distractorRationale": {
+        "禁止": "禁止は「な＋連用形＋そ」である",
+        "念押し": "念押しは「かし」である",
+        "他への願望": "他への願望は未然形＋なむで、体言には接続しない"
+      },
+      "ruleRefs": [
+        "kbp.particles.final-particles-meanings"
+      ]
+    },
+    {
+      "id": "jb-shu-int3",
+      "topic": "終助詞の識別",
+      "step": "統合③",
+      "questionType": "integration",
+      "coverageId": "jb-shu-int3",
+      "passage": "秋の風、早く吹かなむ。",
+      "target": "なむ",
+      "steps": [
+        {
+          "prompt": "手順III：「なむ」の直前「吹か」はナ変動詞か。",
+          "choices": [
+            "ナ変ではない → 次へ",
+            "ナ変である → ナ変＋む"
+          ],
+          "answerIndex": 0,
+          "explanation": "「吹く」は四段活用で、ナ変動詞（死ぬ・往ぬ・去ぬ）ではない。"
+        },
+        {
+          "prompt": "手順I：「吹か」は何形か。",
+          "choices": [
+            "未然形 → 願望の終助詞",
+            "連用形 → 確述用法"
+          ],
+          "answerIndex": 0,
+          "explanation": "四段活用「吹く」の未然形は「吹か」、連用形は「吹き」。ここは「吹か」なので未然形。"
+        },
+        {
+          "prompt": "最終判断：この「なむ」の意味は。",
+          "choices": [
+            "他への願望",
+            "強意＋推量",
+            "ナ変＋推量",
+            "強意の係助詞"
+          ],
+          "answerIndex": 0,
+          "explanation": "未然形接続の終助詞「なむ」なので他への願望。訳は「秋の風よ、早く吹いてほしい」。"
+        }
+      ],
+      "explanation": "ナ変動詞でないことを確認し、直前が未然形「吹か」なので願望の終助詞。訳は「秋の風よ、早く吹いてほしい」。「なむ」は同形語が4種類あるため、識別を先に済ませてから意味を当てる。",
+      "distractorRationale": {
+        "強意＋推量": "確述用法は連用形接続で、「吹きなむ」の形になる",
+        "ナ変＋推量": "「吹く」は四段活用でナ変動詞ではない",
+        "強意の係助詞": "係助詞なら文末が連体形で結ばれるが、ここは文末そのものに「なむ」がある"
+      },
+      "ruleRefs": [
+        "kbp.particles.final-particles-meanings",
+        "kbp.disambiguation.namu-identification"
+      ]
+    }
+  ]
+}

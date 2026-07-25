@@ -19,11 +19,25 @@ const KatsuyoApp = (function () {
   let activeGrammarMode = "roadmap"; // 古典文法内の現在の練習モード
   let activeGrammarPathTask = null; // 文法ロードマップから開始した必修タスク
   const PATH_STORE_KEY = "kobun-katsuyo-path-v1";
+  // 段階2の必修。docs/kobun-principles の active な原則カードに対応させて8段構成にしてある。
+  // 並びは「読むための土台 → 用言 → 助動詞の形 → 助動詞の意味 → 助詞 → 同形語 → 敬語 → 混合確認」。
+  // 同形語の識別を助詞のあとに置いているのは、「に」「なむ」の識別が助詞の知識を前提にするため。
   const GRAMMAR_PATH = [
     {
+      id: "kiso",
+      label: "1. 文法の入口",
+      description: "読み方・文節・活用形・接続という、文法を読むための土台を作る",
+      tasks: [
+        { id: "kiso-yomi", kind: "group", setId: "kiso", groupId: "kiso-yomi", label: "歴史的仮名遣いと読み 8問" },
+        { id: "kiso-bunsetsu", kind: "group", setId: "kiso", groupId: "kiso-bunsetsu", label: "文節・自立語と付属語 6問" },
+        { id: "kiso-katsuyokei", kind: "group", setId: "kiso", groupId: "kiso-katsuyokei", label: "活用形の見分け 9問" },
+        { id: "kiso-setsuzoku", kind: "group", setId: "kiso", groupId: "kiso-setsuzoku", label: "接続という考え方 5問" },
+      ],
+    },
+    {
       id: "yougo",
-      label: "1. 用言の活用・基礎",
-      description: "用言の活用表と、品詞・活用形の基礎を固める",
+      label: "2. 用言の活用",
+      description: "用言の活用表と、品詞・活用形・係り結びの基礎を固める",
       tasks: [
         { id: "yougo-table", kind: "group", setId: "yougo", groupId: "yougo-all", label: "用言13語の活用表" },
         { id: "choice-ch1", kind: "group", setId: "choice", groupId: "qa-chapter-1", label: "品詞・活用・係り結び 11問" },
@@ -32,7 +46,7 @@ const KatsuyoApp = (function () {
     },
     {
       id: "jodoshi",
-      label: "2. 助動詞の活用・接続",
+      label: "3. 助動詞の活用・接続",
       description: "助動詞の活用表を埋め、接続と活用を4択で確認する",
       tasks: [
         { id: "jodoshi-table", kind: "group", setId: "jodoshi", groupId: "all", label: "助動詞28語の活用表" },
@@ -42,32 +56,63 @@ const KatsuyoApp = (function () {
     },
     {
       id: "shikibetsu",
-      label: "3. 助動詞の識別",
-      description: "内容理解→4択→実践の順で、8種類の助動詞を識別する",
+      label: "4. 助動詞の意味を決める",
+      description: "内容理解→4択→実践の順で、助動詞10種の意味を手順で決める",
       tasks: [
-        { id: "proc-rareru", kind: "procedure", procId: "rareru", label: "る・らるの識別" },
-        { id: "proc-sasu", kind: "procedure", procId: "sasu", label: "す・さす・しむの識別" },
-        { id: "proc-mu", kind: "procedure", procId: "mu", label: "む・むずの識別" },
-        { id: "proc-mashi", kind: "procedure", procId: "mashi", label: "ましの識別" },
-        { id: "proc-keri", kind: "procedure", procId: "keri", label: "けりの識別" },
-        { id: "proc-ramu", kind: "procedure", procId: "ramu", label: "らむの識別" },
-        { id: "proc-beshi", kind: "procedure", procId: "beshi", label: "べしの識別" },
-        { id: "proc-nari", kind: "procedure", procId: "nari", label: "なりの識別" },
+        { id: "proc-rareru", kind: "procedure", setId: "shikibetsu", procId: "rareru", label: "る・らるの識別" },
+        { id: "proc-sasu", kind: "procedure", setId: "shikibetsu", procId: "sasu", label: "す・さす・しむの識別" },
+        { id: "proc-mu", kind: "procedure", setId: "shikibetsu", procId: "mu", label: "む・むず・じの識別" },
+        { id: "proc-mashi", kind: "procedure", setId: "shikibetsu", procId: "mashi", label: "ましの識別" },
+        { id: "proc-keri", kind: "procedure", setId: "shikibetsu", procId: "keri", label: "けりの識別" },
+        { id: "proc-tsunu", kind: "procedure", setId: "shikibetsu", procId: "tsunu", label: "つ・ぬの識別" },
+        { id: "proc-tariri", kind: "procedure", setId: "shikibetsu", procId: "tariri", label: "たり・りの識別" },
+        { id: "proc-ramu", kind: "procedure", setId: "shikibetsu", procId: "ramu", label: "らむの識別" },
+        { id: "proc-beshi", kind: "procedure", setId: "shikibetsu", procId: "beshi", label: "べし・まじの識別" },
+        { id: "proc-nari", kind: "procedure", setId: "shikibetsu", procId: "nari", label: "なりの訳し分け（断定・存在）" },
+      ],
+    },
+    {
+      id: "joshi",
+      label: "5. 助詞",
+      description: "助詞の知識を確認し、ば・より・だに・係り結び・終助詞を手順で訳し分ける",
+      tasks: [
+        { id: "choice-ch7", kind: "group", setId: "choice", groupId: "qa-chapter-7", label: "助詞の攻略 17問" },
+        { id: "proc-ba", kind: "procedure", setId: "joshi", procId: "ba", label: "ばの識別" },
+        { id: "proc-yori", kind: "procedure", setId: "joshi", procId: "yori", label: "よりの識別" },
+        { id: "proc-dani", kind: "procedure", setId: "joshi", procId: "dani", label: "だにの識別" },
+        { id: "proc-kakari", kind: "procedure", setId: "joshi", procId: "kakari", label: "係り結びの特殊構文" },
+        { id: "proc-shuujoshi", kind: "procedure", setId: "joshi", procId: "shuujoshi", label: "終助詞の識別" },
+      ],
+    },
+    {
+      id: "homograph",
+      label: "6. 同形語の識別",
+      description: "ぬ・ね／る・れ／なり／なむ／に を、接続と活用形から切り分ける",
+      tasks: [
+        { id: "proc-h-nune", kind: "procedure", setId: "homograph", procId: "h-nune", label: "ぬ・ねの識別" },
+        { id: "proc-h-rure", kind: "procedure", setId: "homograph", procId: "h-rure", label: "る・れの識別" },
+        { id: "proc-h-nari", kind: "procedure", setId: "homograph", procId: "h-nari", label: "なりの識別（伝聞推定・断定）" },
+        { id: "proc-h-namu", kind: "procedure", setId: "homograph", procId: "h-namu", label: "なむの識別" },
+        { id: "proc-h-ni", kind: "procedure", setId: "homograph", procId: "h-ni", label: "にの識別" },
       ],
     },
     {
       id: "keigo",
-      label: "4. 敬語の基礎",
-      description: "敬語の種類・敬意の方向・本動詞と補助動詞を確認する",
+      label: "7. 敬語",
+      description: "敬語の知識を確認し、給ふ・奉る・侍り・補助動詞・敬意の方向を手順で決める",
       tasks: [
         { id: "choice-ch9", kind: "group", setId: "choice", groupId: "qa-chapter-9", label: "敬語の攻略 12問" },
-        { id: "proc-keigo", kind: "procedure", procId: "keigo", label: "敬語の識別" },
+        { id: "proc-k-tamau", kind: "procedure", setId: "keigo-shikibetsu", procId: "k-tamau", label: "給ふの識別" },
+        { id: "proc-k-tatematsuru", kind: "procedure", setId: "keigo-shikibetsu", procId: "k-tatematsuru", label: "奉る・参るの識別" },
+        { id: "proc-k-haberi", kind: "procedure", setId: "keigo-shikibetsu", procId: "k-haberi", label: "侍り・候ふの識別" },
+        { id: "proc-k-hojo", kind: "procedure", setId: "keigo-shikibetsu", procId: "k-hojo", label: "補助動詞の訳し方" },
+        { id: "proc-k-keii", kind: "procedure", setId: "keigo-shikibetsu", procId: "k-keii", label: "敬意の方向" },
       ],
     },
     {
       id: "grammar-checkpoint",
       label: "文法混合確認",
-      description: "必修範囲からランダムに出題し、文法全体を確認する",
+      description: "必修1〜7の全範囲からランダムに出題し、文法全体を確認する",
       tasks: [
         { id: "grammar-checkpoint", kind: "checkpoint", label: "文法混合確認30問" },
       ],
@@ -508,15 +553,24 @@ const KatsuyoApp = (function () {
     return group ? group.ids.slice() : [];
   }
   function isGrammarCumulativeTask(task) {
-    return task.kind === "group" && ["yougo", "jodoshi", "choice"].includes(task.setId);
+    return task.kind === "group" && ["kiso", "yougo", "jodoshi", "choice"].includes(task.setId);
   }
-  function cumulativeTaskIds(task) {
-    const ids = [];
+  function setModeById(setId) {
+    const set = practiceSetById(setId);
+    return set ? setMode(set) : null;
+  }
+  // 累積10問の出題母集団。分散学習のため、同じ練習セット内だけでなく
+  // それまでに終えた必修の group タスクからも集める（{id, setId} の組で返す）。
+  // ただし出題形式は揃える。4択の累積に活用表の行埋めが混ざると、
+  // 1セッション内で解き方が変わって負担が跳ね上がるため。
+  function cumulativeTaskEntries(task) {
+    const wantMode = setModeById(task.setId);
+    const entries = [];
     let reached = false;
     for (const stage of GRAMMAR_PATH) {
       for (const candidate of stage.tasks) {
-        if (candidate.kind === "group" && candidate.setId === task.setId) {
-          ids.push(...taskIds(candidate));
+        if (candidate.kind === "group" && setModeById(candidate.setId) === wantMode) {
+          taskIds(candidate).forEach(id => entries.push({ id, setId: candidate.setId }));
         }
         if (candidate.id === task.id) {
           reached = true;
@@ -525,12 +579,18 @@ const KatsuyoApp = (function () {
       }
       if (reached) break;
     }
-    return [...new Set(ids)];
+    const seen = new Set();
+    return entries.filter(e => (seen.has(e.id) ? false : (seen.add(e.id), true)));
+  }
+  function entriesToSetMap(entries) {
+    const map = {};
+    entries.forEach(e => { map[e.id] = e.setId; });
+    return map;
   }
   function taskStatus(task) {
     if (task.kind === "procedure") {
       const prev = currentSet;
-      currentSet = practiceSetById("shikibetsu");
+      currentSet = practiceSetById(task.setId || "shikibetsu");
       const status = shikibetsuProcStatus(task.procId);
       currentSet = prev;
       return {
@@ -637,12 +697,30 @@ const KatsuyoApp = (function () {
   function firstIncompleteRequiredTask() {
     return firstIncompleteGrammarTask() || firstIncompleteReadingTask() || firstIncompleteCultureTask();
   }
-  function requiredChoiceIds() {
-    const ids = [];
+  // 文法混合確認の母集団。4択（入口・章別）に加えて識別の4択問題も混ぜる。
+  // 除外するもの:
+  //   - 活用表の行埋め（yougo/jodoshi）… 出題形式が違い、30問の確認には重すぎる
+  //   - 統合問題（integration）… 1問が複数ステップになり、30問では長すぎる
+  function requiredGrammarEntries() {
+    const entries = [];
     GRAMMAR_PATH.forEach(stage => stage.tasks.forEach(task => {
-      if (task.kind === "group" && task.setId === "choice") ids.push(...taskIds(task));
+      if (task.kind === "group") {
+        if (setModeById(task.setId) !== "choice") return;
+        taskIds(task).forEach(id => entries.push({ id, setId: task.setId }));
+      } else if (task.kind === "procedure") {
+        const setId = task.setId || "shikibetsu";
+        const prev = currentSet;
+        currentSet = practiceSetById(setId);
+        if (currentSet) shikibetsuQuizIds(task.procId).forEach(id => entries.push({ id, setId }));
+        currentSet = prev;
+      }
     }));
-    return [...new Set(ids)];
+    const seen = new Set();
+    return entries.filter(e => (seen.has(e.id) ? false : (seen.add(e.id), true)));
+  }
+  // 進捗カードの表示用（確認対象の問題数）
+  function requiredChoiceIds() {
+    return requiredGrammarEntries().map(e => e.id);
   }
   function requiredReadingIds() {
     const ids = [];
@@ -658,23 +736,26 @@ const KatsuyoApp = (function () {
     }));
     return [...new Set(ids)];
   }
-  function sourceIdsForCheckpoint(task) {
-    if (task.source === "reading") return requiredReadingIds();
-    if (task.source === "culture") return requiredCultureIds();
-    return requiredChoiceIds();
+  function sourceEntriesForCheckpoint(task) {
+    if (task.source === "reading") return requiredReadingIds().map(id => ({ id, setId: "keigo-dokkai" }));
+    if (task.source === "culture") return requiredCultureIds().map(id => ({ id, setId: "kobun-joshiki" }));
+    return requiredGrammarEntries();
   }
   function startRequiredTask(task, review = false) {
     activeGrammarMode = "roadmap";
     activeGrammarPathTask = task.id;
     if (task.kind === "procedure") {
-      currentSet = practiceSetById("shikibetsu");
+      currentSet = practiceSetById(task.setId || "shikibetsu");
       startShikibetsuFlow(task.procId);
       return;
     }
     if (task.kind === "checkpoint") {
-      currentSet = practiceSetById(task.sourceSetId || "choice");
-      const ids = shuffle(sourceIdsForCheckpoint(task)).slice(0, task.sampleSize || 30);
-      startSession(ids, task.label, { pathTask: task.id });
+      const entries = shuffle(sourceEntriesForCheckpoint(task)).slice(0, task.sampleSize || 30);
+      currentSet = practiceSetById(entries.length ? entries[0].setId : (task.sourceSetId || "choice"));
+      startSession(entries.map(e => e.id), task.label, {
+        pathTask: task.id,
+        setMap: entriesToSetMap(entries),
+      });
       return;
     }
     const set = practiceSetById(task.setId);
@@ -710,11 +791,13 @@ const KatsuyoApp = (function () {
       }
       saveGrammarTaskCycle(task.id, { passCompleted: true });
     }
-    const cumulativeIds = shuffle(cumulativeTaskIds(task)).slice(0, PATH_CUMULATIVE_SIZE);
-    startSession(cumulativeIds, task.label + "・累積10問", {
+    const cumulative = shuffle(cumulativeTaskEntries(task)).slice(0, PATH_CUMULATIVE_SIZE);
+    if (cumulative.length) currentSet = practiceSetById(cumulative[0].setId);
+    startSession(cumulative.map(e => e.id), task.label + "・累積10問", {
       pathTask: task.id,
       pathPhase: "cumulative",
       requeueWrong: false,
+      setMap: entriesToSetMap(cumulative),
     });
   }
   function appendPathSection(title, stages, stats, hintText, lockText) {
@@ -820,7 +903,7 @@ const KatsuyoApp = (function () {
         ? (next ? "敬語を読解に使う" : "第3段階の敬語読解を完了しました")
         : (next ? "古文常識を読解に使う" : "第4段階の古文常識を完了しました")));
     hero.appendChild(el("p", "hint", !grammarComplete
-      ? "用言 → 助動詞 → 助動詞識別 → 敬語基礎の順で進みます。後の項目は、前の必修を終えるまで解放されません。"
+      ? "文法の入口 → 用言 → 助動詞の活用 → 助動詞の意味 → 助詞 → 同形語 → 敬語の順で進みます。後の項目は、前の必修を終えるまで解放されません。"
       : !readingComplete
         ? "敬意の方向 → 省略主語 → 短文統合の順で、敬語を主語判別に使います。"
         : "宮廷生活 → 恋愛・婚姻 → 年中行事の順で、文法だけでは埋まらない行間を読みます。"));
@@ -843,7 +926,7 @@ const KatsuyoApp = (function () {
     const grammarCompleted = grammarStages.filter(stage => stage.complete).length;
     appendPathSection("第2段階", grammarStages,
       [[String(grammarCompleted), "/ " + grammarStages.length, "COMPLETE・完了"], [String(grammarStages.length - grammarCompleted), "", "REMAINING・残り"], [String(requiredChoiceIds().length), "", "確認対象の4択"]],
-      "通常問題は1周後に既習範囲から累積10問、識別フローは4択・実践を全問1回正解で完了扱いです。最後に文法混合確認30問を行います。",
+      "通常問題は1周後に既習範囲から累積10問（それまでの必修をまたいで出題）、識別フローは4択・実践を全問1回正解で完了扱いです。最後に文法混合確認30問を行います。",
       "前の文法必修を完了すると解放されます。");
 
     const readingCompleted = readingStages.filter(stage => stage.complete).length;
@@ -1183,6 +1266,9 @@ const KatsuyoApp = (function () {
       flow: (opts && opts.flow) || null, // 識別の学習フロー内で開始されたセッションかどうか
       pathTask: (opts && opts.pathTask) || activeGrammarPathTask,
       pathPhase: (opts && opts.pathPhase) || null,
+      // 累積10問・混合確認は複数の練習セットから出題するため、問題ごとに所属セットを持たせる。
+      // 問題IDは全セットで接頭辞が異なるので、フラットな id→setId の対応で衝突しない。
+      setMap: (opts && opts.setMap) || null,
     };
     homePanel.classList.add("hide");
     sessionPanel.classList.remove("hide");
@@ -1358,9 +1444,21 @@ const KatsuyoApp = (function () {
     return (q.topic || "") + (q.step ? "・" + q.step : "");
   }
 
+  // 複数セット混在セッションでは、次の問題が属する練習セットへ currentSet を切り替える。
+  // itemKey / byId / recordResult はいずれも currentSet を見るので、ここで揃えれば以降の処理は変わらない。
+  function syncSetForCurrentQuestion() {
+    if (!session || !session.setMap || !session.queue.length) return;
+    const setId = session.setMap[session.queue[0]];
+    if (setId) {
+      const set = practiceSetById(setId);
+      if (set) currentSet = set;
+    }
+  }
+
   function renderRow() {
     sessionPanel.innerHTML = "";
     if (session.queue.length === 0) { renderDone(); return; }
+    syncSetForCurrentQuestion();
     session.answered = false;
     session.choiceSelect = null;
     if (setMode(currentSet) === "choice") { renderChoiceRow(); return; }
@@ -2007,10 +2105,20 @@ const KatsuyoApp = (function () {
       fetch("data/keigo-dokkai.json?v=20260721-1")
         .then(r => { if (!r.ok) throw new Error("keigo-dokkai data load failed: " + r.status); return r.json(); }),
       fetch("data/kobun-joshiki.json?v=20260721-1")
-        .then(r => { if (!r.ok) throw new Error("kobun-joshiki data load failed: " + r.status); return r.json(); })
+        .then(r => { if (!r.ok) throw new Error("kobun-joshiki data load failed: " + r.status); return r.json(); }),
+      fetch("data/kiso.json?v=20260725-1")
+        .then(r => { if (!r.ok) throw new Error("kiso data load failed: " + r.status); return r.json(); }),
+      fetch("data/shikibetsu-joshi.json?v=20260725-1")
+        .then(r => { if (!r.ok) throw new Error("joshi data load failed: " + r.status); return r.json(); }),
+      fetch("data/shikibetsu-homograph.json?v=20260725-1")
+        .then(r => { if (!r.ok) throw new Error("homograph data load failed: " + r.status); return r.json(); }),
+      fetch("data/shikibetsu-keigo.json?v=20260725-1")
+        .then(r => { if (!r.ok) throw new Error("keigo-shikibetsu data load failed: " + r.status); return r.json(); })
     ])
-      .then(async ([d, choiceData, shikibetsuData, keigoDokkaiData, kobunJoshikiData]) => {
-        DATA = Object.assign({}, d, choiceData, shikibetsuData, keigoDokkaiData, kobunJoshikiData);
+      .then(async ([d, choiceData, shikibetsuData, keigoDokkaiData, kobunJoshikiData,
+                    kisoData, joshiData, homographData, keigoShikibetsuData]) => {
+        DATA = Object.assign({}, d, choiceData, shikibetsuData, keigoDokkaiData, kobunJoshikiData,
+          kisoData, joshiData, homographData, keigoShikibetsuData);
 
         const jodoshiSet = d.practiceSets.find(s => s.id === "jodoshi");
 
@@ -2092,7 +2200,62 @@ const KatsuyoApp = (function () {
           homeTitle: "古文常識を、本文の行間を読む道具として確認"
         };
 
-        DATA.practiceSets = [jodoshiSet, yougoSet, choiceSet, shikibetsuSet, keigoDokkaiSet, kobunJoshikiSet];
+        // 必修1「文法の入口」。原則カード未整備の導入範囲を4択で扱う。
+        const kisoSet = {
+          id: "kiso",
+          name: "文法の入口",
+          label: "BASICS",
+          description: "読み方・文節・活用形・接続の基礎を4択で確認する",
+          collection: "kisoQuestions",
+          groups: "kisoGroups",
+          askLabel: "正しい選択肢を選べ",
+          unit: "問",
+          mode: "choice",
+          homeTitle: "文法を読むための土台を、4択で確認"
+        };
+        // 必修5〜7の識別。いずれも shikibetsuSet と同じ「手順→条件→対比→統合」の構成を持つ。
+        const joshiSet = {
+          id: "joshi",
+          name: "助詞の識別",
+          label: "PARTICLES",
+          description: "ば・より・だに・係り結び・終助詞の訳し分けを手順で身につける",
+          collection: "joshiQuestions",
+          groups: "joshiGroups",
+          proceduresKey: "joshiProcedures",
+          askLabel: "正しい選択肢を選べ",
+          unit: "問",
+          mode: "choice",
+          homeTitle: "助詞の訳し分けを、手順→条件→対比→統合で確認"
+        };
+        const homographSet = {
+          id: "homograph",
+          name: "同形語の識別",
+          label: "HOMOGRAPH",
+          description: "ぬ・ね／る・れ／なり／なむ／に を接続と活用形で切り分ける",
+          collection: "homographQuestions",
+          groups: "homographGroups",
+          proceduresKey: "homographProcedures",
+          askLabel: "正しい選択肢を選べ",
+          unit: "問",
+          mode: "choice",
+          homeTitle: "同形語の識別を、手順→条件→対比→統合で確認"
+        };
+        const keigoShikibetsuSet = {
+          id: "keigo-shikibetsu",
+          name: "敬語の識別",
+          label: "KEIGO IDENTIFY",
+          description: "給ふ・奉る・侍り・補助動詞の訳・敬意の方向を手順で決める",
+          collection: "keigoQuestions",
+          groups: "keigoGroups",
+          proceduresKey: "keigoProcedures",
+          askLabel: "正しい選択肢を選べ",
+          unit: "問",
+          mode: "choice",
+          homeTitle: "敬語の識別を、手順→条件→対比→統合で確認"
+        };
+
+        DATA.practiceSets = [jodoshiSet, yougoSet, choiceSet, shikibetsuSet, keigoDokkaiSet, kobunJoshikiSet,
+          kisoSet, joshiSet, homographSet, keigoShikibetsuSet];
         DATA.practiceSets.forEach(set => {
           (DATA[set.collection] || []).forEach(item => { byId[set.id + ":" + itemId(item)] = item; });
         });
