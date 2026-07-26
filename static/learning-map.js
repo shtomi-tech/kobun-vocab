@@ -98,21 +98,6 @@ const LearningMap = (function () {
     return "現在地：" + state.currentStages.map(n => "段階" + n + " " + NAMES[n - 1]).join("・");
   }
 
-  function nextText(state) {
-    if (state.allDone) return "全課程を修了しました";
-    const parts = [];
-    if (state.currentStages.indexOf(1) !== -1) {
-      const hint = (typeof VocabApp !== "undefined" && VocabApp.nextHint) ? VocabApp.nextHint() : null;
-      parts.push("古文単語：" + (hint || "セットを進める"));
-    }
-    const otherStage = state.currentStages.find(n => n !== 1);
-    if (otherStage) {
-      const label = (state.ov && state.ov.ready && state.ov.next) ? state.ov.next.taskLabel : (NAMES[otherStage - 1] + "タブで続ける");
-      parts.push(NAMES[otherStage - 1] + "：" + label);
-    }
-    return parts.length ? parts.join(" ／ ") : "古典文法タブで続ける";
-  }
-
   function stepperItemHtml(n, state) {
     const cls = stageClass(n, state);
     const word = cls === "is-done" ? "完了" : cls === "is-current" ? "現在地" : "未解放";
@@ -208,7 +193,6 @@ const LearningMap = (function () {
       '<div class="lmapTop"><span class="label">学習マップ</span>' +
       '<span class="lmapNow">' + esc(nowLabelText(st)) + "</span></div>" +
       stepperHtml(st) +
-      '<p class="lmapNext">次にやること：<b>' + esc(nextText(st)) + "</b></p>" +
       '<details class="lmapDetails"' + (wasOpen ? " open" : "") + ">" +
       "<summary>学習フロー全体を見る</summary>" + flowHtml(st) + "</details>";
 

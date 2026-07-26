@@ -864,13 +864,6 @@ const KatsuyoApp = (function () {
     homePanel.classList.remove("hide");
     homePanel.innerHTML = "";
 
-    if (typeof LearningMap !== "undefined") {
-      const mapSlot = el("section");
-      mapSlot.id = "learningMapSlot";
-      homePanel.appendChild(mapSlot);
-      LearningMap.render(mapSlot, { activeApp: "grammar" });
-    }
-
     const grammarStages = grammarPathStatus();
     const grammarComplete = grammarStages.every(stage => stage.complete);
     const readingStages = readingPathStatus();
@@ -890,10 +883,10 @@ const KatsuyoApp = (function () {
         ? "STAGE 3 / KEIGO READING"
         : "STAGE 4 / CLASSICAL CULTURE"));
     hero.appendChild(el("h2", null, !grammarComplete
-      ? (next ? "文法を順番に固める" : "第2段階の文法を完了しました")
+      ? (next ? "次は" + next.task.label + "を進める" : "第2段階の文法を完了しました")
       : !readingComplete
-        ? (next ? "敬語を読解に使う" : "第3段階の敬語読解を完了しました")
-        : (next ? "古文常識を読解に使う" : "第4段階の古文常識を完了しました")));
+        ? (next ? "次は" + next.task.label + "を進める" : "第3段階の敬語読解を完了しました")
+        : (next ? "次は" + next.task.label + "を進める" : "第4段階の古文常識を完了しました")));
     hero.appendChild(el("p", "hint", !grammarComplete
       ? "文法の入口 → 用言 → 助動詞の活用 → 助動詞の意味 → 助詞 → 同形語 → 敬語の順で進みます。後の項目は、前の必修を終えるまで解放されません。"
       : !readingComplete
@@ -914,6 +907,13 @@ const KatsuyoApp = (function () {
           : "第3段階（敬語読解）の次の必修を選べる状態です。復習は下の完了済み項目から行えます。"));
     }
     homePanel.appendChild(hero);
+
+    if (typeof LearningMap !== "undefined") {
+      const mapSlot = el("section");
+      mapSlot.id = "learningMapSlot";
+      homePanel.appendChild(mapSlot);
+      LearningMap.render(mapSlot, { activeApp: "grammar" });
+    }
 
     const grammarCompleted = grammarStages.filter(stage => stage.complete).length;
     appendPathSection("第2段階", grammarStages,
@@ -1357,11 +1357,13 @@ const KatsuyoApp = (function () {
     const info = el("div", "roundInfo");
     info.appendChild(el("span", null, proc.name));
     head.appendChild(info);
+     const exitGroup = el("div", "sessionExitGroup");
      const quit = el("button", "ghost smallGhost", "演習を中断");
      quit.type = "button";
      quit.addEventListener("click", goHome);
-     head.appendChild(quit);
-     head.appendChild(el("span", "sessionSaveHint", "進捗は保存されます"));
+     exitGroup.appendChild(quit);
+     exitGroup.appendChild(el("span", "sessionSaveHint", "進捗は保存されます"));
+     head.appendChild(exitGroup);
     return head;
   }
 
@@ -1453,10 +1455,12 @@ const KatsuyoApp = (function () {
     info.appendChild(el("span", null, session.title));
     info.appendChild(el("span", null, "残り " + session.queue.length));
     head.appendChild(info);
+     const exitGroup = el("div", "sessionExitGroup");
      const quit = el("button", "ghost smallGhost", "演習を中断");
      quit.addEventListener("click", goHome);
-     head.appendChild(quit);
-     head.appendChild(el("span", "sessionSaveHint", "進捗は保存されます"));
+     exitGroup.appendChild(quit);
+     exitGroup.appendChild(el("span", "sessionSaveHint", "進捗は保存されます"));
+     head.appendChild(exitGroup);
     sessionPanel.appendChild(head);
 
     if (session.flow) sessionPanel.appendChild(flowStageBar(session.flow.stage));

@@ -124,6 +124,10 @@ h2 {
   gap: 8px;
   margin-bottom: 16px;
 }
+
+#homePanel { display: grid; gap: 24px; }
+#homePanel > .card { margin-bottom: 0; }
+
 .appTab {
   border: 1px solid var(--line);
   border-radius: var(--r-card);
@@ -253,6 +257,7 @@ h2 {
   border-radius: var(--r-card);
   background: var(--clay);
   border-color: var(--clay);
+  text-align: left;
 }
 .primaryCta:hover { background: var(--blue-hover); border-color: var(--blue-hover); }
 .primaryCta .ctaTag {
@@ -375,27 +380,25 @@ h2 {
 
 /* ---- 学習マップ（段階1〜4の全体フローと現在地） ---- */
 .lmap { padding: 20px 24px; }
-.lmapTop { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.lmapTop { display: grid; gap: 4px; }
 .lmapTop .label { margin: 0; }
 .lmapNow { font-size: 13px; color: var(--clay); font-weight: 600; }
 
-.lmapStepper { list-style: none; display: flex; margin: 16px 0 0; padding: 0; }
-.lmapStep { flex: 1 1 0; min-width: 0; position: relative; text-align: center; }
-.lmapStep::before {
-  content: ""; position: absolute; top: 15px; left: calc(-50% + 16px);
-  width: calc(100% - 32px); height: 2px; background: var(--line); z-index: 0;
-}
-.lmapStep:first-child::before { display: none; }
-.lmapStep.is-done::before, .lmapStep.is-current::before { background: var(--clay); }
+.lmapStepper { list-style: none; display: grid; gap: 8px; margin: 12px 0 0; padding: 0; }
+.lmapStep { min-width: 0; position: relative; text-align: left; }
+.lmapStep::before { display: none; }
 
-.lmapParallel { border: 1px dashed var(--line); border-radius: var(--r-md); padding: 10px 8px 2px; margin-top: 16px; }
+.lmapParallel { border-radius: var(--r-md); background: var(--parchment); padding: 12px; margin-top: 16px; }
 .lmapParallel .lmapStepper { margin-top: 0; }
-.lmapParallelTag { margin: 0 0 4px; font-size: 11px; color: var(--muted); text-align: center; }
+.lmapParallelTag { margin: 0 0 4px; font-size: 11px; color: var(--muted); text-align: left; }
 .lmapStepperParallel .lmapStep::before { display: none; }
 
+.lmapParallel .lmapStepper { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
 .lmapStepBtn, .lmapStepStatic {
-  display: flex; flex-direction: column; align-items: center; gap: 6px;
-  width: 100%; padding: 4px 2px; margin: 0; font: inherit; text-align: center;
+  display: grid; grid-template-columns: 32px minmax(0, 1fr); grid-template-rows: auto auto;
+  align-items: center; column-gap: 12px; row-gap: 1px;
+  width: 100%; padding: 6px 8px; margin: 0; font: inherit; text-align: left;
   position: relative; z-index: 1;
 }
 .lmapStepBtn { background: none; border: none; color: inherit; min-height: 44px; cursor: pointer; border-radius: var(--r-md); }
@@ -413,13 +416,11 @@ h2 {
 
 .lmapName { font-size: 12.5px; color: var(--ink); line-height: 1.3; }
 .lmapStep.is-locked .lmapName { color: var(--muted); }
-.lmapState { font-size: 11px; color: var(--muted); }
+.lmapStepBtn .lmapDot, .lmapStepStatic .lmapDot { grid-row: 1 / span 2; }
+.lmapState { grid-column: 2; font-size: 11px; color: var(--muted); }
 .lmapStep.is-current .lmapState { color: var(--clay); font-weight: 600; }
 
-.lmapNext { margin: 16px 0 0; font-size: 13px; color: var(--ink); }
-.lmapNext b { font-weight: 600; }
-
-.lmapDetails { margin-top: 14px; border-top: 1px solid var(--divider); padding-top: 12px; }
+.lmapDetails { margin-top: 24px; padding-top: 0; }
 .lmapDetails > summary { cursor: pointer; color: var(--clay); font-size: 13px; list-style: none; min-height: 32px; display: flex; align-items: center; }
 .lmapDetails > summary::-webkit-details-marker { display: none; }
 .lmapDetails > summary::before { content: "▸"; margin-right: 6px; }
@@ -427,7 +428,7 @@ h2 {
 
 .lmapFlow { display: flex; flex-direction: column; margin-top: 8px; }
 .lmapFlowParallel { border: 1px dashed var(--line); border-radius: var(--r-md); padding: 12px; display: flex; flex-direction: column; gap: 10px; }
-.lmapFlowParallelTag { margin: 0; font-size: 11.5px; color: var(--muted); text-align: center; }
+.lmapFlowParallelTag { margin: 0; font-size: 11.5px; color: var(--muted); text-align: left; }
 .lmapFlowStage { border: 1px solid var(--line); border-radius: var(--r-md); padding: 12px 14px; background: var(--paper); }
 .lmapFlowStage.is-current { border-color: var(--clay); border-left-width: 3px; background: var(--parchment); }
 .lmapFlowStage.is-locked { opacity: .72; }
@@ -440,14 +441,18 @@ h2 {
 .lmapFlowSteps { margin: 8px 0 0; padding-left: 18px; }
 .lmapFlowSteps li { font-size: 12.5px; color: var(--ink); margin: 2px 0; line-height: 1.5; }
 .lmapFlowGoal { margin: 8px 0 0; padding-top: 8px; border-top: 1px dashed var(--divider); font-size: 12px; color: var(--muted); }
-.lmapArrow { text-align: center; color: var(--muted); font-size: 14px; line-height: 1; margin: 3px 0; }
-.lmapGate { text-align: center; }
+.lmapArrow { text-align: left; color: var(--muted); font-size: 14px; line-height: 1; margin: 3px 0 3px 16px; }
+.lmapGate { text-align: left; }
 .lmapGate span { display: inline-block; border: 1px solid var(--line); border-radius: var(--r-pill); padding: 4px 14px; font-size: 11.5px; color: var(--muted); }
 .lmapLegend { margin-top: 12px; border-top: 1px solid var(--divider); padding-top: 10px; font-size: 12px; color: var(--muted); }
 .lmapLegend p { margin: 2px 0; }
 .lmapLegend b { color: var(--ink); font-weight: 600; }
 
-@media (max-width: 480px) { .lmapName { font-size: 11px; } .lmapNow { width: 100%; } }
+@media (max-width: 480px) {
+  .lmapName { font-size: 11px; }
+  .lmapNow { width: 100%; }
+  .lmapParallel .lmapStepper { grid-template-columns: 1fr; }
+}
 
 /* ---- 知識項目カバレッジ（手順ごとの確認状況） ---- */
 .coverageTopic {
@@ -714,6 +719,7 @@ h2 {
 .nextRow { display: flex; justify-content: flex-end; gap: 10px; margin-top: 16px; }
 .nextRow .cta { min-width: min(100%, 200px); }
 .sessionHead .smallGhost { min-height: 44px; }
+.sessionExitGroup { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
 .sessionSaveHint { color: var(--muted); font-size: 12px; align-self: center; }
 .resultText { margin: 0; color: var(--muted); }
 

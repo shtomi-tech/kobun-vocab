@@ -574,11 +574,11 @@ const VocabApp = (function () {
     const sharedMode = !!(cloud && cloud.isEnabled());
     const savedSession = loadSavedSession();
     const heroTitle = focus.kind === "coreSet"
-      ? `${coreLabel()}を10セットで進める`
+      ? `次はセット${focus.setNumber}/${focus.setTotal}を${SESSION_SIZE}問進める`
       : focus.kind === "cycleCumulative"
         ? focus.title
         : focus.kind === "gate"
-          ? `最後に${gateQuestionCount()}問の確認テスト`
+          ? `次は${gateQuestionCount()}問の確認テスト`
           : `${coreLabel()}を完了しました`;
     const heroTag = focus.kind === "coreSet"
       ? `おすすめ・${SESSION_SIZE}問`
@@ -601,7 +601,6 @@ const VocabApp = (function () {
         : "必須語の現在地：10セット完了・確認テスト待ち";
 
     home.innerHTML = `
-      <section id="learningMapSlot"></section>
       ${savedSession ? `
       <section class="card">
         <p class="label">Resume</p>
@@ -613,7 +612,7 @@ const VocabApp = (function () {
         </div>
       </section>` : ""}
 
-      <section class="card hero">
+      ${savedSession ? "" : `<section class="card hero">
         <p class="label">Kobun Vocabulary ・ 段階1</p>
         <h2>${heroTitle}</h2>
         <button class="cta primaryCta" id="startToday" type="button">
@@ -621,7 +620,7 @@ const VocabApp = (function () {
           <span class="ctaMain">${esc(focus.cta)}</span>
         </button>
         <p class="hint">${heroHint}</p>
-      </section>
+      </section>`}
 
       <section class="card">
         <p class="label">段階1の進捗</p>
@@ -648,6 +647,8 @@ const VocabApp = (function () {
         </div>` : ""}
         <p class="hint">${progressHint}。習得の参考値 ${coreProgress.mastered}/${coreProgress.total}。追加語は${extraProgress.mastered}/${extraProgress.total}語を習得。</p>
       </section>
+
+      <section id="learningMapSlot"></section>
 
       <section class="card">
         <details class="chapterDetails">
@@ -709,7 +710,8 @@ const VocabApp = (function () {
         renderHome();
       });
     }
-    el("startToday").addEventListener("click", () => {
+    const startToday = el("startToday");
+    if (startToday) startToday.addEventListener("click", () => {
       startFocusSession(focus);
     });
     if (weak.length) {
@@ -880,8 +882,10 @@ const VocabApp = (function () {
           <span>Q ${num} / ${totalQ}</span>
           <span class="streak">正解 ${s.correctCount}</span>
         </div>
-        <button class="ghost smallGhost" id="quitSession" type="button">演習を中断</button>
-        <span class="sessionSaveHint">進捗は保存されます</span>
+        <div class="sessionExitGroup">
+          <button class="ghost smallGhost" id="quitSession" type="button">演習を中断</button>
+          <span class="sessionSaveHint">進捗は保存されます</span>
+        </div>
       </div>
       <div class="progressTrack"><div class="progressFill" style="width:${pct}%"></div></div>
 
