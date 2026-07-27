@@ -1692,7 +1692,9 @@
         "上に受身の「（誰々）に」があるか": "受身の手がかり「に」をらむに混同している",
         "下に打消の語が続くか": "下の打消をらむの手がかりと取り違えている"
       },
-      "ruleRefs": []
+      "ruleRefs": [
+        "kbp.disambiguation.ramu-identification"
+      ]
     },
     {
       "id": "sb-ramu-cond1",
@@ -1714,7 +1716,9 @@
         "過去の伝聞": "現在のらむを過去の伝聞と取り違えている",
         "婉曲": "現在原因推量を婉曲と取り違えている"
       },
-      "ruleRefs": []
+      "ruleRefs": [
+        "kbp.disambiguation.ramu-identification"
+      ]
     },
     {
       "id": "sb-ramu-int1",
@@ -1752,7 +1756,9 @@
         "反実仮想": "らむを反実仮想と取り違えている",
         "願望": "らむを願望と取り違えている"
       },
-      "ruleRefs": []
+      "ruleRefs": [
+        "kbp.disambiguation.ramu-identification"
+      ]
     },
     {
       "id": "sb-beshi-proc1",

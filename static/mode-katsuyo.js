@@ -2193,9 +2193,9 @@ const KatsuyoApp = (function () {
     bootPromise = Promise.all([
       fetch("data/katsuyo.json?v=20260724-2")
         .then(r => { if (!r.ok) throw new Error("katsuyo data load failed: " + r.status); return r.json(); }),
-      fetch("data/multiple_choice.json?v=20260725-2")
+      fetch("data/multiple_choice.json?v=20260727-1")
         .then(r => { if (!r.ok) throw new Error("choice data load failed: " + r.status); return r.json(); }),
-      fetch("data/shikibetsu.json?v=20260725-2")
+      fetch("data/shikibetsu.json?v=20260727-1")
         .then(r => { if (!r.ok) throw new Error("shikibetsu data load failed: " + r.status); return r.json(); }),
       fetch("data/keigo-dokkai.json?v=20260721-1")
         .then(r => { if (!r.ok) throw new Error("keigo-dokkai data load failed: " + r.status); return r.json(); }),
@@ -2203,11 +2203,11 @@ const KatsuyoApp = (function () {
         .then(r => { if (!r.ok) throw new Error("kobun-joshiki data load failed: " + r.status); return r.json(); }),
       fetch("data/kiso.json?v=20260725-2")
         .then(r => { if (!r.ok) throw new Error("kiso data load failed: " + r.status); return r.json(); }),
-      fetch("data/shikibetsu-joshi.json?v=20260725-2")
+      fetch("data/shikibetsu-joshi.json?v=20260727-1")
         .then(r => { if (!r.ok) throw new Error("joshi data load failed: " + r.status); return r.json(); }),
       fetch("data/shikibetsu-homograph.json?v=20260725-2")
         .then(r => { if (!r.ok) throw new Error("homograph data load failed: " + r.status); return r.json(); }),
-      fetch("data/shikibetsu-keigo.json?v=20260725-2")
+      fetch("data/shikibetsu-keigo.json?v=20260727-1")
         .then(r => { if (!r.ok) throw new Error("keigo-shikibetsu data load failed: " + r.status); return r.json(); })
     ])
       .then(async ([d, choiceData, shikibetsuData, keigoDokkaiData, kobunJoshikiData,

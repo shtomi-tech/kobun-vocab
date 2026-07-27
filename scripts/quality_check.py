@@ -547,7 +547,7 @@ def main():
         joshiq = joshi.get("joshiQuestions", [])
         joshi_by_id = {q.get("id"): q for q in joshiq}
         required_types = Counter(joshi_by_id[qid].get("questionType") for qid in joshi.get("joshiRequiredQuestionIds", []))
-        print("助詞必修ルート: 35問（" + ", ".join(f"{k}={v}" for k, v in sorted(required_types.items())) + "）、追加練習: 6問")
+        print("助詞必修ルート: 35問（" + ", ".join(f"{k}={v}" for k, v in sorted(required_types.items())) + "）、追加練習: 12問")
     if not homograph_required_err:
         homographq = homograph.get("homographQuestions", [])
         homograph_by_id = {q.get("id"): q for q in homographq}
@@ -557,11 +557,11 @@ def main():
         keigoq = keigo.get("keigoQuestions", [])
         keigo_by_id = {q.get("id"): q for q in keigoq}
         required_types = Counter(keigo_by_id[qid].get("questionType") for qid in keigo.get("keigoRequiredQuestionIds", []))
-        print("敬語必修ルート: 39問（" + ", ".join(f"{k}={v}" for k, v in sorted(required_types.items())) + "）、追加練習: 5問")
+        print("敬語必修ルート: 39問（" + ", ".join(f"{k}={v}" for k, v in sorted(required_types.items())) + "）、追加練習: 6問")
     if not kiso_required_err:
         print("文法の入口必修ルート: 26問、追加練習: 2問")
     if not choice_required_err:
-        print("文法4択必修ルート: 66問、追加練習: 24問")
+        print("文法4択必修ルート: 66問、追加練習: 25問")
 
     # --- 正解最長バイアス ---
     section("2. 正解最長バイアス（正解が最長=同点最長含む の比率）")
