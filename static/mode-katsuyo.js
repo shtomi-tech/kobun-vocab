@@ -74,11 +74,12 @@ const KatsuyoApp = (function () {
     {
       id: "joshi",
       label: "5. 助詞",
-      description: "助詞の知識を確認し、ば・より・だに・係り結び・終助詞を手順で訳し分ける",
+      description: "助詞の知識を確認し、ば・より・格助詞「の」・だに・係り結び・終助詞を手順で訳し分ける",
       tasks: [
         { id: "choice-ch7", kind: "group", setId: "choice", groupId: "qa-chapter-7", label: "助詞の攻略 10問" },
         { id: "proc-ba", kind: "procedure", setId: "joshi", procId: "ba", label: "ばの識別" },
         { id: "proc-yori", kind: "procedure", setId: "joshi", procId: "yori", label: "よりの識別" },
+        { id: "proc-no", kind: "procedure", setId: "joshi", procId: "no", label: "格助詞「の」の識別" },
         { id: "proc-dani", kind: "procedure", setId: "joshi", procId: "dani", label: "だにの識別" },
         { id: "proc-kakari", kind: "procedure", setId: "joshi", procId: "kakari", label: "係り結びの特殊構文" },
         { id: "proc-shuujoshi", kind: "procedure", setId: "joshi", procId: "shuujoshi", label: "終助詞の識別" },
@@ -2316,7 +2317,7 @@ const KatsuyoApp = (function () {
           id: "joshi",
           name: "助詞の識別",
           label: "PARTICLES",
-          description: "ば・より・だに・係り結び・終助詞の訳し分けを手順で身につける",
+          description: "ば・より・格助詞「の」・だに・係り結び・終助詞の訳し分けを手順で身につける",
           collection: "joshiQuestions",
           groups: "joshiGroups",
           proceduresKey: "joshiProcedures",

@@ -1,10 +1,11 @@
 {
   "meta": {
-    "source": "docs/kobun-principles の particles 分野の原則カード5枚をもとにしたオリジナル問題",
+    "source": "docs/kobun-principles の particles 分野の原則カード6枚をもとにしたオリジナル問題",
     "note": "2026-07-25新設。助詞は data/multiple_choice.json の Chapter 7（知識の4択）だけでは訳し分けの手順が身につかないため、識別フロー（手順の内容理解→4択→実践）を助動詞と同じ形式で用意した。",
     "ruleCards": [
       "kbp.particles.ba-meanings",
       "kbp.particles.yori-meanings",
+      "kbp.particles.ga-no-case-functions",
       "kbp.particles.dani-meanings",
       "kbp.particles.kakari-musubi-special-constructions",
       "kbp.particles.final-particles-meanings"
@@ -26,6 +27,12 @@
     "jb-yori-cont1",
     "jb-yori-int1",
     "jb-yori-int2",
+    "jb-no-proc1",
+    "jb-no-int1",
+    "jb-no-int2",
+    "jb-no-int3",
+    "jb-no-int4",
+    "jb-no-int5",
     "jb-dani-proc1",
     "jb-dani-cond-gentei",
     "jb-dani-cond-ruisui",
@@ -91,6 +98,21 @@
         {
           "no": "手順IV",
           "text": "手順I〜IIIのいずれにも当てはまらない場合は、起点（〜から）・比較の可能性を検討する。この3条件だけを機械的に当てはめて断定しない。"
+        }
+      ]
+    },
+    {
+      "id": "no",
+      "name": "格助詞「の」の識別",
+      "sub": "連用修飾格・準体格・連体修飾格・同格・主格",
+      "steps": [
+        {
+          "no": "手順I",
+          "text": "「の」の下に用言・体言が続くか、体言が省略されているかを確認する。"
+        },
+        {
+          "no": "手順II",
+          "text": "動作を修飾する連用修飾格、体言を修飾する連体修飾格、「〜のもの」と訳す準体格、「〜で」と訳す同格、「〜が」と言い換えられる主格を、形と意味から判定する。"
         }
       ]
     },
@@ -181,6 +203,19 @@
       ]
     },
     {
+      "id": "sb-no",
+      "name": "格助詞「の」の識別",
+      "sub": "連用修飾格・準体格・連体修飾格・同格・主格",
+      "ids": [
+        "jb-no-proc1",
+        "jb-no-int1",
+        "jb-no-int2",
+        "jb-no-int3",
+        "jb-no-int4",
+        "jb-no-int5"
+      ]
+    },
+    {
       "id": "sb-dani",
       "name": "だにの識別",
       "sub": "限定・類推",
@@ -227,7 +262,7 @@
     },
     {
       "id": "sb-joshi-all",
-      "name": "総仕上げ：助詞の識別41問",
+      "name": "総仕上げ：助詞の識別47問",
       "sub": "5手順をまとめてランダム出題",
       "shuffle": true,
       "ids": [
@@ -248,6 +283,12 @@
         "jb-yori-int1",
         "jb-yori-int2",
         "jb-yori-int3",
+        "jb-no-proc1",
+        "jb-no-int1",
+        "jb-no-int2",
+        "jb-no-int3",
+        "jb-no-int4",
+        "jb-no-int5",
         "jb-dani-proc1",
         "jb-dani-cond-gentei",
         "jb-dani-cond-ruisui",
@@ -367,6 +408,41 @@
         {
           "id": "jb-yori-int3",
           "label": "統合③",
+          "questionType": "integration"
+        }
+      ]
+    },
+    {
+      "topic": "格助詞「の」の識別",
+      "items": [
+        {
+          "id": "jb-no-proc1",
+          "label": "最初に見るもの",
+          "questionType": "procedure"
+        },
+        {
+          "id": "jb-no-int1",
+          "label": "連用修飾格",
+          "questionType": "condition"
+        },
+        {
+          "id": "jb-no-int2",
+          "label": "準体格",
+          "questionType": "condition"
+        },
+        {
+          "id": "jb-no-int3",
+          "label": "連体修飾格",
+          "questionType": "condition"
+        },
+        {
+          "id": "jb-no-int4",
+          "label": "同格",
+          "questionType": "condition"
+        },
+        {
+          "id": "jb-no-int5",
+          "label": "主格・実践",
           "questionType": "integration"
         }
       ]
@@ -508,6 +584,30 @@
     }
   ],
   "joshiQuestions": [
+    {
+      "id": "jb-no-proc1",
+      "topic": "格助詞「の」の識別",
+      "step": "手順I",
+      "questionType": "procedure",
+      "coverageId": "jb-no-proc1",
+      "question": "格助詞「の」の用法を見分けるとき、最初に確認することはどれか。",
+      "choices": [
+        "下が用言か体言か、体言の省略があるかを見る",
+        "主語の身分や身分差だけから用法を決める",
+        "文末が連体形で結ばれるかだけを先に確認する",
+        "現代語で「の」と訳せるかだけを先に確認する"
+      ],
+      "answerIndex": 0,
+      "explanation": "まず「の」の下に用言・体言のどちらが続くか、また下の体言が省略されているかを確認する。その形から主格・連体修飾格・準体格などの候補を絞り、必要に応じて連用修飾格や同格を訳で判定する。",
+      "distractorRationale": {
+        "主語の身分や身分差だけから用法を決める": "格助詞「の」の用法は人物の身分ではなく、前後の形と文の関係で判断する",
+        "文末が連体形で結ばれるかだけを先に確認する": "これは係り結びなどの手がかりであり、「の」の用法全体を分ける最初の確認ではない",
+        "現代語で「の」と訳せるかだけを先に確認する": "準体格・同格・主格などは、体言や用言の省略・関係も確認して判断する"
+      },
+      "ruleRefs": [
+        "kbp.particles.ga-no-case-functions"
+      ]
+    },
     {
       "id": "jb-ba-proc1",
       "topic": "ばの識別",
@@ -2035,16 +2135,32 @@
       "id": "jb-no-int5",
       "topic": "格助詞「の」の識別",
       "step": "主格",
-      "questionType": "condition",
+      "questionType": "integration",
       "coverageId": "jb-no-int5",
-      "question": "「拙き者のする事なり」の「者の」の「の」の用法はどれか。",
-      "choices": [
-        "主格（「拙き者がする」と言い換えられる）",
-        "連体修飾格（後ろの体言を修飾し、「〜の」と訳す）",
-        "準体格（下の体言を省き、「〜のもの」と訳す）",
-        "同格（前後に同じ体言を補い、「〜で」と訳す）"
+      "passage": "拙き者のする事なり。",
+      "target": "の",
+      "steps": [
+        {
+          "prompt": "手順I：「の」の直後「する」は用言か。",
+          "choices": [
+            "用言 → 主格の可能性を考える",
+            "体言 → 連体修飾格の可能性を考える"
+          ],
+          "answerIndex": 0,
+          "explanation": "「する」は動詞なので用言。体言「者」＋の＋用言「する」の形から、主格の可能性を考える。"
+        },
+        {
+          "prompt": "最終判断：この「の」の用法はどれか。",
+          "choices": [
+            "主格（「拙き者がする」と言い換えられる）",
+            "連体修飾格（後ろの体言を修飾し、「〜の」と訳す）",
+            "準体格（下の体言を省き、「〜のもの」と訳す）",
+            "同格（前後に同じ体言を補い、「〜で」と訳す）"
+          ],
+          "answerIndex": 0,
+          "explanation": "「者」は体言で、その下に用言「する」が続く。「拙き者がする事」と言い換えられるので、動作「する」の主語を表す主格である。"
+        }
       ],
-      "answerIndex": 0,
       "explanation": "「者」は体言で、その下に用言「する」が続く。「拙き者がする事」と言い換えられるので、動作「する」の主語を表す主格である。",
       "distractorRationale": {
         "連体修飾格（後ろの体言を修飾し、「〜の」と訳す）": "「の」の直後は体言ではなく用言「する」なので、連体修飾格ではない",

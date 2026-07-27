@@ -180,8 +180,8 @@ def check_required_question_ids(data):
 
 def check_joshi_required_question_ids(data):
     return check_required_question_ids_for_set(
-        data, "joshiRequiredQuestionIds", "joshiQuestions", 35,
-        {"procedure": 5, "condition": 17, "contrast": 4, "integration": 9},
+        data, "joshiRequiredQuestionIds", "joshiQuestions", 41,
+        {"procedure": 6, "condition": 21, "contrast": 4, "integration": 10},
         "助詞識別",
     )
 
