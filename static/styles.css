@@ -370,13 +370,22 @@ h2 {
 .pathStageStatus { flex: 0 0 auto; color: var(--muted); font-size: 13px; white-space: nowrap; }
 .pathStageCard.current .pathStageStatus { color: var(--clay); font-weight: 600; }
 .pathTaskList { display: grid; gap: 6px; margin-top: 16px; }
-.pathTaskRow { display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; align-items: center; gap: 8px; padding: 10px 12px; border-radius: var(--r-md); background: var(--parchment); color: var(--muted); font-size: 13px; }
+.pathTaskRow { display: grid; grid-template-columns: 22px minmax(0, 1fr) auto auto; align-items: center; gap: 8px; padding: 10px 12px; border-radius: var(--r-md); background: var(--parchment); color: var(--muted); font-size: 13px; }
 .pathTaskRow.done { color: var(--ink); }
 .pathTaskMark { color: var(--clay); font-weight: 700; }
 .pathTaskLabel { min-width: 0; }
 .pathTaskStat { font-size: 12px; white-space: nowrap; }
+.pathTaskAction { min-height: 44px; padding: 8px 12px; white-space: nowrap; }
 .pathLockHint { border-top: 1px solid var(--divider); padding-top: 12px; margin-top: 14px; }
-@media (max-width: 560px) { .pathStageHead { display: block; } .pathStageStatus { display: block; margin-top: 8px; } }
+@media (max-width: 560px) {
+  .pathStageHead { display: block; }
+  .pathStageStatus { display: block; margin-top: 8px; }
+  .pathTaskRow { grid-template-columns: 22px minmax(0, 1fr) auto; align-items: start; }
+  .pathTaskMark { grid-column: 1; grid-row: 1 / span 2; }
+  .pathTaskLabel { grid-column: 2; grid-row: 1; }
+  .pathTaskStat { grid-column: 2; grid-row: 2; }
+  .pathTaskAction { grid-column: 3; grid-row: 1 / span 2; align-self: center; }
+}
 
 /* ---- 学習マップ（段階1〜4の全体フローと現在地） ---- */
 .lmap { padding: 20px 24px; }
