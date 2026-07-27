@@ -676,6 +676,151 @@
       ]
     },
     {
+      "id": "sb-sasu-se-cond-example1",
+      "topic": "す・さす・しむの識別",
+      "step": "「せ」の指定例①",
+      "questionType": "condition",
+      "coverageId": "sb-sasu-se-cond-example1",
+      "question": "「いかにせむ。」の「せ」は何か。",
+      "choices": [
+        "サ行変格活用動詞「す」",
+        "尊敬の助動詞「す」",
+        "使役の助動詞「す」",
+        "過去の助動詞「き」の未然形"
+      ],
+      "answerIndex": 0,
+      "explanation": "「せ」はサ変動詞「す」の未然形で、「いかにす（どうする）」の未然形。「む」はその下に付く推量・意志の助動詞である。",
+      "distractorRationale": {
+        "尊敬の助動詞「す」": "尊敬語が下に続く形ではなく、「どうしよう」と訳すサ変動詞「す」である",
+        "使役の助動詞「す」": "動作をさせる相手や使役の意味がなく、「す」と訳す動詞である",
+        "過去の助動詞「き」の未然形": "「せば…まし」の反実仮想ではなく、文末の「む」に接続している"
+      },
+      "ruleRefs": [
+        "kbp.verbs.sahen-identification",
+        "kbp.auxiliaries.su-sasu-shimu-meanings"
+      ]
+    },
+    {
+      "id": "sb-sasu-se-cond-example2",
+      "topic": "す・さす・しむの識別",
+      "step": "「せ」の指定例②",
+      "questionType": "condition",
+      "coverageId": "sb-sasu-se-cond-example2",
+      "question": "「折々は渡らせ給ひ、御けしきなどご覧じたり。」の「せ」は何か。",
+      "choices": [
+        "尊敬の助動詞「す」",
+        "使役の助動詞「す」",
+        "サ行変格活用動詞「す」",
+        "過去の助動詞「き」の未然形"
+      ],
+      "answerIndex": 0,
+      "explanation": "「せ」の下に尊敬語「給ふ」が続き、使役の相手も示されていない。「渡らせ給ふ」は「お出かけになる」と訳すので、尊敬の助動詞「す」である。",
+      "distractorRationale": {
+        "使役の助動詞「す」": "下に尊敬語「給ふ」が続き、動作をさせる相手もないため使役ではない",
+        "サ行変格活用動詞「す」": "「渡らせ」は「する」と訳す動詞ではなく、「渡る」に助動詞が付いた形である",
+        "過去の助動詞「き」の未然形": "「せば…まし」の形ではなく、直下に尊敬語「給ふ」が続いている"
+      },
+      "ruleRefs": [
+        "kbp.auxiliaries.su-sasu-shimu-meanings"
+      ]
+    },
+    {
+      "id": "sb-sasu-se-cond-example3",
+      "topic": "す・さす・しむの識別",
+      "step": "「せ」の指定例③",
+      "questionType": "condition",
+      "coverageId": "sb-sasu-se-cond-example3",
+      "question": "「かしこき占方の人に物問はせ、」の「せ」は何か。",
+      "choices": [
+        "使役の助動詞「す」",
+        "尊敬の助動詞「す」",
+        "サ行変格活用動詞「す」",
+        "過去の助動詞「き」の未然形"
+      ],
+      "answerIndex": 0,
+      "explanation": "「問はせ」は四段動詞「問ふ」の未然形「問は」に助動詞「す」が付いた形。下に尊敬語はなく、「占方の人に」物を問わせる使役なので、使役の助動詞「す」である。",
+      "distractorRationale": {
+        "尊敬の助動詞「す」": "下に尊敬語が続かず、「占方の人に」という動作をさせる相手が示されている",
+        "サ行変格活用動詞「す」": "「せ」は「問は」に接続しており、「する」と訳すサ変動詞そのものではない",
+        "過去の助動詞「き」の未然形": "「せば…まし」の反実仮想ではなく、使役の対象「人に」がある"
+      },
+      "ruleRefs": [
+        "kbp.auxiliaries.su-sasu-shimu-meanings"
+      ]
+    },
+    {
+      "id": "sb-sasu-se-cond-example4",
+      "topic": "す・さす・しむの識別",
+      "step": "「せ」の指定例④",
+      "questionType": "condition",
+      "coverageId": "sb-sasu-se-cond-example4",
+      "question": "「匂はざりせばいかで知らまし」の「せ」は何か。",
+      "choices": [
+        "過去の助動詞「き」の未然形",
+        "使役の助動詞「す」",
+        "尊敬の助動詞「す」",
+        "サ行変格活用動詞「す」"
+      ],
+      "answerIndex": 0,
+      "explanation": "「せば…まし」は反実仮想の定型で、「せ」は過去の助動詞「き」の未然形。「匂はざりせば」は「もし匂わなかったならば」と訳す。",
+      "distractorRationale": {
+        "使役の助動詞「す」": "使役の相手や「させる」の意味ではなく、「せば…まし」の反実仮想である",
+        "尊敬の助動詞「す」": "下に尊敬語が続く形ではなく、助動詞「き」の未然形「せ」である",
+        "サ行変格活用動詞「す」": "「匂はざり」に続いており、「する」と訳すサ変動詞ではない"
+      },
+      "ruleRefs": [
+        "kbp.auxiliaries.su-sasu-shimu-meanings"
+      ]
+    },
+    {
+      "id": "sb-sasu-se-cond-example5",
+      "topic": "す・さす・しむの識別",
+      "step": "「せ」の指定例⑤",
+      "questionType": "condition",
+      "coverageId": "sb-sasu-se-cond-example5",
+      "question": "「念仏など勧めさせむとしける」の「せ」は何か。",
+      "choices": [
+        "使役の助動詞「さす」の一部",
+        "使役の助動詞「す」の一部",
+        "尊敬の助動詞「す」の一部",
+        "サ行変格活用動詞「す」の一部"
+      ],
+      "answerIndex": 0,
+      "explanation": "「勧めさせむ」の「させ」は、動詞「勧む」に接続した使役の助動詞「さす」の連用形。「せ」だけを別の助動詞として切り離さない。",
+      "distractorRationale": {
+        "使役の助動詞「す」の一部": "「す」ではなく、未然形接続の助動詞「さす」の連用形「させ」である",
+        "尊敬の助動詞「す」の一部": "下に尊敬語は続かず、「勧めさせる」という使役の意味になっている",
+        "サ行変格活用動詞「す」の一部": "「せ」は「勧め」に続く助動詞の一部で、「する」と訳す動詞ではない"
+      },
+      "ruleRefs": [
+        "kbp.auxiliaries.su-sasu-shimu-meanings"
+      ]
+    },
+    {
+      "id": "sb-sasu-se-cond-example6",
+      "topic": "す・さす・しむの識別",
+      "step": "「せ」の指定例⑥",
+      "questionType": "condition",
+      "coverageId": "sb-sasu-se-cond-example6",
+      "question": "「多くの人に顔を見せて、」の「せ」は何か。",
+      "choices": [
+        "サ行下二段活用動詞「見す」の一部",
+        "使役の助動詞「す」の一部",
+        "尊敬の助動詞「す」の一部",
+        "過去の助動詞「き」の未然形"
+      ],
+      "answerIndex": 0,
+      "explanation": "「見せ」はサ行下二段活用動詞「見す」の連用形で、「人に顔を見せる」と訳す。「せ」だけを助動詞「す」とはしない。",
+      "distractorRationale": {
+        "使役の助動詞「す」の一部": "「せ」は上の動詞に付いた助動詞ではなく、動詞「見す」自身の活用の一部である",
+        "尊敬の助動詞「す」の一部": "下に尊敬語が続かず、「見せる」という動作を表す動詞である",
+        "過去の助動詞「き」の未然形": "「せば…まし」の形ではなく、接続助詞「て」に続く動詞の連用形である"
+      },
+      "ruleRefs": [
+        "kbp.auxiliaries.su-sasu-shimu-meanings"
+      ]
+    },
+    {
       "id": "sb-sasu-cond1",
       "topic": "す・さす・しむの識別",
       "step": "手順I尊敬語あり",
@@ -3450,6 +3595,12 @@
     "pn-rareru-ukemi-sonkei",
     "pn-rareru-retamafu",
     "sb-sasu-proc1",
+    "sb-sasu-se-cond-example1",
+    "sb-sasu-se-cond-example2",
+    "sb-sasu-se-cond-example3",
+    "sb-sasu-se-cond-example4",
+    "sb-sasu-se-cond-example5",
+    "sb-sasu-se-cond-example6",
     "sb-sasu-cond1",
     "sb-sasu-cond2",
     "sb-sasu-cont1",
@@ -3552,6 +3703,12 @@
         "sb-sasu-proc1",
         "sb-sasu-proc2",
         "sb-sasu-se-proc1",
+        "sb-sasu-se-cond-example1",
+        "sb-sasu-se-cond-example2",
+        "sb-sasu-se-cond-example3",
+        "sb-sasu-se-cond-example4",
+        "sb-sasu-se-cond-example5",
+        "sb-sasu-se-cond-example6",
         "sb-sasu-cond1",
         "sb-sasu-cond2",
         "sb-sasu-cont1",
@@ -3688,7 +3845,7 @@
     },
     {
       "id": "sb-all",
-      "name": "総仕上げ：95問（必修82＋追加13）",
+      "name": "総仕上げ：101問（必修88＋追加13）",
       "sub": "必修ルートの問題と追加練習をランダム出題",
       "shuffle": true,
       "ids": [
@@ -3706,6 +3863,12 @@
         "sb-sasu-proc1",
         "sb-sasu-proc2",
         "sb-sasu-se-proc1",
+        "sb-sasu-se-cond-example1",
+        "sb-sasu-se-cond-example2",
+        "sb-sasu-se-cond-example3",
+        "sb-sasu-se-cond-example4",
+        "sb-sasu-se-cond-example5",
+        "sb-sasu-se-cond-example6",
         "sb-sasu-cond1",
         "sb-sasu-cond2",
         "sb-sasu-cont1",
