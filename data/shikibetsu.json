@@ -392,20 +392,29 @@
     {
       "id": "sb-rareru-int-ukemi",
       "topic": "る・らるの識別",
-      "step": "統合①",
+      "step": "指定例②",
       "questionType": "integration",
       "coverageId": "sb-rareru-int-ukemi",
-      "passage": "盗人に衣を奪はる。",
-      "target": "る",
+      "passage": "西の宮の大臣流され給ふ。",
+      "target": "れ",
       "steps": [
         {
-          "prompt": "手順I：上に動作の受け手「（誰々）に」を補えるか。",
+          "prompt": "手順I：「れ」の直前の「流さ」は未然形か。",
           "choices": [
-            "補える → 受身",
-            "補えない → 次の手順へ"
+            "未然形",
+            "連用形"
           ],
           "answerIndex": 0,
-          "explanation": "「盗人に」と、動作の受け手が示されている。"
+          "explanation": "「流さ」は四段動詞「流す」の未然形である。"
+        },
+        {
+          "prompt": "手順II：「流され給ふ」はどのような意味か。",
+          "choices": [
+            "流される（受身）",
+            "自然と流す（自発）"
+          ],
+          "answerIndex": 0,
+          "explanation": "大臣が自分の意思で流すのではなく、流される側になっている。"
         },
         {
           "prompt": "最終判断：この「る」の意味は。",
@@ -416,48 +425,49 @@
             "尊敬"
           ],
           "answerIndex": 0,
-          "explanation": "動作の受け手「盗人に」が示されているので受身。「盗人に衣を奪われる」と訳す。"
+          "explanation": "「大臣が流される」という受身の意味なので、助動詞「る」の受身。「西の宮の大臣が流されなさる」と訳す。"
         }
       ],
-      "explanation": "動作の受け手「（誰々）に」が示されている → 受身。最初の手がかりだけで意味が決まる。",
+      "explanation": "主語が動作を受ける側になっている → 受身。尊敬語「給ふ」があっても、直前の「る」は受身である。",
       "distractorRationale": {
-        "可能": "打消がないのに可能と判断している",
-        "自発": "心情語がないのに自発と判断している",
-        "尊敬": "受身の手がかりがあるのに尊敬と判断している"
+        "可能": "打消や不可能の文脈がないのに可能と判断している",
+        "自発": "心情語・知覚動詞に付いていないのに自発と判断している",
+        "尊敬": "下の「給ふ」だけを見て尊敬と判断している"
       },
       "ruleRefs": [
+        "kbp.disambiguation.ru-re-identification",
         "kbp.auxiliaries.ru-raru-meanings"
       ]
     },
     {
       "id": "sb-rareru-int-kanou",
       "topic": "る・らるの識別",
-      "step": "統合②",
+      "step": "指定例⑤",
       "questionType": "integration",
       "coverageId": "sb-rareru-int-kanou",
-      "passage": "悲しさに、涙をとどめられず。",
-      "target": "られ",
+      "passage": "文字も書かれずなりたり。",
+      "target": "れ",
       "steps": [
         {
-          "prompt": "手順I：上に動作の受け手「（誰々）に」を補えるか。",
+          "prompt": "手順I：「れ」の下に打消の助動詞があるか。",
           "choices": [
-            "補える → 受身",
-            "補えない → 次の手順へ"
-          ],
-          "answerIndex": 1,
-          "explanation": "動作の受け手を示す語はなく、補えない。"
-        },
-        {
-          "prompt": "手順II：下に打消の語があるか。",
-          "choices": [
-            "ある → 可能",
-            "ない → 次の手順へ"
+            "ある",
+            "ない"
           ],
           "answerIndex": 0,
-          "explanation": "「られ」の下に打消の語「ず」が続いている。"
+          "explanation": "「れ」の下に打消の助動詞「ず」が続いている。"
         },
         {
-          "prompt": "最終判断：この「られ」の意味は。",
+          "prompt": "手順II：「文字も書かれず」はどのような意味か。",
+          "choices": [
+            "文字も書くことができず",
+            "文字も書かれず（受身）"
+          ],
+          "answerIndex": 0,
+          "explanation": "「書くことができない」という不可能の意味になる。"
+        },
+        {
+          "prompt": "最終判断：この「る」の意味は。",
           "choices": [
             "受身",
             "可能",
@@ -465,54 +475,46 @@
             "尊敬"
           ],
           "answerIndex": 1,
-          "explanation": "打消の語「ず」を伴うので可能。「涙を止めることができない」と訳す。"
+          "explanation": "打消の助動詞「ず」を伴い、「書くことができない」となるので、助動詞「る」の可能。"
         }
       ],
-      "explanation": "打消の語「ず」を伴う → 可能。受身の手がかりが無いことを確認したうえで判断する。",
+      "explanation": "下に打消の助動詞「ず」が続く → 可能。「文字も書くことができず」と訳す。",
       "distractorRationale": {
-        "受身": "「に」を補えないのに受身と判断している",
+        "受身": "「書かれず」を受身の「書かれない」とだけ訳している",
         "自発": "打消があるのに自発と判断している",
         "尊敬": "打消があるのに尊敬と判断している"
       },
       "ruleRefs": [
+        "kbp.disambiguation.ru-re-identification",
         "kbp.auxiliaries.ru-raru-meanings"
       ]
     },
     {
       "id": "sb-rareru-int1",
       "topic": "る・らるの識別",
-      "step": "統合③",
+      "step": "指定例①",
       "questionType": "integration",
       "coverageId": "sb-rareru-int1",
-      "passage": "昔のこと思ひ出でらる。",
-      "target": "らる",
+      "passage": "心の中、推し量られて、あはれなり。",
+      "target": "られ",
       "steps": [
         {
-          "prompt": "手順I：上に動作の受け手「（誰々）に」を補えるか。",
+          "prompt": "手順I：「られ」の直前の「推し量る」は心情・知覚を表す動詞か。",
           "choices": [
-            "補える → 受身",
-            "補えない → 次の手順へ"
-          ],
-          "answerIndex": 1,
-          "explanation": "動作の受け手を示す語はなく、補えない。"
-        },
-        {
-          "prompt": "手順II：下に打消の語があるか。",
-          "choices": [
-            "ある → 可能",
-            "ない → 次の手順へ"
-          ],
-          "answerIndex": 1,
-          "explanation": "「らる」の下に打消の語は続いていない。"
-        },
-        {
-          "prompt": "手順III：上に心情語・知覚動詞があるか。",
-          "choices": [
-            "ある → 自発",
-            "ない → 次の手順へ"
+            "表す",
+            "表さない"
           ],
           "answerIndex": 0,
-          "explanation": "「思ひ出づ」は心情を表す動詞である。"
+          "explanation": "「推し量る」は心の中で思いめぐらす心情・知覚の動詞である。"
+        },
+        {
+          "prompt": "手順II：動作の受け手「（誰々）に」を補えるか。",
+          "choices": [
+            "補える",
+            "補えない"
+          ],
+          "answerIndex": 1,
+          "explanation": "誰かに推し量られるという受身の受け手を補うより、自然と思いめぐらされる意味が合う。"
         },
         {
           "prompt": "最終判断：この「らる」の意味は。",
@@ -523,63 +525,46 @@
             "尊敬"
           ],
           "answerIndex": 2,
-          "explanation": "心情語「思ひ出づ」に付くので自発。「自然と昔のことが思い出される」と訳す。"
+          "explanation": "心情・知覚の動詞「推し量る」に付き、自然と思いめぐらされる意味なので自発の助動詞「らる」。"
         }
       ],
-      "explanation": "心情語＋る・らる → 自発。手順を上から順に消去していけば迷わない。",
+      "explanation": "心情・知覚の動詞に付き、受身の受け手を補いにくい → 自発。「心の中で自然と思いめぐらされて、しみじみと感じられる」と訳す。",
       "distractorRationale": {
-        "受身": "心情語に付くのに受身と判断している",
+        "受身": "心情・知覚の動詞に付く自発を受身と判断している",
         "可能": "打消がないのに可能と判断している",
         "尊敬": "心情語の自発を尊敬と取り違えている"
       },
       "ruleRefs": [
+        "kbp.disambiguation.ru-re-identification",
         "kbp.auxiliaries.ru-raru-meanings"
       ]
     },
     {
       "id": "sb-rareru-int-sonkei",
       "topic": "る・らるの識別",
-      "step": "統合④",
+      "step": "指定例④",
       "questionType": "integration",
       "coverageId": "sb-rareru-int-sonkei",
-      "passage": "帝、「とく参れ」と仰せらる。",
-      "target": "らる",
+      "passage": "大納言、御祭には必ず神馬を奉る使ひを立てられし",
+      "target": "られ",
       "steps": [
         {
-          "prompt": "手順I：上に動作の受け手「（誰々）に」を補えるか。",
+          "prompt": "手順I：主語「大納言」は身分の高い人物か。",
           "choices": [
-            "補える → 受身",
-            "補えない → 次の手順へ"
-          ],
-          "answerIndex": 1,
-          "explanation": "動作の受け手を示す語はない。"
-        },
-        {
-          "prompt": "手順II：下に打消の語があるか。",
-          "choices": [
-            "ある → 可能",
-            "ない → 次の手順へ"
-          ],
-          "answerIndex": 1,
-          "explanation": "打消の語は続いていない。"
-        },
-        {
-          "prompt": "手順III：上に心情語・知覚動詞があるか。",
-          "choices": [
-            "ある → 自発",
-            "ない → 次の手順へ"
-          ],
-          "answerIndex": 1,
-          "explanation": "「仰す」は心情語・知覚動詞ではない。"
-        },
-        {
-          "prompt": "手順IV：主語が身分の高い人物か。",
-          "choices": [
-            "身分が高い → 尊敬",
-            "身分が高くない → 判断が難しい"
+            "高い",
+            "高くない"
           ],
           "answerIndex": 0,
-          "explanation": "主語は帝であり、身分が高い。「仰せらる」の「らる」は絶対に尊敬である。"
+          "explanation": "大納言は高い身分の人物である。"
+        },
+        {
+          "prompt": "手順II：「立てられし」は大納言自身の動作を高める意味か。",
+          "choices": [
+            "高める",
+            "高めない"
+          ],
+          "answerIndex": 0,
+          "explanation": "神馬を奉る使いを立てた大納言の動作を高めて述べている。"
         },
         {
           "prompt": "最終判断：この「らる」の意味は。",
@@ -590,16 +575,17 @@
             "尊敬"
           ],
           "answerIndex": 3,
-          "explanation": "受身・可能・自発の手がかりがどれも立たず、主語が帝で「仰せらる」の形なので尊敬。「帝が『早く参れ』とおっしゃる」と訳す。"
+          "explanation": "高い身分の大納言の動作を高めているので、尊敬の助動詞「らる」。"
         }
       ],
-      "explanation": "受身・可能・自発の手がかりが立たず、主語が身分の高い人物で「仰せらる」の形 → 尊敬。手順を最後まで確認して初めて決まる意味である。",
+      "explanation": "主語が身分の高い大納言で、その動作を高めている → 尊敬。",
       "distractorRationale": {
-        "受身": "「に」を補えないのに受身と判断している",
+        "受身": "大納言が動作を受ける側ではなく、使いを立てる側である",
         "可能": "打消がないのに可能と判断している",
         "自発": "心情語でないのに自発と判断している"
       },
       "ruleRefs": [
+        "kbp.disambiguation.ru-re-identification",
         "kbp.auxiliaries.ru-raru-meanings"
       ]
     },
@@ -2104,23 +2090,32 @@
     {
       "id": "pn-rareru-ukemi-sonkei",
       "topic": "る・らるの識別",
-      "step": "競合：受け手と身分",
+      "step": "指定例⑥",
       "questionType": "integration",
       "coverageId": "pn-rareru-ukemi-sonkei",
-      "passage": "帝、老いたる家臣にいさめらる。",
-      "target": "らる",
+      "passage": "飛ぶ鳥は翅を切り、籠に入れられて",
+      "target": "られ",
       "steps": [
         {
-          "prompt": "手順I：上に動作の受け手「（誰々）に」を補えるか。",
+          "prompt": "手順I：「飛ぶ鳥」は動作を受ける側か。",
           "choices": [
-            "補える → 受身",
-            "補えない → 次の手順へ"
+            "受ける側",
+            "受ける側ではない"
           ],
           "answerIndex": 0,
-          "explanation": "「家臣に」と動作の受け手が示されている。"
+          "explanation": "鳥は翅を切られ、籠に入れられる側である。"
         },
         {
-          "prompt": "最終判断：この語の意味は。",
+          "prompt": "手順II：「入れられて」は鳥が入れる側か、入れられる側か。",
+          "choices": [
+            "入れられる側",
+            "入れる側"
+          ],
+          "answerIndex": 0,
+          "explanation": "鳥は自分で入れるのではなく、他者によって籠に入れられる側である。"
+        },
+        {
+          "prompt": "最終判断：この「らる」の意味は。",
           "choices": [
             "受身",
             "可能",
@@ -2128,56 +2123,67 @@
             "尊敬"
           ],
           "answerIndex": 0,
-          "explanation": "受け手「家臣に」があるので受身。主語が帝でも、手順の最初で受身と決まる。「帝が年老いた家臣にいさめられる」と訳す。"
+          "explanation": "鳥が籠に入れられる側なので、受身の助動詞「らる」。「籠に入れられて」と訳す。"
         }
       ],
-      "explanation": "受け手『に』が示されれば、主語が高貴でも受身を優先する。手順の優先順位（受身→可能→自発→尊敬）を試す。",
+      "explanation": "主語が翅を切られ、籠に入れられる側になっている → 受身。",
       "distractorRationale": {
-        "可能": "下に打消の語がないのに可能としている",
-        "自発": "心情語・知覚動詞ではないのに自発としている",
-        "尊敬": "主語が帝であることに引きずられ、受け手『に』があるのに尊敬としている"
+        "可能": "打消や不可能の文脈がないのに可能と判断している",
+        "自発": "心情語・知覚動詞に付いていないのに自発と判断している",
+        "尊敬": "鳥の身分を根拠なく高く見て尊敬と判断している"
       },
       "ruleRefs": [
+        "kbp.disambiguation.ru-re-identification",
         "kbp.auxiliaries.ru-raru-meanings"
       ]
     },
     {
       "id": "pn-rareru-retamafu",
       "topic": "る・らるの識別",
-      "step": "例外：れ給ふ",
+      "step": "指定例③",
       "questionType": "integration",
       "coverageId": "pn-rareru-retamafu",
-      "passage": "中納言、道にて盗人に襲はれ給ふ。",
-      "target": "れ",
+      "passage": "ただ帰る波のみうちながめられて、",
+      "target": "られ",
       "steps": [
         {
-          "prompt": "手順I：上に動作の受け手「（誰々）に」を補えるか。",
+          "prompt": "手順I：「られ」の直前の「うちながめる」は知覚・心情を表す動詞か。",
           "choices": [
-            "補える → 受身",
-            "補えない → 次の手順へ"
+            "表す",
+            "表さない"
           ],
           "answerIndex": 0,
-          "explanation": "「盗人に」と動作の受け手が示されている。"
+          "explanation": "「うちながめる」は波をじっと見る知覚の動詞である。"
         },
         {
-          "prompt": "最終判断：この語の意味は。",
+          "prompt": "手順II：動作の受け手「（誰々）に」を補えるか。",
+          "choices": [
+            "補える",
+            "補えない"
+          ],
+          "answerIndex": 1,
+          "explanation": "誰かに眺められるという受身より、帰る波を自然と眺めてしまう意味が合う。"
+        },
+        {
+          "prompt": "最終判断：この「らる」の意味は。",
           "choices": [
             "受身",
             "可能",
             "自発",
             "尊敬"
           ],
-          "answerIndex": 0,
-          "explanation": "受け手『盗人に』があるので受身。下に『給ふ』があっても『れ給ふ』の『れ』は尊敬にならない。「中納言が道で盗人に襲われなさる」と訳す。"
+          "answerIndex": 2,
+          "explanation": "知覚動詞「うちながめる」に付き、自然と眺めてしまう意味なので自発の助動詞「らる」。"
         }
       ],
-      "explanation": "『れ給ふ・られ給ふ』の『れ・られ』は尊敬にならない。下の尊敬語に惑わされない。",
+      "explanation": "知覚動詞に付き、自然にその動作が起こる → 自発。「ただ帰っていく波だけが、自然とうちながめられて」と訳す。",
       "distractorRationale": {
-        "可能": "下に打消の語がないのに可能としている",
-        "自発": "心情語・知覚動詞ではないのに自発としている",
-        "尊敬": "下の『給ふ』に引きずられ、れ給ふの『れ』を尊敬としている（尊敬にならない）"
+        "受身": "知覚動詞に付く自発を、受身の「眺められる」と判断している",
+        "可能": "打消がないのに可能と判断している",
+        "尊敬": "高い身分の主語を示す手がかりがないのに尊敬と判断している"
       },
       "ruleRefs": [
+        "kbp.disambiguation.ru-re-identification",
         "kbp.auxiliaries.ru-raru-meanings"
       ]
     },
@@ -2291,41 +2297,32 @@
     {
       "id": "pn-rareru-jihatsu-sonkei",
       "topic": "る・らるの識別",
-      "step": "競合：心情語と身分",
+      "step": "指定例⑦",
       "questionType": "integration",
       "coverageId": "pn-rareru-jihatsu-sonkei",
-      "passage": "女御、故里の秋を思ひ出でらる。",
-      "target": "らる",
+      "passage": "ほほ笑まれたまふこと多く、",
+      "target": "れ",
       "steps": [
         {
-          "prompt": "手順I：上に動作の受け手「（誰々）に」を補えるか。",
+          "prompt": "手順I：「れ」の直前の「ほほ笑む」は心情・感情に関わる動詞か。",
           "choices": [
-            "補える → 受身",
-            "補えない → 次の手順へ"
-          ],
-          "answerIndex": 1,
-          "explanation": "動作の受け手を示す語はない。"
-        },
-        {
-          "prompt": "手順II：下に打消の語があるか。",
-          "choices": [
-            "ある → 可能",
-            "ない → 次の手順へ"
-          ],
-          "answerIndex": 1,
-          "explanation": "打消の語は続いていない。"
-        },
-        {
-          "prompt": "手順III：上に心情語・知覚動詞があるか。",
-          "choices": [
-            "ある → 自発",
-            "ない → 次の手順へ"
+            "関わる",
+            "関わらない"
           ],
           "answerIndex": 0,
-          "explanation": "「思ひ出づ」は心情を表す動詞である。"
+          "explanation": "「ほほ笑む」は感情の表れを表す動詞である。"
         },
         {
-          "prompt": "最終判断：この語の意味は。",
+          "prompt": "手順II：下の「たまふ」だけを根拠に「れ」を尊敬と判断してよいか。",
+          "choices": [
+            "判断してよい",
+            "判断してはいけない"
+          ],
+          "answerIndex": 1,
+          "explanation": "「たまふ」は別の尊敬語であり、直前の「れ」の意味をそれだけで決めることはできない。"
+        },
+        {
+          "prompt": "最終判断：この「る」の意味は。",
           "choices": [
             "受身",
             "可能",
@@ -2333,16 +2330,17 @@
             "尊敬"
           ],
           "answerIndex": 2,
-          "explanation": "心情語『思ひ出づ』に付くので自発。主語が高貴でも、心情語→自発（手順III）が身分→尊敬（手順IV）より先。「女御が故郷の秋を自然と思い出される」と訳す。"
+          "explanation": "感情の表れを表す「ほほ笑む」に付き、思わずほほ笑む意味なので自発の助動詞「る」。"
         }
       ],
-      "explanation": "心情語→自発は、身分→尊敬より手順が先。手がかりの優先順位を試す。",
+      "explanation": "感情に関わる動詞に付き、自然に動作が起こる → 自発。「ほほ笑むことが多く」と訳す。下の「たまふ」に引きずられない。",
       "distractorRationale": {
-        "受身": "受け手『（誰々）に』がないのに受身としている",
-        "可能": "下に打消の語がないのに可能としている",
-        "尊敬": "主語が高貴なので尊敬と早合点し、心情語→自発（手順III）を先に適用していない"
+        "受身": "「ほほ笑む」は誰かから受ける動作ではないのに受身と判断している",
+        "可能": "打消がないのに可能と判断している",
+        "尊敬": "下の「たまふ」だけを見て、直前の「る」まで尊敬と判断している"
       },
       "ruleRefs": [
+        "kbp.disambiguation.ru-re-identification",
         "kbp.auxiliaries.ru-raru-meanings"
       ]
     },
@@ -4004,32 +4002,32 @@
         },
         {
           "id": "sb-rareru-int-ukemi",
-          "label": "統合①",
+          "label": "指定例②",
           "questionType": "integration"
         },
         {
           "id": "sb-rareru-int-kanou",
-          "label": "統合②",
+          "label": "指定例⑤",
           "questionType": "integration"
         },
         {
           "id": "sb-rareru-int1",
-          "label": "統合③",
+          "label": "指定例①",
           "questionType": "integration"
         },
         {
           "id": "sb-rareru-int-sonkei",
-          "label": "統合④",
+          "label": "指定例④",
           "questionType": "integration"
         },
         {
           "id": "pn-rareru-ukemi-sonkei",
-          "label": "競合：受け手と身分",
+          "label": "指定例⑥",
           "questionType": "integration"
         },
         {
           "id": "pn-rareru-retamafu",
-          "label": "例外：れ給ふ",
+          "label": "指定例③",
           "questionType": "integration"
         },
         {
@@ -4044,7 +4042,7 @@
         },
         {
           "id": "pn-rareru-jihatsu-sonkei",
-          "label": "競合：心情語と身分",
+          "label": "指定例⑦",
           "questionType": "integration"
         }
       ]
