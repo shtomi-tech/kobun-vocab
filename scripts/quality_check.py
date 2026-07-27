@@ -188,8 +188,8 @@ def check_joshi_required_question_ids(data):
 
 def check_homograph_required_question_ids(data):
     return check_required_question_ids_for_set(
-        data, "homographRequiredQuestionIds", "homographQuestions", 45,
-        {"procedure": 5, "condition": 23, "contrast": 5, "integration": 12},
+        data, "homographRequiredQuestionIds", "homographQuestions", 50,
+        {"procedure": 5, "condition": 28, "contrast": 5, "integration": 12},
         "同形語識別",
     )
 
@@ -552,7 +552,7 @@ def main():
         homographq = homograph.get("homographQuestions", [])
         homograph_by_id = {q.get("id"): q for q in homographq}
         required_types = Counter(homograph_by_id[qid].get("questionType") for qid in homograph.get("homographRequiredQuestionIds", []))
-        print("同形語必修ルート: 45問（" + ", ".join(f"{k}={v}" for k, v in sorted(required_types.items())) + "）、追加練習: 12問")
+        print("同形語必修ルート: 50問（" + ", ".join(f"{k}={v}" for k, v in sorted(required_types.items())) + "）、追加練習: 12問")
     if not keigo_required_err:
         keigoq = keigo.get("keigoQuestions", [])
         keigo_by_id = {q.get("id"): q for q in keigoq}

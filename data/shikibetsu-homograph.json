@@ -38,6 +38,11 @@
     "hg-nari-int1",
     "hg-nari-int2",
     "hg-nari-int3",
+    "hg-nari-cond-example1",
+    "hg-nari-cond-example2",
+    "hg-nari-cond-example3",
+    "hg-nari-cond-example4",
+    "hg-nari-cond-example5",
     "hg-namu-proc1",
     "hg-namu-cond-ganbou",
     "hg-namu-cond-kakujutsu",
@@ -226,7 +231,12 @@
         "hg-nari-int1",
         "hg-nari-int2",
         "hg-nari-int3",
-        "hg-nari-int4"
+        "hg-nari-int4",
+        "hg-nari-cond-example1",
+        "hg-nari-cond-example2",
+        "hg-nari-cond-example3",
+        "hg-nari-cond-example4",
+        "hg-nari-cond-example5"
       ]
     },
     {
@@ -306,6 +316,11 @@
         "hg-nari-int2",
         "hg-nari-int3",
         "hg-nari-int4",
+        "hg-nari-cond-example1",
+        "hg-nari-cond-example2",
+        "hg-nari-cond-example3",
+        "hg-nari-cond-example4",
+        "hg-nari-cond-example5",
         "hg-namu-proc1",
         "hg-namu-proc2",
         "hg-namu-cond-ganbou",
@@ -511,6 +526,31 @@
           "id": "hg-nari-int4",
           "label": "統合④",
           "questionType": "integration"
+        },
+        {
+          "id": "hg-nari-cond-example1",
+          "label": "形容動詞の活用語尾（指定例）",
+          "questionType": "condition"
+        },
+        {
+          "id": "hg-nari-cond-example2",
+          "label": "存在の助動詞（指定例）",
+          "questionType": "condition"
+        },
+        {
+          "id": "hg-nari-cond-example3",
+          "label": "四段動詞（指定例）",
+          "questionType": "condition"
+        },
+        {
+          "id": "hg-nari-cond-example4",
+          "label": "断定の助動詞（指定例）",
+          "questionType": "condition"
+        },
+        {
+          "id": "hg-nari-cond-example5",
+          "label": "伝聞の助動詞（指定例）",
+          "questionType": "condition"
         }
       ]
     },
@@ -1723,6 +1763,128 @@
         "断定の助動詞「なり」": "「静か」は体言ではないため、助動詞として切り離せない",
         "伝聞・推定の助動詞「なり」": "「静か」は活用語の終止形ではない",
         "変化を表す動詞「なる」": "「静かになる」という変化の意味ではなく、状態を述べている"
+      },
+      "ruleRefs": [
+        "kbp.disambiguation.nari-identification"
+      ]
+    },
+    {
+      "id": "hg-nari-cond-example1",
+      "topic": "なりの識別",
+      "step": "条件・指定例①",
+      "questionType": "condition",
+      "coverageId": "hg-nari-cond-example1",
+      "question": "「気色いと苦しげなり。」の「なり」は何か。",
+      "choices": [
+        "形容動詞の活用語尾",
+        "存在を表す助動詞「なり」",
+        "断定を表す助動詞「なり」",
+        "四段活用動詞「なる」"
+      ],
+      "answerIndex": 0,
+      "explanation": "「苦しげなり」で形容動詞（ナリ活用）を作っている。「なり」は助動詞ではなく、形容動詞の活用語尾である。",
+      "distractorRationale": {
+        "存在を表す助動詞「なり」": "「苦しげ」は場所を表す体言ではなく、形容動詞の語幹である",
+        "断定を表す助動詞「なり」": "「苦しげなり」で一語の形容動詞になるため、断定の助動詞として切り離さない",
+        "四段活用動詞「なる」": "「苦しげになる」という変化を表す動詞ではなく、状態を表す形容動詞である"
+      },
+      "ruleRefs": [
+        "kbp.disambiguation.nari-identification"
+      ]
+    },
+    {
+      "id": "hg-nari-cond-example2",
+      "topic": "なりの識別",
+      "step": "条件・指定例②",
+      "questionType": "condition",
+      "coverageId": "hg-nari-cond-example2",
+      "question": "「箱なる文を見た給ひて、」の「なる」は何か。",
+      "choices": [
+        "存在を表す助動詞「なり」",
+        "断定を表す助動詞「なり」",
+        "形容動詞の活用語尾",
+        "四段活用動詞「なる」"
+      ],
+      "answerIndex": 0,
+      "explanation": "「箱」は場所を表す体言なので、「箱にある文」と訳す。したがって「なる」は存在を表す助動詞「なり」の連体形である。",
+      "distractorRationale": {
+        "断定を表す助動詞「なり」": "直前の「箱」は場所を表す体言なので、断定ではなく存在と訳す",
+        "形容動詞の活用語尾": "「箱」は形容動詞の語幹ではなく、場所を表す名詞である",
+        "四段活用動詞「なる」": "ここは「箱になる」という変化ではなく、「箱にある」という存在を表す"
+      },
+      "ruleRefs": [
+        "kbp.disambiguation.nari-identification",
+        "kbp.auxiliaries.nari-meanings"
+      ]
+    },
+    {
+      "id": "hg-nari-cond-example3",
+      "topic": "なりの識別",
+      "step": "条件・指定例③",
+      "questionType": "condition",
+      "coverageId": "hg-nari-cond-example3",
+      "question": "「年は五十余になりぬる」の「なり」は何か。",
+      "choices": [
+        "四段活用動詞「なる」",
+        "完了・強意の助動詞「ぬ」",
+        "断定の助動詞「なり」",
+        "形容動詞の活用語尾"
+      ],
+      "answerIndex": 0,
+      "explanation": "「なる」は「五十余になる（五十余に達する）」という変化を表す四段活用動詞で、「なり」はその連用形。「ぬる」は後続する完了の助動詞「ぬ」である。",
+      "distractorRationale": {
+        "完了・強意の助動詞「ぬ」": "完了・強意を表す「ぬ」は「なり」の後に続く「ぬる」である",
+        "断定の助動詞「なり」": "「五十余になる」と変化・到達を表しており、断定の助動詞ではない",
+        "形容動詞の活用語尾": "「五十余」は形容動詞の語幹ではなく、「なる」と訳せる動詞に接続している"
+      },
+      "ruleRefs": [
+        "kbp.disambiguation.nari-identification"
+      ]
+    },
+    {
+      "id": "hg-nari-cond-example4",
+      "topic": "なりの識別",
+      "step": "条件・指定例④",
+      "questionType": "condition",
+      "coverageId": "hg-nari-cond-example4",
+      "question": "「いささかのことなり。」の「なり」は何か。",
+      "choices": [
+        "断定の助動詞「なり」",
+        "存在を表す助動詞「なり」",
+        "伝聞を表す助動詞「なり」",
+        "形容動詞の活用語尾"
+      ],
+      "answerIndex": 0,
+      "explanation": "「こと」は体言で、場所や方角を表す語ではない。「なり」は「いささかのことだ」と断定する助動詞である。",
+      "distractorRationale": {
+        "存在を表す助動詞「なり」": "直前の「こと」は場所や方角を表す体言ではないため、存在とは訳さない",
+        "伝聞を表す助動詞「なり」": "体言「こと」に接続して「ことだ」と断定しており、伝聞の接続ではない",
+        "形容動詞の活用語尾": "「こと」は形容動詞の語幹ではなく、体言である"
+      },
+      "ruleRefs": [
+        "kbp.disambiguation.nari-identification",
+        "kbp.auxiliaries.nari-meanings"
+      ]
+    },
+    {
+      "id": "hg-nari-cond-example5",
+      "topic": "なりの識別",
+      "step": "条件・指定例⑤",
+      "questionType": "condition",
+      "coverageId": "hg-nari-cond-example5",
+      "question": "「仙人などもかくこそすなれ」の「なれ」は何か。",
+      "choices": [
+        "伝聞を表す助動詞「なり」",
+        "断定を表す助動詞「なり」",
+        "存在を表す助動詞「なり」",
+        "形容動詞の活用語尾"
+      ],
+      "answerIndex": 0,
+      "explanation": "「す」はサ変動詞の終止形で、「なれ」は終止形接続の伝聞の助動詞「なり」の已然形。「仙人などもこのようにするそうだ」と訳す。",
+      "distractorRationale": {
+        "断定を表す助動詞「なり」": "「なれ」は終止形「す」に接続し、伝聞の意味を表す助動詞「なり」である",
+        "存在を表す助動詞「なり」": "場所を表す体言に付く存在の「なり」ではなく、動詞の終止形に付いている",
+        "形容動詞の活用語尾": "「すなれ」は形容動詞ではなく、動詞「す」に助動詞が接続した形である"
       },
       "ruleRefs": [
         "kbp.disambiguation.nari-identification"
