@@ -1,7 +1,7 @@
 {
   "meta": {
     "source": "未然形接続の助動詞（る・らる／す・さす・しむ／ず／む・むず／まし）ほか、識別の必要な助動詞・助詞・敬語の識別手順をもとにしたオリジナル問題",
-    "note": "市販教材の設問文・例文をそのまま転記せず、識別手順の知識をもとに独自の問題文・選択肢・解説・古文例として作成。写真などの出典資料はリポジトリに保存しない。2026-07改訂：手薄だったけり・らむ・べし・なり・助詞・同形語・敬語のトピックに例文つき統合問題を追加し、誤答を紛らわしい本物の候補に差し替えた。2026-07-22追加：「せ」の識別手順を参考にしたオリジナル4択を追加。 / 2026-07-25改訂：原則カード準拠で「つ・ぬ」「たり・り」を新設、「べし」を可能→人称の判定順に修正し「まじ」を追加、「む」に「じ」を追加。汎用の助詞・同形語・敬語の3手順は専用データへ移し、deprecated に退避。 / 2026-07-28追加：「らむ」の3用法を例文で整理し、「けむ」の必須問題を追加。 / 2026-07-28追記：「む」「べし」の指定例を統合問題へ反映。「き・けり」と「たり・り」の指定例を反映。「まし」「なり（断定・存在）」「けむ」の指定例を反映。 / 2026-07-28改訂：資料「助動詞問題」のうち既存の原則範囲に合う21問を優先して実践4択へ反映。旧ステップ問題は補助問題として同じIDで4択化し、学習済み記録は形式変更時に移行対象とする。"
+    "note": "市販教材の設問文・例文をそのまま転記せず、識別手順の知識をもとに独自の問題文・選択肢・解説・古文例として作成。写真などの出典資料はリポジトリに保存しない。2026-07改訂：手薄だったけり・らむ・べし・なり・助詞・同形語・敬語のトピックに例文つき統合問題を追加し、誤答を紛らわしい本物の候補に差し替えた。2026-07-22追加：「せ」の識別手順を参考にしたオリジナル4択を追加。 / 2026-07-25改訂：原則カード準拠で「つ・ぬ」「たり・り」を新設、「べし」を可能→人称の判定順に修正し「まじ」を追加、「む」に「じ」を追加。汎用の助詞・同形語・敬語の3手順は専用データへ移し、deprecated に退避。 / 2026-07-28追加：「らむ」の3用法を例文で整理し、「けむ」の必須問題を追加。 / 2026-07-28追記：「む」「べし」の指定例を統合問題へ反映。「き・けり」と「たり・り」の指定例を反映。「まし」「なり（断定・存在）」「けむ」の指定例を反映。 / 2026-07-28改訂：資料「助動詞問題」のうち既存の原則範囲に合う21問を優先して実践4択へ反映。旧ステップ問題は補助問題として同じIDで4択化し、学習済み記録は形式変更時に移行対象とする。 / 2026-07-28追加：資料「助動詞問題」で保留していた8問を実践4択へ反映し、導入用の条件確認5問と「その他の助動詞の意味」手順を追加。"
   },
   "procedures": [
     {
@@ -231,6 +231,29 @@
         {
           "no": "手順II",
           "text": "体言・連体形接続なら断定、終止形接続（ラ変型は連体形接続）なら伝聞推定と判断する。"
+        }
+      ]
+    },
+    {
+      "id": "other",
+      "name": "その他の助動詞の意味",
+      "sub": "らし・めり・たし・ごとし・断定のたり",
+      "steps": [
+        {
+          "no": "手順I",
+          "text": "「らし」「めり」は、根拠をもとにした推定か、目で見たことを根拠にした推定かを確認する。"
+        },
+        {
+          "no": "手順II",
+          "text": "「たし」は連用形に接続し、話し手の希望を表すので「〜たい」と訳す。"
+        },
+        {
+          "no": "手順III",
+          "text": "「ごとし」は、〜のようだ・〜のようであるという比況を表す。"
+        },
+        {
+          "no": "手順IV",
+          "text": "「たり」は接続を確認する。体言に接続する「たり」は断定、連用形に接続する「たり」は完了・存続である。"
         }
       ]
     }
@@ -3488,6 +3511,394 @@
         "kbp.auxiliaries.beshi-maji-meanings"
       ],
       "sourceRef": "助動詞問題⑤・問2③"
+    },
+    {
+      "id": "sb-other-proc-rashi",
+      "topic": "その他の助動詞の意味",
+      "step": "条件確認",
+      "questionType": "condition",
+      "coverageId": "sb-other-proc-rashi",
+      "question": "助動詞「らし」の基本的な意味として最も適切なものはどれか。",
+      "choices": [
+        "推定",
+        "完了",
+        "願望",
+        "使役"
+      ],
+      "answerIndex": 0,
+      "explanation": "「らし」は根拠をもとに、〜らしいと推定する意味を表す。",
+      "distractorRationale": {
+        "完了": "完了を表すのは「つ・ぬ」「たり・り」などである",
+        "願望": "願望を表す代表的な助動詞は「たし」である",
+        "使役": "使役を表すのは「す・さす・しむ」である"
+      },
+      "ruleRefs": [
+        "kbp.auxiliaries.rashi-meaning"
+      ]
+    },
+    {
+      "id": "sb-other-proc-meri",
+      "topic": "その他の助動詞の意味",
+      "step": "条件確認",
+      "questionType": "condition",
+      "coverageId": "sb-other-proc-meri",
+      "question": "助動詞「めり」の基本的な意味として最も適切なものはどれか。",
+      "choices": [
+        "推定",
+        "断定",
+        "強意",
+        "可能"
+      ],
+      "answerIndex": 0,
+      "explanation": "「めり」は目で見たことを根拠に、〜ようだと推定する意味を表す。",
+      "distractorRationale": {
+        "断定": "断定を表す助動詞は「なり」「たり」である",
+        "強意": "強意は「つ・ぬ」に推量の助動詞が続く場合に考える",
+        "可能": "可能の意味を持つ代表的な助動詞は「る・らる」「べし」である"
+      },
+      "ruleRefs": [
+        "kbp.auxiliaries.meri-meaning"
+      ]
+    },
+    {
+      "id": "sb-other-proc-tashi",
+      "topic": "その他の助動詞の意味",
+      "step": "条件確認",
+      "questionType": "condition",
+      "coverageId": "sb-other-proc-tashi",
+      "question": "助動詞「たし」の基本的な意味として最も適切なものはどれか。",
+      "choices": [
+        "願望",
+        "推定",
+        "完了",
+        "当然"
+      ],
+      "answerIndex": 0,
+      "explanation": "「たし」は話し手の希望を表し、〜たいと訳す。",
+      "distractorRationale": {
+        "推定": "推定を表す助動詞は「らし」「めり」などである",
+        "完了": "完了を表すのは「つ・ぬ」「たり・り」などである",
+        "当然": "当然を表す代表的な助動詞は「べし」である"
+      },
+      "ruleRefs": [
+        "kbp.auxiliaries.tashi-meaning"
+      ]
+    },
+    {
+      "id": "sb-other-proc-gotoshi",
+      "topic": "その他の助動詞の意味",
+      "step": "条件確認",
+      "questionType": "condition",
+      "coverageId": "sb-other-proc-gotoshi",
+      "question": "助動詞「ごとし」の基本的な意味として最も適切なものはどれか。",
+      "choices": [
+        "比況",
+        "受身",
+        "詠嘆",
+        "打消"
+      ],
+      "answerIndex": 0,
+      "explanation": "「ごとし」は、〜のようだ・〜のようであるという比況を表す。",
+      "distractorRationale": {
+        "受身": "受身を表すのは「る・らる」である",
+        "詠嘆": "詠嘆を表すのは「けり」などである",
+        "打消": "打消を表すのは「ず」「じ」などである"
+      },
+      "ruleRefs": [
+        "kbp.auxiliaries.gotoshi-meaning"
+      ]
+    },
+    {
+      "id": "sb-other-proc-tari",
+      "topic": "その他の助動詞の意味",
+      "step": "条件確認",
+      "questionType": "condition",
+      "coverageId": "sb-other-proc-tari",
+      "question": "「人の奴たるものは」の「たる」を断定の助動詞と判断する手がかりはどれか。",
+      "choices": [
+        "体言に接続している",
+        "連用形に接続している",
+        "下に推量の助動詞が続く",
+        "主語が高貴な人物である"
+      ],
+      "answerIndex": 0,
+      "explanation": "断定の「たり」は体言に接続する。完了・存続の「たり」は連用形に接続する。",
+      "distractorRationale": {
+        "連用形に接続している": "連用形接続なら完了・存続の「たり」を考える",
+        "下に推量の助動詞が続く": "下接語で強意を判断するのは「つ・ぬ」の手がかりである",
+        "主語が高貴な人物である": "主語の身分は尊敬の判定に使う手がかりである"
+      },
+      "ruleRefs": [
+        "kbp.disambiguation.tari-identification"
+      ]
+    },
+    {
+      "id": "src-jd03-q05",
+      "topic": "つ・ぬの識別",
+      "step": "実践",
+      "questionType": "integration",
+      "coverageId": "src-jd03-q05",
+      "passage": "泣きぬ笑ひぬぞしたまひける。",
+      "target": "ぬ",
+      "targetRanges": [
+        {
+          "start": 2,
+          "text": "ぬ"
+        },
+        {
+          "start": 5,
+          "text": "ぬ"
+        }
+      ],
+      "question": "傍線部の意味として最も適切なものを選べ。",
+      "choices": [
+        "完了",
+        "強意",
+        "並列",
+        "打消"
+      ],
+      "answerIndex": 2,
+      "explanation": "同じ形の「ぬ」を並べて、泣くことと笑うことを並列に述べているので並列。",
+      "distractorRationale": {
+        "完了": "単独の完了としてではなく、同じ形を重ねて二つの動作を並べている",
+        "強意": "直下に推量の助動詞が続く形ではない",
+        "打消": "打消の「ず」ではなく、並列を表す同形の「ぬ」である"
+      },
+      "ruleRefs": [
+        "kbp.auxiliaries.tsu-nu-meanings"
+      ],
+      "sourceRef": "助動詞問題③・問2⑤"
+    },
+    {
+      "id": "src-jd07-q01",
+      "topic": "らしの識別",
+      "step": "実践",
+      "questionType": "integration",
+      "coverageId": "src-jd07-q01",
+      "passage": "竜田川色紅になりにけり山の紅葉ぞ今は散るらし。",
+      "target": "らし",
+      "targetRanges": [
+        {
+          "start": 20,
+          "text": "らし"
+        }
+      ],
+      "question": "傍線部の意味として最も適切なものを選べ。",
+      "choices": [
+        "推定",
+        "推量",
+        "婉曲",
+        "伝聞"
+      ],
+      "answerIndex": 0,
+      "explanation": "散っている紅葉を根拠に、山の紅葉が今は散るらしいと推定しているので推定。",
+      "distractorRationale": {
+        "推量": "「らし」は根拠をもとにした推定として扱う",
+        "婉曲": "体言を修飾する婉曲の用法ではない",
+        "伝聞": "人から聞いた内容を伝える本文ではない"
+      },
+      "ruleRefs": [
+        "kbp.auxiliaries.rashi-meaning"
+      ],
+      "sourceRef": "助動詞問題⑦・問2①"
+    },
+    {
+      "id": "src-jd07-q02",
+      "topic": "めりの識別",
+      "step": "実践",
+      "questionType": "integration",
+      "coverageId": "src-jd07-q02",
+      "passage": "皮衣を見て、いはく、「うるはしき皮なめり。」",
+      "target": "めり",
+      "targetRanges": [
+        {
+          "start": 18,
+          "text": "めり"
+        }
+      ],
+      "question": "傍線部の意味として最も適切なものを選べ。",
+      "choices": [
+        "推定",
+        "推量",
+        "婉曲",
+        "伝聞"
+      ],
+      "answerIndex": 0,
+      "explanation": "皮衣を見たことを根拠に、立派な皮のようだと推定しているので推定。",
+      "distractorRationale": {
+        "推量": "「めり」は目で見たことを根拠にした推定である",
+        "婉曲": "体言を修飾する婉曲の用法ではない",
+        "伝聞": "人から聞いた内容を伝える本文ではない"
+      },
+      "ruleRefs": [
+        "kbp.auxiliaries.meri-meaning"
+      ],
+      "sourceRef": "助動詞問題⑦・問2②"
+    },
+    {
+      "id": "src-jd07-q05",
+      "topic": "ましの識別",
+      "step": "実践",
+      "questionType": "integration",
+      "coverageId": "src-jd07-q05",
+      "passage": "ねたき。言はざらましものを。",
+      "target": "まし",
+      "targetRanges": [
+        {
+          "start": 8,
+          "text": "まし"
+        }
+      ],
+      "question": "傍線部の意味として最も適切なものを選べ。",
+      "choices": [
+        "反事実の希望",
+        "ためらいの意志",
+        "推量",
+        "願望"
+      ],
+      "answerIndex": 0,
+      "explanation": "言わなかったならよかったのにという、実現しなかった事態への希望・後悔を表すので反事実の希望。",
+      "distractorRationale": {
+        "ためらいの意志": "疑問語を伴ってどうしようかと迷う本文ではない",
+        "推量": "未来や現在の事実を推し量る助動詞ではない",
+        "願望": "単なる願望ではなく、実現しなかった事態を振り返る表現である"
+      },
+      "ruleRefs": [
+        "kbp.auxiliaries.mashi-meanings"
+      ],
+      "sourceRef": "助動詞問題⑦・問2⑤"
+    },
+    {
+      "id": "src-jd09-q02",
+      "topic": "ごとしの識別",
+      "step": "実践",
+      "questionType": "integration",
+      "coverageId": "src-jd09-q02",
+      "passage": "蟻のごとくに集まりて、",
+      "target": "ごとく",
+      "targetRanges": [
+        {
+          "start": 2,
+          "text": "ごとく"
+        }
+      ],
+      "question": "傍線部の意味として最も適切なものを選べ。",
+      "choices": [
+        "比況",
+        "願望",
+        "推定",
+        "断定"
+      ],
+      "answerIndex": 0,
+      "explanation": "蟻のように集まるというたとえを表しているので比況。",
+      "distractorRationale": {
+        "願望": "話し手の希望を表す本文ではない",
+        "推定": "根拠をもとに事実を推定する本文ではない",
+        "断定": "体言を断定する助動詞ではない"
+      },
+      "ruleRefs": [
+        "kbp.auxiliaries.gotoshi-meaning"
+      ],
+      "sourceRef": "助動詞問題⑨・問2②"
+    },
+    {
+      "id": "src-jd09-q03",
+      "topic": "たしの識別",
+      "step": "実践",
+      "questionType": "integration",
+      "coverageId": "src-jd09-q03",
+      "passage": "家にありたき木は、松・桜。",
+      "target": "たき",
+      "targetRanges": [
+        {
+          "start": 4,
+          "text": "たき"
+        }
+      ],
+      "question": "傍線部の意味として最も適切なものを選べ。",
+      "choices": [
+        "願望",
+        "断定",
+        "比況",
+        "完了"
+      ],
+      "answerIndex": 0,
+      "explanation": "家にあってほしい木を述べているので、希望の助動詞「たし」の願望。",
+      "distractorRationale": {
+        "断定": "体言を断定する助動詞ではない",
+        "比況": "何かにたとえる本文ではない",
+        "完了": "動作の完了ではなく、話し手の希望を表している"
+      },
+      "ruleRefs": [
+        "kbp.auxiliaries.tashi-meaning"
+      ],
+      "sourceRef": "助動詞問題⑨・問2③"
+    },
+    {
+      "id": "src-jd09-q04",
+      "topic": "ごとしの識別",
+      "step": "実践",
+      "questionType": "integration",
+      "coverageId": "src-jd09-q04",
+      "passage": "扇をひろげたるがごとく末広になりぬ。",
+      "target": "ごとく",
+      "targetRanges": [
+        {
+          "start": 8,
+          "text": "ごとく"
+        }
+      ],
+      "question": "傍線部の意味として最も適切なものを選べ。",
+      "choices": [
+        "比況",
+        "願望",
+        "推定",
+        "断定"
+      ],
+      "answerIndex": 0,
+      "explanation": "扇を広げたように末広がりになったというたとえを表しているので比況。",
+      "distractorRationale": {
+        "願望": "話し手の希望を表す本文ではない",
+        "推定": "根拠をもとに事実を推定する本文ではない",
+        "断定": "体言を断定する助動詞ではない"
+      },
+      "ruleRefs": [
+        "kbp.auxiliaries.gotoshi-meaning"
+      ],
+      "sourceRef": "助動詞問題⑨・問2④"
+    },
+    {
+      "id": "src-jd09-q05",
+      "topic": "たりの識別",
+      "step": "実践",
+      "questionType": "integration",
+      "coverageId": "src-jd09-q05",
+      "passage": "人の奴たるものは、賞罰はなはだしく、",
+      "target": "たる",
+      "targetRanges": [
+        {
+          "start": 3,
+          "text": "たる"
+        }
+      ],
+      "question": "傍線部の意味として最も適切なものを選べ。",
+      "choices": [
+        "断定",
+        "完了",
+        "存続",
+        "比況"
+      ],
+      "answerIndex": 0,
+      "explanation": "「人の奴であるものは」と体言「奴」を断定しているので、断定の助動詞「たり」の連体形。",
+      "distractorRationale": {
+        "完了": "連用形に接続する完了の「たり」ではなく、体言に接続している",
+        "存続": "動作の継続や結果の残存を表す本文ではない",
+        "比況": "何かにたとえる本文ではない"
+      },
+      "ruleRefs": [
+        "kbp.disambiguation.tari-identification"
+      ],
+      "sourceRef": "助動詞問題⑨・問2⑤"
     }
   ],
   "requiredQuestionIds": [
@@ -3584,7 +3995,20 @@
     "pn-keri-int5",
     "src-jd05-q03",
     "pn-nari-int1",
-    "pn-nari-int2"
+    "pn-nari-int2",
+    "sb-other-proc-rashi",
+    "sb-other-proc-meri",
+    "sb-other-proc-tashi",
+    "sb-other-proc-gotoshi",
+    "sb-other-proc-tari",
+    "src-jd03-q05",
+    "src-jd07-q01",
+    "src-jd07-q02",
+    "src-jd07-q05",
+    "src-jd09-q02",
+    "src-jd09-q03",
+    "src-jd09-q04",
+    "src-jd09-q05"
   ],
   "shikibetsuGroups": [
     {
@@ -3674,7 +4098,8 @@
         "sb-mashi-int1",
         "sb-mashi-int-tamerai",
         "pn-mashi-int3",
-        "pn-mashi-int4"
+        "pn-mashi-int4",
+        "src-jd07-q05"
       ]
     },
     {
@@ -3761,7 +4186,8 @@
         "sb-tsunu-int1",
         "sb-tsunu-int2",
         "sb-tsunu-int3",
-        "sb-tsunu-int4"
+        "sb-tsunu-int4",
+        "src-jd03-q05"
       ]
     },
     {
@@ -3781,8 +4207,26 @@
       ]
     },
     {
+      "id": "sb-other",
+      "name": "その他の助動詞の意味",
+      "sub": "らし・めり・たし・ごとし・断定のたり（手順→条件→実践）",
+      "ids": [
+        "sb-other-proc-rashi",
+        "sb-other-proc-meri",
+        "sb-other-proc-tashi",
+        "sb-other-proc-gotoshi",
+        "sb-other-proc-tari",
+        "src-jd07-q01",
+        "src-jd07-q02",
+        "src-jd09-q02",
+        "src-jd09-q03",
+        "src-jd09-q04",
+        "src-jd09-q05"
+      ]
+    },
+    {
       "id": "sb-all",
-      "name": "総仕上げ：115問（必修90＋追加25）",
+      "name": "総仕上げ：129問（必修107＋追加22）",
       "sub": "必修ルートの問題と追加練習をランダム出題",
       "shuffle": true,
       "ids": [
@@ -3901,7 +4345,20 @@
         "pn-beshi-tozen",
         "sb-mu-cond-ji",
         "sb-mu-int-ji",
-        "src-jd05-q03"
+        "src-jd05-q03",
+        "sb-other-proc-rashi",
+        "sb-other-proc-meri",
+        "sb-other-proc-tashi",
+        "sb-other-proc-gotoshi",
+        "sb-other-proc-tari",
+        "src-jd03-q05",
+        "src-jd07-q01",
+        "src-jd07-q02",
+        "src-jd07-q05",
+        "src-jd09-q02",
+        "src-jd09-q03",
+        "src-jd09-q04",
+        "src-jd09-q05"
       ]
     }
   ],
@@ -4203,6 +4660,11 @@
           "id": "pn-mashi-int4",
           "label": "指定例④：ためらいの意志",
           "questionType": "integration"
+        },
+        {
+          "id": "src-jd07-q05",
+          "label": "指定例⑤：反事実の希望",
+          "questionType": "integration"
         }
       ]
     },
@@ -4453,6 +4915,11 @@
           "id": "sb-tsunu-int4",
           "label": "統合④",
           "questionType": "integration"
+        },
+        {
+          "id": "src-jd03-q05",
+          "label": "指定例⑤：並列",
+          "questionType": "integration"
         }
       ]
     },
@@ -4502,6 +4969,66 @@
         {
           "id": "sb-tariri-int4",
           "label": "統合④",
+          "questionType": "integration"
+        }
+      ]
+    },
+    {
+      "topic": "その他の助動詞の意味",
+      "items": [
+        {
+          "id": "sb-other-proc-rashi",
+          "label": "らしの基本意味",
+          "questionType": "condition"
+        },
+        {
+          "id": "sb-other-proc-meri",
+          "label": "めりの基本意味",
+          "questionType": "condition"
+        },
+        {
+          "id": "sb-other-proc-tashi",
+          "label": "たしの基本意味",
+          "questionType": "condition"
+        },
+        {
+          "id": "sb-other-proc-gotoshi",
+          "label": "ごとしの基本意味",
+          "questionType": "condition"
+        },
+        {
+          "id": "sb-other-proc-tari",
+          "label": "断定のたり",
+          "questionType": "condition"
+        },
+        {
+          "id": "src-jd07-q01",
+          "label": "指定例①：らし",
+          "questionType": "integration"
+        },
+        {
+          "id": "src-jd07-q02",
+          "label": "指定例②：めり",
+          "questionType": "integration"
+        },
+        {
+          "id": "src-jd09-q02",
+          "label": "指定例③：ごとし",
+          "questionType": "integration"
+        },
+        {
+          "id": "src-jd09-q03",
+          "label": "指定例④：たし",
+          "questionType": "integration"
+        },
+        {
+          "id": "src-jd09-q04",
+          "label": "指定例⑤：ごとし",
+          "questionType": "integration"
+        },
+        {
+          "id": "src-jd09-q05",
+          "label": "指定例⑥：断定のたり",
           "questionType": "integration"
         }
       ]

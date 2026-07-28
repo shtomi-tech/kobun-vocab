@@ -58,7 +58,7 @@ const KatsuyoApp = (function () {
     {
       id: "shikibetsu",
       label: "4. 助動詞の意味を決める",
-      description: "内容理解→4択→実践の順で、助動詞11種の意味を手順で決める",
+      description: "内容理解→4択→実践の順で、助動詞12種の意味を手順で決める",
       tasks: [
         { id: "proc-rareru", kind: "procedure", setId: "shikibetsu", procId: "rareru", label: "る・らるの識別" },
         { id: "proc-sasu", kind: "procedure", setId: "shikibetsu", procId: "sasu", label: "す・さす・しむの識別" },
@@ -71,6 +71,7 @@ const KatsuyoApp = (function () {
         { id: "proc-kemu", kind: "procedure", setId: "shikibetsu", procId: "kemu", label: "けむの識別" },
         { id: "proc-beshi", kind: "procedure", setId: "shikibetsu", procId: "beshi", label: "べし・まじの識別" },
         { id: "proc-nari", kind: "procedure", setId: "shikibetsu", procId: "nari", label: "なりの訳し分け（断定・存在）" },
+        { id: "proc-other", kind: "procedure", setId: "shikibetsu", procId: "other", label: "その他の助動詞の意味" },
       ],
     },
     {
@@ -669,12 +670,17 @@ const KatsuyoApp = (function () {
       phase: complete ? "完了" : "通し"
     };
   }
+  // 新しい必修問題を追加しても、すでに着手した後続段階を再ロックしない。
+  // 未着手の段階は従来どおり前段階の完了を必要とする。
+  function stageHasProgress(tasks) {
+    return tasks.some(task => task.status.complete || task.status.done > 0);
+  }
   function grammarPathStatus() {
     let previousComplete = true;
     return GRAMMAR_PATH.map(stage => {
       const tasks = stage.tasks.map(task => Object.assign({}, task, { status: taskStatus(task) }));
       const complete = tasks.every(task => task.status.complete);
-      const available = previousComplete;
+      const available = previousComplete || stageHasProgress(tasks);
       previousComplete = previousComplete && complete;
       return Object.assign({}, stage, { tasks, complete, available });
     });
@@ -685,7 +691,7 @@ const KatsuyoApp = (function () {
     return READING_PATH.map(stage => {
       const tasks = stage.tasks.map(task => Object.assign({}, task, { status: taskStatus(task) }));
       const complete = tasks.every(task => task.status.complete);
-      const available = previousComplete;
+      const available = previousComplete || stageHasProgress(tasks);
       previousComplete = previousComplete && complete;
       return Object.assign({}, stage, { tasks, complete, available });
     });
@@ -696,7 +702,7 @@ const KatsuyoApp = (function () {
     return CULTURE_PATH.map(stage => {
       const tasks = stage.tasks.map(task => Object.assign({}, task, { status: taskStatus(task) }));
       const complete = tasks.every(task => task.status.complete);
-      const available = previousComplete;
+      const available = previousComplete || stageHasProgress(tasks);
       previousComplete = previousComplete && complete;
       return Object.assign({}, stage, { tasks, complete, available });
     });
@@ -2116,7 +2122,7 @@ const KatsuyoApp = (function () {
         .then(r => { if (!r.ok) throw new Error("katsuyo data load failed: " + r.status); return r.json(); }),
       fetch("data/multiple_choice.json?v=20260727-1")
         .then(r => { if (!r.ok) throw new Error("choice data load failed: " + r.status); return r.json(); }),
-      fetch("data/shikibetsu.json?v=20260728-8")
+      fetch("data/shikibetsu.json?v=20260728-9")
         .then(r => { if (!r.ok) throw new Error("shikibetsu data load failed: " + r.status); return r.json(); }),
       fetch("data/keigo-dokkai.json?v=20260721-1")
         .then(r => { if (!r.ok) throw new Error("keigo-dokkai data load failed: " + r.status); return r.json(); }),
