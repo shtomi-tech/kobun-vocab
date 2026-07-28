@@ -32,27 +32,27 @@ const KatsuyoApp = (function () {
         { id: "kiso-yomi", kind: "group", setId: "kiso", groupId: "kiso-yomi", label: "歴史的仮名遣いと読み 7問" },
         { id: "kiso-bunsetsu", kind: "group", setId: "kiso", groupId: "kiso-bunsetsu", label: "文節・自立語と付属語 6問" },
         { id: "kiso-katsuyokei", kind: "group", setId: "kiso", groupId: "kiso-katsuyokei", label: "活用形の見分け 8問" },
-        { id: "kiso-setsuzoku", kind: "group", setId: "kiso", groupId: "kiso-setsuzoku", label: "接続という考え方 5問" },
+        { id: "kiso-setsuzoku", kind: "group", setId: "kiso", groupId: "kiso-setsuzoku", label: "接続という考え方 10問" },
+        { id: "choice-ch1", kind: "group", setId: "choice", groupId: "qa-chapter-1", label: "品詞・活用・係り結び 8問" },
+        { id: "choice-ch3", kind: "group", setId: "choice", groupId: "qa-chapter-3", label: "助動詞の攻略① 12問" },
+        { id: "choice-ch5", kind: "group", setId: "choice", groupId: "qa-chapter-5", label: "助動詞の攻略③ 8問" },
       ],
     },
     {
       id: "yougo",
       label: "2. 用言の活用",
-      description: "用言の活用表と、品詞・活用形・係り結びの基礎を固める",
+      description: "用言の活用表と、用言の攻略で活用の運用力を固める",
       tasks: [
         { id: "yougo-table", kind: "group", setId: "yougo", groupId: "yougo-all", label: "用言13語の活用表" },
-        { id: "choice-ch1", kind: "group", setId: "choice", groupId: "qa-chapter-1", label: "品詞・活用・係り結び 8問" },
         { id: "choice-ch2", kind: "group", setId: "choice", groupId: "qa-chapter-2", label: "用言の攻略 20問" },
       ],
     },
     {
       id: "jodoshi",
       label: "3. 助動詞の活用・接続",
-      description: "助動詞の活用表を埋め、接続と活用を4択で確認する",
+      description: "助動詞の活用表を埋める",
       tasks: [
         { id: "jodoshi-table", kind: "group", setId: "jodoshi", groupId: "all", label: "助動詞28語の活用表" },
-        { id: "choice-ch3", kind: "group", setId: "choice", groupId: "qa-chapter-3", label: "助動詞の攻略① 12問" },
-        { id: "choice-ch5", kind: "group", setId: "choice", groupId: "qa-chapter-5", label: "助動詞の攻略③ 8問" },
       ],
     },
     {
