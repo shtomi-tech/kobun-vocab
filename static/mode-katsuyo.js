@@ -30,9 +30,12 @@ const KatsuyoApp = (function () {
       description: "読み方・品詞・活用形・接続という、文法を読むための土台を作る",
       tasks: [
         { id: "kiso-yomi", kind: "group", setId: "kiso", groupId: "kiso-yomi", label: "歴史的仮名遣いと読み 7問" },
-        { id: "kiso-bunsetsu", kind: "group", setId: "kiso", groupId: "kiso-bunsetsu", label: "文節と品詞 8問" },
-        { id: "kiso-katsuyokei", kind: "group", setId: "kiso", groupId: "kiso-katsuyokei", label: "活用形と係り結び 10問" },
-        { id: "kiso-setsuzoku", kind: "group", setId: "kiso", groupId: "kiso-setsuzoku", label: "接続という考え方 9問" },
+        // 2026-07-28の統廃合で問題が増えた3タスクは、タスクIDを付け替えて
+        // grammarTaskCycles の passCompleted を引き継がせない。IDを据え置くと、
+        // 旧版を完了済みの生徒が新しく入った8問を未回答のまま完了扱いになる。
+        { id: "kiso-hinshi", kind: "group", setId: "kiso", groupId: "kiso-bunsetsu", label: "文節と品詞 8問" },
+        { id: "kiso-katsuyo-kakari", kind: "group", setId: "kiso", groupId: "kiso-katsuyokei", label: "活用形と係り結び 10問" },
+        { id: "kiso-setsuzoku-kihon", kind: "group", setId: "kiso", groupId: "kiso-setsuzoku", label: "接続という考え方 9問" },
         { id: "kiso-shikibetsu", kind: "group", setId: "kiso", groupId: "kiso-shikibetsu", label: "接続で識別する 5問" },
         { id: "kiso-jodoshi", kind: "group", setId: "kiso", groupId: "kiso-jodoshi", label: "助動詞の形と意味 11問" },
       ],
@@ -2119,7 +2122,7 @@ const KatsuyoApp = (function () {
     bootPromise = Promise.all([
       fetch("data/katsuyo.json?v=20260724-2")
         .then(r => { if (!r.ok) throw new Error("katsuyo data load failed: " + r.status); return r.json(); }),
-      fetch("data/multiple_choice.json?v=20260727-1")
+      fetch("data/multiple_choice.json?v=20260728-1")
         .then(r => { if (!r.ok) throw new Error("choice data load failed: " + r.status); return r.json(); }),
       fetch("data/shikibetsu.json?v=20260728-9")
         .then(r => { if (!r.ok) throw new Error("shikibetsu data load failed: " + r.status); return r.json(); }),
@@ -2127,7 +2130,7 @@ const KatsuyoApp = (function () {
         .then(r => { if (!r.ok) throw new Error("keigo-dokkai data load failed: " + r.status); return r.json(); }),
       fetch("data/kobun-joshiki.json?v=20260721-1")
         .then(r => { if (!r.ok) throw new Error("kobun-joshiki data load failed: " + r.status); return r.json(); }),
-      fetch("data/kiso.json?v=20260725-2")
+      fetch("data/kiso.json?v=20260728-1")
         .then(r => { if (!r.ok) throw new Error("kiso data load failed: " + r.status); return r.json(); }),
       fetch("data/shikibetsu-joshi.json?v=20260727-2")
         .then(r => { if (!r.ok) throw new Error("joshi data load failed: " + r.status); return r.json(); }),
