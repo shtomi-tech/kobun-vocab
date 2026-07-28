@@ -1,5 +1,7 @@
 # 識別セクション 学習フロー化 実装計画
 
+> **現行実装（2026-07-28）**：実践問題は、`questionType: integration` を維持したまま、古文本文と傍線部を示して意味を4択で答える1問形式とする。旧 `steps` 配列とステップ実行UIは廃止した。助動詞資料から既存原則に適合する21問を優先反映している。以下の旧計画記述にある「統合ステップ」は、この現行仕様では「実践4択」と読み替える。
+
 > 作成日：2026-07-11。前提となる識別タブ本体の設計・実装記録は `shikibetsu-plan.md` を参照。
 >
 > **実装メモ（2026-07-11）**：本計画に沿って実装・デプロイ済み。実際の着地点は以下の点で本文の想定と異なる。
@@ -13,7 +15,7 @@
 >   （既存の苦手復習・進捗バーが使う「習得済み」の基準（2回正解）と紛れるため）。
 > - §1で保留としていた「STEP 1 の既読記録」は持たない方針のまま実装。
 > - §6「手順別グループの扱い」は推奨どおり、識別タブのグループ一覧を総仕上げ（`sb-all`）のみに絞った。
-> - integration 作問追加（§4）は見送り（各手順1問のまま）。
+> - integration 作問追加（§4）は旧計画。現行では資料由来の実践4択を優先して追加・差し替えした。
 >
 > **追記（2026-07-11・粒度統一）**：4択問題（procedure/condition/contrast）の粒度が手順間で
 > 不揃い（procedureの段数・conditionの意味網羅・contrastの性質がばらばら）だったため、
@@ -65,7 +67,7 @@
 - kobun-vocab 側の対応物：
   - 内容理解 ＝ `procedures[].steps`（手順I〜IV。現在はホームの折りたたみカードで読めるだけ）
   - 4択問題 ＝ `questionType: procedure / condition / contrast` の単発4択（実装済み）
-  - 実践問題 ＝ `questionType: integration` のステップ実行問題（`renderStepRow` 実装済み）
+  - 実践問題 ＝ `questionType: integration` の本文・傍線部を使う4択問題
 
 つまり**3ステップの部品はすべて既存**。足りないのは「手順単位で3段階を順に通す
 フロー管理」と「ホームからの導線・進捗表示」だけ。
@@ -75,12 +77,11 @@
 ## 0. 現状の資産（2026-07-11 時点）
 
 - `data/shikibetsu.json`：4手順（る・らる／す・さす・しむ／む・むず／まし）・23問。
-  タイプ分布は procedure 6 / condition 9 / contrast 4 / **integration 4（各手順1問）**。
+  タイプ分布は、対象の手順に応じた procedure / condition / contrast / **integration（実践4択）**。
 - `static/mode-katsuyo.js`（1,027行）：
   - `startSession(ids, title)`：キュー方式のセッション。即採点・requeue・`recordResult`（c/w/weak）・
     習得判定 c≧2・完了画面 `renderDone` まで一式。
-  - `renderChoiceRow`（単発4択）と `renderStepRow`（統合ステップ実行）は
-    `q.steps` の有無で自動で切り替わる。
+  - `renderChoiceRow`（通常4択・実践4択）を共通利用する。
   - ホーム：hero（主導線1本）／Progress／手順カード（手順本文の折りたたみ）／
     知識項目チェック（coverage マトリクス）／グループ一覧。
 - グループ：手順別4グループ（タイプ順固定）＋総仕上げ `sb-all`（ランダム23問）。
@@ -107,7 +108,7 @@
 startShikibetsuFlow(procId)
   → stage "understand"（手順カードを1枚ずつ読む）
   → stage "quiz"     （procedure → condition → contrast の順で4択。既存セッション）
-  → stage "practice" （integration をステップ実行。既存セッション）
+  → stage "practice" （integration の実践4択）
   → stage "done"     （完了バナー＋次の手順への導線）
 ```
 
@@ -149,9 +150,9 @@ eiken の stagePill の見た目はコピーせず kobun-vocab の styles.css �
   （integration は除外。既存グループ ids は使わず、フロー側でフィルタ・整列する）。
 - 画面は既存 `renderChoiceRow` 無改修。1〜4キー・Enter も既存 `handleKey` のまま動く。
 
-### STEP 3 実践（既存流用）
+### STEP 3 実践
 
-- 出題 ids：その手順の integration のみ（現状1問。§4で拡充）。
+- 出題 ids：その手順の integration のみ。本文中の傍線部の意味を4択で答える。
 - 画面は既存 `renderStepRow` 無改修。
 
 ### 完了画面（stage "done"）
@@ -185,7 +186,7 @@ eiken の `renderDone` を参考に：完了バナー（手順名＋一発正解
 | ファイル | 変更 |
 |---|---|
 | `static/mode-katsuyo.js` | フロー層追加：`startShikibetsuFlow` ／ `renderUnderstand` ／ステージバー／ `renderDone` のフロー分岐／ホーム手順学習カード／hero 主導線／識別タブのグループ一覧絞り込み／ `handleKey` の understand 対応 |
-| `data/shikibetsu.json` | integration 作問追加（各手順 +2問、§4）。**構造変更なし** |
+| `data/shikibetsu.json` | 実践4択への変換、助動詞資料由来問題の優先反映 |
 | `static/styles.css` | ステージバー・理解カード・手順学習カードの3ブロック分のみ追加（デザインスキル `claude` 準拠） |
 | `index.html` | 変更なし（`?v=` キャッシュバスター更新のみ） |
 | `README.md` / `docs/shikibetsu-plan.md` | 学習フローの説明を追記／実装後に本計画へ実装メモを追記 |
@@ -218,7 +219,7 @@ eiken の `renderDone` を参考に：完了バナー（手順名＋一発正解
      ローカルサーバーで全手順を1周通し、スマホ幅で確認。
      回帰：単語・助動詞・用言・文法4択タブ／識別の総仕上げ・coverage 再出題・
      苦手復習がフロー外で従来どおり動く。localStorage キーが増えていないこと
-5. **integration 作問追加（§4）**＋検証スクリプトで answerIndex / steps の機械チェック
+5. **実践4択の検証**＋検証スクリプトで answerIndex / targetRanges の機械チェック
 
 ---
 

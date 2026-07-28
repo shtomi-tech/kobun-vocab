@@ -102,22 +102,37 @@ def check_sb_schema(questions):
         qid = q.get("id", "<no-id>")
         qt = q.get("questionType")
         if qt == "integration":
-            for field in ("passage", "target", "steps"):
+            for field in ("passage", "target", "targetRanges"):
                 if not q.get(field):
                     errors.append(f"{qid}: integration に {field} が無い/空")
-            steps = q.get("steps")
-            if isinstance(steps, list):
-                for si, st in enumerate(steps):
-                    sc = st.get("choices")
-                    if not isinstance(sc, list) or len(sc) < 2:
-                        errors.append(f"{qid} step{si}: choices が2要素未満")
-                    sai = st.get("answerIndex")
-                    if not isinstance(sai, int) or sai < 0 or (isinstance(sc, list) and sai >= len(sc)):
-                        errors.append(f"{qid} step{si}: answerIndex が範囲外（{sai}）")
-                    if not (isinstance(st.get("prompt"), str) and st["prompt"].strip()):
-                        errors.append(f"{qid} step{si}: prompt が空")
-                    if not (isinstance(st.get("explanation"), str) and st["explanation"].strip()):
-                        errors.append(f"{qid} step{si}: explanation が空")
+            if "steps" in q:
+                errors.append(f"{qid}: integration に旧形式の steps が残っている")
+            ranges = q.get("targetRanges")
+            passage = q.get("passage")
+            if isinstance(ranges, list) and isinstance(passage, str):
+                for ri, r in enumerate(ranges):
+                    if not isinstance(r, dict):
+                        errors.append(f"{qid} targetRanges[{ri}]: オブジェクトでない")
+                        continue
+                    start, text = r.get("start"), r.get("text")
+                    if not isinstance(start, int) or start < 0 or not isinstance(text, str) or not text:
+                        errors.append(f"{qid} targetRanges[{ri}]: start/text が不正")
+                    elif passage[start:start + len(text)] != text:
+                        errors.append(f"{qid} targetRanges[{ri}]: passage と一致しない")
+            ch = q.get("choices")
+            if not isinstance(ch, list) or len(ch) != 4:
+                errors.append(f"{qid}: integration の choices が4要素でない")
+            ai = q.get("answerIndex")
+            if not isinstance(ai, int) or ai < 0 or ai > 3:
+                errors.append(f"{qid}: integration の answerIndex が0〜3でない（{ai}）")
+            if isinstance(ch, list):
+                for i, c in enumerate(ch):
+                    if not (isinstance(c, str) and c.strip()):
+                        errors.append(f"{qid}: choices[{i}] が空")
+            if not (isinstance(q.get("question"), str) and q["question"].strip()):
+                errors.append(f"{qid}: question が空")
+            if not (isinstance(q.get("explanation"), str) and q["explanation"].strip()):
+                errors.append(f"{qid}: explanation が空")
         else:
             ch = q.get("choices")
             if not isinstance(ch, list) or len(ch) < 2:
@@ -172,8 +187,8 @@ def check_required_question_ids_for_set(data, required_key, questions_key,
 
 def check_required_question_ids(data):
     return check_required_question_ids_for_set(
-        data, "requiredQuestionIds", "shikibetsuQuestions", 90,
-        {"procedure": 10, "condition": 35, "contrast": 8, "integration": 37},
+        data, "requiredQuestionIds", "shikibetsuQuestions", 94,
+        {"procedure": 10, "condition": 35, "contrast": 8, "integration": 41},
         "助動詞識別",
     )
 
@@ -229,24 +244,15 @@ def longest_bias_mc(questions):
 
 
 def longest_bias_sb(questions):
-    """通常型は問題単位、integration型はstep単位でも集計。"""
-    normal_hits = []
-    normal_total = 0
-    step_hits = []
-    step_total = 0
+    """識別問題は形式にかかわらず、問題単位で集計。"""
+    hits = []
+    total = 0
     for q in questions:
-        if q.get("questionType") == "integration":
-            for si, st in enumerate(q.get("steps", [])):
-                if isinstance(st.get("choices"), list):
-                    step_total += 1
-                    if is_longest_correct(st["choices"], st.get("answerIndex")):
-                        step_hits.append(f"{q['id']}#step{si}")
-        else:
-            if isinstance(q.get("choices"), list):
-                normal_total += 1
-                if is_longest_correct(q["choices"], q.get("answerIndex")):
-                    normal_hits.append(q["id"])
-    return normal_hits, normal_total, step_hits, step_total
+        if isinstance(q.get("choices"), list):
+            total += 1
+            if is_longest_correct(q["choices"], q.get("answerIndex")):
+                hits.append(q["id"])
+    return hits, total
 
 
 # ---------------------------------------------------------------------------
@@ -257,15 +263,7 @@ def answer_hist_mc(questions):
 
 
 def answer_hist_sb(questions):
-    normal = Counter()
-    step = Counter()
-    for q in questions:
-        if q.get("questionType") == "integration":
-            for st in q.get("steps", []):
-                step[st.get("answerIndex")] += 1
-        else:
-            normal[q.get("answerIndex")] += 1
-    return normal, step
+    return Counter(q.get("answerIndex") for q in questions)
 
 
 # ---------------------------------------------------------------------------
@@ -299,11 +297,7 @@ def imbalance_mc(questions):
 def imbalance_sb(questions):
     out = []
     for q in questions:
-        if q.get("questionType") == "integration":
-            for si, st in enumerate(q.get("steps", [])):
-                if isinstance(st.get("choices"), list):
-                    out += choice_balance(f"{q['id']}#step{si}", st["choices"])
-        elif isinstance(q.get("choices"), list):
+        if isinstance(q.get("choices"), list):
             out += choice_balance(q["id"], q["choices"])
     return out
 
@@ -424,34 +418,20 @@ def run_check():
 
         for q in questions:
             qid = q.get("id", "<no-id>")
-            is_integration = q.get("questionType") == "integration"
 
             # 2. 「正解が一意に最長」（＝長い方を選べば当たる）の退行
-            if not is_integration and isinstance(q.get("choices"), list) and qid not in ALLOWED_LONGEST:
+            if isinstance(q.get("choices"), list) and qid not in ALLOWED_LONGEST:
                 if is_uniquely_longest_correct(q["choices"], q.get("answerIndex")):
                     problems.append(f"[最長バイアス] {qid}: 正解が一意に最長。誤答を具体化して長さを揃えること")
-            if is_integration:
-                for si, st in enumerate(q.get("steps") or []):
-                    key = f"{qid}#step{si}"
-                    if key in ALLOWED_LONGEST or qid in ALLOWED_LONGEST:
-                        continue
-                    if is_uniquely_longest_correct(st.get("choices"), st.get("answerIndex")):
-                        problems.append(f"[最長バイアス] {key}: 正解が一意に最長。誤答を具体化して長さを揃えること")
 
             # 3. distractorRationale 欠落
             if not q.get("distractorRationale"):
                 problems.append(f"[誤答根拠] {qid}: distractorRationale が無い")
 
             # 4. 誤答根拠のキーが実際の誤答と対応しているか
-            #    統合問題では最終ステップの選択肢が最終判断にあたるので、そこと突き合わせる。
+            #    識別問題も通常問題と同じ4択を直接突き合わせる。
             dr = q.get("distractorRationale") or {}
-            if is_integration:
-                steps = q.get("steps") or []
-                if not steps:
-                    continue
-                ch, ai = steps[-1].get("choices"), steps[-1].get("answerIndex")
-            else:
-                ch, ai = q.get("choices"), q.get("answerIndex")
+            ch, ai = q.get("choices"), q.get("answerIndex")
             if not (isinstance(ch, list) and isinstance(ai, int) and 0 <= ai < len(ch)):
                 continue
             for i, c in enumerate(ch):
@@ -542,7 +522,7 @@ def main():
     if not required_err:
         sbq_by_id = {q.get("id"): q for q in sbq}
         required_types = Counter(sbq_by_id[qid].get("questionType") for qid in sb.get("requiredQuestionIds", []))
-        print("必修ルート: 90問（" + ", ".join(f"{k}={v}" for k, v in sorted(required_types.items())) + "）、追加練習: 15問")
+        print("必修ルート: 94問（" + ", ".join(f"{k}={v}" for k, v in sorted(required_types.items())) + "）、追加練習: 22問")
     if not joshi_required_err:
         joshiq = joshi.get("joshiQuestions", [])
         joshi_by_id = {q.get("id"): q for q in joshiq}
@@ -568,20 +548,17 @@ def main():
     mc_hits, mc_total = longest_bias_mc(mcq)
     print(f"[4択] {pct(len(mc_hits), mc_total)}")
     print("  該当ID: " + (", ".join(mc_hits) if mc_hits else "なし"))
-    n_hits, n_total, s_hits, s_total = longest_bias_sb(sbq)
-    print(f"[識別・通常型] {pct(len(n_hits), n_total)}")
-    print("  該当ID: " + (", ".join(n_hits) if n_hits else "なし"))
-    print(f"[識別・integration step単位] {pct(len(s_hits), s_total)}")
-    print("  該当: " + (", ".join(s_hits) if s_hits else "なし"))
-    print("  ※ 参考: ランダムなら4択は約25%、2択stepは約50%が期待値。")
+    sb_hits, sb_total = longest_bias_sb(sbq)
+    print(f"[識別] {pct(len(sb_hits), sb_total)}")
+    print("  該当ID: " + (", ".join(sb_hits) if sb_hits else "なし"))
+    print("  ※ 参考: ランダムな4択なら約25%が期待値。")
 
     # --- 正解位置分布 ---
     section("3. 正解位置分布（answerIndex ヒストグラム）")
     print("  ※ UI描画時に選択肢はshuffleされるため表示順には無関係。データ生成偏り把握用。")
     print("[4択] " + str(dict(sorted(answer_hist_mc(mcq).items(), key=lambda x: (x[0] is None, x[0])))))
-    sb_normal_h, sb_step_h = answer_hist_sb(sbq)
-    print("[識別・通常型] " + str(dict(sorted(sb_normal_h.items(), key=lambda x: (x[0] is None, x[0])))))
-    print("[識別・integration step] " + str(dict(sorted(sb_step_h.items(), key=lambda x: (x[0] is None, x[0])))))
+    sb_h = answer_hist_sb(sbq)
+    print("[識別] " + str(dict(sorted(sb_h.items(), key=lambda x: (x[0] is None, x[0])))))
 
     # --- 誤答の説得力（近似） ---
     section("4. 選択肢バランス（長さ極端・重複・空）")

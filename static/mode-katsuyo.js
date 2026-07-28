@@ -5,6 +5,7 @@ const KatsuyoApp = (function () {
   const STORE_KEY = "kobun-katsuyo-progress-v1";
   const APP_ID = "kobun-katsuyo";
   const MASTERY_THRESHOLD = 2; // 単語モードと同じ「累計2回正解」で習得扱いに揃える
+  const IDENTIFICATION_PRACTICE_VERSION = 2;
 
   const homePanel = document.getElementById("homePanel");
   const sessionPanel = document.getElementById("sessionPanel");
@@ -196,7 +197,11 @@ const KatsuyoApp = (function () {
   function loadProgress() {
     try {
       const raw = localStorage.getItem(STORE_KEY);
-      return raw ? JSON.parse(raw) : {};
+      const progress = raw ? JSON.parse(raw) : {};
+      if (migrateIdentificationPracticeProgress(progress)) {
+        localStorage.setItem(STORE_KEY, JSON.stringify(progress));
+      }
+      return progress;
     } catch (_) { return {}; }
   }
   function saveProgress(p) {
@@ -217,6 +222,21 @@ const KatsuyoApp = (function () {
   }
   function itemId(item) {
     return item.id || item.no;
+  }
+  function migrateIdentificationPracticeProgress(progress) {
+    if (!progress || typeof progress !== "object") return false;
+    const version = Number(progress.__identificationPracticeVersion) || 0;
+    if (version >= IDENTIFICATION_PRACTICE_VERSION) return false;
+    if (DATA && Array.isArray(DATA.practiceSets)) {
+      DATA.practiceSets.forEach(set => {
+        if (!set || !set.proceduresKey) return;
+        (DATA[set.collection] || [])
+          .filter(item => item.questionType === "integration")
+          .forEach(item => { delete progress[set.id + ":" + itemId(item)]; });
+      });
+    }
+    progress.__identificationPracticeVersion = IDENTIFICATION_PRACTICE_VERSION;
+    return true;
   }
   function progressItemIds() {
     if (currentSet && (currentSet.proceduresKey || currentSet.requiredQuestionIdsKey)) return shikibetsuRequiredIds();
@@ -257,7 +277,7 @@ const KatsuyoApp = (function () {
   }
 
   /* ---------- 知識項目カバレッジ ---------- */
-  // 手順型の知識は「手順確認・条件確認・対比・統合」に分けて出題する。
+  // 手順型の知識は「手順確認・条件確認・対比・実践」に分けて出題する。
   // coverageId ごとに、紐づく問題がすべて習得済みかどうかで手順の抜けを判定する。
   function coverageTopics() {
     return (DATA.coverageTopics || []).filter(t => getItems().some(item => item.topic === t.topic));
@@ -714,7 +734,7 @@ const KatsuyoApp = (function () {
   // 文法混合確認の母集団。4択（入口・章別）に加えて識別の4択問題も混ぜる。
   // 除外するもの:
   //   - 活用表の行埋め（yougo/jodoshi）… 出題形式が違い、30問の確認には重すぎる
-  //   - 統合問題（integration）… 1問が複数ステップになり、30問では長すぎる
+  //   - 実践問題（integration）… 文脈中の傍線部の意味を4択で答える
   function requiredGrammarEntries() {
     const entries = [];
     GRAMMAR_PATH.forEach(stage => stage.tasks.forEach(task => {
@@ -979,7 +999,9 @@ const KatsuyoApp = (function () {
   }
   function applyCloudProgress(p) {
     if (!p || typeof p !== "object") return;
+    const changed = migrateIdentificationPracticeProgress(p);
     try { localStorage.setItem(STORE_KEY, JSON.stringify(p)); } catch (_) {}
+    if (changed && cloud) cloud.queueSave();
   }
 
   /* ---------- helpers ---------- */
@@ -1170,7 +1192,7 @@ const KatsuyoApp = (function () {
     if (!procedures.length) return;
     const card = el("section", "card");
     card.appendChild(el("span", "label", "手順を学習する"));
-    card.appendChild(el("p", "hint", "手順の内容理解→4択問題→実践問題（統合）の順に進みます。"));
+    card.appendChild(el("p", "hint", "手順の内容理解→4択問題→実践問題（傍線部の意味）の順に進みます。"));
     procedures.forEach(proc => {
       const status = shikibetsuProcStatus(proc.id);
       const block = el("div", "procedureLearnBlock");
@@ -1331,7 +1353,7 @@ const KatsuyoApp = (function () {
     requestAnimationFrame(scrollToSessionTop);
   }
 
-  // 識別セクションの学習フロー：手順本文の理解 → 4択問題 → 実践問題（統合）の順に進む。
+  // 識別セクションの学習フロー：手順本文の理解 → 4択問題 → 実践問題（傍線部の意味）の順に進む。
   function startShikibetsuFlow(procId, pathContext = {}) {
     const proc = shikibetsuProcedures().find(pr => pr.id === procId);
     if (!proc) { goHome(); return; }
@@ -1450,7 +1472,7 @@ const KatsuyoApp = (function () {
 
     const actions = el("div", "actions");
     if (session.flow.stage === "quiz") {
-      card.appendChild(el("p", "resultText", "4択問題が完了しました。次は実践問題（統合）で、識別手順を最後まで適用します。"));
+      card.appendChild(el("p", "resultText", "4択問題が完了しました。次は実践問題で、傍線部の意味を4択で確認します。"));
       const next = el("button", "cta", "実践問題へ進む →");
       next.type = "button";
       next.addEventListener("click", startShikibetsuPractice);
@@ -1487,7 +1509,7 @@ const KatsuyoApp = (function () {
     sessionPanel.appendChild(card);
   }
 
-  // 3つの出題UI（活用ドリル・4択・統合ステップ）で共通のヘッダー＋進捗バー。
+  // 3つの出題UI（活用ドリル・4択・実践4択）で共通のヘッダー＋進捗バー。
   function renderSessionChrome() {
     const head = el("div", "sessionHead");
     const info = el("div", "roundInfo");
@@ -1624,21 +1646,35 @@ const KatsuyoApp = (function () {
     if (firstInput) firstInput.focus();
   }
 
+  function highlightedPassage(q) {
+    const passage = String(q.passage || "");
+    const fallbackStart = q.target ? passage.indexOf(q.target) : -1;
+    const ranges = (Array.isArray(q.targetRanges) && q.targetRanges.length
+      ? q.targetRanges
+      : (fallbackStart >= 0 ? [{ start: fallbackStart, text: q.target }] : []))
+      .map(range => ({
+        start: Number(range.start),
+        text: String(range.text || ""),
+      }))
+      .filter(range => Number.isInteger(range.start) && range.start >= 0 && range.text.length > 0)
+      .sort((a, b) => a.start - b.start);
+    const line = el("p", "gradeChoiceQuestion stepPassage");
+    let cursor = 0;
+    ranges.forEach(range => {
+      if (range.start < cursor || range.start > passage.length) return;
+      const end = range.start + range.text.length;
+      if (end > passage.length || passage.slice(range.start, end) !== range.text) return;
+      line.appendChild(document.createTextNode(passage.slice(cursor, range.start)));
+      line.appendChild(el("span", "targetWord", range.text));
+      cursor = end;
+    });
+    line.appendChild(document.createTextNode(passage.slice(cursor)));
+    return line;
+  }
+
   function renderChoiceRow() {
     const id = session.queue[0];
     const q = byId[itemKey(id)];
-
-    // 統合問題（q.steps あり）は手順を1つずつ適用させるステップ実行UIに切り替える。
-    if (q.steps && q.steps.length) {
-      if (session.stepQid !== id) {
-        session.stepQid = id;
-        session.stepIdx = 0;
-        session.stepFailed = false;
-        session.stepHistory = [];
-      }
-      renderStepRow(q);
-      return;
-    }
 
     renderSessionChrome();
 
@@ -1646,6 +1682,7 @@ const KatsuyoApp = (function () {
     const top = el("div", "drillTop");
     const wc = el("div");
     wc.appendChild(el("p", "askLabel", choiceQuestionLabel(q)));
+    if (q.questionType === "integration") wc.appendChild(highlightedPassage(q));
     wc.appendChild(el("p", "gradeChoiceQuestion", q.question));
     top.appendChild(wc);
     box.appendChild(top);
@@ -1674,129 +1711,6 @@ const KatsuyoApp = (function () {
     box.appendChild(choices);
 
     sessionPanel.appendChild(box);
-  }
-
-  // 統合問題：古文＋対象の語を示し、識別手順を1ステップずつ適用させる。
-  // 途中のステップを1つでも間違えると、問題全体を不正解として扱う（requeueされる）。
-  function renderStepRow(q) {
-    sessionPanel.innerHTML = "";
-    renderSessionChrome();
-
-    const box = el("div", "drillBox");
-    const top = el("div", "drillTop");
-    const wc = el("div");
-    wc.appendChild(el("p", "askLabel", choiceQuestionLabel(q)));
-    const passageP = el("p", "gradeChoiceQuestion stepPassage");
-    const targetIdx = q.passage.indexOf(q.target);
-    if (targetIdx === -1) {
-      passageP.appendChild(document.createTextNode(q.passage));
-    } else {
-      passageP.appendChild(document.createTextNode(q.passage.slice(0, targetIdx)));
-      passageP.appendChild(el("span", "targetWord", q.target));
-      passageP.appendChild(document.createTextNode(q.passage.slice(targetIdx + q.target.length)));
-    }
-    wc.appendChild(passageP);
-    top.appendChild(wc);
-    box.appendChild(top);
-
-    // これまでに答えたステップの履歴（正誤と解説）を積み上げて表示する。
-    session.stepHistory.forEach(h => {
-      const hist = el("div", "feedback stepHistoryItem " + (h.ok ? "ok" : "ng"));
-      hist.appendChild(el("p", "stepPrompt", h.prompt));
-      addAnswer(hist, h.ok ? "選んだ答え" : "正解", h.ok ? h.chosenText : h.correctText);
-      addAnswer(hist, "解説", h.explanation);
-      box.appendChild(hist);
-    });
-
-    const stepIdx = session.stepIdx;
-    const step = q.steps[stepIdx];
-    const stepBox = el("div", "stepCurrent");
-    stepBox.appendChild(el("p", "stepPrompt", step.prompt));
-
-    const choices = el("div", "gradeChoiceList");
-    const buttons = [];
-
-    function selectStep(idx) {
-      if (session.answered) return;
-      session.answered = true;
-      const ok = idx === step.answerIndex;
-      if (!ok) session.stepFailed = true;
-      session.stepHistory.push({
-        prompt: step.prompt,
-        ok,
-        chosenText: step.choices[idx],
-        correctText: step.choices[step.answerIndex],
-        explanation: step.explanation
-      });
-
-      buttons.forEach((btn, i) => {
-        btn.disabled = true;
-        if (i === step.answerIndex) btn.classList.add("correct");
-        else if (i === idx) btn.classList.add("wrong");
-      });
-
-      if (!ok) {
-        const wf = el("div", "feedback ng stepInlineFb");
-        addAnswer(wf, "解説", step.explanation);
-        const why = q.distractorRationale && q.distractorRationale[step.choices[idx]];
-        if (why) addAnswer(wf, "誤答の理由", why);
-        stepBox.appendChild(wf);
-      }
-
-      const isLastStep = stepIdx >= q.steps.length - 1;
-      const nextRow = el("div", "nextRow");
-      const next = el("button", "cta", isLastStep ? (session.queue.length > 1 ? "次の問題へ" : "結果を見る") : "次の手順へ");
-      next.id = "katsuyoNextBtn";
-      if (isLastStep) {
-        next.addEventListener("click", () => finalizeStepQuestion(q));
-      } else {
-        next.addEventListener("click", () => {
-          session.stepIdx += 1;
-          session.answered = false;
-          renderStepRow(q);
-        });
-      }
-      nextRow.appendChild(next);
-      stepBox.appendChild(nextRow);
-      next.focus();
-    }
-    session.choiceSelect = selectStep;
-
-    step.choices.forEach((text, idx) => {
-      const btn = el("button", "gradeChoiceBtn");
-      btn.type = "button";
-      btn.appendChild(el("span", "gradeChoiceMark", String.fromCharCode(65 + idx)));
-      btn.appendChild(el("span", "gradeChoiceText", text));
-      btn.addEventListener("click", () => selectStep(idx));
-      buttons.push(btn);
-      choices.appendChild(btn);
-    });
-    stepBox.appendChild(choices);
-    box.appendChild(stepBox);
-
-    sessionPanel.appendChild(box);
-  }
-
-  // 統合問題の最終ステップまで終えたら、全ステップ正解のときだけ「正解」として記録する。
-  function finalizeStepQuestion(q) {
-    const id = itemId(q);
-    const allOk = !session.stepFailed;
-    recordResult(id, allOk);
-    const wasRequeued = session.requeued.has(id);
-    session.queue.shift();
-    if (allOk) {
-      session.solved += 1;
-      if (!wasRequeued) session.firstTryOk += 1;
-    } else {
-      session.wrongNos.add(id);
-      if (!wasRequeued) session.requeued.add(id);
-      session.queue.push(id);
-    }
-    session.stepQid = null;
-    session.stepIdx = 0;
-    session.stepFailed = false;
-    session.stepHistory = [];
-    renderNextQuestion();
   }
 
   function buildSingleField(name, options, onPick, state, key) {
@@ -2269,7 +2183,7 @@ const KatsuyoApp = (function () {
           id: "shikibetsu",
           name: "識別",
           label: "IDENTIFY",
-          description: "助動詞の意味の識別手順を、手順確認→条件確認→対比→統合の順で身につける",
+          description: "助動詞の意味の識別手順を、手順確認→条件確認→対比→実践の順で身につける",
           collection: "shikibetsuQuestions",
           groups: "shikibetsuGroups",
           proceduresKey: "procedures",
@@ -2277,7 +2191,7 @@ const KatsuyoApp = (function () {
           askLabel: "正しい選択肢を選べ",
           unit: "問",
           mode: "choice",
-          homeTitle: "識別手順を、手順→条件→対比→統合の順で確認"
+          homeTitle: "識別手順を、手順→条件→対比→実践の順で確認"
         };
         const keigoDokkaiSet = {
           id: "keigo-dokkai",
@@ -2318,7 +2232,7 @@ const KatsuyoApp = (function () {
           mode: "choice",
           homeTitle: "文法を読むための土台を、4択で確認"
         };
-        // 必修5〜7の識別。いずれも shikibetsuSet と同じ「手順→条件→対比→統合」の構成を持つ。
+        // 必修5〜7の識別。いずれも shikibetsuSet と同じ「手順→条件→対比→実践」の構成を持つ。
         const joshiSet = {
           id: "joshi",
           name: "助詞の識別",
@@ -2331,7 +2245,7 @@ const KatsuyoApp = (function () {
           askLabel: "正しい選択肢を選べ",
           unit: "問",
           mode: "choice",
-          homeTitle: "助詞の訳し分けを、手順→条件→対比→統合で確認"
+          homeTitle: "助詞の訳し分けを、手順→条件→対比→実践で確認"
         };
         const homographSet = {
           id: "homograph",
@@ -2345,7 +2259,7 @@ const KatsuyoApp = (function () {
           askLabel: "正しい選択肢を選べ",
           unit: "問",
           mode: "choice",
-          homeTitle: "同形語の識別を、手順→条件→対比→統合で確認"
+          homeTitle: "同形語の識別を、手順→条件→対比→実践で確認"
         };
         const keigoShikibetsuSet = {
           id: "keigo-shikibetsu",
@@ -2359,7 +2273,7 @@ const KatsuyoApp = (function () {
           askLabel: "正しい選択肢を選べ",
           unit: "問",
           mode: "choice",
-          homeTitle: "敬語の識別を、手順→条件→対比→統合で確認"
+          homeTitle: "敬語の識別を、手順→条件→対比→実践で確認"
         };
 
         DATA.practiceSets = [jodoshiSet, yougoSet, choiceSet, shikibetsuSet, keigoDokkaiSet, kobunJoshikiSet,
