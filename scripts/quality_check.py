@@ -219,7 +219,7 @@ def check_keigo_required_question_ids(data):
 
 def check_kiso_required_question_ids(data):
     return check_required_question_ids_for_set(
-        data, "kisoRequiredQuestionIds", "kisoQuestions", 26,
+        data, "kisoRequiredQuestionIds", "kisoQuestions", 50,
         None,
         "文法の入口",
     )
@@ -227,7 +227,7 @@ def check_kiso_required_question_ids(data):
 
 def check_choice_required_question_ids(data):
     return check_required_question_ids_for_set(
-        data, "choiceRequiredQuestionIds", "choiceQuestions", 66,
+        data, "choiceRequiredQuestionIds", "choiceQuestions", 38,
         None,
         "文法4択",
     )
@@ -539,9 +539,9 @@ def main():
         required_types = Counter(keigo_by_id[qid].get("questionType") for qid in keigo.get("keigoRequiredQuestionIds", []))
         print("敬語必修ルート: 39問（" + ", ".join(f"{k}={v}" for k, v in sorted(required_types.items())) + "）、追加練習: 6問")
     if not kiso_required_err:
-        print("文法の入口必修ルート: 26問、追加練習: 2問")
+        print("文法の入口必修ルート: 50問、追加練習: 0問")
     if not choice_required_err:
-        print("文法4択必修ルート: 66問、追加練習: 25問")
+        print("文法4択必修ルート: 38問、追加練習: 18問")
 
     # --- 正解最長バイアス ---
     section("2. 正解最長バイアス（正解が最長=同点最長含む の比率）")
