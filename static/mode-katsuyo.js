@@ -37,7 +37,7 @@ const KatsuyoApp = (function () {
         { id: "kiso-katsuyo-kakari", kind: "group", setId: "kiso", groupId: "kiso-katsuyokei", label: "活用形と係り結び 10問" },
         { id: "kiso-setsuzoku-kihon", kind: "group", setId: "kiso", groupId: "kiso-setsuzoku", label: "接続という考え方 9問" },
         { id: "kiso-shikibetsu", kind: "group", setId: "kiso", groupId: "kiso-shikibetsu", label: "接続で識別する 5問" },
-        { id: "kiso-jodoshi", kind: "group", setId: "kiso", groupId: "kiso-jodoshi", label: "助動詞の形と意味 11問" },
+        { id: "kiso-jodoshi", kind: "group", setId: "kiso", groupId: "kiso-jodoshi", label: "助動詞の意味 7問" },
       ],
     },
     {

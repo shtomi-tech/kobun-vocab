@@ -219,7 +219,7 @@ def check_keigo_required_question_ids(data):
 
 def check_kiso_required_question_ids(data):
     return check_required_question_ids_for_set(
-        data, "kisoRequiredQuestionIds", "kisoQuestions", 50,
+        data, "kisoRequiredQuestionIds", "kisoQuestions", 46,
         None,
         "文法の入口",
     )
@@ -539,7 +539,7 @@ def main():
         required_types = Counter(keigo_by_id[qid].get("questionType") for qid in keigo.get("keigoRequiredQuestionIds", []))
         print("敬語必修ルート: 39問（" + ", ".join(f"{k}={v}" for k, v in sorted(required_types.items())) + "）、追加練習: 6問")
     if not kiso_required_err:
-        print("文法の入口必修ルート: 50問、追加練習: 0問")
+        print("文法の入口必修ルート: 46問、追加練習: 0問")
     if not choice_required_err:
         print("文法4択必修ルート: 38問、追加練習: 18問")
 
