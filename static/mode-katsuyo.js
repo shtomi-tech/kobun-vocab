@@ -63,7 +63,7 @@ const KatsuyoApp = (function () {
         { id: "proc-sasu", kind: "procedure", setId: "shikibetsu", procId: "sasu", label: "す・さす・しむの識別" },
         { id: "proc-mu", kind: "procedure", setId: "shikibetsu", procId: "mu", label: "む・むず・じの識別" },
         { id: "proc-mashi", kind: "procedure", setId: "shikibetsu", procId: "mashi", label: "ましの識別" },
-        { id: "proc-keri", kind: "procedure", setId: "shikibetsu", procId: "keri", label: "けりの識別" },
+        { id: "proc-keri", kind: "procedure", setId: "shikibetsu", procId: "keri", label: "き・けりの識別" },
         { id: "proc-tsunu", kind: "procedure", setId: "shikibetsu", procId: "tsunu", label: "つ・ぬの識別" },
         { id: "proc-tariri", kind: "procedure", setId: "shikibetsu", procId: "tariri", label: "たり・りの識別" },
         { id: "proc-ramu", kind: "procedure", setId: "shikibetsu", procId: "ramu", label: "らむの識別" },
@@ -2196,7 +2196,7 @@ const KatsuyoApp = (function () {
         .then(r => { if (!r.ok) throw new Error("katsuyo data load failed: " + r.status); return r.json(); }),
       fetch("data/multiple_choice.json?v=20260727-1")
         .then(r => { if (!r.ok) throw new Error("choice data load failed: " + r.status); return r.json(); }),
-      fetch("data/shikibetsu.json?v=20260728-5")
+      fetch("data/shikibetsu.json?v=20260728-6")
         .then(r => { if (!r.ok) throw new Error("shikibetsu data load failed: " + r.status); return r.json(); }),
       fetch("data/keigo-dokkai.json?v=20260721-1")
         .then(r => { if (!r.ok) throw new Error("keigo-dokkai data load failed: " + r.status); return r.json(); }),
