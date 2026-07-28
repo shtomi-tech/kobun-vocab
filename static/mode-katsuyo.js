@@ -57,7 +57,7 @@ const KatsuyoApp = (function () {
     {
       id: "shikibetsu",
       label: "4. 助動詞の意味を決める",
-      description: "内容理解→4択→実践の順で、助動詞10種の意味を手順で決める",
+      description: "内容理解→4択→実践の順で、助動詞11種の意味を手順で決める",
       tasks: [
         { id: "proc-rareru", kind: "procedure", setId: "shikibetsu", procId: "rareru", label: "る・らるの識別" },
         { id: "proc-sasu", kind: "procedure", setId: "shikibetsu", procId: "sasu", label: "す・さす・しむの識別" },
@@ -67,6 +67,7 @@ const KatsuyoApp = (function () {
         { id: "proc-tsunu", kind: "procedure", setId: "shikibetsu", procId: "tsunu", label: "つ・ぬの識別" },
         { id: "proc-tariri", kind: "procedure", setId: "shikibetsu", procId: "tariri", label: "たり・りの識別" },
         { id: "proc-ramu", kind: "procedure", setId: "shikibetsu", procId: "ramu", label: "らむの識別" },
+        { id: "proc-kemu", kind: "procedure", setId: "shikibetsu", procId: "kemu", label: "けむの識別" },
         { id: "proc-beshi", kind: "procedure", setId: "shikibetsu", procId: "beshi", label: "べし・まじの識別" },
         { id: "proc-nari", kind: "procedure", setId: "shikibetsu", procId: "nari", label: "なりの訳し分け（断定・存在）" },
       ],
@@ -538,8 +539,9 @@ const KatsuyoApp = (function () {
     const practiceDone = practiceIds.filter(id => shikibetsuIdCleared(id, p)).length;
     return {
       quizIds, practiceIds, quizDone, practiceDone,
-      complete: quizIds.length > 0 && quizDone === quizIds.length
-        && practiceIds.length > 0 && practiceDone === practiceIds.length,
+      complete: quizIds.length + practiceIds.length > 0
+        && (quizIds.length === 0 || quizDone === quizIds.length)
+        && (practiceIds.length === 0 || practiceDone === practiceIds.length),
     };
   }
   function firstIncompleteProcedure() {
@@ -1346,6 +1348,10 @@ const KatsuyoApp = (function () {
 
   function startShikibetsuQuiz() {
     const proc = shikibetsuProcedures().find(pr => pr.id === flow.procId);
+    if (shikibetsuQuizIds(flow.procId).length === 0) {
+      startShikibetsuPractice();
+      return;
+    }
     flow.stage = "quiz";
     startSession(shikibetsuQuizIds(flow.procId), proc.name + "・4択問題", {
       flow: Object.assign({}, flow),
@@ -2196,7 +2202,7 @@ const KatsuyoApp = (function () {
         .then(r => { if (!r.ok) throw new Error("katsuyo data load failed: " + r.status); return r.json(); }),
       fetch("data/multiple_choice.json?v=20260727-1")
         .then(r => { if (!r.ok) throw new Error("choice data load failed: " + r.status); return r.json(); }),
-      fetch("data/shikibetsu.json?v=20260728-7")
+      fetch("data/shikibetsu.json?v=20260728-8")
         .then(r => { if (!r.ok) throw new Error("shikibetsu data load failed: " + r.status); return r.json(); }),
       fetch("data/keigo-dokkai.json?v=20260721-1")
         .then(r => { if (!r.ok) throw new Error("keigo-dokkai data load failed: " + r.status); return r.json(); }),
