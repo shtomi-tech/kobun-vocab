@@ -1729,38 +1729,6 @@
       ]
     },
     {
-      "id": "sb-tariri-int4",
-      "topic": "たり・りの識別",
-      "step": "実践",
-      "questionType": "integration",
-      "coverageId": "sb-tariri-int4",
-      "passage": "この人、六波羅の大将たり。",
-      "target": "たり",
-      "explanation": "体言接続なので断定で、「〜である」と訳す。訳は「この人は、六波羅の大将である」。",
-      "distractorRationale": {
-        "存続": "存続は完了の「たり」（連用形接続）の意味であり、体言接続では対象にならない",
-        "完了": "完了の「たり」は連用形接続であり、体言には付かない",
-        "強意": "強意を表すのは直下に推量の助動詞がある「つ・ぬ」である"
-      },
-      "ruleRefs": [
-        "kbp.auxiliaries.tari-ri-meanings"
-      ],
-      "question": "傍線部の意味として最も適切なものを選べ。",
-      "choices": [
-        "断定",
-        "存続",
-        "完了",
-        "強意"
-      ],
-      "answerIndex": 0,
-      "targetRanges": [
-        {
-          "start": 10,
-          "text": "たり"
-        }
-      ]
-    },
-    {
       "id": "sb-beshi-int-kanou",
       "topic": "べし・まじの識別",
       "step": "実践",
@@ -2291,7 +2259,6 @@
     "sb-tariri-int1",
     "sb-tariri-int2",
     "sb-tariri-int3",
-    "sb-tariri-int4",
     "pn-keri-int5",
     "src-jd05-q03",
     "pn-nari-int1",
@@ -2434,8 +2401,7 @@
       "ids": [
         "sb-tariri-int1",
         "sb-tariri-int2",
-        "sb-tariri-int3",
-        "sb-tariri-int4"
+        "sb-tariri-int3"
       ]
     },
     {
@@ -2453,7 +2419,7 @@
     },
     {
       "id": "sb-all",
-      "name": "総仕上げ：61問（必修48＋追加13）",
+      "name": "総仕上げ：60問（必修47＋追加13）",
       "sub": "必修ルートの問題と追加練習をランダム出題",
       "shuffle": true,
       "ids": [
@@ -2502,7 +2468,6 @@
         "sb-tariri-int1",
         "sb-tariri-int2",
         "sb-tariri-int3",
-        "sb-tariri-int4",
         "sb-beshi-int-kanou",
         "sb-beshi-int-suiryo",
         "sb-beshi-int-maji",
@@ -2838,11 +2803,6 @@
         {
           "id": "sb-tariri-int3",
           "label": "指定例③：完了「たり」",
-          "questionType": "integration"
-        },
-        {
-          "id": "sb-tariri-int4",
-          "label": "統合④",
           "questionType": "integration"
         }
       ]
