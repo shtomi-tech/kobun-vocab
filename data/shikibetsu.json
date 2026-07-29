@@ -1470,38 +1470,6 @@
       "sourceRef": "助動詞問題①・問2⑦"
     },
     {
-      "id": "pn-sasu-sase-sonkei",
-      "topic": "す・さす・しむの識別",
-      "step": "実践",
-      "questionType": "integration",
-      "coverageId": "pn-sasu-sase-sonkei",
-      "passage": "わざとその人かの人にせさせたまへるとたづね聞きて、",
-      "target": "させ",
-      "explanation": "下に尊敬語が続いていても、上に「その人かの人に」という使役の相手があるため使役。最初の「せ」は動詞「す」の連用形で、後ろの「させ」が助動詞「さす」である。",
-      "distractorRationale": {
-        "尊敬の助動詞「さす」": "下に「たまふ」があっても、上に使役の相手があるため尊敬ではなく使役である",
-        "サ変動詞「す」の一部": "最初の「せ」は動詞「す」の一部だが、対象の後半「させ」は助動詞「さす」である",
-        "完了の助動詞「つ」": "「させ」は完了を表す「つ」の活用形ではなく、使役の助動詞「さす」の連用形である"
-      },
-      "ruleRefs": [
-        "kbp.auxiliaries.su-sasu-shimu-meanings"
-      ],
-      "question": "傍線部の意味として最も適切なものを選べ。",
-      "choices": [
-        "使役の助動詞「さす」",
-        "尊敬の助動詞「さす」",
-        "サ変動詞「す」の一部",
-        "完了の助動詞「つ」"
-      ],
-      "answerIndex": 0,
-      "targetRanges": [
-        {
-          "start": 11,
-          "text": "させ"
-        }
-      ]
-    },
-    {
       "id": "pn-sasu-basho-ni",
       "topic": "す・さす・しむの識別",
       "step": "実践",
@@ -2303,7 +2271,6 @@
     "pn-sasu-sonkei-noaite",
     "pn-sasu-shimu-shieki",
     "pn-sasu-shime-tamafu",
-    "pn-sasu-sase-sonkei",
     "sb-mu-int1",
     "sb-mu-int-suiryou",
     "sb-mu-int-kanyuu",
@@ -2369,7 +2336,6 @@
         "pn-sasu-sonkei-noaite",
         "pn-sasu-shimu-shieki",
         "pn-sasu-shime-tamafu",
-        "pn-sasu-sase-sonkei",
         "pn-sasu-basho-ni"
       ]
     },
@@ -2491,7 +2457,7 @@
     },
     {
       "id": "sb-all",
-      "name": "総仕上げ：62問（必修49＋追加13）",
+      "name": "総仕上げ：61問（必修48＋追加13）",
       "sub": "必修ルートの問題と追加練習をランダム出題",
       "shuffle": true,
       "ids": [
@@ -2532,7 +2498,6 @@
         "pn-sasu-sonkei-noaite",
         "pn-sasu-shimu-shieki",
         "pn-sasu-shime-tamafu",
-        "pn-sasu-sase-sonkei",
         "pn-sasu-basho-ni",
         "sb-tsunu-int1",
         "sb-tsunu-int2",
@@ -2637,11 +2602,6 @@
         {
           "id": "pn-sasu-shime-tamafu",
           "label": "競合：しめ給ふ＋相手",
-          "questionType": "integration"
-        },
-        {
-          "id": "pn-sasu-sase-sonkei",
-          "label": "指定例③",
           "questionType": "integration"
         },
         {
