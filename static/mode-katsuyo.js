@@ -811,7 +811,7 @@ const KatsuyoApp = (function () {
       requeueWrong: false,
     });
   }
-  function appendPathSection(title, stages, stats, hintText, lockText) {
+  function appendPathSection(title, stages, stats, hintText, lockText, collapsed) {
     const progress = el("section", "card");
     progress.appendChild(el("span", "label", title + "の進捗"));
     const grid = el("div", "statGrid");
@@ -875,7 +875,21 @@ const KatsuyoApp = (function () {
       }
       list.appendChild(card);
     });
-    homePanel.appendChild(list);
+
+    if (collapsed) {
+      const wrap = el("section", "card");
+      const details = document.createElement("details");
+      details.className = "pathStagesDetails";
+      const summary = document.createElement("summary");
+      summary.className = "label";
+      summary.textContent = title + "のタスク一覧を見る（" + completedStages + " / " + stages.length + " 完了）";
+      details.appendChild(summary);
+      details.appendChild(list);
+      wrap.appendChild(details);
+      homePanel.appendChild(wrap);
+    } else {
+      homePanel.appendChild(list);
+    }
   }
   function renderGrammarRoadmapHome() {
     flow = null;
@@ -940,22 +954,31 @@ const KatsuyoApp = (function () {
       LearningMap.render(mapSlot, { activeApp: "grammar" });
     }
 
+    // 進行中の段階だけタスク一覧を展開する。完了済み・未解放の段階は要約＋<details>に折りたたむ
+    // （ヒックの法則：GHOME一画面に常時並ぶ選択肢を、今取り組む段階だけに絞る）。
+    const grammarCurrent = !grammarComplete;
+    const readingCurrent = grammarComplete && !readingComplete;
+    const cultureCurrent = grammarComplete && readingComplete && !cultureComplete;
+
     const grammarCompleted = grammarStages.filter(stage => stage.complete).length;
     appendPathSection("第2段階", grammarStages,
       [[String(grammarCompleted), "/ " + grammarStages.length, "COMPLETE・完了"], [String(grammarStages.length - grammarCompleted), "", "REMAINING・残り"], [String(requiredChoiceIds().length), "", "確認対象の4択"]],
       "通常問題は通し演習で各問題を1回以上正解すると完了、識別フローは実践を全問1回正解で完了扱いです。最後に文法混合確認30問を行います。",
-      "前の文法必修を完了すると解放されます。");
+      "前の文法必修を完了すると解放されます。",
+      !grammarCurrent);
 
     const readingCompleted = readingStages.filter(stage => stage.complete).length;
     appendPathSection("第3段階", readingStages,
       [[String(readingCompleted), "/ " + readingStages.length, "COMPLETE・完了"], [String(readingStages.length - readingCompleted), "", "REMAINING・残り"], [String(requiredReadingIds().length), "", "敬語読解の確認"]],
       "敬語読解は各短文を2回正解し、最後に12問中10問以上のチェックポイントに合格すると完了です。",
-      "第2段階の文法を完了すると解放されます。");
+      "第2段階の文法を完了すると解放されます。",
+      !readingCurrent);
     const cultureCompleted = cultureStages.filter(stage => stage.complete).length;
     appendPathSection("第4段階", cultureStages,
       [[String(cultureCompleted), "/ " + cultureStages.length, "COMPLETE・完了"], [String(cultureStages.length - cultureCompleted), "", "REMAINING・残り"], [String(requiredCultureIds().length), "", "古文常識の確認"]],
       "古文常識は各短文を2回正解し、最後に12問中10問以上のチェックポイントに合格すると完了です。",
-      "第3段階の敬語読解を完了すると解放されます。");
+      "第3段階の敬語読解を完了すると解放されます。",
+      !cultureCurrent);
     renderSupplementalPracticeCard();
     if (!sharedMode) {
       const moreCard = el("section", "card");

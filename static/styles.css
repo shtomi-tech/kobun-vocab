@@ -267,17 +267,22 @@ h2 {
 .primaryCta .ctaMain { font-size: 19px; font-weight: 600; }
 
 .moreDetails summary,
-.chapterDetails summary {
+.chapterDetails summary,
+.pathStagesDetails summary {
   cursor: pointer;
   list-style: none;
 }
 .moreDetails summary::-webkit-details-marker,
-.chapterDetails summary::-webkit-details-marker { display: none; }
+.chapterDetails summary::-webkit-details-marker,
+.pathStagesDetails summary::-webkit-details-marker { display: none; }
 .moreDetails summary::before,
-.chapterDetails summary::before { content: "▸ "; color: var(--clay); }
+.chapterDetails summary::before,
+.pathStagesDetails summary::before { content: "▸ "; color: var(--clay); }
 .moreDetails[open] summary::before,
-.chapterDetails[open] summary::before { content: "▾ "; }
+.chapterDetails[open] summary::before,
+.pathStagesDetails[open] summary::before { content: "▾ "; }
 .chapterDetails .chapterList { margin-top: 12px; }
+.pathStagesDetails .pathStages { margin-top: 12px; }
 
 .rangePicker { margin-top: 12px; }
 .rangeRow { display: flex; align-items: flex-end; gap: 10px; flex-wrap: wrap; }

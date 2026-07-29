@@ -643,7 +643,7 @@ const VocabApp = (function () {
         </div>
         ${weak.length ? `
         <div class="actions">
-          <button class="cta reviewCta" id="startWeak" type="button">間違えた${weak.length}語を復習する</button>
+          <button class="ghost" id="startWeak" type="button">間違えた${weak.length}語を復習する</button>
         </div>` : ""}
         <p class="hint">${progressHint}。習得の参考値 ${coreProgress.mastered}/${coreProgress.total}。追加語は${extraProgress.mastered}/${extraProgress.total}語を習得。</p>
       </section>
