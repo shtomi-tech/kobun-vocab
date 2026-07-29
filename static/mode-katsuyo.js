@@ -14,7 +14,7 @@ const KatsuyoApp = (function () {
   let currentSet = null;
   let byId = {};
   let cloud = null;
-  let flow = null; // 識別セクションの学習フロー文脈（理解→4択→実践）
+  let flow = null; // 識別セクションの学習フロー文脈（理解→実践）
   let grammarMode = false; // 上段の「古典文法」モードかどうか
   let activeGrammarMode = "roadmap"; // 古典文法内の現在の練習モード
   let activeGrammarPathTask = null; // 文法ロードマップから開始した必修タスク
@@ -60,7 +60,7 @@ const KatsuyoApp = (function () {
     {
       id: "shikibetsu",
       label: "4. 助動詞の意味を決める",
-      description: "内容理解→4択→実践の順で、助動詞12種の意味を手順で決める",
+      description: "内容理解→実践の順で、助動詞12種の意味を手順で決める",
       tasks: [
         { id: "proc-rareru", kind: "procedure", setId: "shikibetsu", procId: "rareru", label: "る・らるの識別" },
         { id: "proc-sasu", kind: "procedure", setId: "shikibetsu", procId: "sasu", label: "す・さす・しむの識別" },
@@ -280,7 +280,7 @@ const KatsuyoApp = (function () {
   }
 
   /* ---------- 知識項目カバレッジ ---------- */
-  // 手順型の知識は「手順確認・条件確認・対比・実践」に分けて出題する。
+  // 手順型の知識は「手順確認・実践」に分けて出題する。
   // coverageId ごとに、紐づく問題がすべて習得済みかどうかで手順の抜けを判定する。
   function coverageTopics() {
     return (DATA.coverageTopics || []).filter(t => getItems().some(item => item.topic === t.topic));
@@ -507,7 +507,7 @@ const KatsuyoApp = (function () {
     }
   }
 
-  /* ---------- 識別セクション：学習フロー（理解→4択→実践） ---------- */
+  /* ---------- 識別セクション：学習フロー（理解→実践） ---------- */
   function shikibetsuProcedures() {
     return DATA[currentSet.proceduresKey] || [];
   }
@@ -534,12 +534,6 @@ const KatsuyoApp = (function () {
   function shikibetsuGroupForProc(procId) {
     return getGroups().find(g => g.id === "sb-" + procId);
   }
-  function shikibetsuQuizIds(procId) {
-    const g = shikibetsuGroupForProc(procId);
-    if (!g) return [];
-    const required = shikibetsuRequiredIdSet();
-    return g.ids.filter(id => required.has(id) && (byId[itemKey(id)] || {}).questionType !== "integration");
-  }
   function shikibetsuPracticeIds(procId) {
     const g = shikibetsuGroupForProc(procId);
     if (!g) return [];
@@ -556,15 +550,11 @@ const KatsuyoApp = (function () {
   }
   function shikibetsuProcStatus(procId) {
     const p = loadProgress();
-    const quizIds = shikibetsuQuizIds(procId);
     const practiceIds = shikibetsuPracticeIds(procId);
-    const quizDone = quizIds.filter(id => shikibetsuIdCleared(id, p)).length;
     const practiceDone = practiceIds.filter(id => shikibetsuIdCleared(id, p)).length;
     return {
-      quizIds, practiceIds, quizDone, practiceDone,
-      complete: quizIds.length + practiceIds.length > 0
-        && (quizIds.length === 0 || quizDone === quizIds.length)
-        && (practiceIds.length === 0 || practiceDone === practiceIds.length),
+      practiceIds, practiceDone,
+      complete: practiceIds.length > 0 && practiceDone === practiceIds.length,
     };
   }
   function firstIncompleteProcedure() {
@@ -634,8 +624,8 @@ const KatsuyoApp = (function () {
       const status = shikibetsuProcStatus(task.procId);
       currentSet = prev;
       return {
-        done: status.quizDone + status.practiceDone,
-        total: status.quizIds.length + status.practiceIds.length,
+        done: status.practiceDone,
+        total: status.practiceIds.length,
         complete: status.complete,
       };
     }
@@ -739,7 +729,7 @@ const KatsuyoApp = (function () {
   function firstIncompleteRequiredTask() {
     return firstIncompleteGrammarTask() || firstIncompleteReadingTask() || firstIncompleteCultureTask();
   }
-  // 文法混合確認の母集団。4択（入口・章別）に加えて識別の4択問題も混ぜる。
+  // 文法混合確認の母集団。入口・章別の4択問題を混ぜる。
   // 除外するもの:
   //   - 活用表の行埋め（yougo/jodoshi）… 出題形式が違い、30問の確認には重すぎる
   //   - 実践問題（integration）… 文脈中の傍線部の意味を4択で答える
@@ -749,12 +739,6 @@ const KatsuyoApp = (function () {
       if (task.kind === "group") {
         if (setModeById(task.setId) !== "choice") return;
         taskIds(task).forEach(id => entries.push({ id, setId: task.setId }));
-      } else if (task.kind === "procedure") {
-        const setId = task.setId || "shikibetsu";
-        const prev = currentSet;
-        currentSet = practiceSetById(setId);
-        if (currentSet) shikibetsuQuizIds(task.procId).forEach(id => entries.push({ id, setId }));
-        currentSet = prev;
       }
     }));
     const seen = new Set();
@@ -959,7 +943,7 @@ const KatsuyoApp = (function () {
     const grammarCompleted = grammarStages.filter(stage => stage.complete).length;
     appendPathSection("第2段階", grammarStages,
       [[String(grammarCompleted), "/ " + grammarStages.length, "COMPLETE・完了"], [String(grammarStages.length - grammarCompleted), "", "REMAINING・残り"], [String(requiredChoiceIds().length), "", "確認対象の4択"]],
-      "通常問題は通し演習で各問題を1回以上正解すると完了、識別フローは4択・実践を全問1回正解で完了扱いです。最後に文法混合確認30問を行います。",
+      "通常問題は通し演習で各問題を1回以上正解すると完了、識別フローは実践を全問1回正解で完了扱いです。最後に文法混合確認30問を行います。",
       "前の文法必修を完了すると解放されます。");
 
     const readingCompleted = readingStages.filter(stage => stage.complete).length;
@@ -1193,14 +1177,14 @@ const KatsuyoApp = (function () {
     }
   }
 
-  // 識別セクション専用：手順ごとに「学習する」ボタン（理解→4択→実践のフロー開始）と
-  // 4択・実践の習得状況、手順本文（手順I〜IV）の折りたたみ確認を並べたカード。
+  // 識別セクション専用：手順ごとに「学習する」ボタン（理解→実践のフロー開始）と
+  // 実践の習得状況、手順本文（手順I〜IV）の折りたたみ確認を並べたカード。
   function renderProcedureStepsCard() {
     const procedures = shikibetsuProcedures();
     if (!procedures.length) return;
     const card = el("section", "card");
     card.appendChild(el("span", "label", "手順を学習する"));
-    card.appendChild(el("p", "hint", "手順の内容理解→4択問題→実践問題（傍線部の意味）の順に進みます。"));
+    card.appendChild(el("p", "hint", "手順の内容理解→実践問題（傍線部の意味）の順に進みます。"));
     procedures.forEach(proc => {
       const status = shikibetsuProcStatus(proc.id);
       const block = el("div", "procedureLearnBlock");
@@ -1217,8 +1201,7 @@ const KatsuyoApp = (function () {
       block.appendChild(head);
 
       block.appendChild(el("p", "procedureLearnStat",
-        "4択 完了 " + status.quizDone + " / " + status.quizIds.length
-        + "　実践 完了 " + status.practiceDone + " / " + status.practiceIds.length));
+        "実践 完了 " + status.practiceDone + " / " + status.practiceIds.length));
 
       const details = document.createElement("details");
       details.className = "procedureDetails";
@@ -1361,7 +1344,7 @@ const KatsuyoApp = (function () {
     requestAnimationFrame(scrollToSessionTop);
   }
 
-  // 識別セクションの学習フロー：手順本文の理解 → 4択問題 → 実践問題（傍線部の意味）の順に進む。
+  // 識別セクションの学習フロー：手順本文の理解 → 実践問題（傍線部の意味）の順に進む。
   function startShikibetsuFlow(procId, pathContext = {}) {
     const proc = shikibetsuProcedures().find(pr => pr.id === procId);
     if (!proc) { goHome(); return; }
@@ -1376,20 +1359,6 @@ const KatsuyoApp = (function () {
     renderUnderstand();
   }
 
-  function startShikibetsuQuiz() {
-    const proc = shikibetsuProcedures().find(pr => pr.id === flow.procId);
-    if (shikibetsuQuizIds(flow.procId).length === 0) {
-      startShikibetsuPractice();
-      return;
-    }
-    flow.stage = "quiz";
-    startSession(shikibetsuQuizIds(flow.procId), proc.name + "・4択問題", {
-      flow: Object.assign({}, flow),
-      pathTask: flow.pathTask,
-      pathReview: flow.pathReview,
-    });
-  }
-
   function startShikibetsuPractice() {
     const proc = shikibetsuProcedures().find(pr => pr.id === flow.procId);
     flow.stage = "practice";
@@ -1400,10 +1369,10 @@ const KatsuyoApp = (function () {
     });
   }
 
-  // 理解→4択→実践の3ステージを表す帯（eiken2-q1のstageBarに相当する構成）。
+  // 理解→実践の2ステージを表す帯（eiken2-q1のstageBarに相当する構成）。
   function flowStageBar(stage) {
-    const order = ["understand", "quiz", "practice"];
-    const labels = { understand: "1 理解", quiz: "2 4択", practice: "3 実践" };
+    const order = ["understand", "practice"];
+    const labels = { understand: "1 理解", practice: "2 実践" };
     const cur = order.indexOf(stage);
     const bar = el("div", "flowStageBar");
     order.forEach((s, i) => {
@@ -1457,11 +1426,11 @@ const KatsuyoApp = (function () {
     nav.appendChild(prev);
 
     const isLast = idx === steps.length - 1;
-    const next = el("button", "cta", isLast ? "4択問題へ進む →" : "次の手順 →");
+    const next = el("button", "cta", isLast ? "実践問題へ進む →" : "次の手順 →");
     next.type = "button";
     next.id = "understandNextBtn";
     next.addEventListener("click", () => {
-      if (isLast) startShikibetsuQuiz();
+      if (isLast) startShikibetsuPractice();
       else { flow.flashIdx += 1; renderUnderstand(); }
     });
     nav.appendChild(next);
@@ -1471,21 +1440,14 @@ const KatsuyoApp = (function () {
     sessionPanel.appendChild(box);
   }
 
-  // フロー内のセッション（4択・実践）が完了したときの分岐：
-  // 4択完了→実践へ、実践完了→手順の学習完了（次の未完了手順への導線）。
+  // フロー内の実践セッションが完了したときの分岐。
   function renderFlowDone() {
     const proc = shikibetsuProcedures().find(pr => pr.id === flow.procId);
     const card = el("section", "card");
     card.appendChild(el("span", "label", session.pathReview ? "復習完了" : "Next"));
 
     const actions = el("div", "actions");
-    if (session.flow.stage === "quiz") {
-      card.appendChild(el("p", "resultText", "4択問題が完了しました。次は実践問題で、傍線部の意味を4択で確認します。"));
-      const next = el("button", "cta", "実践問題へ進む →");
-      next.type = "button";
-      next.addEventListener("click", startShikibetsuPractice);
-      actions.appendChild(next);
-    } else if (session.pathReview) {
+    if (session.pathReview) {
       card.appendChild(el("p", "resultText", proc.name + "の復習が終わりました。進捗は保存されています。"));
       const roadmap = el("button", "cta", "学習ロードマップへ戻る");
       roadmap.type = "button";
@@ -2124,7 +2086,7 @@ const KatsuyoApp = (function () {
         .then(r => { if (!r.ok) throw new Error("katsuyo data load failed: " + r.status); return r.json(); }),
       fetch("data/multiple_choice.json?v=20260728-1")
         .then(r => { if (!r.ok) throw new Error("choice data load failed: " + r.status); return r.json(); }),
-      fetch("data/shikibetsu.json?v=20260728-9")
+      fetch("data/shikibetsu.json?v=20260729-1")
         .then(r => { if (!r.ok) throw new Error("shikibetsu data load failed: " + r.status); return r.json(); }),
       fetch("data/keigo-dokkai.json?v=20260721-1")
         .then(r => { if (!r.ok) throw new Error("keigo-dokkai data load failed: " + r.status); return r.json(); }),
@@ -2132,11 +2094,11 @@ const KatsuyoApp = (function () {
         .then(r => { if (!r.ok) throw new Error("kobun-joshiki data load failed: " + r.status); return r.json(); }),
       fetch("data/kiso.json?v=20260728-4")
         .then(r => { if (!r.ok) throw new Error("kiso data load failed: " + r.status); return r.json(); }),
-      fetch("data/shikibetsu-joshi.json?v=20260727-2")
+      fetch("data/shikibetsu-joshi.json?v=20260729-1")
         .then(r => { if (!r.ok) throw new Error("joshi data load failed: " + r.status); return r.json(); }),
-      fetch("data/shikibetsu-homograph.json?v=20260728-2")
+      fetch("data/shikibetsu-homograph.json?v=20260729-1")
         .then(r => { if (!r.ok) throw new Error("homograph data load failed: " + r.status); return r.json(); }),
-      fetch("data/shikibetsu-keigo.json?v=20260727-1")
+      fetch("data/shikibetsu-keigo.json?v=20260729-1")
         .then(r => { if (!r.ok) throw new Error("keigo-shikibetsu data load failed: " + r.status); return r.json(); })
     ])
       .then(async ([d, choiceData, shikibetsuData, keigoDokkaiData, kobunJoshikiData,
@@ -2191,7 +2153,7 @@ const KatsuyoApp = (function () {
           id: "shikibetsu",
           name: "識別",
           label: "IDENTIFY",
-          description: "助動詞の意味の識別手順を、手順確認→条件確認→対比→実践の順で身につける",
+          description: "助動詞の意味の識別手順を、手順確認→実践の順で身につける",
           collection: "shikibetsuQuestions",
           groups: "shikibetsuGroups",
           proceduresKey: "procedures",

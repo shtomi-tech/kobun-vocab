@@ -1,7 +1,7 @@
 {
   "meta": {
     "source": "docs/kobun-principles の disambiguation 分野の原則カード5枚をもとにしたオリジナル問題",
-    "note": "2026-07-25新設。従来は data/shikibetsu.json の「同形語の識別」1手順（汎用の2ステップ・5問）にまとめられていたが、原則カードは ぬ・ね／る・れ／なり／なむ／に の5枚に分かれており、判断条件もそれぞれ独立しているため、5手順に分割して作り直した。",
+    "note": "2026-07-25新設。従来は data/shikibetsu.json の「同形語の識別」1手順（汎用の2ステップ・5問）にまとめられていたが、原則カードは ぬ・ね／る・れ／なり／なむ／に の5枚に分かれており、判断条件もそれぞれ独立しているため、5手順に分割して作り直した。 / 2026-07-29改訂：識別の手順確認・条件確認・対比の4択問題を削除し、理解→実践の2段階に整理。",
     "ruleCards": [
       "kbp.disambiguation.nu-ne-identification",
       "kbp.disambiguation.ru-re-identification",
@@ -11,54 +11,16 @@
     ]
   },
   "homographRequiredQuestionIds": [
-    "hg-nune-proc1",
-    "hg-nune-cond-mizen",
-    "hg-nune-cond-renyo",
-    "hg-nune-cond-rentai",
-    "hg-nune-cond-shushi",
-    "hg-nune-cond-ne",
-    "hg-nune-cont1",
     "hg-nune-int2",
     "hg-nune-int3",
-    "hg-rure-proc1",
-    "hg-rure-cond-adan",
-    "hg-rure-cond-edan",
-    "hg-rure-cond-katsuyo",
-    "hg-rure-cont1",
     "hg-rure-int1",
     "hg-rure-int2",
     "hg-rure-int3",
-    "hg-nari-proc1",
-    "hg-nari-cond-shushi",
-    "hg-nari-cond-taigen",
-    "hg-nari-cond-bunmyaku",
-    "hg-nari-cond-keiyodoshi",
-    "hg-nari-cond-doushi",
-    "hg-nari-cont1",
     "hg-nari-int1",
     "hg-nari-int2",
     "hg-nari-int3",
-    "hg-nari-cond-example1",
-    "hg-nari-cond-example2",
-    "hg-nari-cond-example3",
-    "hg-nari-cond-example4",
-    "hg-nari-cond-example5",
-    "hg-namu-proc1",
-    "hg-namu-cond-ganbou",
-    "hg-namu-cond-kakujutsu",
-    "hg-namu-cond-nahen",
-    "hg-namu-cond-kakari",
-    "hg-namu-cont1",
     "hg-namu-int1",
     "hg-namu-int2",
-    "hg-ni-proc1",
-    "hg-ni-cond-kanryo",
-    "hg-ni-cond-dantei",
-    "hg-ni-cond-kaku",
-    "hg-ni-cond-setsuzoku",
-    "hg-ni-cond-keiyodoshi",
-    "hg-ni-cond-fukushi",
-    "hg-ni-cont1",
     "hg-ni-int1",
     "hg-ni-int3"
   ],
@@ -185,14 +147,6 @@
       "name": "ぬ・ねの識別",
       "sub": "打消／完了・強意",
       "ids": [
-        "hg-nune-proc1",
-        "hg-nune-proc2",
-        "hg-nune-cond-mizen",
-        "hg-nune-cond-renyo",
-        "hg-nune-cond-rentai",
-        "hg-nune-cond-shushi",
-        "hg-nune-cond-ne",
-        "hg-nune-cont1",
         "hg-nune-int1",
         "hg-nune-int2",
         "hg-nune-int3",
@@ -207,12 +161,6 @@
       "name": "る・れの識別",
       "sub": "受身可能自発尊敬／完了・存続",
       "ids": [
-        "hg-rure-proc1",
-        "hg-rure-proc2",
-        "hg-rure-cond-adan",
-        "hg-rure-cond-edan",
-        "hg-rure-cond-katsuyo",
-        "hg-rure-cont1",
         "hg-rure-int1",
         "hg-rure-int2",
         "hg-rure-int3",
@@ -227,23 +175,10 @@
       "name": "なりの識別",
       "sub": "伝聞推定／断定存在／形容動詞・動詞",
       "ids": [
-        "hg-nari-proc1",
-        "hg-nari-proc2",
-        "hg-nari-cond-shushi",
-        "hg-nari-cond-taigen",
-        "hg-nari-cond-bunmyaku",
-        "hg-nari-cond-keiyodoshi",
-        "hg-nari-cond-doushi",
-        "hg-nari-cont1",
         "hg-nari-int1",
         "hg-nari-int2",
         "hg-nari-int3",
-        "hg-nari-int4",
-        "hg-nari-cond-example1",
-        "hg-nari-cond-example2",
-        "hg-nari-cond-example3",
-        "hg-nari-cond-example4",
-        "hg-nari-cond-example5"
+        "hg-nari-int4"
       ]
     },
     {
@@ -251,13 +186,6 @@
       "name": "なむの識別",
       "sub": "願望の終助詞／確述用法／ナ変＋む／係助詞",
       "ids": [
-        "hg-namu-proc1",
-        "hg-namu-proc2",
-        "hg-namu-cond-ganbou",
-        "hg-namu-cond-kakujutsu",
-        "hg-namu-cond-nahen",
-        "hg-namu-cond-kakari",
-        "hg-namu-cont1",
         "hg-namu-int1",
         "hg-namu-int2",
         "hg-namu-int3",
@@ -269,15 +197,6 @@
       "name": "にの識別",
       "sub": "完了／断定／格助詞／接続助詞／形容動詞語尾／副詞",
       "ids": [
-        "hg-ni-proc1",
-        "hg-ni-proc2",
-        "hg-ni-cond-kanryo",
-        "hg-ni-cond-dantei",
-        "hg-ni-cond-kaku",
-        "hg-ni-cond-setsuzoku",
-        "hg-ni-cond-keiyodoshi",
-        "hg-ni-cond-fukushi",
-        "hg-ni-cont1",
         "hg-ni-int1",
         "hg-ni-int2",
         "hg-ni-int3",
@@ -290,14 +209,6 @@
       "sub": "5手順をまとめてランダム出題",
       "shuffle": true,
       "ids": [
-        "hg-nune-proc1",
-        "hg-nune-proc2",
-        "hg-nune-cond-mizen",
-        "hg-nune-cond-renyo",
-        "hg-nune-cond-rentai",
-        "hg-nune-cond-shushi",
-        "hg-nune-cond-ne",
-        "hg-nune-cont1",
         "hg-nune-int1",
         "hg-nune-int2",
         "hg-nune-int3",
@@ -305,12 +216,6 @@
         "pn-nune-kokoroe",
         "pn-nune-nahen",
         "pn-nune-kikoe",
-        "hg-rure-proc1",
-        "hg-rure-proc2",
-        "hg-rure-cond-adan",
-        "hg-rure-cond-edan",
-        "hg-rure-cond-katsuyo",
-        "hg-rure-cont1",
         "hg-rure-int1",
         "hg-rure-int2",
         "hg-rure-int3",
@@ -318,43 +223,14 @@
         "pn-rure-jihatsu",
         "pn-rure-tari",
         "pn-rure-tari2",
-        "hg-nari-proc1",
-        "hg-nari-proc2",
-        "hg-nari-cond-shushi",
-        "hg-nari-cond-taigen",
-        "hg-nari-cond-bunmyaku",
-        "hg-nari-cond-keiyodoshi",
-        "hg-nari-cond-doushi",
-        "hg-nari-cont1",
         "hg-nari-int1",
         "hg-nari-int2",
         "hg-nari-int3",
         "hg-nari-int4",
-        "hg-nari-cond-example1",
-        "hg-nari-cond-example2",
-        "hg-nari-cond-example3",
-        "hg-nari-cond-example4",
-        "hg-nari-cond-example5",
-        "hg-namu-proc1",
-        "hg-namu-proc2",
-        "hg-namu-cond-ganbou",
-        "hg-namu-cond-kakujutsu",
-        "hg-namu-cond-nahen",
-        "hg-namu-cond-kakari",
-        "hg-namu-cont1",
         "hg-namu-int1",
         "hg-namu-int2",
         "hg-namu-int3",
         "hg-namu-int4",
-        "hg-ni-proc1",
-        "hg-ni-proc2",
-        "hg-ni-cond-kanryo",
-        "hg-ni-cond-dantei",
-        "hg-ni-cond-kaku",
-        "hg-ni-cond-setsuzoku",
-        "hg-ni-cond-keiyodoshi",
-        "hg-ni-cond-fukushi",
-        "hg-ni-cont1",
         "hg-ni-int1",
         "hg-ni-int2",
         "hg-ni-int3",
@@ -366,46 +242,6 @@
     {
       "topic": "ぬ・ねの識別",
       "items": [
-        {
-          "id": "hg-nune-proc1",
-          "label": "最初に見る位置",
-          "questionType": "procedure"
-        },
-        {
-          "id": "hg-nune-proc2",
-          "label": "判定後の続き",
-          "questionType": "procedure"
-        },
-        {
-          "id": "hg-nune-cond-mizen",
-          "label": "未然形接続",
-          "questionType": "condition"
-        },
-        {
-          "id": "hg-nune-cond-renyo",
-          "label": "連用形接続",
-          "questionType": "condition"
-        },
-        {
-          "id": "hg-nune-cond-rentai",
-          "label": "ぬ＝連体形",
-          "questionType": "condition"
-        },
-        {
-          "id": "hg-nune-cond-shushi",
-          "label": "ぬ＝終止形",
-          "questionType": "condition"
-        },
-        {
-          "id": "hg-nune-cond-ne",
-          "label": "ねの活用形",
-          "questionType": "condition"
-        },
-        {
-          "id": "hg-nune-cont1",
-          "label": "行かぬと行きぬ",
-          "questionType": "contrast"
-        },
         {
           "id": "hg-nune-int1",
           "label": "指定例①：打消",
@@ -447,36 +283,6 @@
       "topic": "る・れの識別",
       "items": [
         {
-          "id": "hg-rure-proc1",
-          "label": "最初に見る手がかり",
-          "questionType": "procedure"
-        },
-        {
-          "id": "hg-rure-proc2",
-          "label": "判定後の続き",
-          "questionType": "procedure"
-        },
-        {
-          "id": "hg-rure-cond-adan",
-          "label": "ア段音接続",
-          "questionType": "condition"
-        },
-        {
-          "id": "hg-rure-cond-edan",
-          "label": "エ段音接続",
-          "questionType": "condition"
-        },
-        {
-          "id": "hg-rure-cond-katsuyo",
-          "label": "活用形での判断",
-          "questionType": "condition"
-        },
-        {
-          "id": "hg-rure-cont1",
-          "label": "言はると咲ける",
-          "questionType": "contrast"
-        },
-        {
           "id": "hg-rure-int1",
           "label": "指定例①：受身",
           "questionType": "integration"
@@ -517,46 +323,6 @@
       "topic": "なりの識別",
       "items": [
         {
-          "id": "hg-nari-proc1",
-          "label": "最初に見る手がかり",
-          "questionType": "procedure"
-        },
-        {
-          "id": "hg-nari-proc2",
-          "label": "判定後の続き",
-          "questionType": "procedure"
-        },
-        {
-          "id": "hg-nari-cond-shushi",
-          "label": "終止形接続",
-          "questionType": "condition"
-        },
-        {
-          "id": "hg-nari-cond-taigen",
-          "label": "体言・連体形接続",
-          "questionType": "condition"
-        },
-        {
-          "id": "hg-nari-cond-bunmyaku",
-          "label": "同音のときの文脈判断",
-          "questionType": "condition"
-        },
-        {
-          "id": "hg-nari-cond-keiyodoshi",
-          "label": "形容動詞語尾",
-          "questionType": "condition"
-        },
-        {
-          "id": "hg-nari-cond-doushi",
-          "label": "動詞なる",
-          "questionType": "condition"
-        },
-        {
-          "id": "hg-nari-cont1",
-          "label": "接続の対比",
-          "questionType": "contrast"
-        },
-        {
           "id": "hg-nari-int1",
           "label": "統合①",
           "questionType": "integration"
@@ -575,72 +341,12 @@
           "id": "hg-nari-int4",
           "label": "統合④",
           "questionType": "integration"
-        },
-        {
-          "id": "hg-nari-cond-example1",
-          "label": "形容動詞の活用語尾（指定例）",
-          "questionType": "condition"
-        },
-        {
-          "id": "hg-nari-cond-example2",
-          "label": "存在の助動詞（指定例）",
-          "questionType": "condition"
-        },
-        {
-          "id": "hg-nari-cond-example3",
-          "label": "四段動詞（指定例）",
-          "questionType": "condition"
-        },
-        {
-          "id": "hg-nari-cond-example4",
-          "label": "断定の助動詞（指定例）",
-          "questionType": "condition"
-        },
-        {
-          "id": "hg-nari-cond-example5",
-          "label": "伝聞の助動詞（指定例）",
-          "questionType": "condition"
         }
       ]
     },
     {
       "topic": "なむの識別",
       "items": [
-        {
-          "id": "hg-namu-proc1",
-          "label": "最初に確認すること",
-          "questionType": "procedure"
-        },
-        {
-          "id": "hg-namu-proc2",
-          "label": "係助詞と決める条件",
-          "questionType": "procedure"
-        },
-        {
-          "id": "hg-namu-cond-ganbou",
-          "label": "願望の終助詞",
-          "questionType": "condition"
-        },
-        {
-          "id": "hg-namu-cond-kakujutsu",
-          "label": "確述用法",
-          "questionType": "condition"
-        },
-        {
-          "id": "hg-namu-cond-nahen",
-          "label": "ナ変＋む",
-          "questionType": "condition"
-        },
-        {
-          "id": "hg-namu-cond-kakari",
-          "label": "強意の係助詞",
-          "questionType": "condition"
-        },
-        {
-          "id": "hg-namu-cont1",
-          "label": "散らなむと散りなむ",
-          "questionType": "contrast"
-        },
         {
           "id": "hg-namu-int1",
           "label": "統合①",
@@ -667,51 +373,6 @@
       "topic": "にの識別",
       "items": [
         {
-          "id": "hg-ni-proc1",
-          "label": "最初に見る手がかり",
-          "questionType": "procedure"
-        },
-        {
-          "id": "hg-ni-proc2",
-          "label": "連体形接続の3分岐",
-          "questionType": "procedure"
-        },
-        {
-          "id": "hg-ni-cond-kanryo",
-          "label": "完了",
-          "questionType": "condition"
-        },
-        {
-          "id": "hg-ni-cond-dantei",
-          "label": "断定",
-          "questionType": "condition"
-        },
-        {
-          "id": "hg-ni-cond-kaku",
-          "label": "格助詞",
-          "questionType": "condition"
-        },
-        {
-          "id": "hg-ni-cond-setsuzoku",
-          "label": "接続助詞",
-          "questionType": "condition"
-        },
-        {
-          "id": "hg-ni-cond-keiyodoshi",
-          "label": "形容動詞語尾",
-          "questionType": "condition"
-        },
-        {
-          "id": "hg-ni-cond-fukushi",
-          "label": "副詞の一部",
-          "questionType": "condition"
-        },
-        {
-          "id": "hg-ni-cont1",
-          "label": "体言接続の除外",
-          "questionType": "contrast"
-        },
-        {
           "id": "hg-ni-int1",
           "label": "統合①",
           "questionType": "integration"
@@ -735,199 +396,6 @@
     }
   ],
   "homographQuestions": [
-    {
-      "id": "hg-nune-proc1",
-      "topic": "ぬ・ねの識別",
-      "step": "手順I",
-      "questionType": "procedure",
-      "coverageId": "hg-nune-proc1",
-      "question": "「ぬ・ね」が打消か完了・強意かを判断するとき、手がかりになるものはどれか。",
-      "choices": [
-        "上の接続と、「ぬ・ね」自体の活用形",
-        "主語の人称と、文中での位置",
-        "下に推量の助動詞があるかどうか",
-        "その文が会話文か地の文か"
-      ],
-      "answerIndex": 0,
-      "explanation": "打消の「ず」は未然形接続、完了の「ぬ」は連用形接続なので、上を見れば分かる。上で決まらないときは「ぬ」自体の活用形（連体形なら打消、終止形なら完了）で決める。上と下の両方が確認できるときは、一致することを裏づけに使う。",
-      "distractorRationale": {
-        "下に推量の助動詞があるかどうか": "これは完了・強意と決まった後に、強意か完了かを分けるための手がかりである",
-        "主語の人称と、文中での位置": "人称で意味が決まるのは「む」「べし」である",
-        "その文が会話文か地の文か": "会話文か地の文かで決まるのは敬意の方向である"
-      },
-      "ruleRefs": [
-        "kbp.disambiguation.nu-ne-identification"
-      ]
-    },
-    {
-      "id": "hg-nune-proc2",
-      "topic": "ぬ・ねの識別",
-      "step": "手順IV",
-      "questionType": "procedure",
-      "coverageId": "hg-nune-proc2",
-      "question": "「ぬ」を完了・強意と判定した後、さらに何を確認する必要があるか。",
-      "choices": [
-        "直下に推量の助動詞があるかどうか",
-        "上の語が四段活用かどうか",
-        "文末が連体形で結ばれているかどうか",
-        "主語が身分の高い人物かどうか"
-      ],
-      "answerIndex": 0,
-      "explanation": "完了・強意という判定は、まだ意味を一つに絞っていない。直下に推量の助動詞（む・べし・まし・らむ・けむなど）があれば強意「きっと〜」、なければ完了「〜た・〜てしまった」。この2段階を1つにまとめないこと。",
-      "distractorRationale": {
-        "上の語が四段活用かどうか": "活用の種類は打消か完了かの判定にも意味の判定にも使わない",
-        "文末が連体形で結ばれているかどうか": "結びの活用形を見るのは係り結びや「なむ」の識別である",
-        "主語が身分の高い人物かどうか": "身分を見るのは敬語や「る・らる」の尊敬の判定である"
-      },
-      "ruleRefs": [
-        "kbp.disambiguation.nu-ne-identification",
-        "kbp.auxiliaries.tsu-nu-meanings"
-      ]
-    },
-    {
-      "id": "hg-nune-cond-mizen",
-      "topic": "ぬ・ねの識別",
-      "step": "条件・未然形接続",
-      "questionType": "condition",
-      "coverageId": "hg-nune-cond-mizen",
-      "question": "未然形＋「ぬ」の「ぬ」は何か。",
-      "choices": [
-        "打消の助動詞「ず」の連体形",
-        "完了の助動詞「ぬ」の終止形",
-        "断定の助動詞「なり」の一部",
-        "ナ変動詞の活用語尾"
-      ],
-      "answerIndex": 0,
-      "explanation": "打消の「ず」は未然形接続で、連体形が「ぬ」、已然形が「ね」。したがって未然形＋「ぬ」は打消の「ず」の連体形である。完了の「ぬ」は連用形接続なので、接続が違う。",
-      "distractorRationale": {
-        "完了の助動詞「ぬ」の終止形": "完了の「ぬ」は連用形接続であり、未然形には付かない",
-        "断定の助動詞「なり」の一部": "断定の「なり」は体言・連体形接続で、活用形に「ぬ」はない",
-        "ナ変動詞の活用語尾": "ナ変動詞は自立語であり、未然形の下に付く付属語ではない"
-      },
-      "ruleRefs": [
-        "kbp.disambiguation.nu-ne-identification"
-      ]
-    },
-    {
-      "id": "hg-nune-cond-renyo",
-      "topic": "ぬ・ねの識別",
-      "step": "条件・連用形接続",
-      "questionType": "condition",
-      "coverageId": "hg-nune-cond-renyo",
-      "question": "連用形＋「ぬ」の「ぬ」は何を表すか。",
-      "choices": [
-        "完了・強意",
-        "打消（〜ない）",
-        "存続（〜ている）",
-        "受身（〜される）"
-      ],
-      "answerIndex": 0,
-      "explanation": "完了の助動詞「ぬ」は連用形接続なので、連用形＋「ぬ」は完了・強意。打消の「ず」は未然形接続なので、ここでは除外される。この段階では完了と強意のどちらかは決まっていない。",
-      "distractorRationale": {
-        "打消（〜ない）": "打消の「ず」は未然形接続であり、連用形には付かない",
-        "存続（〜ている）": "存続を表すのは「たり」「り」である",
-        "受身（〜される）": "受身を表すのは「る」「らる」である"
-      },
-      "ruleRefs": [
-        "kbp.disambiguation.nu-ne-identification"
-      ]
-    },
-    {
-      "id": "hg-nune-cond-rentai",
-      "topic": "ぬ・ねの識別",
-      "step": "条件・ぬが連体形",
-      "questionType": "condition",
-      "coverageId": "hg-nune-cond-rentai",
-      "question": "「ぬ」自体が文中で連体形として働いている場合、その「ぬ」は何か。",
-      "choices": [
-        "打消の助動詞「ず」",
-        "完了の助動詞「ぬ」",
-        "断定の助動詞「なり」",
-        "強意の係助詞"
-      ],
-      "answerIndex": 0,
-      "explanation": "打消の「ず」の連体形が「ぬ」、完了の「ぬ」の連体形は「ぬる」である。したがって、下に体言が続くなどして連体形と分かる「ぬ」は打消。上の活用形が確認しにくいときは、この下からの確認が使える。",
-      "distractorRationale": {
-        "完了の助動詞「ぬ」": "完了の「ぬ」の連体形は「ぬる」であり、「ぬ」の形にはならない",
-        "断定の助動詞「なり」": "断定の「なり」の連体形は「なる」である",
-        "強意の係助詞": "係助詞は活用しないので、連体形という活用形を持たない"
-      },
-      "ruleRefs": [
-        "kbp.disambiguation.nu-ne-identification"
-      ]
-    },
-    {
-      "id": "hg-nune-cond-shushi",
-      "topic": "ぬ・ねの識別",
-      "step": "条件・ぬが終止形",
-      "questionType": "condition",
-      "coverageId": "hg-nune-cond-shushi",
-      "question": "「ぬ」自体が文中で終止形として働いている場合、その「ぬ」は何を表すか。",
-      "choices": [
-        "完了・強意",
-        "打消（〜ない）",
-        "断定（〜である）",
-        "存在（〜にある）"
-      ],
-      "answerIndex": 0,
-      "explanation": "完了の「ぬ」の終止形が「ぬ」、打消の「ず」の終止形は「ず」である。したがって、文を言い切る位置にある「ぬ」は完了・強意。",
-      "distractorRationale": {
-        "打消（〜ない）": "打消の「ず」の終止形は「ず」であり、「ぬ」の形にはならない",
-        "断定（〜である）": "断定を表すのは「なり」「たり」である",
-        "存在（〜にある）": "存在を表すのは「なり」（体言・連体形接続）である"
-      },
-      "ruleRefs": [
-        "kbp.disambiguation.nu-ne-identification"
-      ]
-    },
-    {
-      "id": "hg-nune-cond-ne",
-      "topic": "ぬ・ねの識別",
-      "step": "条件・ねの活用形",
-      "questionType": "condition",
-      "coverageId": "hg-nune-cond-ne",
-      "question": "「ね」の活用形と意味の対応として正しいものはどれか。",
-      "choices": [
-        "已然形なら打消、命令形なら完了・強意",
-        "已然形なら完了・強意、命令形なら打消",
-        "已然形も命令形も打消",
-        "已然形も命令形も完了・強意"
-      ],
-      "answerIndex": 0,
-      "explanation": "打消の「ず」の已然形が「ね」、完了の「ぬ」の命令形が「ね」。したがって「〜ねば」「〜ねど」の形なら已然形で打消、言い切って命令する位置なら完了・強意である。",
-      "distractorRationale": {
-        "已然形なら完了・強意、命令形なら打消": "已然形と命令形の対応が入れ替わっている",
-        "已然形も命令形も打消": "命令形の「ね」は完了の「ぬ」のものである",
-        "已然形も命令形も完了・強意": "已然形の「ね」は打消の「ず」のものである"
-      },
-      "ruleRefs": [
-        "kbp.disambiguation.nu-ne-identification"
-      ]
-    },
-    {
-      "id": "hg-nune-cont1",
-      "topic": "ぬ・ねの識別",
-      "step": "対比",
-      "questionType": "contrast",
-      "coverageId": "hg-nune-cont1",
-      "question": "四段活用「行く」を使った「行かぬ」と「行きぬ」の違いとして正しいものはどれか。",
-      "choices": [
-        "「行かぬ」は未然形接続で打消、「行きぬ」は連用形接続で完了・強意",
-        "「行かぬ」は連用形接続で完了、「行きぬ」は未然形接続で打消",
-        "どちらも打消になるので、意味に違いは出ない",
-        "どちらも完了で、「行かぬ」のほうが強い言い方"
-      ],
-      "answerIndex": 0,
-      "explanation": "四段活用「行く」の未然形は「行か」、連用形は「行き」。「行かぬ」は未然形接続なので打消（行かない）、「行きぬ」は連用形接続なので完了・強意（行った）。上の1音が違うだけで意味が正反対になるため、接続の確認が決定的になる。",
-      "distractorRationale": {
-        "「行かぬ」は連用形接続で完了、「行きぬ」は未然形接続で打消": "未然形と連用形が入れ替わっている",
-        "どちらも完了で、「行かぬ」のほうが強い言い方": "強さの違いではなく、打消か完了かという意味の違いである",
-        "どちらも打消になるので、意味に違いは出ない": "「行きぬ」は連用形接続なので打消にはならない"
-      },
-      "ruleRefs": [
-        "kbp.disambiguation.nu-ne-identification"
-      ]
-    },
     {
       "id": "hg-nune-int1",
       "topic": "ぬ・ねの識別",
@@ -1153,151 +621,6 @@
           "start": 6,
           "text": "ね"
         }
-      ]
-    },
-    {
-      "id": "hg-rure-proc1",
-      "topic": "る・れの識別",
-      "step": "手順I",
-      "questionType": "procedure",
-      "coverageId": "hg-rure-proc1",
-      "question": "「る・れ」が助動詞「る」（受身・可能・自発・尊敬）か助動詞「り」（完了・存続）かを決めるとき、最初に見る手がかりはどれか。",
-      "choices": [
-        "直前の音がア段かエ段か",
-        "主語の人称",
-        "下に打消があるかどうか",
-        "文が会話文か地の文か"
-      ],
-      "answerIndex": 0,
-      "explanation": "助動詞「る」は未然形接続なので直前がア段音、助動詞「り」はサ変未然形・四段已然形に接続するので直前がエ段音になる。この音の違いが最初の手がかりで、音で決まらないときに活用形を見る。",
-      "distractorRationale": {
-        "主語の人称": "人称で意味が決まるのは「む」「べし」である",
-        "下に打消があるかどうか": "これは「る」と決まった後に、可能の意味を検討するための手がかりである",
-        "文が会話文か地の文か": "会話文か地の文かで決まるのは敬意の方向である"
-      },
-      "ruleRefs": [
-        "kbp.disambiguation.ru-re-identification"
-      ]
-    },
-    {
-      "id": "hg-rure-proc2",
-      "topic": "る・れの識別",
-      "step": "手順III",
-      "questionType": "procedure",
-      "coverageId": "hg-rure-proc2",
-      "question": "「る」を助動詞「る」（受身・可能・自発・尊敬）と判定した後、次に行うことはどれか。",
-      "choices": [
-        "受身・可能・自発・尊敬の4つを、別の手順で絞り込む",
-        "そのまま受身と訳して判断を終える",
-        "完了か存続かを、さらに文脈で判断する",
-        "文末の結びの活用形が連体形かを確認する"
-      ],
-      "answerIndex": 0,
-      "explanation": "この識別で決まるのは「どちらの助動詞か」までで、意味は4つのまま残っている。受身か可能か自発か尊敬かは、「る・らるの識別」の手順（受け手を補えるか、下に打消があるか、心情語があるか、主語の身分）で絞り込む。",
-      "distractorRationale": {
-        "そのまま受身と訳して判断を終える": "4つの意味のうち受身と決める根拠がまだない",
-        "完了か存続かを、さらに文脈で判断する": "完了・存続は助動詞「り」と判定した場合の続きである",
-        "文末の結びの活用形が連体形かを確認する": "結びを見るのは係り結びや「なむ」の識別である"
-      },
-      "ruleRefs": [
-        "kbp.disambiguation.ru-re-identification",
-        "kbp.auxiliaries.ru-raru-meanings"
-      ]
-    },
-    {
-      "id": "hg-rure-cond-adan",
-      "topic": "る・れの識別",
-      "step": "条件・ア段音",
-      "questionType": "condition",
-      "coverageId": "hg-rure-cond-adan",
-      "question": "ア段音＋「る（れ）」の「る（れ）」は、どちらの助動詞か。",
-      "choices": [
-        "受身・可能・自発・尊敬を表す「る」",
-        "完了・存続を表す「り」",
-        "断定を表す助動詞「なり」",
-        "打消を表す助動詞「ず」"
-      ],
-      "answerIndex": 0,
-      "explanation": "助動詞「る」は四段・ナ変・ラ変の未然形に接続し、これらの未然形はア段音で終わる。したがってア段音の直後の「る・れ」は助動詞「る」である。",
-      "distractorRationale": {
-        "完了・存続を表す「り」": "「り」はサ変未然形・四段已然形に接続し、直前はエ段音になる",
-        "断定を表す助動詞「なり」": "断定の「なり」に「る」「れ」という活用形はない",
-        "打消を表す助動詞「ず」": "打消の「ず」の活用形は「ず・ざら・ざり・ぬ・ね」などで、「る」「れ」はない"
-      },
-      "ruleRefs": [
-        "kbp.disambiguation.ru-re-identification"
-      ]
-    },
-    {
-      "id": "hg-rure-cond-edan",
-      "topic": "る・れの識別",
-      "step": "条件・エ段音",
-      "questionType": "condition",
-      "coverageId": "hg-rure-cond-edan",
-      "question": "エ段音＋「る（れ）」の「る（れ）」は何を表すか。",
-      "choices": [
-        "完了・存続",
-        "受身・可能・自発・尊敬",
-        "使役・尊敬",
-        "打消推量"
-      ],
-      "answerIndex": 0,
-      "explanation": "助動詞「り」は四段已然形・サ変未然形に接続し、四段已然形はエ段音で終わる。したがってエ段音の直後の「る・れ」は「り」の活用形で、完了・存続を表す。",
-      "distractorRationale": {
-        "受身・可能・自発・尊敬": "これは助動詞「る」で、直前はア段音になる",
-        "使役・尊敬": "使役・尊敬を表すのは「す」「さす」「しむ」である",
-        "打消推量": "打消推量を表すのは「じ」「まじ」である"
-      },
-      "ruleRefs": [
-        "kbp.disambiguation.ru-re-identification"
-      ]
-    },
-    {
-      "id": "hg-rure-cond-katsuyo",
-      "topic": "る・れの識別",
-      "step": "条件・活用形",
-      "questionType": "condition",
-      "coverageId": "hg-rure-cond-katsuyo",
-      "question": "活用形から判断するとき、「る」が連体形である場合はどちらの助動詞か。",
-      "choices": [
-        "完了・存続の「り」",
-        "受身・可能・自発・尊敬の「る」",
-        "どちらとも決まらない",
-        "断定の「なり」"
-      ],
-      "answerIndex": 0,
-      "explanation": "助動詞「り」の活用は「ら・り・り・る・れ・れ」で、連体形が「る」。助動詞「る」の活用は「れ・れ・る・るる・るれ・れよ」で、連体形は「るる」である。したがって連体形の「る」は「り」のほうと決まる。",
-      "distractorRationale": {
-        "受身・可能・自発・尊敬の「る」": "助動詞「る」の連体形は「るる」であり、「る」の形にはならない",
-        "どちらとも決まらない": "連体形の形が「る」と「るる」で異なるため、決まる",
-        "断定の「なり」": "断定の「なり」の連体形は「なる」である"
-      },
-      "ruleRefs": [
-        "kbp.disambiguation.ru-re-identification"
-      ]
-    },
-    {
-      "id": "hg-rure-cont1",
-      "topic": "る・れの識別",
-      "step": "対比",
-      "questionType": "contrast",
-      "coverageId": "hg-rure-cont1",
-      "question": "「言はる」と「咲ける」の「る」の違いとして正しいものはどれか。",
-      "choices": [
-        "「言はる」はア段音接続で助動詞「る」、「咲ける」はエ段音接続で助動詞「り」",
-        "「言はる」はエ段音接続で助動詞「り」、「咲ける」はア段音接続で助動詞「る」",
-        "どちらも助動詞「る」で、意味に違いはない",
-        "どちらも助動詞「り」で、「咲ける」のほうが強い言い方"
-      ],
-      "answerIndex": 0,
-      "explanation": "「言は」は四段「言ふ」の未然形でア段音、「咲け」は四段「咲く」の已然形でエ段音。直前1音の段が違うだけで助動詞が変わり、意味も「言われる」と「咲いている」で別物になる。",
-      "distractorRationale": {
-        "「言はる」はエ段音接続で助動詞「り」、「咲ける」はア段音接続で助動詞「る」": "ア段とエ段が入れ替わっている",
-        "どちらも助動詞「る」で、意味に違いはない": "「咲け」はエ段音なので助動詞「り」である",
-        "どちらも助動詞「り」で、「咲ける」のほうが強い言い方": "「言は」はア段音なので助動詞「る」である"
-      },
-      "ruleRefs": [
-        "kbp.disambiguation.ru-re-identification"
       ]
     },
     {
@@ -1532,199 +855,6 @@
       ]
     },
     {
-      "id": "hg-nari-proc1",
-      "topic": "なりの識別",
-      "step": "手順I",
-      "questionType": "procedure",
-      "coverageId": "hg-nari-proc1",
-      "question": "「なり」が伝聞・推定か断定・存在かを決めるとき、最初に見る手がかりはどれか。",
-      "choices": [
-        "直前の語の活用形（終止形か、体言・連体形か）",
-        "文中に係助詞があるかどうかの別",
-        "文全体の主語が何人称であるか",
-        "「なり」自体がどの活用形であるか"
-      ],
-      "answerIndex": 0,
-      "explanation": "伝聞・推定の「なり」は終止形（ラ変型は連体形）接続、断定・存在の「なり」は体言・連体形接続である。まず直前の活用形を確認し、それで決まらない場合にだけ文脈（音情報の有無）を見る。",
-      "distractorRationale": {
-        "文中に係助詞があるかどうかの別": "係助詞は結びの活用形を変えるが、「なり」の種類は決めない",
-        "文全体の主語が何人称であるか": "人称で意味が決まるのは「む」「べし」である",
-        "「なり」自体がどの活用形であるか": "どちらの「なり」もラ変型に活用し、活用形では区別できない"
-      },
-      "ruleRefs": [
-        "kbp.disambiguation.nari-identification"
-      ]
-    },
-    {
-      "id": "hg-nari-proc2",
-      "topic": "なりの識別",
-      "step": "手順IV",
-      "questionType": "procedure",
-      "coverageId": "hg-nari-proc2",
-      "question": "「なり」を断定・存在と判定した後、断定か存在かを分ける手がかりはどれか。",
-      "choices": [
-        "直前の体言が場所や方角を表すかどうか",
-        "文中に音を表す語があるかどうか",
-        "主語が身分の高い人物かどうか",
-        "文末が連体形で結ばれているかどうか"
-      ],
-      "answerIndex": 0,
-      "explanation": "直前の体言が場所・方角を表す語であれば存在（〜にある・〜にいる）、そうでなければ断定（〜だ・〜である）。断定・存在という判定は、まだ意味を一つに絞っていない点に注意する。",
-      "distractorRationale": {
-        "文中に音を表す語があるかどうか": "音情報は伝聞・推定と断定・存在を分けるための手がかりで、その後の断定・存在の内訳には使わない",
-        "主語が身分の高い人物かどうか": "身分を見るのは敬語や「る・らる」の尊敬の判定である",
-        "文末が連体形で結ばれているかどうか": "結びを見るのは係り結びや「なむ」の識別である"
-      },
-      "ruleRefs": [
-        "kbp.disambiguation.nari-identification",
-        "kbp.auxiliaries.nari-meanings"
-      ]
-    },
-    {
-      "id": "hg-nari-cond-shushi",
-      "topic": "なりの識別",
-      "step": "条件・終止形接続",
-      "questionType": "condition",
-      "coverageId": "hg-nari-cond-shushi",
-      "question": "終止形（ラ変型は連体形）＋「なり」の「なり」は何を表すか。",
-      "choices": [
-        "伝聞・推定",
-        "断定・存在",
-        "完了・存続",
-        "打消"
-      ],
-      "answerIndex": 0,
-      "explanation": "終止形接続の「なり」は伝聞・推定で、「〜そうだ」「〜ようだ（聞こえる）」と訳す。断定・存在の「なり」は体言・連体形接続なので、接続で区別できる。",
-      "distractorRationale": {
-        "断定・存在": "断定・存在の「なり」は体言・連体形接続である",
-        "完了・存続": "完了・存続を表すのは「たり」「り」である",
-        "打消": "打消を表すのは「ず」である"
-      },
-      "ruleRefs": [
-        "kbp.disambiguation.nari-identification"
-      ]
-    },
-    {
-      "id": "hg-nari-cond-taigen",
-      "topic": "なりの識別",
-      "step": "条件・体言連体形接続",
-      "questionType": "condition",
-      "coverageId": "hg-nari-cond-taigen",
-      "question": "体言・連体形＋「なり」の「なり」は何を表すか。",
-      "choices": [
-        "断定・存在",
-        "伝聞・推定",
-        "使役",
-        "希望"
-      ],
-      "answerIndex": 0,
-      "explanation": "体言・連体形接続の「なり」は断定・存在で、「〜だ・〜である」または「〜にある・〜にいる」と訳す。この段階では断定と存在のどちらかは決まっておらず、直前の体言が場所・方角を表すかどうかで分ける。",
-      "distractorRationale": {
-        "伝聞・推定": "伝聞・推定の「なり」は終止形（ラ変型は連体形）接続である",
-        "使役": "使役を表すのは「す」「さす」「しむ」である",
-        "希望": "希望を表すのは「まほし」「たし」である"
-      },
-      "ruleRefs": [
-        "kbp.disambiguation.nari-identification"
-      ]
-    },
-    {
-      "id": "hg-nari-cond-bunmyaku",
-      "topic": "なりの識別",
-      "step": "条件・文脈判断",
-      "questionType": "condition",
-      "coverageId": "hg-nari-cond-bunmyaku",
-      "question": "四段動詞のように終止形と連体形が同音になる語に「なり」が付いている場合、どう判断するか。",
-      "choices": [
-        "文脈に音情報や推測の根拠があれば伝聞・推定、なければ断定・存在",
-        "同音の場合は、文脈を見ずに必ず伝聞・推定とする",
-        "同音の場合は、文脈を見ずに必ず断定・存在とする",
-        "「なり」自体がどの活用形であるかを見て決める"
-      ],
-      "answerIndex": 0,
-      "explanation": "四段動詞やラ変型では終止形と連体形が同じ形になり、接続だけでは決まらない。この場合だけ文脈を見て、音が聞こえた・推測する根拠があるなら伝聞・推定、そうでなければ断定・存在とする。文脈判断は接続で決まらないときの補助であり、最初から使うものではない。",
-      "distractorRationale": {
-        "同音の場合は、文脈を見ずに必ず伝聞・推定とする": "根拠のない一律の当てはめであり、断定・存在の場合を取りこぼす",
-        "同音の場合は、文脈を見ずに必ず断定・存在とする": "根拠のない一律の当てはめであり、伝聞・推定の場合を取りこぼす",
-        "「なり」自体がどの活用形であるかを見て決める": "どちらの「なり」もラ変型に活用し、活用形では区別できない"
-      },
-      "ruleRefs": [
-        "kbp.disambiguation.nari-identification"
-      ]
-    },
-    {
-      "id": "hg-nari-cond-keiyodoshi",
-      "topic": "なりの識別",
-      "step": "条件・形容動詞語尾",
-      "questionType": "condition",
-      "coverageId": "hg-nari-cond-keiyodoshi",
-      "question": "「〜か・〜ら・〜げ」の形の直後にある「なり」は何と判断するか。",
-      "choices": [
-        "形容動詞の活用語尾",
-        "伝聞・推定の助動詞",
-        "断定の助動詞",
-        "動詞「なる」"
-      ],
-      "answerIndex": 0,
-      "explanation": "「静かなり」「清らなり」「あはれげなり」のように、「〜か・〜ら・〜げ」で終わる語幹に付く「なり」は形容動詞ナリ活用の活用語尾であって、助動詞ではない。助動詞かどうかをまず疑う姿勢が必要になる。",
-      "distractorRationale": {
-        "伝聞・推定の助動詞": "「静か」は体言でも終止形でもなく、形容動詞の語幹である",
-        "断定の助動詞": "語幹に付く語尾であり、独立した助動詞として切り離せない",
-        "動詞「なる」": "「静かになる」という変化の意味ではない"
-      },
-      "ruleRefs": [
-        "kbp.disambiguation.nari-identification"
-      ]
-    },
-    {
-      "id": "hg-nari-cond-doushi",
-      "topic": "なりの識別",
-      "step": "条件・動詞",
-      "questionType": "condition",
-      "coverageId": "hg-nari-cond-doushi",
-      "question": "「なり」を動詞と判断するのはどのような場合か。",
-      "choices": [
-        "「なる」とそのまま訳して意味が通る場合",
-        "直前が終止形になっている場合",
-        "直前が体言になっている場合",
-        "文末の位置に置かれている場合"
-      ],
-      "answerIndex": 0,
-      "explanation": "「〜になる」という変化の意味で「なる」とそのまま訳せる場合は、助動詞ではなく四段動詞「なる」である。助動詞の可能性だけを考えていると見落とすため、手順の最後で必ず検討する。",
-      "distractorRationale": {
-        "直前が終止形になっている場合": "終止形接続は伝聞・推定の助動詞の条件である",
-        "直前が体言になっている場合": "体言接続は断定・存在の助動詞の条件だが、動詞「なる」も体言＋「と」「に」を伴うことがあり、接続だけでは決まらない",
-        "文末の位置に置かれている場合": "位置では品詞は決まらない"
-      },
-      "ruleRefs": [
-        "kbp.disambiguation.nari-identification"
-      ]
-    },
-    {
-      "id": "hg-nari-cont1",
-      "topic": "なりの識別",
-      "step": "対比",
-      "questionType": "contrast",
-      "coverageId": "hg-nari-cont1",
-      "question": "「鳥鳴くなり」と「これは鳥なり」の「なり」の違いとして正しいものはどれか。",
-      "choices": [
-        "前者は終止形接続で伝聞・推定、後者は体言接続で断定",
-        "前者は体言接続で断定、後者は終止形接続で伝聞・推定",
-        "どちらも断定で、意味に違いはない",
-        "どちらも伝聞・推定で、前者のほうが確信が強い"
-      ],
-      "answerIndex": 0,
-      "explanation": "「鳴く」は四段活用の終止形なので伝聞・推定（鳥が鳴いているようだ）、「鳥」は体言なので断定（これは鳥だ）。同じ「なり」でも直前が活用語か体言かで種類が分かれる。ただし四段動詞は終止形と連体形が同音のため、実際の本文では文脈で音情報を確認する必要がある。",
-      "distractorRationale": {
-        "前者は体言接続で断定、後者は終止形接続で伝聞・推定": "接続の対応が入れ替わっている",
-        "どちらも断定で、意味に違いはない": "「鳴く」は活用語であり、体言ではない",
-        "どちらも伝聞・推定で、前者のほうが確信が強い": "「鳥」は体言なので伝聞・推定にはならない"
-      },
-      "ruleRefs": [
-        "kbp.disambiguation.nari-identification"
-      ]
-    },
-    {
       "id": "hg-nari-int1",
       "topic": "なりの識別",
       "step": "実践",
@@ -1852,298 +982,6 @@
           "start": 14,
           "text": "なり"
         }
-      ]
-    },
-    {
-      "id": "hg-nari-cond-example1",
-      "topic": "なりの識別",
-      "step": "条件・指定例①",
-      "questionType": "condition",
-      "coverageId": "hg-nari-cond-example1",
-      "question": "「気色いと苦しげなり。」の「なり」は何か。",
-      "choices": [
-        "形容動詞の活用語尾",
-        "存在を表す助動詞「なり」",
-        "断定を表す助動詞「なり」",
-        "四段活用動詞「なる」"
-      ],
-      "answerIndex": 0,
-      "explanation": "「苦しげなり」で形容動詞（ナリ活用）を作っている。「なり」は助動詞ではなく、形容動詞の活用語尾である。",
-      "distractorRationale": {
-        "存在を表す助動詞「なり」": "「苦しげ」は場所を表す体言ではなく、形容動詞の語幹である",
-        "断定を表す助動詞「なり」": "「苦しげなり」で一語の形容動詞になるため、断定の助動詞として切り離さない",
-        "四段活用動詞「なる」": "「苦しげになる」という変化を表す動詞ではなく、状態を表す形容動詞である"
-      },
-      "ruleRefs": [
-        "kbp.disambiguation.nari-identification"
-      ]
-    },
-    {
-      "id": "hg-nari-cond-example2",
-      "topic": "なりの識別",
-      "step": "条件・指定例②",
-      "questionType": "condition",
-      "coverageId": "hg-nari-cond-example2",
-      "question": "「箱なる文を見た給ひて、」の「なる」は何か。",
-      "choices": [
-        "存在を表す助動詞「なり」",
-        "断定を表す助動詞「なり」",
-        "形容動詞の活用語尾",
-        "四段活用動詞「なる」"
-      ],
-      "answerIndex": 0,
-      "explanation": "「箱」は場所を表す体言なので、「箱にある文」と訳す。したがって「なる」は存在を表す助動詞「なり」の連体形である。",
-      "distractorRationale": {
-        "断定を表す助動詞「なり」": "直前の「箱」は場所を表す体言なので、断定ではなく存在と訳す",
-        "形容動詞の活用語尾": "「箱」は形容動詞の語幹ではなく、場所を表す名詞である",
-        "四段活用動詞「なる」": "ここは「箱になる」という変化ではなく、「箱にある」という存在を表す"
-      },
-      "ruleRefs": [
-        "kbp.disambiguation.nari-identification",
-        "kbp.auxiliaries.nari-meanings"
-      ]
-    },
-    {
-      "id": "hg-nari-cond-example3",
-      "topic": "なりの識別",
-      "step": "条件・指定例③",
-      "questionType": "condition",
-      "coverageId": "hg-nari-cond-example3",
-      "question": "「年は五十余になりぬる」の「なり」は何か。",
-      "choices": [
-        "四段活用動詞「なる」",
-        "完了・強意の助動詞「ぬ」",
-        "断定の助動詞「なり」",
-        "形容動詞の活用語尾"
-      ],
-      "answerIndex": 0,
-      "explanation": "「なる」は「五十余になる（五十余に達する）」という変化を表す四段活用動詞で、「なり」はその連用形。「ぬる」は後続する完了の助動詞「ぬ」である。",
-      "distractorRationale": {
-        "完了・強意の助動詞「ぬ」": "完了・強意を表す「ぬ」は「なり」の後に続く「ぬる」である",
-        "断定の助動詞「なり」": "「五十余になる」と変化・到達を表しており、断定の助動詞ではない",
-        "形容動詞の活用語尾": "「五十余」は形容動詞の語幹ではなく、「なる」と訳せる動詞に接続している"
-      },
-      "ruleRefs": [
-        "kbp.disambiguation.nari-identification"
-      ]
-    },
-    {
-      "id": "hg-nari-cond-example4",
-      "topic": "なりの識別",
-      "step": "条件・指定例④",
-      "questionType": "condition",
-      "coverageId": "hg-nari-cond-example4",
-      "question": "「いささかのことなり。」の「なり」は何か。",
-      "choices": [
-        "断定の助動詞「なり」",
-        "存在を表す助動詞「なり」",
-        "伝聞を表す助動詞「なり」",
-        "形容動詞の活用語尾"
-      ],
-      "answerIndex": 0,
-      "explanation": "「こと」は体言で、場所や方角を表す語ではない。「なり」は「いささかのことだ」と断定する助動詞である。",
-      "distractorRationale": {
-        "存在を表す助動詞「なり」": "直前の「こと」は場所や方角を表す体言ではないため、存在とは訳さない",
-        "伝聞を表す助動詞「なり」": "体言「こと」に接続して「ことだ」と断定しており、伝聞の接続ではない",
-        "形容動詞の活用語尾": "「こと」は形容動詞の語幹ではなく、体言である"
-      },
-      "ruleRefs": [
-        "kbp.disambiguation.nari-identification",
-        "kbp.auxiliaries.nari-meanings"
-      ]
-    },
-    {
-      "id": "hg-nari-cond-example5",
-      "topic": "なりの識別",
-      "step": "条件・指定例⑤",
-      "questionType": "condition",
-      "coverageId": "hg-nari-cond-example5",
-      "question": "「仙人などもかくこそすなれ」の「なれ」は何か。",
-      "choices": [
-        "伝聞を表す助動詞「なり」",
-        "断定を表す助動詞「なり」",
-        "存在を表す助動詞「なり」",
-        "形容動詞の活用語尾"
-      ],
-      "answerIndex": 0,
-      "explanation": "「す」はサ変動詞の終止形で、「なれ」は終止形接続の伝聞の助動詞「なり」の已然形。「仙人などもこのようにするそうだ」と訳す。",
-      "distractorRationale": {
-        "断定を表す助動詞「なり」": "「なれ」は終止形「す」に接続し、伝聞の意味を表す助動詞「なり」である",
-        "存在を表す助動詞「なり」": "場所を表す体言に付く存在の「なり」ではなく、動詞の終止形に付いている",
-        "形容動詞の活用語尾": "「すなれ」は形容動詞ではなく、動詞「す」に助動詞が接続した形である"
-      },
-      "ruleRefs": [
-        "kbp.disambiguation.nari-identification"
-      ]
-    },
-    {
-      "id": "hg-namu-proc1",
-      "topic": "なむの識別",
-      "step": "手順I",
-      "questionType": "procedure",
-      "coverageId": "hg-namu-proc1",
-      "question": "「なむ」の識別で、最初に確認すべきことはどれか。",
-      "choices": [
-        "直前がナ変動詞（死ぬ・往ぬ・去ぬ）でないか",
-        "文末が連体形で結ばれているか",
-        "「〜してほしい」と訳せるかどうか",
-        "直前の語が未然形か連用形かの別"
-      ],
-      "answerIndex": 0,
-      "explanation": "ナ変動詞「死ぬ・往ぬ・去ぬ」の未然形は「死な・往な・去な」なので、「死なむ」の形は動詞の一部＋推量の助動詞「む」であって、「なむ」という一語ではない。この可能性を先に外さないと、接続を数え間違える。",
-      "distractorRationale": {
-        "文末が連体形で結ばれているか": "係助詞かどうかを決める最後の手順であり、最初ではない",
-        "「〜してほしい」と訳せるかどうか": "未然形と連用形が同音のときに使う補助的な判断である",
-        "直前の語が未然形か連用形かの別": "ナ変の可能性を外した後に確認する2番目の手順である"
-      },
-      "ruleRefs": [
-        "kbp.disambiguation.namu-identification"
-      ]
-    },
-    {
-      "id": "hg-namu-proc2",
-      "topic": "なむの識別",
-      "step": "手順IV",
-      "questionType": "procedure",
-      "coverageId": "hg-namu-proc2",
-      "question": "「なむ」を強意の係助詞と判断するための条件はどれか。",
-      "choices": [
-        "「なむ」を省いても文意が通り、文末が連体形で結ばれていること",
-        "直前の語が活用語の未然形になっていること",
-        "直前の語が活用語の連用形になっていること",
-        "文末が已然形で結ばれて完結していること"
-      ],
-      "answerIndex": 0,
-      "explanation": "係助詞「なむ」は文の意味を加えるだけなので、省いても文意が通る。また係り結びにより文末は連体形で結ばれる。この2点を確認して初めて係助詞と決められる。結びを見ずに決めると、確述用法と取り違える。",
-      "distractorRationale": {
-        "直前の語が活用語の未然形になっていること": "未然形接続は願望の終助詞の条件である",
-        "直前の語が活用語の連用形になっていること": "連用形接続は確述用法の条件である",
-        "文末が已然形で結ばれて完結していること": "已然形で結ぶのは「こそ」であり、「なむ」は連体形で結ぶ"
-      },
-      "ruleRefs": [
-        "kbp.disambiguation.namu-identification"
-      ]
-    },
-    {
-      "id": "hg-namu-cond-ganbou",
-      "topic": "なむの識別",
-      "step": "条件・願望の終助詞",
-      "questionType": "condition",
-      "coverageId": "hg-namu-cond-ganbou",
-      "question": "未然形＋「なむ」の「なむ」は何か。",
-      "choices": [
-        "他への願望を表す終助詞",
-        "強意の「な」＋推量の「む」",
-        "ナ変動詞の一部＋推量の「む」",
-        "強意の係助詞"
-      ],
-      "answerIndex": 0,
-      "explanation": "未然形接続の「なむ」は願望の終助詞で、「〜してほしい」と訳す。他人や自然に対する願いを表す。連用形接続の確述用法とは接続で区別できる。",
-      "distractorRationale": {
-        "強意の「な」＋推量の「む」": "確述用法は連用形接続である",
-        "ナ変動詞の一部＋推量の「む」": "直前がナ変動詞である場合で、この場合は「なむ」が一語ではない",
-        "強意の係助詞": "係助詞は文末が連体形で結ばれ、省いても文意が通る場合である"
-      },
-      "ruleRefs": [
-        "kbp.disambiguation.namu-identification",
-        "kbp.particles.final-particles-meanings"
-      ]
-    },
-    {
-      "id": "hg-namu-cond-kakujutsu",
-      "topic": "なむの識別",
-      "step": "条件・確述用法",
-      "questionType": "condition",
-      "coverageId": "hg-namu-cond-kakujutsu",
-      "question": "連用形＋「なむ」の「なむ」は何か。",
-      "choices": [
-        "強意の「な」＋推量の「む」",
-        "他への願望を表す終助詞",
-        "強意の係助詞",
-        "断定の「なり」＋推量の「む」"
-      ],
-      "answerIndex": 0,
-      "explanation": "連用形接続の「なむ」は、完了の助動詞「ぬ」の未然形「な」＋推量の助動詞「む」で、「きっと〜だろう」と訳す。「ぬ」の直下に推量の助動詞「む」が来ているので、「ぬ」は強意になる。",
-      "distractorRationale": {
-        "他への願望を表す終助詞": "願望の終助詞は未然形接続である",
-        "強意の係助詞": "係助詞は文末が連体形で結ばれ、省いても文意が通る場合である",
-        "断定の「なり」＋推量の「む」": "断定の「なり」の未然形は「なら」であり、「な」の形にはならない"
-      },
-      "ruleRefs": [
-        "kbp.disambiguation.namu-identification",
-        "kbp.auxiliaries.tsu-nu-meanings"
-      ]
-    },
-    {
-      "id": "hg-namu-cond-nahen",
-      "topic": "なむの識別",
-      "step": "条件・ナ変＋む",
-      "questionType": "condition",
-      "coverageId": "hg-namu-cond-nahen",
-      "question": "「死なむ」「往なむ」「去なむ」の「なむ」はどう分解されるか。",
-      "choices": [
-        "動詞の未然形の一部「な」＋推量の助動詞「む」",
-        "願望を表す終助詞「なむ」一語",
-        "強意を表す係助詞「なむ」一語",
-        "完了の助動詞「な」＋推量の「む」"
-      ],
-      "answerIndex": 0,
-      "explanation": "ナ変動詞「死ぬ・往ぬ・去ぬ」の未然形は「死な・往な・去な」。したがって「死なむ」は「死な」＋「む」であり、「な」は動詞の活用語尾であって助動詞ではない。「なむ」という一語ではない点が要点。",
-      "distractorRationale": {
-        "願望を表す終助詞「なむ」一語": "「な」は動詞の活用語尾であり、「なむ」を一語として切り出せない",
-        "強意を表す係助詞「なむ」一語": "「な」は動詞の活用語尾であり、「なむ」を一語として切り出せない",
-        "完了の助動詞「な」＋推量の「む」": "完了の「ぬ」は連用形接続だが、ここの「な」はナ変動詞自身の未然形の一部である"
-      },
-      "ruleRefs": [
-        "kbp.disambiguation.namu-identification"
-      ]
-    },
-    {
-      "id": "hg-namu-cond-kakari",
-      "topic": "なむの識別",
-      "step": "条件・係助詞",
-      "questionType": "condition",
-      "coverageId": "hg-namu-cond-kakari",
-      "question": "強意の係助詞「なむ」があるとき、文末はどの活用形で結ばれるか。",
-      "choices": [
-        "連体形",
-        "已然形",
-        "終止形",
-        "命令形"
-      ],
-      "answerIndex": 0,
-      "explanation": "係助詞「なむ」の結びは連体形。「ぞ・なむ・や・か」が連体形結び、「こそ」が已然形結びである。結びが連体形になっていることが、係助詞と判断する手がかりの一つになる。",
-      "distractorRationale": {
-        "已然形": "已然形で結ぶのは「こそ」である",
-        "終止形": "係助詞がない通常の文末の形である",
-        "命令形": "係り結びで命令形が結びになることはない"
-      },
-      "ruleRefs": [
-        "kbp.disambiguation.namu-identification"
-      ]
-    },
-    {
-      "id": "hg-namu-cont1",
-      "topic": "なむの識別",
-      "step": "対比",
-      "questionType": "contrast",
-      "coverageId": "hg-namu-cont1",
-      "question": "「散らなむ」と「散りなむ」の違いとして正しいものはどれか。",
-      "choices": [
-        "「散らなむ」は未然形接続で願望、「散りなむ」は連用形接続で確述",
-        "「散らなむ」は連用形接続で確述、「散りなむ」は未然形接続で願望",
-        "どちらも願望で、意味に違いはない",
-        "どちらも係助詞で、文末が連体形になる"
-      ],
-      "answerIndex": 0,
-      "explanation": "四段活用「散る」の未然形は「散ら」、連用形は「散り」。「散らなむ」は未然形接続なので願望の終助詞（散ってほしい）、「散りなむ」は連用形接続なので確述用法（きっと散るだろう）。上の1音で意味が変わる。",
-      "distractorRationale": {
-        "「散らなむ」は連用形接続で確述、「散りなむ」は未然形接続で願望": "未然形と連用形が入れ替わっている",
-        "どちらも願望で、意味に違いはない": "「散り」は連用形なので願望の終助詞にはならない",
-        "どちらも係助詞で、文末が連体形になる": "どちらも文末にあり、結びの連体形を伴っていない"
-      },
-      "ruleRefs": [
-        "kbp.disambiguation.namu-identification"
       ]
     },
     {
@@ -2275,222 +1113,6 @@
           "start": 10,
           "text": "なむ"
         }
-      ]
-    },
-    {
-      "id": "hg-ni-proc1",
-      "topic": "にの識別",
-      "step": "手順I",
-      "questionType": "procedure",
-      "coverageId": "hg-ni-proc1",
-      "question": "「に」の識別で、最初に確認すべきことはどれか。",
-      "choices": [
-        "「に」の直前の語の活用形（連用形・体言・連体形）",
-        "「に」を「〜である」と訳せるかどうか",
-        "文末が連体形で結ばれているかどうか",
-        "「に」の下にどのような語が続くか"
-      ],
-      "answerIndex": 0,
-      "explanation": "「に」は直前の活用形によって候補が絞られる。連用形接続なら完了、体言接続なら断定か格助詞、連体形接続なら断定か格助詞か接続助詞。訳の当てはめはその後で、順序を逆にすると体言接続なのに接続助詞と判断するような誤りが起きる。",
-      "distractorRationale": {
-        "「に」を「〜である」と訳せるかどうか": "接続を確認した後に使う判断であり、最初ではない",
-        "文末が連体形で結ばれているかどうか": "結びを見るのは係り結びや「なむ」の識別である",
-        "「に」の下にどのような語が続くか": "「に」の識別で見るのは上の活用形である"
-      },
-      "ruleRefs": [
-        "kbp.disambiguation.ni-identification"
-      ]
-    },
-    {
-      "id": "hg-ni-proc2",
-      "topic": "にの識別",
-      "step": "手順III",
-      "questionType": "procedure",
-      "coverageId": "hg-ni-proc2",
-      "question": "連体形＋「に」の場合、検討すべき候補はいくつあるか。",
-      "choices": [
-        "3つ（断定・格助詞・接続助詞）",
-        "2つ（断定・格助詞）",
-        "2つ（完了・断定）",
-        "4つ（完了・断定・格助詞・接続助詞）"
-      ],
-      "answerIndex": 0,
-      "explanation": "連体形接続では、「〜である」と訳せれば断定、「〜に」と訳せれば格助詞、どちらとも訳せなければ接続助詞（ので・と・ところ・けれども）の3通りを検討する。体言接続では接続助詞にならないため候補は2つで、連体形接続だけが3分岐になる。",
-      "distractorRationale": {
-        "2つ（断定・格助詞）": "これは体言接続の場合の候補数である",
-        "2つ（完了・断定）": "完了は連用形接続の場合であり、連体形接続では候補にならない",
-        "4つ（完了・断定・格助詞・接続助詞）": "完了は連用形接続なので、連体形接続の候補には入らない"
-      },
-      "ruleRefs": [
-        "kbp.disambiguation.ni-identification"
-      ]
-    },
-    {
-      "id": "hg-ni-cond-kanryo",
-      "topic": "にの識別",
-      "step": "条件・完了",
-      "questionType": "condition",
-      "coverageId": "hg-ni-cond-kanryo",
-      "question": "連用形＋「に」の「に」は何か。",
-      "choices": [
-        "完了の助動詞「ぬ」の連用形",
-        "断定の助動詞「なり」の連用形",
-        "格助詞",
-        "接続助詞"
-      ],
-      "answerIndex": 0,
-      "explanation": "連用形に接続する「に」は完了の助動詞「ぬ」の連用形。「花咲きにけり」のように、下に「けり」「たり」などが続く形でよく現れる。連用形接続と分かった時点で他の候補は消える。",
-      "distractorRationale": {
-        "断定の助動詞「なり」の連用形": "断定の「なり」は体言・連体形接続であり、連用形には付かない",
-        "格助詞": "格助詞の「に」は体言・連体形に付く",
-        "接続助詞": "接続助詞の「に」は連体形に付く"
-      },
-      "ruleRefs": [
-        "kbp.disambiguation.ni-identification"
-      ]
-    },
-    {
-      "id": "hg-ni-cond-dantei",
-      "topic": "にの識別",
-      "step": "条件・断定",
-      "questionType": "condition",
-      "coverageId": "hg-ni-cond-dantei",
-      "question": "体言＋「に」で、「〜である」と訳して意味が通る場合、「に」は何か。",
-      "choices": [
-        "断定の助動詞「なり」の連用形",
-        "存在の助動詞「なり」の連用形",
-        "格助詞",
-        "完了の助動詞「ぬ」の連用形"
-      ],
-      "answerIndex": 0,
-      "explanation": "体言接続で「〜である」と訳せる「に」は、断定の助動詞「なり」の連用形。連用形の「に」には存在の用法はなく、常に断定である。存在と断定の区別が問題になるのは終止形の「なり」のほうである。",
-      "distractorRationale": {
-        "存在の助動詞「なり」の連用形": "連用形の「に」に存在の用法はない。存在が問題になるのは終止形「なり」である",
-        "格助詞": "格助詞なら「〜に」と訳すことになり、「〜である」では訳せない",
-        "完了の助動詞「ぬ」の連用形": "完了は連用形接続であり、体言には付かない"
-      },
-      "ruleRefs": [
-        "kbp.disambiguation.ni-identification"
-      ]
-    },
-    {
-      "id": "hg-ni-cond-kaku",
-      "topic": "にの識別",
-      "step": "条件・格助詞",
-      "questionType": "condition",
-      "coverageId": "hg-ni-cond-kaku",
-      "question": "体言＋「に」で、「〜に」と訳して意味が通る場合、「に」は何か。",
-      "choices": [
-        "格助詞",
-        "断定の助動詞「なり」の連用形",
-        "接続助詞",
-        "形容動詞の活用語尾"
-      ],
-      "answerIndex": 0,
-      "explanation": "体言接続で「〜に」と訳せる「に」は格助詞。場所・時・帰着点・対象などを示す。「〜である」と訳せる断定との違いは、訳の当てはめで確認する。",
-      "distractorRationale": {
-        "断定の助動詞「なり」の連用形": "断定なら「〜である」と訳せるが、ここは「〜に」で通っている",
-        "接続助詞": "接続助詞の「に」は連体形接続であり、体言には付かない",
-        "形容動詞の活用語尾": "形容動詞の語尾は「〜か・〜ら・〜げ」の語幹に付く"
-      },
-      "ruleRefs": [
-        "kbp.disambiguation.ni-identification"
-      ]
-    },
-    {
-      "id": "hg-ni-cond-setsuzoku",
-      "topic": "にの識別",
-      "step": "条件・接続助詞",
-      "questionType": "condition",
-      "coverageId": "hg-ni-cond-setsuzoku",
-      "question": "連体形＋「に」で、「〜である」とも「〜に」とも訳せない場合、「に」は何か。",
-      "choices": [
-        "接続助詞（ので・と・ところ・けれども）",
-        "断定の助動詞「なり」の連用形",
-        "完了の助動詞「ぬ」の連用形",
-        "副詞の一部（つひに 等）"
-      ],
-      "answerIndex": 0,
-      "explanation": "連体形接続で、断定・格助詞のどちらの訳も通らないときは接続助詞で、「ので」「と」「ところ」「けれども」のいずれかで訳す。連体形接続でのみ生じる分岐であり、体言接続では接続助詞にならない。",
-      "distractorRationale": {
-        "断定の助動詞「なり」の連用形": "「〜である」と訳せない以上、断定の条件を満たさない",
-        "完了の助動詞「ぬ」の連用形": "完了は連用形接続であり、連体形には付かない",
-        "副詞の一部（つひに 等）": "副詞は指定された一覧の語に限られ、連体形の下に来るものではない"
-      },
-      "ruleRefs": [
-        "kbp.disambiguation.ni-identification"
-      ]
-    },
-    {
-      "id": "hg-ni-cond-keiyodoshi",
-      "topic": "にの識別",
-      "step": "条件・形容動詞語尾",
-      "questionType": "condition",
-      "coverageId": "hg-ni-cond-keiyodoshi",
-      "question": "「あはれに」「静かに」「清らに」の「に」は何か。",
-      "choices": [
-        "形容動詞の活用語尾",
-        "格助詞",
-        "断定の助動詞「なり」の連用形",
-        "接続助詞"
-      ],
-      "answerIndex": 0,
-      "explanation": "「〜か・〜ら・〜げ」で終わる形容動詞の語幹に付く「に」は、ナリ活用の連用形の活用語尾であり、独立した助詞・助動詞ではない。手順I〜IIIのいずれにも当てはまらないときに検討する。",
-      "distractorRationale": {
-        "格助詞": "「あはれ」「静か」は形容動詞の語幹であり、独立した体言として切り出せない",
-        "断定の助動詞「なり」の連用形": "語幹に付く活用語尾であり、助動詞として切り離せない",
-        "接続助詞": "接続助詞の「に」は連体形に付く"
-      },
-      "ruleRefs": [
-        "kbp.disambiguation.ni-identification"
-      ]
-    },
-    {
-      "id": "hg-ni-cond-fukushi",
-      "topic": "にの識別",
-      "step": "条件・副詞の一部",
-      "questionType": "condition",
-      "coverageId": "hg-ni-cond-fukushi",
-      "question": "「に」を副詞の一部と判断してよいのはどのような場合か。",
-      "choices": [
-        "「つひに・すでに・げに」など、指定の一覧にある語の場合",
-        "直前が体言で、「〜に」と訳せる場合",
-        "「に」のすぐ下に読点が置かれている場合",
-        "「に」を省いても文全体の意味が通る場合"
-      ],
-      "answerIndex": 0,
-      "explanation": "副詞と判断してよいのは、「つひに・すでに・まさに・いかに・げに・さらに・よに・かたみに・ことに・まことに・ともに・つねに」という指定の一覧にある語に限る。「〜に」で終わるという形だけを理由に、一覧にない語を副詞と決めない。",
-      "distractorRationale": {
-        "直前が体言で、「〜に」と訳せる場合": "これは格助詞の条件である",
-        "「に」のすぐ下に読点が置かれている場合": "句読点の位置は品詞の判断材料にならない",
-        "「に」を省いても文全体の意味が通る場合": "省けるかどうかで判断するのは係助詞「なむ」の識別である"
-      },
-      "ruleRefs": [
-        "kbp.disambiguation.ni-identification"
-      ]
-    },
-    {
-      "id": "hg-ni-cont1",
-      "topic": "にの識別",
-      "step": "対比",
-      "questionType": "contrast",
-      "coverageId": "hg-ni-cont1",
-      "question": "体言＋「に」の場合に、候補から外れるものはどれか。",
-      "choices": [
-        "接続助詞",
-        "断定の助動詞「なり」の連用形",
-        "格助詞",
-        "どれも外れない"
-      ],
-      "answerIndex": 0,
-      "explanation": "接続助詞の「に」は連体形に接続するため、体言接続では候補にならない。体言接続の候補は断定と格助詞の2つだけである。この違いを押さえておくと、体言接続なのに「ので」と訳して接続助詞と誤判定することを防げる。",
-      "distractorRationale": {
-        "断定の助動詞「なり」の連用形": "体言接続で「〜である」と訳せる場合の候補である",
-        "格助詞": "体言接続で「〜に」と訳せる場合の候補である",
-        "どれも外れない": "接続助詞は連体形接続なので、体言接続では外れる"
-      },
-      "ruleRefs": [
-        "kbp.disambiguation.ni-identification"
       ]
     },
     {
