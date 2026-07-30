@@ -8,7 +8,7 @@
    ============================================================ */
 
 const VocabApp = (function () {
-  const DATA_URL = "data/vocab.json?v=0.5.0";
+  const DATA_URL = "data/vocab.json?v=0.5.1";
   const STORE_KEY = "kobun_vocab_progress_v1";
   const RANGE_KEY = "kobun_vocab_range_v1";
   const SESSION_KEY = "kobun_vocab_session_v4"; // コア200語の選定変更で旧セッションを再開しない
@@ -523,6 +523,22 @@ const VocabApp = (function () {
     return word.meanings[key] || word.meanings[0] || "";
   }
 
+  function renderTranslationByConjugation(word) {
+    if (!Array.isArray(word.translationByConjugation) || !word.translationByConjugation.length) return "";
+    const rows = word.translationByConjugation.map(variant => `
+      <div class="translationVariant">
+        <p class="translationVariantType">${esc(variant.type || "活用")}</p>
+        <ul>${(Array.isArray(variant.meanings) ? variant.meanings : []).map(m => `<li>${esc(m)}</li>`).join("")}</ul>
+      </div>
+    `).join("");
+    return `
+      <section class="translationGuide" aria-label="活用による訳し分け">
+        <p class="translationGuideTitle">活用による訳し分け</p>
+        <div class="translationVariants">${rows}</div>
+      </section>
+    `;
+  }
+
   // 正解語 word に対する4択（意味）を作る。
   function buildChoices(word) {
     // keyMeaning が指定された語は、入試で問われる語義を正解にする（未指定なら先頭）。
@@ -968,6 +984,7 @@ const VocabApp = (function () {
         <ul>
           ${word.meanings.map(m => `<li>${esc(m)}</li>`).join("")}
         </ul>
+        ${renderTranslationByConjugation(word)}
         ${word.note ? `<p class="reviewNote"><span class="k">POINT</span>${esc(word.note)}</p>` : ""}
         ${word.example ? `<p class="reviewExample"><span class="k">例文</span><span class="exJp">${esc(word.example.jp)}</span><span class="exYaku">${esc(word.example.yaku)}</span></p>` : ""}
         ${correct ? "" : `<p class="hint">この解説は後の復習画面でも確認できます。</p>`}
@@ -1024,6 +1041,7 @@ const VocabApp = (function () {
               <ul>
                 ${word.meanings.map(m => `<li>${esc(m)}</li>`).join("")}
               </ul>
+              ${renderTranslationByConjugation(word)}
               <p class="answerLine"><span class="k">正しい代表語義</span>${esc(representativeMeaning(word))}</p>
               ${word.note ? `<p class="reviewNote"><span class="k">POINT</span>${esc(word.note)}</p>` : ""}
               ${word.example ? `<p class="reviewExample"><span class="k">例文</span><span class="exJp">${esc(word.example.jp)}</span><span class="exYaku">${esc(word.example.yaku)}</span></p>` : ""}

@@ -227,7 +227,7 @@ def check_kiso_required_question_ids(data):
 
 def check_choice_required_question_ids(data):
     return check_required_question_ids_for_set(
-        data, "choiceRequiredQuestionIds", "choiceQuestions", 38,
+        data, "choiceRequiredQuestionIds", "choiceQuestions", 42,
         None,
         "文法4択",
     )

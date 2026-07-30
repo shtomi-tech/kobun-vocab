@@ -83,7 +83,7 @@ py -3 -m http.server 8062 --directory C:\Users\shtom\dev\kobun-practice
 
 移行は `scripts/consolidate_kiso.py`（統廃合と章立て）と `scripts/normalize_kiso_topics.py`（`topic`/`step` の統一）で行いました。いずれも実行済みの1回限りの移行用で冪等ではなく、`k-set-06`〜`k-set-10` が `kiso.json` にあることを前提とするため、それ以前のコミットには適用できません。
 
-文法4択（`data/multiple_choice.json`）は Chapter 2・7・9 の56問で、うち38問を必修ルート（必修2・5・7）で扱います。残り18問は章ごとの追加練習として残しています。
+文法4択（`data/multiple_choice.json`）は Chapter 2・7・9 の60問で、うち42問を必修ルート（必修2・5・7）で扱います。残り18問は章ごとの追加練習として残しています。Chapter 2には、四段・下二段の二種類を持つ動詞の訳し分け（「頼む」「慰む」「被く」）を追加しています。
 
 ## 原則集との対応
 

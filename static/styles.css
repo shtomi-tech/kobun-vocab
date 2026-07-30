@@ -837,6 +837,37 @@ h2 {
   color: var(--clay);
   margin-right: 8px;
 }
+.translationGuide {
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--parchment);
+  margin-top: 12px;
+  padding: 12px 14px;
+}
+.translationGuideTitle {
+  margin: 0 0 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+}
+.translationVariants {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 10px;
+}
+.translationVariant {
+  border-left: 3px solid var(--clay);
+  padding-left: 10px;
+}
+.translationVariantType {
+  margin: 0;
+  font-weight: 600;
+}
+.translationVariant ul {
+  margin: 4px 0 0;
+  padding-left: 18px;
+}
+.translationVariant li { margin: 2px 0; }
 .reviewExample .exJp { font-size: 15px; display: block; margin-top: 2px; }
 .reviewExample .exYaku { color: var(--muted); display: block; margin-top: 2px; }
 
