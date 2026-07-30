@@ -1665,11 +1665,52 @@ const KatsuyoApp = (function () {
     return line;
   }
 
+  // 実践中に識別手順を参照するためのカード。理解ステージ（renderUnderstand）と同じ
+  // 「1手順ずつ＋前後移動」の形式を流用する。参照位置は session.flow.refIdx に保持し、
+  // 採点・次の問題への遷移をまたいでも参照中の手順が保たれるようにする。
+  function renderProcedureReferenceBox(proc) {
+    const box = el("div", "drillBox procedureRefBox");
+    function paint() {
+      box.innerHTML = "";
+      const steps = proc.steps;
+      const idx = Math.min(Math.max(session.flow.refIdx || 0, 0), steps.length - 1);
+      session.flow.refIdx = idx;
+      const step = steps[idx];
+
+      box.appendChild(el("p", "askLabel", "識別方法を確認する・" + proc.name));
+      const stepBox = el("div", "understandStep");
+      stepBox.appendChild(el("span", "procedureStepNo", step.no));
+      stepBox.appendChild(el("p", "understandStepText", step.text));
+      box.appendChild(stepBox);
+
+      const nav = el("div", "actions");
+      const prevBtn = el("button", "ghost smallGhost", "← 前の手順");
+      prevBtn.type = "button";
+      if (idx === 0) prevBtn.disabled = true;
+      prevBtn.addEventListener("click", () => { session.flow.refIdx = idx - 1; paint(); });
+      nav.appendChild(prevBtn);
+      const nextBtn = el("button", "ghost smallGhost", "次の手順 →");
+      nextBtn.type = "button";
+      if (idx === steps.length - 1) nextBtn.disabled = true;
+      nextBtn.addEventListener("click", () => { session.flow.refIdx = idx + 1; paint(); });
+      nav.appendChild(nextBtn);
+      box.appendChild(nav);
+      box.appendChild(el("p", "cardCounter", "手順 " + (idx + 1) + " / " + steps.length));
+    }
+    paint();
+    return box;
+  }
+
   function renderChoiceRow() {
     const id = session.queue[0];
     const q = byId[itemKey(id)];
 
     renderSessionChrome();
+
+    if (session.flow && currentSet.proceduresKey) {
+      const proc = shikibetsuProcedures().find(pr => pr.id === session.flow.procId);
+      if (proc) sessionPanel.appendChild(renderProcedureReferenceBox(proc));
+    }
 
     const box = el("div", "drillBox");
     const top = el("div", "drillTop");
