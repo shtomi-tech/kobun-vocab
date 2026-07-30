@@ -45,8 +45,8 @@ const KatsuyoApp = (function () {
       label: "2. 用言の活用",
       description: "用言の活用表と、用言の攻略で活用の運用力を固める",
       tasks: [
-        { id: "yougo-table", kind: "group", setId: "yougo", groupId: "yougo-all", label: "用言13語の活用表" },
         { id: "choice-ch2", kind: "group", setId: "choice", groupId: "qa-chapter-2", label: "用言の攻略 24問" },
+        { id: "yougo-table", kind: "group", setId: "yougo", groupId: "yougo-all", label: "用言13語の活用表" },
       ],
     },
     {
