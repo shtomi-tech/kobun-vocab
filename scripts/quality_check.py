@@ -522,7 +522,7 @@ def main():
     if not required_err:
         sbq_by_id = {q.get("id"): q for q in sbq}
         required_types = Counter(sbq_by_id[qid].get("questionType") for qid in sb.get("requiredQuestionIds", []))
-        print("助動詞識別必修ルート: 52問（" + ", ".join(f"{k}={v}" for k, v in sorted(required_types.items())) + "）、追加練習: 11問")
+        print("助動詞識別必修ルート: 52問（" + ", ".join(f"{k}={v}" for k, v in sorted(required_types.items())) + "）、追加練習: 18問")
     if not joshi_required_err:
         joshiq = joshi.get("joshiQuestions", [])
         joshi_by_id = {q.get("id"): q for q in joshiq}

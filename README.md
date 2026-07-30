@@ -58,7 +58,7 @@ py -3 -m http.server 8062 --directory C:\Users\shtom\dev\kobun-practice
 - `data/jodoshi.json` … 旧助動詞データ（互換用に残置）。
 - 教材由来のデータを含みます。公開・配布する前に、素材の扱いを確認します。個人情報は含みません。
 
-必修4の助動詞識別は、実践62問のうち49問を必修ルートで扱います。残り13問は必修完了条件に含めない「追加練習」として残しています。必修ルートは手順本文を確認した後、実践問題に取り組みます。
+必修4の助動詞識別は、実践70問のうち52問を必修ルートで扱います。残り18問は必修完了条件に含めない「追加練習」として残しています。必修ルートは手順本文を確認した後、実践問題に取り組みます。
 
 必修5の助詞識別は、実践15問のうち10問を必修ルートで扱います。残り5問は追加練習として残し、格助詞「の」の5用法（連用修飾格・準体格・連体修飾格・同格・主格）を必修ルートに追加しています。
 
@@ -88,6 +88,8 @@ py -3 -m http.server 8062 --directory C:\Users\shtom\dev\kobun-practice
 ## 原則集との対応
 
 文法問題は `C:\Users\shtom\dev\docs\kobun-principles` の原則カードに紐づけています。各問題の `ruleRefs` に、正答判定の根拠にした `ruleId` を記録します。
+
+問題を追加・修正するときは、リポジトリ内の[古文演習の問題作成原則](docs/QUESTION_AUTHORING_PRINCIPLES.md)と、対象分野の active 原則カードを参照します。
 
 ```powershell
 py -3 C:\Users\shtom\dev\kobun-practice\scripts\quality_check.py --check       # スキーマ・選択肢の偏り・誤答根拠・重複
