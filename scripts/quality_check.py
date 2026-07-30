@@ -80,11 +80,26 @@ def check_mc_schema(questions):
     for q in questions:
         qid = q.get("id", "<no-id>")
         ch = q.get("choices")
-        if not isinstance(ch, list) or len(ch) != 4:
-            errors.append(f"{qid}: choices が4要素でない（{len(ch) if isinstance(ch, list) else 'なし'}）")
-        ai = q.get("answerIndex")
-        if not isinstance(ai, int) or ai < 0 or ai > 3:
-            errors.append(f"{qid}: answerIndex が0〜3でない（{ai}）")
+        is_multi = q.get("questionType") == "multi-select"
+
+        if is_multi:
+            if not isinstance(ch, list) or len(ch) < 2:
+                errors.append(f"{qid}: choices が2要素以上でない（{len(ch) if isinstance(ch, list) else 'なし'}）")
+            ais = q.get("answerIndices")
+            if not isinstance(ais, list) or not ais:
+                errors.append(f"{qid}: answerIndices が空/配列でない（{ais}）")
+            elif isinstance(ch, list):
+                if len(set(ais)) != len(ais):
+                    errors.append(f"{qid}: answerIndices に重複がある（{ais}）")
+                if any(not isinstance(i, int) or i < 0 or i >= len(ch) for i in ais):
+                    errors.append(f"{qid}: answerIndices が choices の範囲外（{ais}）")
+        else:
+            if not isinstance(ch, list) or len(ch) != 4:
+                errors.append(f"{qid}: choices が4要素でない（{len(ch) if isinstance(ch, list) else 'なし'}）")
+            ai = q.get("answerIndex")
+            if not isinstance(ai, int) or ai < 0 or ai > 3:
+                errors.append(f"{qid}: answerIndex が0〜3でない（{ai}）")
+
         if not (isinstance(q.get("question"), str) and q["question"].strip()):
             errors.append(f"{qid}: question が空")
         if not (isinstance(q.get("explanation"), str) and q["explanation"].strip()):
@@ -219,7 +234,7 @@ def check_keigo_required_question_ids(data):
 
 def check_kiso_required_question_ids(data):
     return check_required_question_ids_for_set(
-        data, "kisoRequiredQuestionIds", "kisoQuestions", 46,
+        data, "kisoRequiredQuestionIds", "kisoQuestions", 53,
         None,
         "文法の入口",
     )
@@ -227,7 +242,7 @@ def check_kiso_required_question_ids(data):
 
 def check_choice_required_question_ids(data):
     return check_required_question_ids_for_set(
-        data, "choiceRequiredQuestionIds", "choiceQuestions", 42,
+        data, "choiceRequiredQuestionIds", "choiceQuestions", 37,
         None,
         "文法4択",
     )
@@ -375,9 +390,6 @@ def section(title):
 # 語群の列挙（正解が本当に多くの語を含む）や複合標準用語（適当・勧誘 等）で、
 # 誤答を無理に長くすると誤った文法情報を作るため変更しない。
 ALLOWED_LONGEST = {
-    "c2-012",      # 上一段の語群（ひいきにみゐる）は語数が多い
-    "c2-014",      # カ変は「来（く）」一語＝読み添えで長くなる
-    "c2-016",      # ナ変「死ぬ・往ぬ（去ぬ）」の2語
     "c3-003",      # 未然形接続の助動詞は実際に最も多い
     "c3-005",      # 終止形接続の助動詞群
     "c7-003",      # 未然形＋ば／已然形＋ばの対比は2節必要（誤答[1]とほぼ同長）
@@ -429,9 +441,20 @@ def run_check():
                 problems.append(f"[誤答根拠] {qid}: distractorRationale が無い")
 
             # 4. 誤答根拠のキーが実際の誤答と対応しているか
-            #    識別問題も通常問題と同じ4択を直接突き合わせる。
+            #    識別問題も通常問題と同じ4択を直接突き合わせる。multi-selectは正解が複数のため answerIndices を使う。
             dr = q.get("distractorRationale") or {}
-            ch, ai = q.get("choices"), q.get("answerIndex")
+            ch = q.get("choices")
+            if q.get("questionType") == "multi-select":
+                ais = q.get("answerIndices")
+                if not (isinstance(ch, list) and isinstance(ais, list) and all(isinstance(i, int) for i in ais)):
+                    continue
+                for i, c in enumerate(ch):
+                    if i not in ais and c not in dr:
+                        problems.append(f"[誤答根拠] {qid}: 誤答「{c}」の根拠が無い")
+                    if i in ais and c in dr:
+                        problems.append(f"[誤答根拠] {qid}: 正解「{c}」に根拠が付いている")
+                continue
+            ai = q.get("answerIndex")
             if not (isinstance(ch, list) and isinstance(ai, int) and 0 <= ai < len(ch)):
                 continue
             for i, c in enumerate(ch):
@@ -539,9 +562,13 @@ def main():
         required_types = Counter(keigo_by_id[qid].get("questionType") for qid in keigo.get("keigoRequiredQuestionIds", []))
         print("敬語識別必修ルート: 10問（" + ", ".join(f"{k}={v}" for k, v in sorted(required_types.items())) + "）、追加練習: 6問")
     if not kiso_required_err:
-        print("文法の入口必修ルート: 46問、追加練習: 0問")
+        kiso_required = kiso.get("kisoRequiredQuestionIds", [])
+        kiso_extra = len(kiso.get("kisoQuestions", [])) - len(kiso_required)
+        print(f"文法の入口必修ルート: {len(kiso_required)}問、追加練習: {kiso_extra}問")
     if not choice_required_err:
-        print("文法4択必修ルート: 38問、追加練習: 18問")
+        choice_required = mc.get("choiceRequiredQuestionIds", [])
+        choice_extra = len(mcq) - len(choice_required)
+        print(f"文法4択必修ルート: {len(choice_required)}問、追加練習: {choice_extra}問")
 
     # --- 正解最長バイアス ---
     section("2. 正解最長バイアス（正解が最長=同点最長含む の比率）")

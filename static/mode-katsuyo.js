@@ -38,6 +38,7 @@ const KatsuyoApp = (function () {
         { id: "kiso-setsuzoku-kihon", kind: "group", setId: "kiso", groupId: "kiso-setsuzoku", label: "接続という考え方 9問" },
         { id: "kiso-shikibetsu", kind: "group", setId: "kiso", groupId: "kiso-shikibetsu", label: "接続で識別する 5問" },
         { id: "kiso-jodoshi", kind: "group", setId: "kiso", groupId: "kiso-jodoshi", label: "助動詞の意味 7問" },
+        { id: "kiso-katsuyo-type", kind: "group", setId: "kiso", groupId: "kiso-katsuyo-type", label: "活用の種類と所属語 7問" },
       ],
     },
     {
@@ -45,7 +46,7 @@ const KatsuyoApp = (function () {
       label: "2. 用言の活用",
       description: "用言の活用表と、用言の攻略で活用の運用力を固める",
       tasks: [
-        { id: "choice-ch2", kind: "group", setId: "choice", groupId: "qa-chapter-2", label: "用言の攻略 24問" },
+        { id: "choice-ch2", kind: "group", setId: "choice", groupId: "qa-chapter-2", label: "用言の攻略 25問" },
         { id: "yougo-table", kind: "group", setId: "yougo", groupId: "yougo-all", label: "用言13語の活用表" },
       ],
     },
@@ -1721,6 +1722,12 @@ const KatsuyoApp = (function () {
     top.appendChild(wc);
     box.appendChild(top);
 
+    if (q.questionType === "multi-select") {
+      renderMultiSelectChoices(q, box);
+      sessionPanel.appendChild(box);
+      return;
+    }
+
     const choices = el("div", "gradeChoiceList");
     const buttons = [];
     const choiceOptions = shuffle(q.choices.map((text, originalIndex) => ({ text, originalIndex })));
@@ -1745,6 +1752,86 @@ const KatsuyoApp = (function () {
     box.appendChild(choices);
 
     sessionPanel.appendChild(box);
+  }
+
+  // 「所属語をすべて選べ」のような複数正解の選択式問題。
+  // トグルチップで複数選び、「決定する」ボタンで確定してから採点する（単一選択の即時採点とは異なる）。
+  function renderMultiSelectChoices(q, box) {
+    const chosen = new Set();
+    const chips = [];
+    const wrap = el("div", "optionWrap");
+    const choiceOptions = shuffle(q.choices.map((text, originalIndex) => ({ text, originalIndex })));
+
+    choiceOptions.forEach(opt => {
+      const chip = el("button", "optionChip", opt.text);
+      chip.type = "button";
+      chip.setAttribute("aria-pressed", "false");
+      chip.addEventListener("click", () => {
+        if (session.answered) return;
+        const on = chip.getAttribute("aria-pressed") === "true";
+        chip.setAttribute("aria-pressed", on ? "false" : "true");
+        if (on) chosen.delete(opt.originalIndex); else chosen.add(opt.originalIndex);
+      });
+      chips.push(chip);
+      wrap.appendChild(chip);
+    });
+    box.appendChild(wrap);
+
+    const submitRow = el("div", "submitRow");
+    const submit = el("button", "cta", "決定する");
+    submit.addEventListener("click", () => gradeMultiSelectChoiceRow(q, chosen, chips, choiceOptions, box, submit));
+    submitRow.appendChild(submit);
+    box.appendChild(submitRow);
+  }
+
+  function gradeMultiSelectChoiceRow(q, chosenIndices, chips, choiceOptions, box, submit) {
+    if (session.answered) return;
+    session.answered = true;
+    submit.disabled = true;
+
+    const correctSet = new Set(q.answerIndices);
+    const allOk = chosenIndices.size === correctSet.size &&
+      Array.from(chosenIndices).every(i => correctSet.has(i));
+
+    chips.forEach(chip => { chip.disabled = true; });
+    markChips(chips, q.answerIndices.map(i => q.choices[i]), Array.from(chosenIndices).map(i => q.choices[i]));
+
+    const id = itemId(q);
+    recordResult(id, allOk);
+    const wasRequeued = session.requeued.has(id);
+    session.queue.shift();
+    if (allOk) {
+      session.solved += 1;
+      if (!wasRequeued) session.firstTryOk += 1;
+    } else {
+      session.wrongNos.add(id);
+      if (session.requeueWrong) {
+        if (!wasRequeued) session.requeued.add(id);
+        session.queue.push(id);
+      }
+    }
+
+    const fb = el("div", "feedback " + (allOk ? "ok" : "ng"));
+    fb.appendChild(el("h3", null, allOk ? "正解" : "不正解"));
+    addAnswer(fb, "正解", q.answerIndices.map(i => q.choices[i]).join("・"));
+    if (!allOk && q.distractorRationale) {
+      Array.from(chosenIndices)
+        .filter(i => !correctSet.has(i))
+        .forEach(i => {
+          const why = q.distractorRationale[q.choices[i]];
+          if (why) addAnswer(fb, "誤答の理由", why);
+        });
+    }
+    addAnswer(fb, "解説", q.explanation);
+    box.appendChild(fb);
+
+    const nextRow = el("div", "nextRow");
+    const next = el("button", "cta", session.queue.length ? "次の問題へ" : "結果を見る");
+    next.id = "katsuyoNextBtn";
+    next.addEventListener("click", renderNextQuestion);
+    nextRow.appendChild(next);
+    box.appendChild(nextRow);
+    next.focus();
   }
 
   function buildSingleField(name, options, onPick, state, key) {
@@ -2148,7 +2235,7 @@ const KatsuyoApp = (function () {
     bootPromise = Promise.all([
       fetch("data/katsuyo.json?v=20260724-2")
         .then(r => { if (!r.ok) throw new Error("katsuyo data load failed: " + r.status); return r.json(); }),
-      fetch("data/multiple_choice.json?v=20260730-2")
+      fetch("data/multiple_choice.json?v=20260730-3")
         .then(r => { if (!r.ok) throw new Error("choice data load failed: " + r.status); return r.json(); }),
       fetch("data/shikibetsu.json?v=20260730-7")
         .then(r => { if (!r.ok) throw new Error("shikibetsu data load failed: " + r.status); return r.json(); }),
@@ -2156,7 +2243,7 @@ const KatsuyoApp = (function () {
         .then(r => { if (!r.ok) throw new Error("keigo-dokkai data load failed: " + r.status); return r.json(); }),
       fetch("data/kobun-joshiki.json?v=20260721-1")
         .then(r => { if (!r.ok) throw new Error("kobun-joshiki data load failed: " + r.status); return r.json(); }),
-      fetch("data/kiso.json?v=20260728-4")
+      fetch("data/kiso.json?v=20260730-1")
         .then(r => { if (!r.ok) throw new Error("kiso data load failed: " + r.status); return r.json(); }),
       fetch("data/shikibetsu-joshi.json?v=20260729-1")
         .then(r => { if (!r.ok) throw new Error("joshi data load failed: " + r.status); return r.json(); }),
@@ -2252,19 +2339,19 @@ const KatsuyoApp = (function () {
           homeTitle: "古文常識を、本文の行間を読む道具として確認"
         };
 
-        // 必修1「文法の入口」。原則カード未整備の導入範囲を4択で扱う。
+        // 必修1「文法の入口」。原則カード未整備の導入範囲を選択式で扱う。
         const kisoSet = {
           id: "kiso",
           name: "文法の入口",
           label: "BASICS",
-          description: "読み方・品詞・活用形・接続・助動詞の基礎を4択で確認する",
+          description: "読み方・品詞・活用形・接続・助動詞・活用の種類の基礎を選択式で確認する",
           collection: "kisoQuestions",
           groups: "kisoGroups",
           requiredQuestionIdsKey: "kisoRequiredQuestionIds",
           askLabel: "正しい選択肢を選べ",
           unit: "問",
           mode: "choice",
-          homeTitle: "文法を読むための土台を、4択で確認"
+          homeTitle: "文法を読むための土台を、選択式で確認"
         };
         // 必修5〜7の識別。いずれも shikibetsuSet と同じ「手順→条件→対比→実践」の構成を持つ。
         const joshiSet = {
