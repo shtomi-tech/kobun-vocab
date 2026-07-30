@@ -187,8 +187,8 @@ def check_required_question_ids_for_set(data, required_key, questions_key,
 
 def check_required_question_ids(data):
     return check_required_question_ids_for_set(
-        data, "requiredQuestionIds", "shikibetsuQuestions", 49,
-        {"integration": 49},
+        data, "requiredQuestionIds", "shikibetsuQuestions", 52,
+        {"integration": 52},
         "助動詞識別",
     )
 
@@ -522,7 +522,7 @@ def main():
     if not required_err:
         sbq_by_id = {q.get("id"): q for q in sbq}
         required_types = Counter(sbq_by_id[qid].get("questionType") for qid in sb.get("requiredQuestionIds", []))
-        print("助動詞識別必修ルート: 49問（" + ", ".join(f"{k}={v}" for k, v in sorted(required_types.items())) + "）、追加練習: 13問")
+        print("助動詞識別必修ルート: 52問（" + ", ".join(f"{k}={v}" for k, v in sorted(required_types.items())) + "）、追加練習: 11問")
     if not joshi_required_err:
         joshiq = joshi.get("joshiQuestions", [])
         joshi_by_id = {q.get("id"): q for q in joshiq}
