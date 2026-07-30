@@ -254,16 +254,16 @@
     },
     {
       "id": "nari",
-      "name": "なりの訳し分け",
-      "sub": "断定・存在（伝聞推定との識別は必修6）",
+      "name": "なりの訳し分け（断定・存在）",
+      "sub": "断定・存在",
       "steps": [
         {
           "no": "手順I",
-          "text": "直前が体言・連体形か、終止形（ラ変は連体形）かを確認する。"
+          "text": "まず、対象が断定・存在の助動詞「なり」だと判定できているかを確認する。伝聞推定の「なり」との識別は、第6章の「なりの識別」で扱う。"
         },
         {
           "no": "手順II",
-          "text": "体言・連体形接続なら断定、終止形接続（ラ変型は連体形接続）なら伝聞推定と判断する。"
+          "text": "断定・存在の「なり」の直前に、場所・方角を表す体言があれば「〜にある・〜にいる」と訳して存在。そうでなければ「〜だ・〜である」と訳して断定と判断する。"
         }
       ]
     },
@@ -1471,73 +1471,73 @@
     },
     {
       "id": "sb-nari-int1",
-      "topic": "なりの識別",
+      "topic": "なりの訳し分け",
       "step": "実践",
       "questionType": "integration",
       "coverageId": "sb-nari-int1",
-      "passage": "駿河の国にあなる山のいただきに、",
-      "target": "なる",
-      "targetRanges": [
-        {
-          "start": 6,
-          "text": "なる"
-        }
-      ],
-      "question": "傍線部の意味として最も適切なものを選べ。",
-      "choices": [
-        "伝聞",
-        "推定",
-        "断定",
-        "婉曲"
-      ],
-      "answerIndex": 0,
-      "explanation": "「あなり」は「あるなり」の形で、伝え聞いた内容を表す。",
-      "distractorRationale": {
-        "推定": "本文の文脈と合わないため。",
-        "断定": "本文の文脈と合わないため。",
-        "婉曲": "本文の文脈と合わないため。"
-      },
-      "ruleRefs": [
-        "kbp.disambiguation.nari-identification"
-      ],
-      "sourceRef": "助動詞問題⑦・問2③"
-    },
-    {
-      "id": "pn-nari-int1",
-      "topic": "なりの識別",
-      "step": "実践",
-      "questionType": "integration",
-      "coverageId": "pn-nari-int1",
-      "passage": "ねぶたきを念じて候ふに、「丑四つ。」と奏すなり。",
+      "passage": "大きなる籠の下なりつる火取を取り寄せて、",
       "target": "なり",
       "targetRanges": [
         {
-          "start": 21,
+          "start": 7,
           "text": "なり"
         }
       ],
       "question": "傍線部の意味として最も適切なものを選べ。",
       "choices": [
-        "推定",
-        "伝聞",
-        "婉曲",
-        "反実仮想"
+        "存在",
+        "断定",
+        "伝聞推定",
+        "形容動詞の活用語尾"
       ],
       "answerIndex": 0,
-      "explanation": "「奏す」は音で聞こえた内容を根拠に推定しているので推定。",
+      "explanation": "直前の体言「下」は場所を表すので、「籠の下にある」と訳す存在。ここでは断定・存在の助動詞「なり」の意味を問う。",
       "distractorRationale": {
-        "伝聞": "本文の文脈と合わないため。",
-        "婉曲": "本文の文脈と合わないため。",
-        "反実仮想": "本文の文脈と合わないため。"
+        "断定": "場所を表す体言「下」に付いており、「下である」ではなく「下にある」と訳す。",
+        "伝聞推定": "この問題では伝聞推定との識別は扱わず、第6章の「なりの識別」で扱う。",
+        "形容動詞の活用語尾": "「下」は形容動詞の語幹ではなく、場所を表す体言である。"
       },
       "ruleRefs": [
-        "kbp.disambiguation.nari-identification"
+        "kbp.auxiliaries.nari-meanings"
       ],
-      "sourceRef": "助動詞問題⑦・問2⑥"
+      "sourceRef": "原則カードの例をもとに改稿"
+    },
+    {
+      "id": "pn-nari-int1",
+      "topic": "なりの訳し分け",
+      "step": "実践",
+      "questionType": "integration",
+      "coverageId": "pn-nari-int1",
+      "passage": "御前なる人に、文を渡す。",
+      "target": "なる",
+      "targetRanges": [
+        {
+          "start": 2,
+          "text": "なる"
+        }
+      ],
+      "question": "傍線部の意味として最も適切なものを選べ。",
+      "choices": [
+        "存在",
+        "断定",
+        "伝聞推定",
+        "動詞「なる」"
+      ],
+      "answerIndex": 0,
+      "explanation": "場所を表す体言「御前」＋断定・存在の助動詞「なり」の連体形「なる」。「御前にいる人」と訳すので存在。",
+      "distractorRationale": {
+        "断定": "「御前である人」ではなく、「御前にいる人」と訳す。",
+        "伝聞推定": "伝聞推定の「なり」は第6章の「なりの識別」で扱う。",
+        "動詞「なる」": "ここは「なる（変化する）」ではなく、体言「御前」に付く助動詞「なり」である。"
+      },
+      "ruleRefs": [
+        "kbp.auxiliaries.nari-meanings"
+      ],
+      "sourceRef": "原則カードの例をもとに作成"
     },
     {
       "id": "pn-nari-int2",
-      "topic": "なりの識別",
+      "topic": "なりの訳し分け",
       "step": "実践",
       "questionType": "integration",
       "coverageId": "pn-nari-int2",
@@ -1564,7 +1564,7 @@
         "存在": "本文の文脈と合わないため。"
       },
       "ruleRefs": [
-        "kbp.disambiguation.nari-identification"
+        "kbp.auxiliaries.nari-meanings"
       ],
       "sourceRef": "助動詞問題⑨・問2①"
     },
@@ -3425,7 +3425,7 @@
         },
         {
           "id": "pn-nari-int1",
-          "label": "指定例①：断定",
+          "label": "指定例①：存在",
           "questionType": "integration"
         },
         {
