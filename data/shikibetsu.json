@@ -2412,38 +2412,6 @@
       ]
     },
     {
-      "id": "pn-beshi-int12",
-      "topic": "べし・まじの識別",
-      "step": "実践",
-      "questionType": "integration",
-      "coverageId": "pn-beshi-int12",
-      "passage": "あの舟は、風強ければ岸に着くまじ。",
-      "target": "まじ",
-      "targetRanges": [
-        {
-          "start": 14,
-          "text": "まじ"
-        }
-      ],
-      "question": "傍線部の意味として最も適切なものを選べ。",
-      "choices": [
-        "打消推量",
-        "打消意志",
-        "不可能",
-        "禁止"
-      ],
-      "answerIndex": 0,
-      "explanation": "三人称の「あの舟」について、強風のため岸に着かないだろうと予測しているので打消推量である。",
-      "distractorRationale": {
-        "打消意志": "舟自身の決意を表しているのではなく、話し手が舟の到着を予測している",
-        "不可能": "絶対に到着できない能力の欠如を断定するのではなく、強風による見込みを述べている",
-        "禁止": "誰かに岸へ着くなと命じている文ではない"
-      },
-      "ruleRefs": [
-        "kbp.auxiliaries.beshi-maji-meanings"
-      ]
-    },
-    {
       "id": "pn-beshi-int13",
       "topic": "べし・まじの識別",
       "step": "実践",
@@ -2848,7 +2816,6 @@
     "pn-beshi-int9",
     "pn-beshi-int10",
     "pn-beshi-int11",
-    "pn-beshi-int12",
     "pn-beshi-int13",
     "sb-nari-int1",
     "sb-tsunu-int1",
@@ -2983,7 +2950,6 @@
         "pn-beshi-int9",
         "pn-beshi-int10",
         "pn-beshi-int11",
-        "pn-beshi-int12",
         "pn-beshi-int13",
         "src-jd05-q03"
       ]
@@ -3104,7 +3070,6 @@
         "pn-beshi-int9",
         "pn-beshi-int10",
         "pn-beshi-int11",
-        "pn-beshi-int12",
         "pn-beshi-int13",
         "sb-mu-int-ji",
         "src-jd05-q03",
@@ -3444,10 +3409,6 @@
           "questionType": "integration"
         },
         {
-          "id": "pn-beshi-int12",
-          "label": "追加⑥：打消推量",
-          "questionType": "integration"
-        },
         {
           "id": "pn-beshi-int13",
           "label": "追加⑦：禁止",
