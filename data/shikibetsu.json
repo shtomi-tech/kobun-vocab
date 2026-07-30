@@ -3001,7 +3001,7 @@
     },
     {
       "id": "sb-all",
-      "name": "総仕上げ：77問（必修59＋追加18）",
+      "name": "総仕上げ：76問（必修58＋追加18）",
       "sub": "必修ルートの問題と追加練習をランダム出題",
       "shuffle": true,
       "ids": [
@@ -3408,7 +3408,6 @@
           "label": "追加⑤：打消意志",
           "questionType": "integration"
         },
-        {
         {
           "id": "pn-beshi-int13",
           "label": "追加⑦：禁止",
