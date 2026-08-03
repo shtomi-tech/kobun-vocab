@@ -234,15 +234,15 @@ def check_keigo_required_question_ids(data):
 
 def check_kiso_required_question_ids(data):
     return check_required_question_ids_for_set(
-        data, "kisoRequiredQuestionIds", "kisoQuestions", 53,
+        data, "kisoRequiredQuestionIds", "kisoQuestions", 59,
         None,
-        "文法の入口",
+        "文法の土台",
     )
 
 
 def check_choice_required_question_ids(data):
     return check_required_question_ids_for_set(
-        data, "choiceRequiredQuestionIds", "choiceQuestions", 37,
+        data, "choiceRequiredQuestionIds", "choiceQuestions", 57,
         None,
         "文法4択",
     )
@@ -409,6 +409,81 @@ GATE_SOURCES = [
 ]
 
 
+# 退役(retired)させた問題を含むセット。(ファイル名, 問題配列, 必修IDキー, グループキー)
+RETIRE_SOURCES = [
+    ("multiple_choice.json", "choiceQuestions", "choiceRequiredQuestionIds", "choiceGroups"),
+    ("kiso.json", "kisoQuestions", "kisoRequiredQuestionIds", "kisoGroups"),
+    ("shikibetsu.json", "shikibetsuQuestions", "requiredQuestionIds", "shikibetsuGroups"),
+    ("shikibetsu-joshi.json", "joshiQuestions", "joshiRequiredQuestionIds", "joshiGroups"),
+    ("shikibetsu-homograph.json", "homographQuestions", "homographRequiredQuestionIds", "homographGroups"),
+    ("shikibetsu-keigo.json", "keigoQuestions", "keigoRequiredQuestionIds", "keigoGroups"),
+]
+
+COVERAGE_KEYS = {
+    "shikibetsu.json": "coverageTopics",
+    "shikibetsu-joshi.json": "joshiCoverageTopics",
+    "shikibetsu-homograph.json": "homographCoverageTopics",
+    "shikibetsu-keigo.json": "keigoCoverageTopics",
+}
+
+# 文法混合確認は章別4択と入口から30問を抜く。母集団が細ると24問合格が成立しない。
+CHECKPOINT_FILES = {"multiple_choice.json", "kiso.json"}
+MIN_CHECKPOINT_POOL = 40
+
+
+def check_retired():
+    """退役させた問題が、学習ルートを壊していないかを確認する。
+
+    退役は正本JSONに残したまま出題だけ止める運用なので、必修IDやグループの
+    配列は編集しない。アプリ側(static/mode-katsuyo.js の pruneRetired)が
+    読み込み時に外すため、外した後の状態をここで確かめる。
+    """
+    problems = []
+    checkpoint_pool = 0
+    for fname, qkey, rkey, gkey in RETIRE_SOURCES:
+        path = os.path.join(ROOT, "data", fname)
+        if not os.path.exists(path):
+            continue
+        data = load(path)
+        questions = data.get(qkey, [])
+        required = set(data.get(rkey, []))
+        retired = {q.get("id") for q in questions if q.get("retired")}
+        live = [q for q in questions if not q.get("retired")]
+
+        for question in questions:
+            info = question.get("retired")
+            if not info:
+                continue
+            if not isinstance(info, dict) or not info.get("reason") or not info.get("decidedAt"):
+                problems.append(f"[退役] {fname} {question.get('id')}: reason と decidedAt が必要")
+
+        for group in data.get(gkey, []):
+            ids = [qid for qid in group.get("ids", []) if qid not in retired]
+            if group.get("ids") and not ids:
+                problems.append(f"[退役] {fname} グループ {group.get('id')} の問題が全て退役している")
+            elif required and not any(qid in required for qid in ids) and any(
+                qid in required for qid in group.get("ids", [])
+            ):
+                problems.append(f"[退役] {fname} グループ {group.get('id')} の必修問題が全て退役している")
+
+        coverage_key = COVERAGE_KEYS.get(fname)
+        for topic in (data.get(coverage_key) or []) if coverage_key else []:
+            items = [i for i in topic.get("items", []) if i.get("id") not in retired]
+            if topic.get("items") and not items:
+                problems.append(
+                    f"[退役] {fname} カバレッジ「{topic.get('topic')}」の指定例が全て退役している"
+                )
+
+        if fname in CHECKPOINT_FILES:
+            checkpoint_pool += len(live)
+
+    if checkpoint_pool < MIN_CHECKPOINT_POOL:
+        problems.append(
+            f"[退役] 文法混合確認の母集団が {checkpoint_pool}問で下限 {MIN_CHECKPOINT_POOL}問を割る"
+        )
+    return problems
+
+
 def gate_datasets():
     """(表示名, 問題配列, スキーマ種別) を順に返す。存在しないファイルは飛ばす。"""
     data_dir = os.path.join(ROOT, "data")
@@ -483,6 +558,8 @@ def run_check():
     for error in check_choice_required_question_ids(load(MC_PATH)):
         problems.append(f"[必修ルート] multiple_choice.json {error}")
 
+    problems += check_retired()
+
     if problems:
         print("品質ゲート: 不合格（{} 件）".format(len(problems)))
         for p in problems:
@@ -536,7 +613,7 @@ def main():
         print(f"[敬語必修ルート] 違反 {len(keigo_required_err)} 件")
         for e in keigo_required_err:
             print("  - " + e)
-        print(f"[文法の入口必修ルート] 違反 {len(kiso_required_err)} 件")
+        print(f"[文法の土台必修ルート] 違反 {len(kiso_required_err)} 件")
         for e in kiso_required_err:
             print("  - " + e)
         print(f"[文法4択必修ルート] 違反 {len(choice_required_err)} 件")
@@ -564,7 +641,7 @@ def main():
     if not kiso_required_err:
         kiso_required = kiso.get("kisoRequiredQuestionIds", [])
         kiso_extra = len(kiso.get("kisoQuestions", [])) - len(kiso_required)
-        print(f"文法の入口必修ルート: {len(kiso_required)}問、追加練習: {kiso_extra}問")
+    print(f"文法の土台必修ルート: {len(kiso_required)}問、追加練習: {kiso_extra}問")
     if not choice_required_err:
         choice_required = mc.get("choiceRequiredQuestionIds", [])
         choice_extra = len(mcq) - len(choice_required)

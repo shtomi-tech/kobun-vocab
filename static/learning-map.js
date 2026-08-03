@@ -4,8 +4,8 @@
    学習マップ — 段階1（古文単語）〜段階4（古文常識）の全体フローと
    現在地を、各ホーム上部に表示する共有コンポーネント。
    段階1（古文単語）と段階2（古典文法）は並行トラックで、どちらも
-   最初から進められる。段階3（敬語読解）は段階2完了で、段階4（古文常識）
-   は段階3完了で解放される（段階1の完了状況とは無関係）。
+   最初から進められる。段階3（敬語読解）と段階4（古文常識）も問題は選択できる。
+   段階間の完了条件と推奨順は、従来どおり表示する。
    状態は VocabApp.stage1Status() と KatsuyoApp.pathOverview() から取得する。
    ============================================================ */
 
@@ -26,13 +26,15 @@ const LearningMap = (function () {
     {
       n: 2, name: "古典文法",
       steps: [
-        "必修1 文法の入口（仮名遣い／文節・品詞／活用形・係り結び／接続／接続で識別／助動詞の意味）",
-        "必修2 用言の活用（活用表／用言の攻略）",
-        "必修3 助動詞の活用・接続（28語の活用表）",
-        "必修4 助動詞の意味を決める10種（各：内容理解→4択→実践）",
-        "必修5 助詞（助詞の攻略／ば・より・だに・係り結び・終助詞）",
-        "必修6 同形語の識別5種（ぬね／るれ／なり／なむ／に）",
-        "必修7 敬語（敬語の攻略／給ふ・奉る・侍り・補助動詞・敬意の方向）",
+        "必修1 文の骨組み（仮名遣い／文節・品詞／文の成分／活用形・接続）",
+        "必修2 用言の活用（活用の種類／見分け方／活用表／語幹・音便／訳し分け）",
+        "必修3 未然形接続の助動詞（活用表11語／基本意味／る・らる〜まし）",
+        "必修4 連用形接続の助動詞（活用表7語＋り／き・けり・つ・ぬ・たり・けむ・たしの順）",
+        "必修5 終止形接続の助動詞（活用表6語／基本意味／らむ・べし・まじ）",
+        "必修6 体言・連体形接続の助動詞（活用表3語／なり・その他の識別）",
+        "必修7 助詞・呼応・文末（助詞の地図／係り結び／禁止・願望）",
+        "必修8 同形語の識別5種（ぬね／るれ／なり／なむ／に）",
+        "必修9 敬語・補助動詞（敬語の攻略／補助動詞／敬意の方向）",
         "仕上げ：文法混合確認30問",
       ],
       goal: null,
@@ -65,8 +67,7 @@ const LearningMap = (function () {
     return String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
   }
 
-  // 段階ごとの状態を判定する。段階1・2は互いに独立で、常に "done" か "current"。
-  // 段階3は段階2完了で、段階4は段階3完了で "locked" が外れる（段階1とは無関係）。
+  // 段階ごとの状態を判定する。問題は全段階で選択でき、完了条件だけを状態に反映する。
   function computeState() {
     const s1 = (typeof VocabApp !== "undefined" && VocabApp.stage1Status) ? VocabApp.stage1Status() : null;
     const stage1Done = !!(s1 && s1.complete);
@@ -78,8 +79,8 @@ const LearningMap = (function () {
     const stageStatus = [
       stage1Done ? "done" : "current",
       grammarComplete ? "done" : "current",
-      !grammarComplete ? "locked" : (readingComplete ? "done" : "current"),
-      !readingComplete ? "locked" : (cultureComplete ? "done" : "current"),
+      readingComplete ? "done" : "open",
+      cultureComplete ? "done" : "open",
     ];
     const allDone = stageStatus.every(s => s === "done");
     const currentStages = [];
@@ -100,7 +101,7 @@ const LearningMap = (function () {
 
   function stepperItemHtml(n, state) {
     const cls = stageClass(n, state);
-    const word = cls === "is-done" ? "完了" : cls === "is-current" ? "現在地" : "未解放";
+    const word = cls === "is-done" ? "完了" : cls === "is-current" ? "現在地" : "選択可";
     const dot = cls === "is-done" ? "✓" : String(n);
     const navigable = cls !== "is-locked";
     const aria = "段階" + n + " " + NAMES[n - 1] + "（" + word + "）";
@@ -135,7 +136,7 @@ const LearningMap = (function () {
 
   function flowStageCardHtml(f, state) {
     const cls = stageClass(f.n, state);
-    const badge = cls === "is-done" ? "完了" : cls === "is-current" ? "現在地" : "未解放";
+    const badge = cls === "is-done" ? "完了" : cls === "is-current" ? "現在地" : "選択可";
     let html =
       '<section class="lmapFlowStage ' + cls + '">' +
       '<div class="lmapFlowHead">' +
@@ -175,7 +176,7 @@ const LearningMap = (function () {
       '<div class="lmapLegend">' +
       "<p><b>共通の進み方</b></p>" +
       "<p>通常問題：通し演習で各問題を1回以上正解 → 完了</p>" +
-      "<p>識別問題：内容理解 → 4択 → 実践（統合）</p>" +
+      "<p>識別問題：予習資料で手順を確認 → 実践（傍線部の意味4択）</p>" +
       "<p>習得＝累計2回正解／間違えた問題はセッション末尾で再出題</p>" +
       "</div>";
     return html;

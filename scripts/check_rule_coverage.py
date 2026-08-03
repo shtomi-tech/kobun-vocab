@@ -82,6 +82,9 @@ def load_questions():
         with open(path, encoding="utf-8") as f:
             d = json.load(f)
         for q in d.get(key, []):
+            # 退役した問題は出題されないので、原則カードの担当としても数えない。
+            if q.get("retired"):
+                continue
             out.append((fname, q, required))
     return out
 
