@@ -988,6 +988,7 @@ h2 {
   .chapterBtn { align-items: flex-start; flex-direction: column; }
   .chapterStat { flex: 0 1 auto; }
   .actions .cta, .actions .ghost { width: 100%; }
+  .actions .smallGhost { min-height: 44px; }
   .nextRow { justify-content: stretch; flex-direction: column; }
   .submitRow { flex-direction: column; }
   .submitRow .cta { width: 100%; }
