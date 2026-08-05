@@ -684,7 +684,7 @@
       "reviewStatus": "derived-from-preparation",
       "ruleRefs": [],
       "answer": "A",
-      "correctChoice": "き・けり・つ・ぬ・たり",
+      "correctChoice": "き・けり・つ・ぬ・たり・けむ・たし",
       "wrongChoice": "らし・べし・まじ・らむ・めり",
       "file": "kobun-03-jodoshi-renyo.md",
       "heading": "1　七語を接続で束ねる",
@@ -700,8 +700,8 @@
       "correctChoice": "つる・つれ",
       "wrongChoice": "ぬる・ぬれ",
       "file": "kobun-03-jodoshi-renyo.md",
-      "heading": "2　ラ変型と下二段型を見分ける",
-      "sectionIndex": 2
+      "heading": "3　ラ変型・下二段型・ナ変型を見分ける",
+      "sectionIndex": 3
     },
     {
       "checkId": "check-kobun-03-jodoshi-renyo-03",
@@ -713,8 +713,8 @@
       "correctChoice": "未然形「せ」・連体形「し」・已然形「しか」",
       "wrongChoice": "未然形「き」・連体形「きる」・已然形「きれ」",
       "file": "kobun-03-jodoshi-renyo.md",
-      "heading": "3　「き」の特殊な形を覚える",
-      "sectionIndex": 3
+      "heading": "4　「き」の特殊な形を覚える",
+      "sectionIndex": 4
     },
     {
       "checkId": "check-kobun-03-jodoshi-renyo-04",
@@ -726,8 +726,21 @@
       "correctChoice": "サ変動詞の未然形・四段動詞の已然形",
       "wrongChoice": "すべての動詞の連用形",
       "file": "kobun-03-jodoshi-renyo.md",
-      "heading": "4　「り」もここで一緒に覚える",
-      "sectionIndex": 4
+      "heading": "5　「り」もここで一緒に覚える",
+      "sectionIndex": 5
+    },
+    {
+      "checkId": "check-kobun-03-jodoshi-renyo-05",
+      "sourceId": "derived-jodoshi-renyo-types",
+      "sourceRef": "data/katsuyo.json:jodoshi.き・つ・ぬ・けむ・たし",
+      "reviewStatus": "derived-from-preparation-and-data",
+      "ruleRefs": [],
+      "answer": "A",
+      "correctChoice": "特殊型・下二段型・ナ変型・四段型・形容詞型",
+      "wrongChoice": "ラ変型・ナ変型・特殊型・サ変型・形容動詞型",
+      "file": "kobun-03-jodoshi-renyo.md",
+      "heading": "2　活用の種類で八語を分ける",
+      "sectionIndex": 2
     },
     {
       "checkId": "check-kobun-03-jodoshi-shushi-01",
@@ -752,8 +765,8 @@
       "correctChoice": "連体形",
       "wrongChoice": "未然形",
       "file": "kobun-03-jodoshi-shushi.md",
-      "heading": "2　ラ変型の後ろは連体形",
-      "sectionIndex": 2
+      "heading": "3　ラ変型の後ろは連体形",
+      "sectionIndex": 3
     },
     {
       "checkId": "check-kobun-03-jodoshi-shushi-03",
@@ -765,8 +778,21 @@
       "correctChoice": "形容詞型",
       "wrongChoice": "無変化型",
       "file": "kobun-03-jodoshi-shushi.md",
-      "heading": "3　形容詞型と無変化型を分ける",
-      "sectionIndex": 3
+      "heading": "4　形の動き方を再確認する",
+      "sectionIndex": 4
+    },
+    {
+      "checkId": "check-kobun-03-jodoshi-shushi-04",
+      "sourceId": "derived-jodoshi-shushi-types",
+      "sourceRef": "data/katsuyo.json:jodoshi.らし・べし・まじ・らむ・なり・めり",
+      "reviewStatus": "derived-from-preparation-and-data",
+      "ruleRefs": [],
+      "answer": "A",
+      "correctChoice": "無変化型・形容詞型・形容詞型・四段型・ラ変型・ラ変型",
+      "wrongChoice": "形容詞型・無変化型・四段型・ラ変型・形容動詞ナリ型・特殊型",
+      "file": "kobun-03-jodoshi-shushi.md",
+      "heading": "2　活用の種類で六語を分ける",
+      "sectionIndex": 2
     },
     {
       "checkId": "check-kobun-03-jodoshi-taigen-01",
@@ -791,7 +817,20 @@
       "correctChoice": "なり・に/たり・と",
       "wrongChoice": "なら・なる/たら・たる",
       "file": "kobun-03-jodoshi-taigen.md",
-      "heading": "2　形容動詞型の動きを見る",
+      "heading": "3　形容動詞型の動きを見る",
+      "sectionIndex": 3
+    },
+    {
+      "checkId": "check-kobun-03-jodoshi-taigen-03",
+      "sourceId": "derived-jodoshi-taigen-types",
+      "sourceRef": "data/katsuyo.json:jodoshi.なり・たり・ごとし",
+      "reviewStatus": "derived-from-preparation-and-data",
+      "ruleRefs": [],
+      "answer": "A",
+      "correctChoice": "形容動詞ナリ型・形容動詞タリ型・形容詞型",
+      "wrongChoice": "形容詞型・形容動詞ナリ型・ラ変型",
+      "file": "kobun-03-jodoshi-taigen.md",
+      "heading": "2　活用の種類で三語を分ける",
       "sectionIndex": 2
     },
     {
