@@ -632,7 +632,7 @@
       "reviewStatus": "derived-from-preparation",
       "ruleRefs": [],
       "answer": "A",
-      "correctChoice": "る・らる・す・さす・しむ",
+      "correctChoice": "る・らる・す・さす・しむ・ず・じ・む・むず・まし・まほし",
       "wrongChoice": "き・けり・つ・ぬ・たり",
       "file": "kobun-03-jodoshi-mizen.md",
       "heading": "1　十一語を一度に並べる",
@@ -648,8 +648,8 @@
       "correctChoice": "下二段型",
       "wrongChoice": "特殊型",
       "file": "kobun-03-jodoshi-mizen.md",
-      "heading": "2　下二段型の五語をまとめる",
-      "sectionIndex": 2
+      "heading": "3　下二段型の五語をまとめる",
+      "sectionIndex": 3
     },
     {
       "checkId": "check-kobun-03-jodoshi-mizen-03",
@@ -658,11 +658,24 @@
       "reviewStatus": "derived-from-preparation-and-data",
       "ruleRefs": [],
       "answer": "A",
-      "correctChoice": "ず・ざら/ざり・ざる・ざれの二系列",
-      "wrongChoice": "けら・けり・ける・けれの一系列",
+      "correctChoice": "特殊型・無変化型・特殊型",
+      "wrongChoice": "無変化型・特殊型・四段型",
       "file": "kobun-03-jodoshi-mizen.md",
-      "heading": "3　形の変わり方が特殊な語を分ける",
-      "sectionIndex": 3
+      "heading": "4　特殊型と無変化型を分ける",
+      "sectionIndex": 4
+    },
+    {
+      "checkId": "check-kobun-03-jodoshi-mizen-04",
+      "sourceId": "derived-jodoshi-mizen-remaining-types",
+      "sourceRef": "data/katsuyo.json:jodoshi.む・むず・まほし",
+      "reviewStatus": "derived-from-preparation-and-data",
+      "ruleRefs": [],
+      "answer": "A",
+      "correctChoice": "四段型・サ変型・形容詞型",
+      "wrongChoice": "サ変型・四段型・特殊型",
+      "file": "kobun-03-jodoshi-mizen.md",
+      "heading": "2　活用の種類で六つに分ける",
+      "sectionIndex": 2
     },
     {
       "checkId": "check-kobun-03-jodoshi-renyo-01",
