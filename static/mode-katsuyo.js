@@ -20,6 +20,13 @@ const KatsuyoApp = (function () {
   let activeGrammarPathTask = null; // 文法ロードマップから開始した必修タスク
   let activeGrammarPathReview = false; // ロードマップの小項目を復習中かどうか
   const PATH_STORE_KEY = "kobun-katsuyo-path-v2";
+
+  function clearPreparationProgress() {
+    if (typeof KobunPreparation !== "undefined" && KobunPreparation
+      && typeof KobunPreparation.clearProgress === "function") {
+      KobunPreparation.clearProgress();
+    }
+  }
   // 段階2の必修。頭の中で文を組み立てられる順に10段構成にしてある。
   // 並びは「文の骨組み → 用言 → 助動詞（未然形接続 → 連用形接続 → 終止形接続 → 体言・連体形接続）
   // → 助詞・呼応・文末 → 同形語 → 敬語 → 混合確認」。
@@ -611,6 +618,7 @@ const KatsuyoApp = (function () {
       resetBtn.addEventListener("click", () => {
         if (confirm("進捗（習得・苦手）をすべて削除しますか？")) {
           localStorage.removeItem(STORE_KEY);
+          clearPreparationProgress();
           renderKatsuyoHome();
         }
       });
@@ -1135,6 +1143,7 @@ const KatsuyoApp = (function () {
         if (confirm("文法の習得・苦手・確認テストの記録をすべて削除しますか？")) {
           localStorage.removeItem(STORE_KEY);
           localStorage.removeItem(PATH_STORE_KEY);
+          clearPreparationProgress();
           renderGrammarRoadmapHome();
         }
       });
@@ -1330,6 +1339,7 @@ const KatsuyoApp = (function () {
       resetBtn.addEventListener("click", () => {
         if (confirm("進捗（習得・苦手）をすべて削除しますか？")) {
           localStorage.removeItem(STORE_KEY);
+          clearPreparationProgress();
           renderHome();
         }
       });

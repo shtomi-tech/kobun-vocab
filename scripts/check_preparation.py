@@ -9,8 +9,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 PREPARATION_DIR = ROOT / "data" / "preparation"
 POST_CHAR_LIMIT = 280
-CALLOUT_LABELS = {"board": "板書", "practice": "次の一歩"}
-FORBIDDEN_CALLOUTS = {"point", "check", "mistake"}
+CALLOUT_LABELS = {"board": "板書", "practice": "次の一歩", "check": "10秒確認"}
+FORBIDDEN_CALLOUTS = {"point", "mistake"}
 
 
 def visible_text(markdown: str) -> str:
@@ -23,7 +23,7 @@ def visible_text(markdown: str) -> str:
             continue
         if re.fullmatch(r"!\[[^]]*\]\([^)]*\)", line):
             continue
-        opening = re.fullmatch(r":::(board|practice|point|check|mistake)", line)
+        opening = re.fullmatch(r":::(board|practice|point|check|mistake)(?:\s+\S+)?", line)
         if opening:
             callout = opening.group(1)
             output.append(CALLOUT_LABELS.get(callout, ""))
@@ -31,6 +31,14 @@ def visible_text(markdown: str) -> str:
         if line == ":::" and callout:
             callout = None
             continue
+        if callout == "check":
+            check_match = re.match(r"^(question|choice|answer|explanation):\s*(.*)$", line)
+            if check_match:
+                if check_match.group(1) == "answer":
+                    continue
+                line = check_match.group(2)
+                if check_match.group(1) == "choice" and "|" in line:
+                    line = line.split("|", 1)[0] + " " + line.split("|", 1)[1]
         line = re.sub(r"^#{1,4}\s+", "", line)
         line = re.sub(r"^(?:[-*]|\d+\.)\s+", "", line)
         line = re.sub(r"^>\s?", "", line)
@@ -70,9 +78,60 @@ def split_rendered_posts(text: str) -> list[str]:
     first_section = re.search(r"(?m)^##\s+", remaining)
     intro = remaining if first_section is None else remaining[:first_section.start()]
     if visible_text(intro):
-        posts.append(intro)
+        posts.extend(pack_blocks(intro.splitlines()))
 
-    posts.extend(f"## {heading}\n{body}" for heading, body in split_sections(normalized))
+    for heading, body in split_sections(normalized):
+        posts.extend(pack_blocks([f"## {heading}", *body.splitlines()]))
+    return posts
+
+
+def source_blocks(lines: list[str]) -> list[list[str]]:
+    """Markdownを、表示側の見出し・段落・板書・確認の単位へ分ける。"""
+    blocks: list[list[str]] = []
+    index = 0
+    while index < len(lines):
+        if not lines[index].strip():
+            index += 1
+            continue
+        line = lines[index]
+        if re.fullmatch(r"\s*:::(board|practice|check)(?:\s+\S+)?\s*", line):
+            block = [line]
+            index += 1
+            while index < len(lines):
+                block.append(lines[index])
+                if lines[index].strip() == ":::":
+                    index += 1
+                    break
+                index += 1
+            blocks.append(block)
+            continue
+        block = [line]
+        index += 1
+        while index < len(lines) and lines[index].strip():
+            if re.fullmatch(r"\s*:::(board|practice|check)(?:\s+\S+)?\s*", lines[index]):
+                break
+            block.append(lines[index])
+            index += 1
+        blocks.append(block)
+    return blocks
+
+
+def pack_blocks(lines: list[str]) -> list[str]:
+    posts: list[str] = []
+    current: list[str] = []
+    current_chars = 0
+    for block in source_blocks(lines):
+        block_text = "\n".join(block)
+        block_chars = len(visible_text(block_text))
+        separator_chars = 1 if current else 0
+        if current and current_chars + separator_chars + block_chars > POST_CHAR_LIMIT:
+            posts.append("\n".join(current))
+            current = []
+            current_chars = 0
+        current.append(block_text)
+        current_chars += (1 if current_chars else 0) + block_chars
+    if current:
+        posts.append("\n".join(current))
     return posts
 
 

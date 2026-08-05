@@ -1,13 +1,17 @@
 "use strict";
 
-/* 文法ロードマップの予習資料。Markdownのうち、教材で使う小さな記法だけを描画する。 */
+/* 文法ロードマップの予習資料。読み進める単位と10秒確認を、この画面だけで管理する。 */
 const KobunPreparation = (function () {
   const PREPARATION_POST_CHAR_LIMIT = 280;
+  const PREPARATION_PROGRESS_VERSION = 1;
+  const PREPARATION_STORE_KEY = "kobun-preparation-progress-v1";
   const CALLOUT_LABELS = {
     board: "板書",
     practice: "次の一歩",
+    check: "10秒確認",
   };
   const TRUSTED_IMAGE_SOURCE = /^(?:static|data)\/[A-Za-z0-9._/-]+$/;
+  let activeCleanup = () => {};
 
   function escapeHtml(value) {
     return String(value)
@@ -20,7 +24,7 @@ const KobunPreparation = (function () {
 
   function inlineMarkup(value) {
     let text = escapeHtml(value);
-    text = text.replace(/`([^`]+)`/g, "<code>$1</code>");
+    text = text.replace(/\x60([^\x60]+)\x60/g, "<code>$1</code>");
     text = text.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
     return text;
   }
@@ -43,7 +47,133 @@ const KobunPreparation = (function () {
     target.appendChild(list);
   }
 
-  function appendCallout(target, type, lines) {
+  function parseCheck(lines, fallbackId) {
+    const check = {
+      id: fallbackId || "check-" + Math.random().toString(36).slice(2),
+      question: "",
+      choices: [],
+      answer: "",
+      explanation: "",
+    };
+    lines.forEach(rawLine => {
+      const line = rawLine.trim();
+      const match = line.match(/^(question|choice|answer|explanation):\s*(.*)$/);
+      if (!match) return;
+      const field = match[1];
+      const value = match[2];
+      if (field === "choice") {
+        const divider = value.indexOf("|");
+        const key = divider >= 0 ? value.slice(0, divider).trim() : String.fromCharCode(65 + check.choices.length);
+        const text = divider >= 0 ? value.slice(divider + 1).trim() : value;
+        check.choices.push({ key, text });
+      } else {
+        check[field] = value;
+      }
+    });
+    if (!check.question) check.question = "上の説明に当てはまるものは？";
+    if (!check.explanation) check.explanation = "板書の接続と、直前の語の形・文中の働きを照合します。";
+    if (!check.answer && check.choices[0]) check.answer = check.choices[0].key;
+    return check;
+  }
+
+  function setCheckResult(box, selectedKey, controller, shouldPersist) {
+    const correctKey = box.dataset.answer || "";
+    const isCorrect = selectedKey === correctKey;
+    box.classList.toggle("is-correct", isCorrect);
+    box.classList.toggle("is-wrong", !isCorrect);
+    box.querySelectorAll(".prepCheckChoice").forEach(choice => {
+      const selected = choice.dataset.choice === selectedKey;
+      choice.classList.toggle("is-selected", selected);
+      choice.classList.toggle("is-answer", choice.dataset.choice === correctKey && !isCorrect);
+      choice.setAttribute("aria-pressed", selected ? "true" : "false");
+    });
+
+    const feedback = box.querySelector(".prepCheckFeedback");
+    if (feedback) {
+      feedback.hidden = false;
+      feedback.className = "prepCheckFeedback " + (isCorrect ? "is-correct" : "is-wrong");
+      feedback.textContent = isCorrect
+        ? "正解。ここは10秒で思い出せれば十分です。"
+        : "いったん板書に戻り、接続と文中の働きをもう一度確認します。";
+    }
+    const explanation = box.querySelector(".prepCheckExplanation");
+    if (explanation) explanation.hidden = false;
+
+    if (shouldPersist && controller && typeof controller.recordCheck === "function") {
+      controller.recordCheck(box.dataset.checkId, selectedKey, isCorrect);
+    }
+  }
+
+  function appendCheck(target, lines, explicitId, controller) {
+    const check = parseCheck(lines, explicitId);
+    const box = document.createElement("section");
+    box.className = "prepCallout prepCallout-check prep-check-interactive";
+    box.dataset.checkId = check.id;
+    box.dataset.answer = check.answer;
+
+    const heading = document.createElement("h3");
+    heading.textContent = CALLOUT_LABELS.check;
+    box.appendChild(heading);
+
+    const fieldset = document.createElement("fieldset");
+    fieldset.className = "prepCheckFieldset";
+    const legend = document.createElement("legend");
+    legend.id = check.id + "-question";
+    legend.textContent = check.question;
+    fieldset.appendChild(legend);
+
+    const options = document.createElement("div");
+    options.className = "prepCheckOptions";
+    check.choices.forEach(choice => {
+      const choiceButton = document.createElement("button");
+      choiceButton.type = "button";
+      choiceButton.className = "prepCheckChoice";
+      choiceButton.dataset.choice = choice.key;
+      choiceButton.setAttribute("aria-pressed", "false");
+      choiceButton.setAttribute("aria-label", choice.key + " " + choice.text);
+      const key = document.createElement("span");
+      key.className = "prepCheckChoiceKey";
+      key.textContent = choice.key;
+      const label = document.createElement("span");
+      label.className = "prepCheckChoiceText";
+      label.textContent = choice.text;
+      choiceButton.appendChild(key);
+      choiceButton.appendChild(label);
+      choiceButton.addEventListener("click", () => {
+        setCheckResult(box, choice.key, controller, true);
+      });
+      options.appendChild(choiceButton);
+    });
+    fieldset.appendChild(options);
+    box.appendChild(fieldset);
+
+    const feedback = document.createElement("div");
+    feedback.className = "prepCheckFeedback";
+    feedback.hidden = true;
+    feedback.setAttribute("aria-live", "polite");
+    box.appendChild(feedback);
+
+    const explanation = document.createElement("div");
+    explanation.className = "prepCheckExplanation";
+    explanation.hidden = true;
+    const explanationLabel = document.createElement("strong");
+    explanationLabel.textContent = "判断の理由";
+    explanation.appendChild(explanationLabel);
+    const explanationText = document.createElement("p");
+    explanationText.innerHTML = inlineMarkup(check.explanation);
+    explanation.appendChild(explanationText);
+    box.appendChild(explanation);
+
+    box.setAttribute("aria-labelledby", legend.id);
+    target.appendChild(box);
+    return box;
+  }
+
+  function appendCallout(target, type, lines, explicitId, controller) {
+    if (type === "check") {
+      appendCheck(target, lines, explicitId, controller);
+      return;
+    }
     const box = document.createElement("section");
     box.className = "prepCallout prepCallout-" + type;
     const heading = document.createElement("h3");
@@ -51,7 +181,7 @@ const KobunPreparation = (function () {
     box.appendChild(heading);
     const body = document.createElement("div");
     body.className = "prepCalloutBody";
-    renderLines(lines, body);
+    renderLines(lines, body, controller);
     box.appendChild(body);
     target.appendChild(box);
   }
@@ -111,14 +241,47 @@ const KobunPreparation = (function () {
     return lines.some(line => line.trim());
   }
 
-  function renderThread(markdown, target, task) {
+  function nodeCharacterCount(node) {
+    return Array.from(node.textContent || "").length;
+  }
+
+  function appendNodeChunks(target, nodes, label, extraClass, posts, sectionIndex) {
+    const chunks = [];
+    let chunk = [];
+    let count = 0;
+    nodes.forEach(node => {
+      const nodeCount = nodeCharacterCount(node);
+      if (chunk.length && count + nodeCount > PREPARATION_POST_CHAR_LIMIT) {
+        chunks.push(chunk);
+        chunk = [];
+        count = 0;
+      }
+      chunk.push(node);
+      count += nodeCount;
+    });
+    if (chunk.length) chunks.push(chunk);
+
+    chunks.forEach((chunkNodes, chunkIndex) => {
+      const suffix = chunks.length > 1 ? " 続き " + (chunkIndex + 1) : "";
+      const post = createPost(label + suffix, extraClass && chunkIndex === 0 ? extraClass : "");
+      chunkNodes.forEach(node => post.body.appendChild(node));
+      post.post.dataset.charCount = String(nodeCharacterCount(post.body));
+      post.post.dataset.charLimit = String(PREPARATION_POST_CHAR_LIMIT);
+      if (sectionIndex !== undefined) post.post.dataset.sectionIndex = String(sectionIndex);
+      target.appendChild(post.post);
+      posts.push(post.post);
+    });
+  }
+
+  function renderThread(markdown, target, task, controller) {
     const lines = markdown.replace(/^\uFEFF/, "").replace(/\r\n?/g, "\n").split("\n");
+    const posts = [];
     const titleIndex = lines.findIndex(line => /^#\s+/.test(line));
     if (titleIndex < 0) {
-      const fallback = createPost("予習スレッド", "prepPostTitle");
-      renderLines(lines, fallback.body);
-      target.appendChild(fallback.post);
-      return;
+      const holder = document.createElement("div");
+      renderLines(lines, holder, controller);
+      appendNodeChunks(target, Array.from(holder.childNodes), "予習スレッド", "prepPostTitle", posts);
+      return { posts };
     }
 
     const titleMatch = lines[titleIndex].match(/^#\s+(.+)$/);
@@ -130,7 +293,10 @@ const KobunPreparation = (function () {
     taskContext.className = "prepTaskContext";
     taskContext.textContent = task.label;
     titlePost.body.appendChild(taskContext);
+    titlePost.post.dataset.charCount = String(nodeCharacterCount(titlePost.body));
+    titlePost.post.dataset.charLimit = String(PREPARATION_POST_CHAR_LIMIT);
     target.appendChild(titlePost.post);
+    posts.push(titlePost.post);
 
     let cursor = titleIndex + 1;
     if (cursor < lines.length && imageMatch(lines[cursor])) cursor += 1;
@@ -138,12 +304,12 @@ const KobunPreparation = (function () {
     const firstSectionIndex = remaining.findIndex(line => /^##\s+/.test(line));
     const introLines = firstSectionIndex < 0 ? remaining : remaining.slice(0, firstSectionIndex);
     if (hasContent(introLines)) {
-      const intro = createPost("予習スレッド", "prepPostIntro");
-      renderLines(introLines, intro.body);
-      target.appendChild(intro.post);
+      const holder = document.createElement("div");
+      renderLines(introLines, holder, controller);
+      appendNodeChunks(target, Array.from(holder.childNodes), "予習スレッド", "prepPostIntro", posts);
     }
 
-    if (firstSectionIndex < 0) return;
+    if (firstSectionIndex < 0) return { posts };
     const sections = [];
     let section = [];
     remaining.slice(firstSectionIndex).forEach(line => {
@@ -155,18 +321,22 @@ const KobunPreparation = (function () {
     });
     if (section.length) sections.push(section);
 
-    const numberedTotal = Math.max(1, sections.length - 1);
     sections.forEach((sectionLines, index) => {
-      const label = index === 0 && sections.length > 1
-        ? "予習スレッド"
-        : (index === 0 ? "予習スレッド" : index + " / " + numberedTotal);
-      const post = createPost(label);
-      renderLines(sectionLines, post.body);
-      target.appendChild(post.post);
+      const holder = document.createElement("div");
+      renderLines(sectionLines, holder, controller);
+      appendNodeChunks(
+        target,
+        Array.from(holder.childNodes),
+        (index + 1) + " / " + sections.length,
+        "",
+        posts,
+        index,
+      );
     });
+    return { posts };
   }
 
-  function renderLines(lines, target) {
+  function renderLines(lines, target, controller) {
     let index = 0;
     while (index < lines.length) {
       const line = lines[index];
@@ -213,9 +383,10 @@ const KobunPreparation = (function () {
         continue;
       }
 
-      const calloutMatch = trimmed.match(/^:::(board|practice)\s*$/);
+      const calloutMatch = trimmed.match(/^:::(board|practice|check)(?:\s+([A-Za-z0-9_-]+))?\s*$/);
       if (calloutMatch) {
         const type = calloutMatch[1];
+        const explicitId = calloutMatch[2] || "";
         const body = [];
         index += 1;
         while (index < lines.length && lines[index].trim() !== ":::") {
@@ -223,7 +394,7 @@ const KobunPreparation = (function () {
           index += 1;
         }
         if (index < lines.length) index += 1;
-        appendCallout(target, type, body);
+        appendCallout(target, type, body, explicitId, controller);
         continue;
       }
 
@@ -265,7 +436,7 @@ const KobunPreparation = (function () {
       while (index < lines.length) {
         const next = lines[index];
         if (!next.trim() || /^(#{1,4})\s+/.test(next) || /^---+\s*$/.test(next.trim())
-          || /^:::(board|practice)\s*$/.test(next.trim())
+          || /^:::(board|practice|check)(?:\s+[A-Za-z0-9_-]+)?\s*$/.test(next.trim())
           || /^>\s?/.test(next) || /^[-*]\s+/.test(next) || /^\d+\.\s+/.test(next)) {
           break;
         }
@@ -284,6 +455,122 @@ const KobunPreparation = (function () {
     return element;
   }
 
+  function readProgress() {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(PREPARATION_STORE_KEY) || "{}");
+      if (!parsed || parsed.version !== PREPARATION_PROGRESS_VERSION || !parsed.tasks) {
+        return { version: PREPARATION_PROGRESS_VERSION, tasks: {} };
+      }
+      return parsed;
+    } catch (_error) {
+      return { version: PREPARATION_PROGRESS_VERSION, tasks: {} };
+    }
+  }
+
+  function normalizeProgress(record) {
+    return {
+      postIndex: Number.isInteger(record && record.postIndex) ? Math.max(0, record.postIndex) : 0,
+      checks: record && record.checks && typeof record.checks === "object" ? record.checks : {},
+      completedAt: record && record.completedAt ? record.completedAt : "",
+      updatedAt: record && record.updatedAt ? record.updatedAt : "",
+    };
+  }
+
+  function loadProgress(taskId) {
+    return normalizeProgress(readProgress().tasks[taskId]);
+  }
+
+  function saveProgress(taskId, record) {
+    try {
+      const progress = readProgress();
+      progress.tasks[taskId] = record;
+      localStorage.setItem(PREPARATION_STORE_KEY, JSON.stringify(progress));
+    } catch (_error) {
+      /* 学習自体は、保存できない環境でも続けられるようにする。 */
+    }
+  }
+
+  function clearProgress() {
+    try {
+      localStorage.removeItem(PREPARATION_STORE_KEY);
+    } catch (_error) {
+      /* 保存領域が無効でも、画面のリセットは続ける。 */
+    }
+  }
+
+  function createProgressHeader(task, posts, checks, progress, onJump) {
+    const header = document.createElement("section");
+    header.className = "prepProgressHeader";
+    header.setAttribute("aria-label", "予習の進み具合");
+
+    const heading = document.createElement("h2");
+    heading.textContent = "予習の進み具合";
+    header.appendChild(heading);
+    const status = document.createElement("p");
+    status.className = "prepProgressStatus";
+    header.appendChild(status);
+
+    const segments = document.createElement("div");
+    segments.className = "prepProgressSegments";
+    segments.setAttribute("role", "group");
+    segments.setAttribute("aria-label", "投稿ごとの進捗");
+    const segmentButtons = posts.map((post, index) => {
+      const segment = button("prepProgressSegment", "");
+      segment.setAttribute("aria-label", "投稿 " + (index + 1) + "へ移動");
+      segment.addEventListener("click", () => onJump(index));
+      segments.appendChild(segment);
+      return segment;
+    });
+    header.appendChild(segments);
+
+    const resume = button("ghost prepResumeButton", "");
+    resume.addEventListener("click", () => onJump(Math.min(progress.postIndex, posts.length - 1)));
+    header.appendChild(resume);
+
+    function refresh() {
+      const postCount = posts.length;
+      const current = Math.min(Math.max(progress.postIndex, 0), Math.max(0, postCount - 1));
+      const answered = checks.filter(check => progress.checks[check.dataset.checkId]).length;
+      status.textContent = "投稿 " + (postCount ? current + 1 : 0) + " / " + postCount
+        + " ・ 10秒確認 " + answered + " / " + checks.length
+        + (progress.completedAt ? " ・確認済み" : "");
+      segmentButtons.forEach((segment, index) => {
+        segment.classList.toggle("is-done", index < current);
+        segment.classList.toggle("is-current", index === current);
+        segment.setAttribute("aria-current", index === current ? "step" : "false");
+      });
+      const hasResume = progress.postIndex > 0 && progress.postIndex < postCount - 1;
+      resume.hidden = !hasResume;
+      if (hasResume) resume.textContent = "前回の続き（投稿 " + (progress.postIndex + 1) + "）";
+    }
+    refresh();
+    return { element: header, refresh };
+  }
+
+  function attachPostProgress(posts, onAdvance) {
+    let ticking = false;
+    const inspect = () => {
+      if (!posts.length) return;
+      let current = 0;
+      const boundary = window.innerHeight * 0.55;
+      posts.forEach((post, index) => {
+        if (post.getBoundingClientRect().top <= boundary) current = index;
+      });
+      onAdvance(current);
+    };
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(() => {
+        ticking = false;
+        inspect();
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    inspect();
+    return () => window.removeEventListener("scroll", onScroll);
+  }
+
   function renderError(thread, onBack) {
     thread.innerHTML = "";
     const error = document.createElement("div");
@@ -299,20 +586,51 @@ const KobunPreparation = (function () {
   function render(options) {
     const container = options.container;
     const task = options.task;
-    const stage = options.stage;
     const path = options.path;
     const onBack = typeof options.onBack === "function" ? options.onBack : () => {};
     const onPractice = typeof options.onPractice === "function" ? options.onPractice : () => {};
+    const taskId = String((task && (task.id || task.label)) || path);
+
+    activeCleanup();
+    let disposed = false;
+    let removePostProgress = () => {};
+    const dispose = () => {
+      if (disposed) return;
+      disposed = true;
+      removePostProgress();
+      if (activeCleanup === dispose) activeCleanup = () => {};
+    };
+    activeCleanup = dispose;
 
     document.body.classList.add("prepPageMode");
     window.scrollTo(0, 0);
     container.innerHTML = "";
     container.classList.remove("hide");
 
+    const progress = loadProgress(taskId);
+    let progressView = null;
+    const progressController = {
+      checkIds: [],
+      recordCheck(checkId, choice, correct) {
+        progress.checks[checkId] = {
+          choice,
+          correct,
+          answeredAt: new Date().toISOString(),
+        };
+        const complete = this.checkIds.length > 0
+          && this.checkIds.every(id => progress.checks[id]);
+        progress.completedAt = complete ? (progress.completedAt || new Date().toISOString()) : "";
+        progress.updatedAt = new Date().toISOString();
+        saveProgress(taskId, progress);
+        if (progressView) progressView.refresh();
+      },
+    };
+
     const shell = document.createElement("div");
     shell.className = "prepShell";
 
     const leave = () => {
+      dispose();
       document.body.classList.remove("prepPageMode");
       onBack();
     };
@@ -332,42 +650,60 @@ const KobunPreparation = (function () {
     container.appendChild(shell);
 
     const query = path.includes("?") ? "&" : "?";
-    fetch(path + query + "v=0.2.1")
+    fetch(path + query + "v=0.4.1")
       .then(response => {
         if (!response.ok) throw new Error("HTTP " + response.status);
         return response.text();
       })
       .then(markdown => {
-        if (!shell.isConnected) return;
+        if (!shell.isConnected || disposed) return;
         thread.innerHTML = "";
         const content = document.createElement("div");
         content.className = "prepContent";
-        renderThread(markdown, content, task);
-        content.querySelectorAll(".prepPost").forEach(post => {
-          const body = post.querySelector(".prepPostBody");
-          if (!body) return;
-          post.dataset.charCount = String(Array.from(body.textContent || "").length);
-          post.dataset.charLimit = String(PREPARATION_POST_CHAR_LIMIT);
-        });
+        const parsed = renderThread(markdown, content, task, progressController);
         thread.appendChild(content);
+
+        const checks = Array.from(content.querySelectorAll(".prep-check-interactive"));
+        progressController.checkIds = checks.map(check => check.dataset.checkId);
+        checks.forEach(check => {
+          const saved = progress.checks[check.dataset.checkId];
+          if (saved && saved.choice) setCheckResult(check, saved.choice, progressController, false);
+        });
 
         const footer = document.createElement("div");
         footer.className = "prepFooter";
         footer.appendChild(document.createElement("p")).textContent = "読み終えたら、同じ単元の問題で確かめます。";
         const practice = button("cta prepPracticeButton", "この単元の問題へ");
         practice.addEventListener("click", () => {
+          dispose();
           document.body.classList.remove("prepPageMode");
           onPractice();
         });
         footer.appendChild(practice);
         thread.appendChild(footer);
+
+        const jumpToPost = index => {
+          const post = parsed.posts[index];
+          if (post) post.scrollIntoView({ behavior: "smooth", block: "start" });
+        };
+        progressView = createProgressHeader(task, parsed.posts, checks, progress, jumpToPost);
+        shell.insertBefore(progressView.element, thread);
+        window.scrollTo(0, 0);
+        removePostProgress = attachPostProgress(parsed.posts, current => {
+          if (current <= progress.postIndex) return;
+          progress.postIndex = current;
+          progress.updatedAt = new Date().toISOString();
+          saveProgress(taskId, progress);
+          if (progressView) progressView.refresh();
+        });
+        progressView.refresh();
       })
       .catch(() => {
-        if (shell.isConnected) renderError(thread, leave);
+        if (shell.isConnected && !disposed) renderError(thread, leave);
       });
 
     return shell;
   }
 
-  return { render };
+  return { render, clearProgress };
 })();

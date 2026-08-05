@@ -1,4 +1,4 @@
-# 古文演習（単語 4択 ＋ 活用ドリル）
+# 古文演習（単語 4択 ＋ 古典文法）v2.1
 
 古文単語の4択演習と、古典文法を学習順に進める1つの静的アプリです。段階1（古文単語）と段階2（古典文法）は最初から並行して進められる独立トラックです。段階1は必須200語を20問×10セットで進め、誤答数に関係なく各セットを終了し、10セット後に200語からランダム30問の確認テストを行って24問以上（80%以上）で段階1修了と判定します（文法への解放条件ではありません）。段階3・段階4の問題も先に選択できますが、段階2の完了後に段階3、段階3の完了後に段階4へ進む推奨順と完了条件は維持します。
 
@@ -40,12 +40,12 @@
 
 ## 起動
 
-このv2フォークは、元アプリを保護するため既存ポータルには登録していません。ローカルサーバーから確認します。
+このv2.1は、古文単語と古典文法を統合した本番公開版です。公開URLは `https://shtomi-tech.github.io/kobun-vocab/` です。ローカルで確認する場合は、次のコマンドを使います。
 
 静的ファイルとして直接確認する場合は、ローカルサーバー経由で開きます（`fetch` で JSON を読むため、`file://` 直開きは不可）。
 
 ```powershell
-py -3 -m http.server 5599 --directory C:\Users\shtom\dev\kobun-practice-v2
+py -3 -m http.server 5599 --directory C:\Users\shtom\dev\kobun-practice-v2.1
 # → http://127.0.0.1:5599
 ```
 
@@ -59,7 +59,7 @@ py -3 -m http.server 5599 --directory C:\Users\shtom\dev\kobun-practice-v2
 - `data/shikibetsu-joshi.json` … 必修7の助詞の識別（ば・より・格助詞「の」・だに・係り結びの特殊構文・終助詞）。
 - `data/shikibetsu-homograph.json` … 必修8の同形語の識別（ぬね・るれ・なり・なむ・に）。
 - `data/shikibetsu-keigo.json` … 必修9の敬語の識別（給ふ・奉る参る・侍り候ふ・補助動詞の訳・敬意の方向）。
-- `data/preparation/` … 必修1〜9の予習資料。Markdownをロードマップの予習画面で表示する。
+- `data/preparation/` … 必修1〜9の予習資料。Markdownをロードマップの予習画面で表示し、各H2に1問の「10秒確認」を置く。
 - `static/hedgehog-professor-original.png` … 予習資料のタイトル横に表示する原画。加工せず使用する。
 - `data/keigo-dokkai.json` … 段階3の敬語読解（敬意の方向・省略主語・短文統合）。
 - `data/kobun-joshiki.json` … 段階4の古文常識読解（宮廷生活・恋愛／婚姻・年中行事）。
@@ -105,10 +105,11 @@ py -3 -m http.server 5599 --directory C:\Users\shtom\dev\kobun-practice-v2
 問題を追加・修正するときは、リポジトリ内の[古文演習の問題作成原則](docs/QUESTION_AUTHORING_PRINCIPLES.md)と、対象分野の active 原則カードを参照します。
 
 ```powershell
-py -3 C:\Users\shtom\dev\kobun-practice-v2\scripts\quality_check.py --check       # スキーマ・選択肢の偏り・誤答根拠・重複
-py -3 C:\Users\shtom\dev\kobun-practice-v2\scripts\check_rule_coverage.py --check # ruleRefs の実在・status:active・カバレッジ
+py -3 C:\Users\shtom\dev\kobun-practice-v2.1\scripts\quality_check.py --check       # スキーマ・選択肢の偏り・誤答根拠・重複
+py -3 C:\Users\shtom\dev\kobun-practice-v2.1\scripts\check_rule_coverage.py --check # ruleRefs の実在・status:active・カバレッジ
 py -3 C:\Users\shtom\dev\docs\kobun-principles\scripts\check_principles.py     # 原則カード側の検査
-py -3 C:\Users\shtom\dev\kobun-practice-v2\scripts\check_preparation.py       # 予習投稿の280字・構造検査
+py -3 C:\Users\shtom\dev\kobun-practice-v2.1\scripts\check_preparation.py       # 予習投稿の280字・構造検査
+py -3 scripts\audit_preparation_checks.py                                     # 10秒確認152件の対応・構造検査
 ```
 
 対応表は `docs/rule-coverage.txt`（`check_rule_coverage.py` の出力）にあります。原則カードが未整備のまま出題している分野は同レポートの末尾に一覧され、原則集の `INBOX.md` にも候補として記録しています。
@@ -137,4 +138,4 @@ py -3 scripts/quality_check.py --check
 
 ## 由来
 
-このv2フォークは、元アプリのデータ・公開URL・進捗を変更せずに古典文法の構成を試すための作業用コピーです。現時点ではGitHubのremoteと公開URLを設定していません。
+このv2.1は、古文単語と古典文法を統合した本番公開版です。GitHub Pagesで公開し、旧v2とは進捗キーを分離しています。

@@ -1,0 +1,2204 @@
+{
+  "version": 1,
+  "checks": [
+    {
+      "checkId": "check-kobun-01-bunsetsu-hinshi-01",
+      "sourceId": "k-bun-01",
+      "sourceRef": "data/kiso.json:k-bun-01",
+      "reviewStatus": "source-question",
+      "ruleRefs": [],
+      "answer": "A",
+      "correctChoice": "7文節",
+      "wrongChoice": "5文節",
+      "file": "kobun-01-bunsetsu-hinshi.md",
+      "heading": "1　文節は意味のまとまり",
+      "sectionIndex": 1
+    },
+    {
+      "checkId": "check-kobun-01-bunsetsu-hinshi-02",
+      "sourceId": "k-bun-02",
+      "sourceRef": "data/kiso.json:k-bun-02",
+      "reviewStatus": "source-question",
+      "ruleRefs": [],
+      "answer": "B",
+      "correctChoice": "単独では文節を作れず、自立語の下に付く語",
+      "wrongChoice": "単独で文節を作れ、意味を持つ語",
+      "file": "kobun-01-bunsetsu-hinshi.md",
+      "heading": "2　自立語と付属語を分ける",
+      "sectionIndex": 2
+    },
+    {
+      "checkId": "check-kobun-01-bunsetsu-hinshi-03",
+      "sourceId": "k-bun-03",
+      "sourceRef": "data/kiso.json:k-bun-03",
+      "reviewStatus": "source-question",
+      "ruleRefs": [],
+      "answer": "A",
+      "correctChoice": "活用するかどうか",
+      "wrongChoice": "意味があるかどうか",
+      "file": "kobun-01-bunsetsu-hinshi.md",
+      "heading": "3　助詞と助動詞は活用で分ける",
+      "sectionIndex": 3
+    },
+    {
+      "checkId": "check-kobun-01-bunsetsu-hinshi-04",
+      "sourceId": "k-bun-04",
+      "sourceRef": "data/kiso.json:k-bun-04",
+      "reviewStatus": "source-question",
+      "ruleRefs": [],
+      "answer": "B",
+      "correctChoice": "名詞",
+      "wrongChoice": "動詞",
+      "file": "kobun-01-bunsetsu-hinshi.md",
+      "heading": "4　用言と体言を分ける",
+      "sectionIndex": 4
+    },
+    {
+      "checkId": "check-kobun-01-bunsetsu-hinshi-05",
+      "sourceId": "c1-001",
+      "sourceRef": "data/kiso.json:c1-001",
+      "reviewStatus": "source-question",
+      "ruleRefs": [],
+      "answer": "A",
+      "correctChoice": "活用",
+      "wrongChoice": "活用形",
+      "file": "kobun-01-bunsetsu-hinshi.md",
+      "heading": "5　活用・活用形・語幹を区別する",
+      "sectionIndex": 5
+    },
+    {
+      "checkId": "check-kobun-01-bunsetsu-hinshi-06",
+      "sourceId": "k-bun-06",
+      "sourceRef": "data/kiso.json:k-bun-06",
+      "reviewStatus": "source-question",
+      "ruleRefs": [],
+      "answer": "B",
+      "correctChoice": "文節に区切り、各文節の先頭の自立語を決めてから、残りを助詞・助動詞に分ける",
+      "wrongChoice": "文頭から1字ずつ、知っている助動詞と一致する形を探す",
+      "file": "kobun-01-bunsetsu-hinshi.md",
+      "heading": "6　三段階で品詞分解する",
+      "sectionIndex": 6
+    },
+    {
+      "checkId": "check-kobun-01-katsuyokei-kakari-01",
+      "sourceId": "k-kei-01",
+      "sourceRef": "data/kiso.json:k-kei-01",
+      "reviewStatus": "source-question",
+      "ruleRefs": [],
+      "answer": "A",
+      "correctChoice": "未然形・連用形・終止形・連体形・已然形・命令形",
+      "wrongChoice": "未然形・連用形・終止形・連体形・仮定形・命令形",
+      "file": "kobun-01-katsuyokei-kakari.md",
+      "heading": "1　六つの活用形を並べる",
+      "sectionIndex": 1
+    },
+    {
+      "checkId": "check-kobun-01-katsuyokei-kakari-02",
+      "sourceId": "k-kei-02",
+      "sourceRef": "data/kiso.json:k-kei-02",
+      "reviewStatus": "source-question",
+      "ruleRefs": [],
+      "answer": "B",
+      "correctChoice": "未然形",
+      "wrongChoice": "連用形",
+      "file": "kobun-01-katsuyokei-kakari.md",
+      "heading": "2　未然形と連用形は下で決める",
+      "sectionIndex": 2
+    },
+    {
+      "checkId": "check-kobun-01-katsuyokei-kakari-03",
+      "sourceId": "k-kei-04",
+      "sourceRef": "data/kiso.json:k-kei-04",
+      "reviewStatus": "source-question",
+      "ruleRefs": [],
+      "answer": "A",
+      "correctChoice": "連体形",
+      "wrongChoice": "終止形",
+      "file": "kobun-01-katsuyokei-kakari.md",
+      "heading": "3　終止形と連体形を区別する",
+      "sectionIndex": 3
+    },
+    {
+      "checkId": "check-kobun-01-katsuyokei-kakari-04",
+      "sourceId": "k-kei-07",
+      "sourceRef": "data/kiso.json:k-kei-07",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.particles.kakari-musubi-special-constructions"
+      ],
+      "answer": "B",
+      "correctChoice": "連体形",
+      "wrongChoice": "終止形",
+      "file": "kobun-01-katsuyokei-kakari.md",
+      "heading": "4　係助詞を見たら文末へ進む",
+      "sectionIndex": 4
+    },
+    {
+      "checkId": "check-kobun-01-katsuyokei-kakari-05",
+      "sourceId": "k-kei-05",
+      "sourceRef": "data/kiso.json:k-kei-05",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.particles.ba-meanings"
+      ],
+      "answer": "A",
+      "correctChoice": "已然形",
+      "wrongChoice": "未然形",
+      "file": "kobun-01-katsuyokei-kakari.md",
+      "heading": "5　「ば」の前の形を比べる",
+      "sectionIndex": 5
+    },
+    {
+      "checkId": "check-kobun-01-setsuzoku-01",
+      "sourceId": "k-set-01",
+      "sourceRef": "data/kiso.json:k-set-01",
+      "reviewStatus": "source-question",
+      "ruleRefs": [],
+      "answer": "A",
+      "correctChoice": "その助動詞が、上の語のどの活用形に付くかという決まり",
+      "wrongChoice": "その助動詞が、どのように活用するかという決まり",
+      "file": "kobun-01-setsuzoku.md",
+      "heading": "1　接続・活用・意味を分ける",
+      "sectionIndex": 1
+    },
+    {
+      "checkId": "check-kobun-01-setsuzoku-02",
+      "sourceId": "c3-003",
+      "sourceRef": "data/kiso.json:c3-003",
+      "reviewStatus": "source-question",
+      "ruleRefs": [],
+      "answer": "B",
+      "correctChoice": "る・らる・す・さす・しむ・ず・じ・む・むず・まし・まほし",
+      "wrongChoice": "き・けり・つ・ぬ・たり・けむ",
+      "file": "kobun-01-setsuzoku.md",
+      "heading": "2　未然形接続を先に候補にする",
+      "sectionIndex": 2
+    },
+    {
+      "checkId": "check-kobun-01-setsuzoku-03",
+      "sourceId": "c3-004",
+      "sourceRef": "data/kiso.json:c3-004",
+      "reviewStatus": "source-question",
+      "ruleRefs": [],
+      "answer": "A",
+      "correctChoice": "き・けり・つ・ぬ・たり・けむ・たし",
+      "wrongChoice": "る・らる・ず・じ・む・まし",
+      "file": "kobun-01-setsuzoku.md",
+      "heading": "3　連用形接続をまとめて見る",
+      "sectionIndex": 3
+    },
+    {
+      "checkId": "check-kobun-01-setsuzoku-04",
+      "sourceId": "c3-005",
+      "sourceRef": "data/kiso.json:c3-005",
+      "reviewStatus": "source-question",
+      "ruleRefs": [],
+      "answer": "B",
+      "correctChoice": "らし・べし・まじ・らむ・伝聞推定のなり・めり",
+      "wrongChoice": "る・らる・す・さす・しむ・ず",
+      "file": "kobun-01-setsuzoku.md",
+      "heading": "4　終止形接続とラ変型を確認する",
+      "sectionIndex": 4
+    },
+    {
+      "checkId": "check-kobun-01-setsuzoku-05",
+      "sourceId": "k-set-06",
+      "sourceRef": "data/kiso.json:k-set-06",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.disambiguation.tari-identification"
+      ],
+      "answer": "A",
+      "correctChoice": "断定(〜である)",
+      "wrongChoice": "完了(〜た)",
+      "file": "kobun-01-setsuzoku.md",
+      "heading": "5　体言に付く助動詞を分ける",
+      "sectionIndex": 5
+    },
+    {
+      "checkId": "check-kobun-01-setsuzoku-06",
+      "sourceId": "c5-005",
+      "sourceRef": "data/kiso.json:c5-005",
+      "reviewStatus": "source-question",
+      "ruleRefs": [],
+      "answer": "B",
+      "correctChoice": "サ変の未然形と、四段の已然形に接続する",
+      "wrongChoice": "動詞の種類に関わらず、すべての動詞の終止形に接続する",
+      "file": "kobun-01-setsuzoku.md",
+      "heading": "6　「り」は接続が特別",
+      "sectionIndex": 6
+    },
+    {
+      "checkId": "check-kobun-01-setsuzoku-07",
+      "sourceId": "k-set-02",
+      "sourceRef": "data/kiso.json:k-set-02",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.disambiguation.nari-identification"
+      ],
+      "answer": "A",
+      "correctChoice": "同じ形でも、上の語の活用形が違えば別の語だと決められるから",
+      "wrongChoice": "同じ形の語は、意味も必ず同じになるから",
+      "file": "kobun-01-setsuzoku.md",
+      "heading": "7　同じ形の語を接続で分ける",
+      "sectionIndex": 7
+    },
+    {
+      "checkId": "check-kobun-01-setsuzoku-08",
+      "sourceId": "k-set-10",
+      "sourceRef": "data/kiso.json:k-set-10",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.particles.ba-meanings"
+      ],
+      "answer": "B",
+      "correctChoice": "「ば」の上が未然形か已然形かという接続",
+      "wrongChoice": "「散る」の活用の種類が変わるから",
+      "file": "kobun-01-setsuzoku.md",
+      "heading": "8　助詞にも同じ手順を使う",
+      "sectionIndex": 8
+    },
+    {
+      "checkId": "check-kobun-01-structure-01",
+      "sourceId": "k-structure-01",
+      "sourceRef": "data/kiso.json:k-structure-01",
+      "reviewStatus": "source-question",
+      "ruleRefs": [],
+      "answer": "A",
+      "correctChoice": "出で",
+      "wrongChoice": "男",
+      "file": "kobun-01-structure.md",
+      "heading": "1　述語の中心を先に見つける",
+      "sectionIndex": 1
+    },
+    {
+      "checkId": "check-kobun-01-structure-02",
+      "sourceId": "k-structure-02",
+      "sourceRef": "data/kiso.json:k-structure-02",
+      "reviewStatus": "source-question",
+      "ruleRefs": [],
+      "answer": "B",
+      "correctChoice": "山を詳しくする連体修飾語",
+      "wrongChoice": "動作をする人物を表す主語",
+      "file": "kobun-01-structure.md",
+      "heading": "2　名詞を詳しくする語を見る",
+      "sectionIndex": 2
+    },
+    {
+      "checkId": "check-kobun-01-structure-03",
+      "sourceId": "k-structure-03",
+      "sourceRef": "data/kiso.json:k-structure-03",
+      "reviewStatus": "source-question",
+      "ruleRefs": [],
+      "answer": "A",
+      "correctChoice": "動作の対象(目的語)",
+      "wrongChoice": "動作をする主体(主語)",
+      "file": "kobun-01-structure.md",
+      "heading": "3　動作の対象と場所を探す",
+      "sectionIndex": 3
+    },
+    {
+      "checkId": "check-kobun-01-structure-04",
+      "sourceId": "k-structure-04",
+      "sourceRef": "data/kiso.json:k-structure-04",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.reading-discourse.setsuzoku-joshi-subject-continuity"
+      ],
+      "answer": "B",
+      "correctChoice": "前の主語が続くと仮置きし、敬語と文脈で確かめる",
+      "wrongChoice": "必ず主語が別の人物に入れ替わると考える",
+      "file": "kobun-01-structure.md",
+      "heading": "4　省略された主語を仮置きする",
+      "sectionIndex": 4
+    },
+    {
+      "checkId": "check-kobun-01-structure-05",
+      "sourceId": "k-structure-05",
+      "sourceRef": "data/kiso.json:k-structure-05",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.reading-discourse.setsuzoku-joshi-subject-continuity"
+      ],
+      "answer": "A",
+      "correctChoice": "鳥",
+      "wrongChoice": "枝",
+      "file": "kobun-01-structure.md",
+      "heading": "5　仮置きした主語を照合する",
+      "sectionIndex": 5
+    },
+    {
+      "checkId": "check-kobun-01-yomi-01",
+      "sourceId": "k-yomi-02",
+      "sourceRef": "data/kiso.json:k-yomi-02",
+      "reviewStatus": "source-question",
+      "ruleRefs": [],
+      "answer": "A",
+      "correctChoice": "「はな」の「は」は語頭にあり、読み替えの対象外だから",
+      "wrongChoice": "「はな」は名詞で、「あはれ」は名詞ではないから",
+      "file": "kobun-01-yomi.md",
+      "heading": "1　ハ行は語の位置を見る",
+      "sectionIndex": 1
+    },
+    {
+      "checkId": "check-kobun-01-yomi-02",
+      "sourceId": "k-yomi-03",
+      "sourceRef": "data/kiso.json:k-yomi-03",
+      "reviewStatus": "source-question",
+      "ruleRefs": [],
+      "answer": "B",
+      "correctChoice": "い・え・お",
+      "wrongChoice": "ゐ・ゑ・を",
+      "file": "kobun-01-yomi.md",
+      "heading": "2　ゐ・ゑ・をなどを直す",
+      "sectionIndex": 2
+    },
+    {
+      "checkId": "check-kobun-01-yomi-03",
+      "sourceId": "k-yomi-06",
+      "sourceRef": "data/kiso.json:k-yomi-06",
+      "reviewStatus": "source-question",
+      "ruleRefs": [],
+      "answer": "A",
+      "correctChoice": "ようよう",
+      "wrongChoice": "やうやう",
+      "file": "kobun-01-yomi.md",
+      "heading": "3　母音の連続を長音にする",
+      "sectionIndex": 3
+    },
+    {
+      "checkId": "check-kobun-01-yomi-04",
+      "sourceId": "k-yomi-07",
+      "sourceRef": "data/kiso.json:k-yomi-07",
+      "reviewStatus": "source-question",
+      "ruleRefs": [],
+      "answer": "B",
+      "correctChoice": "きょう",
+      "wrongChoice": "けう",
+      "file": "kobun-01-yomi.md",
+      "heading": "4　「けふ」は二段階で読む",
+      "sectionIndex": 4
+    },
+    {
+      "checkId": "check-kobun-01-yomi-05",
+      "sourceId": "k-yomi-08",
+      "sourceRef": "data/kiso.json:k-yomi-08",
+      "reviewStatus": "source-question",
+      "ruleRefs": [],
+      "answer": "A",
+      "correctChoice": "1字ずつ置き換えてから、残った母音の連続を長音に直す",
+      "wrongChoice": "先に母音の連続を長音に直してから、1字ずつ置き換える",
+      "file": "kobun-01-yomi.md",
+      "heading": "5　四段階の手順を固定する",
+      "sectionIndex": 5
+    },
+    {
+      "checkId": "check-kobun-02-katsuyo-type-01",
+      "sourceId": "k-katsuyo-01",
+      "sourceRef": "data/kiso.json:k-katsuyo-01",
+      "reviewStatus": "source-question",
+      "ruleRefs": [],
+      "answer": "A",
+      "correctChoice": "来(く)",
+      "wrongChoice": "往ぬ(去ぬ)",
+      "file": "kobun-02-katsuyo-type.md",
+      "heading": "1　変格活用は所属語を先に置く",
+      "sectionIndex": 1
+    },
+    {
+      "checkId": "check-kobun-02-katsuyo-type-02",
+      "sourceId": "k-katsuyo-05",
+      "sourceRef": "data/kiso.json:k-katsuyo-05",
+      "reviewStatus": "source-question",
+      "ruleRefs": [],
+      "answer": "B",
+      "correctChoice": "干る",
+      "wrongChoice": "射る",
+      "file": "kobun-02-katsuyo-type.md",
+      "heading": "2　上一段・下一段は所属語で分ける",
+      "sectionIndex": 2
+    },
+    {
+      "checkId": "check-kobun-02-sound-01",
+      "sourceId": "k-sound-03",
+      "sourceRef": "data/kiso.json:k-sound-03",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.verbs.onbin"
+      ],
+      "answer": "A",
+      "correctChoice": "変化前の語尾を復元し、活用の種類・活用形と後続語を確かめる",
+      "wrongChoice": "変化した音だけを見て、必ず同じ活用と決める",
+      "file": "kobun-02-sound.md",
+      "heading": "1　語幹と活用語尾を分ける",
+      "sectionIndex": 1
+    },
+    {
+      "checkId": "check-kobun-02-sound-02",
+      "sourceId": "k-sound-02",
+      "sourceRef": "data/kiso.json:k-sound-02",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.verbs.onbin"
+      ],
+      "answer": "B",
+      "correctChoice": "促音便",
+      "wrongChoice": "イ音便",
+      "file": "kobun-02-sound.md",
+      "heading": "2　音便は連用形の変化として戻す",
+      "sectionIndex": 2
+    },
+    {
+      "checkId": "check-kobun-02-sound-03",
+      "sourceId": "k-sound-04",
+      "sourceRef": "data/kiso.json:k-sound-04",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.adjectives.keiyoushi-kandou"
+      ],
+      "answer": "A",
+      "correctChoice": "形容詞の語幹を用いて感動を表す",
+      "wrongChoice": "過去の助動詞を用いて回想を表す",
+      "file": "kobun-02-sound.md",
+      "heading": "3　語幹だけの用法も読む",
+      "sectionIndex": 3
+    },
+    {
+      "checkId": "check-kobun-02-yougo-mikiwake-01",
+      "sourceId": "c2-001",
+      "sourceRef": "data/multiple_choice.json:c2-001",
+      "reviewStatus": "source-question",
+      "ruleRefs": [],
+      "answer": "A",
+      "correctChoice": "9種類",
+      "wrongChoice": "5種類",
+      "file": "kobun-02-yougo-mikiwake.md",
+      "heading": "1　九種類の全体像を置く",
+      "sectionIndex": 1
+    },
+    {
+      "checkId": "check-kobun-02-yougo-mikiwake-02",
+      "sourceId": "c2-018",
+      "sourceRef": "data/multiple_choice.json:c2-018",
+      "reviewStatus": "source-question",
+      "ruleRefs": [],
+      "answer": "B",
+      "correctChoice": "「ず」をつけて直前の音を見る。ア段なら四段、イ段なら上二段、エ段なら下二段",
+      "wrongChoice": "「て」をつけて直前の音を見る。ア段なら四段、イ段なら上一段、エ段なら下一段",
+      "file": "kobun-02-yougo-mikiwake.md",
+      "heading": "2　「ず」をつけて残りを分ける",
+      "sectionIndex": 2
+    },
+    {
+      "checkId": "check-kobun-02-yougo-mikiwake-03",
+      "sourceId": "c2-019",
+      "sourceRef": "data/multiple_choice.json:c2-019",
+      "reviewStatus": "source-question",
+      "ruleRefs": [],
+      "answer": "A",
+      "correctChoice": "く・く・し・き・けれ",
+      "wrongChoice": "しく・しく・し・しき・しけれ",
+      "file": "kobun-02-yougo-mikiwake.md",
+      "heading": "3　形容詞は「なる」で分ける",
+      "sectionIndex": 3
+    },
+    {
+      "checkId": "check-kobun-02-yougo-practice-01",
+      "sourceId": "k-kei-02",
+      "sourceRef": "data/kiso.json:k-kei-02",
+      "reviewStatus": "source-question",
+      "ruleRefs": [],
+      "answer": "A",
+      "correctChoice": "未然形",
+      "wrongChoice": "連用形",
+      "file": "kobun-02-yougo-practice.md",
+      "heading": "1　六つの形を文中で使う",
+      "sectionIndex": 1
+    },
+    {
+      "checkId": "check-kobun-02-yougo-practice-02",
+      "sourceId": "c2-003",
+      "sourceRef": "data/multiple_choice.json:c2-003",
+      "reviewStatus": "source-question",
+      "ruleRefs": [],
+      "answer": "B",
+      "correctChoice": "か・き・く・く・け・け",
+      "wrongChoice": "き・き・きる・きる・きれ・きよ",
+      "file": "kobun-02-yougo-practice.md",
+      "heading": "2　活用表を選択肢の比較に使う",
+      "sectionIndex": 2
+    },
+    {
+      "checkId": "check-kobun-02-yougo-practice-03",
+      "sourceId": "c2-027",
+      "sourceRef": "data/multiple_choice.json:c2-027",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.verbs.katsuyou-type-translation"
+      ],
+      "answer": "A",
+      "correctChoice": "四段は基本語義のまま、下二段はそこに「(さ)せる」を加える",
+      "wrongChoice": "四段も下二段も、活用の種類に関係なく同じ基本語義で訳す",
+      "file": "kobun-02-yougo-practice.md",
+      "heading": "3　意味は最後に戻す",
+      "sectionIndex": 3
+    },
+    {
+      "checkId": "check-kobun-02-yougo-table-01",
+      "sourceId": "derived-yougo-table-verb",
+      "sourceRef": "data/katsuyo.json:verbs.v-yodan-kaku",
+      "reviewStatus": "derived-from-preparation-and-data",
+      "ruleRefs": [
+        "kbp.verbs.yodan-nidan-identification"
+      ],
+      "answer": "A",
+      "correctChoice": "四段型",
+      "wrongChoice": "上一段型",
+      "file": "kobun-02-yougo-table.md",
+      "heading": "1　動詞の代表型を並べる",
+      "sectionIndex": 1
+    },
+    {
+      "checkId": "check-kobun-02-yougo-table-02",
+      "sourceId": "derived-yougo-table-irregular",
+      "sourceRef": "data/katsuyo.json:verbs.v-rahen-ari",
+      "reviewStatus": "derived-from-preparation-and-data",
+      "ruleRefs": [],
+      "answer": "B",
+      "correctChoice": "ラ変型",
+      "wrongChoice": "四段型",
+      "file": "kobun-02-yougo-table.md",
+      "heading": "2　変格活用とラ変を確認する",
+      "sectionIndex": 2
+    },
+    {
+      "checkId": "check-kobun-02-yougo-table-03",
+      "sourceId": "derived-yougo-table-adjective",
+      "sourceRef": "data/katsuyo.json:adjectivalVerbs.adjv-nari-shizuka",
+      "reviewStatus": "derived-from-preparation-and-data",
+      "ruleRefs": [],
+      "answer": "A",
+      "correctChoice": "ナリ活用",
+      "wrongChoice": "ク活用",
+      "file": "kobun-02-yougo-table.md",
+      "heading": "3　形容詞・形容動詞の別形を見る",
+      "sectionIndex": 3
+    },
+    {
+      "checkId": "check-kobun-02-yougo-yaku-01",
+      "sourceId": "c2-024",
+      "sourceRef": "data/multiple_choice.json:c2-024",
+      "reviewStatus": "source-question",
+      "ruleRefs": [],
+      "answer": "A",
+      "correctChoice": "原因・理由(〜ので)",
+      "wrongChoice": "「~のように」(比況)",
+      "file": "kobun-02-yougo-yaku.md",
+      "heading": "1　「〜を〜み」は原因・理由",
+      "sectionIndex": 1
+    },
+    {
+      "checkId": "check-kobun-02-yougo-yaku-02",
+      "sourceId": "c2-026",
+      "sourceRef": "data/multiple_choice.json:c2-026",
+      "reviewStatus": "source-question",
+      "ruleRefs": [],
+      "answer": "B",
+      "correctChoice": "感動・詠嘆",
+      "wrongChoice": "原因・理由",
+      "file": "kobun-02-yougo-yaku.md",
+      "heading": "2　語幹だけで感動を表す",
+      "sectionIndex": 2
+    },
+    {
+      "checkId": "check-kobun-02-yougo-yaku-03",
+      "sourceId": "c2-028",
+      "sourceRef": "data/multiple_choice.json:c2-028",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.verbs.katsuyou-type-translation"
+      ],
+      "answer": "A",
+      "correctChoice": "頼りにさせる・あてにさせる・期待させる",
+      "wrongChoice": "頼りにする・あてにする(四段)",
+      "file": "kobun-02-yougo-yaku.md",
+      "heading": "3　四段と下二段で訳し分ける",
+      "sectionIndex": 3
+    },
+    {
+      "checkId": "check-kobun-03-jodoshi-mizen-01",
+      "sourceId": "derived-jodoshi-mizen-list",
+      "sourceRef": "data/jodoshi.json:groups.g1",
+      "reviewStatus": "derived-from-preparation",
+      "ruleRefs": [],
+      "answer": "A",
+      "correctChoice": "る・らる・す・さす・しむ",
+      "wrongChoice": "き・けり・つ・ぬ・たり",
+      "file": "kobun-03-jodoshi-mizen.md",
+      "heading": "1　十一語を一度に並べる",
+      "sectionIndex": 1
+    },
+    {
+      "checkId": "check-kobun-03-jodoshi-mizen-02",
+      "sourceId": "derived-jodoshi-mizen-type",
+      "sourceRef": "data/jodoshi.json:jodoshi.る",
+      "reviewStatus": "derived-from-preparation-and-data",
+      "ruleRefs": [],
+      "answer": "B",
+      "correctChoice": "下二段型",
+      "wrongChoice": "特殊型",
+      "file": "kobun-03-jodoshi-mizen.md",
+      "heading": "2　下二段型の五語をまとめる",
+      "sectionIndex": 2
+    },
+    {
+      "checkId": "check-kobun-03-jodoshi-mizen-03",
+      "sourceId": "derived-jodoshi-mizen-special",
+      "sourceRef": "data/jodoshi.json:jodoshi.ず",
+      "reviewStatus": "derived-from-preparation-and-data",
+      "ruleRefs": [],
+      "answer": "A",
+      "correctChoice": "ず・ざら/ざり・ざる・ざれの二系列",
+      "wrongChoice": "けら・けり・ける・けれの一系列",
+      "file": "kobun-03-jodoshi-mizen.md",
+      "heading": "3　形の変わり方が特殊な語を分ける",
+      "sectionIndex": 3
+    },
+    {
+      "checkId": "check-kobun-03-jodoshi-renyo-01",
+      "sourceId": "derived-jodoshi-renyo-list",
+      "sourceRef": "data/jodoshi.json:groups.g2",
+      "reviewStatus": "derived-from-preparation",
+      "ruleRefs": [],
+      "answer": "A",
+      "correctChoice": "き・けり・つ・ぬ・たり",
+      "wrongChoice": "らし・べし・まじ・らむ・めり",
+      "file": "kobun-03-jodoshi-renyo.md",
+      "heading": "1　七語を接続で束ねる",
+      "sectionIndex": 1
+    },
+    {
+      "checkId": "check-kobun-03-jodoshi-renyo-02",
+      "sourceId": "derived-jodoshi-renyo-forms",
+      "sourceRef": "data/jodoshi.json:jodoshi.つ",
+      "reviewStatus": "derived-from-preparation-and-data",
+      "ruleRefs": [],
+      "answer": "B",
+      "correctChoice": "つる・つれ",
+      "wrongChoice": "ぬる・ぬれ",
+      "file": "kobun-03-jodoshi-renyo.md",
+      "heading": "2　ラ変型と下二段型を見分ける",
+      "sectionIndex": 2
+    },
+    {
+      "checkId": "check-kobun-03-jodoshi-renyo-03",
+      "sourceId": "derived-jodoshi-renyo-ki",
+      "sourceRef": "data/jodoshi.json:jodoshi.き",
+      "reviewStatus": "derived-from-preparation-and-data",
+      "ruleRefs": [],
+      "answer": "A",
+      "correctChoice": "未然形「せ」・連体形「し」・已然形「しか」",
+      "wrongChoice": "未然形「き」・連体形「きる」・已然形「きれ」",
+      "file": "kobun-03-jodoshi-renyo.md",
+      "heading": "3　「き」の特殊な形を覚える",
+      "sectionIndex": 3
+    },
+    {
+      "checkId": "check-kobun-03-jodoshi-renyo-04",
+      "sourceId": "derived-jodoshi-renyo-ri",
+      "sourceRef": "data/jodoshi.json:jodoshi.り",
+      "reviewStatus": "derived-from-preparation-and-data",
+      "ruleRefs": [],
+      "answer": "B",
+      "correctChoice": "サ変動詞の未然形・四段動詞の已然形",
+      "wrongChoice": "すべての動詞の連用形",
+      "file": "kobun-03-jodoshi-renyo.md",
+      "heading": "4　「り」もここで一緒に覚える",
+      "sectionIndex": 4
+    },
+    {
+      "checkId": "check-kobun-03-jodoshi-shushi-01",
+      "sourceId": "derived-jodoshi-shushi-list",
+      "sourceRef": "data/jodoshi.json:groups.g3",
+      "reviewStatus": "derived-from-preparation",
+      "ruleRefs": [],
+      "answer": "A",
+      "correctChoice": "らし・べし・まじ・らむ・なり・めり",
+      "wrongChoice": "ず・じ・む・まし・まほし",
+      "file": "kobun-03-jodoshi-shushi.md",
+      "heading": "1　六語を接続で束ねる",
+      "sectionIndex": 1
+    },
+    {
+      "checkId": "check-kobun-03-jodoshi-shushi-02",
+      "sourceId": "derived-jodoshi-shushi-rahen",
+      "sourceRef": "data/jodoshi.json:groups.g3",
+      "reviewStatus": "derived-from-preparation",
+      "ruleRefs": [],
+      "answer": "B",
+      "correctChoice": "連体形",
+      "wrongChoice": "未然形",
+      "file": "kobun-03-jodoshi-shushi.md",
+      "heading": "2　ラ変型の後ろは連体形",
+      "sectionIndex": 2
+    },
+    {
+      "checkId": "check-kobun-03-jodoshi-shushi-03",
+      "sourceId": "derived-jodoshi-shushi-type",
+      "sourceRef": "data/jodoshi.json:jodoshi.べし",
+      "reviewStatus": "derived-from-preparation-and-data",
+      "ruleRefs": [],
+      "answer": "A",
+      "correctChoice": "形容詞型",
+      "wrongChoice": "無変化型",
+      "file": "kobun-03-jodoshi-shushi.md",
+      "heading": "3　形容詞型と無変化型を分ける",
+      "sectionIndex": 3
+    },
+    {
+      "checkId": "check-kobun-03-jodoshi-taigen-01",
+      "sourceId": "derived-jodoshi-taigen-list",
+      "sourceRef": "data/jodoshi.json:groups.g4",
+      "reviewStatus": "derived-from-preparation",
+      "ruleRefs": [],
+      "answer": "A",
+      "correctChoice": "なり・たり・ごとし",
+      "wrongChoice": "き・けり・つ",
+      "file": "kobun-03-jodoshi-taigen.md",
+      "heading": "1　三語と接続を確かめる",
+      "sectionIndex": 1
+    },
+    {
+      "checkId": "check-kobun-03-jodoshi-taigen-02",
+      "sourceId": "derived-jodoshi-taigen-forms",
+      "sourceRef": "data/jodoshi.json:jodoshi.なり・たり",
+      "reviewStatus": "derived-from-preparation",
+      "ruleRefs": [],
+      "answer": "B",
+      "correctChoice": "なり・に/たり・と",
+      "wrongChoice": "なら・なる/たら・たる",
+      "file": "kobun-03-jodoshi-taigen.md",
+      "heading": "2　形容動詞型の動きを見る",
+      "sectionIndex": 2
+    },
+    {
+      "checkId": "check-kobun-04-beshi-01",
+      "sourceId": "sb-beshi-int1",
+      "sourceRef": "data/shikibetsu.json:sb-beshi-int1",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.auxiliaries.beshi-maji-meanings"
+      ],
+      "answer": "A",
+      "correctChoice": "意志",
+      "wrongChoice": "可能",
+      "file": "kobun-04-beshi.md",
+      "heading": "1　まず接続を確かめる",
+      "sectionIndex": 1
+    },
+    {
+      "checkId": "check-kobun-04-beshi-02",
+      "sourceId": "sb-beshi-int-kanou",
+      "sourceRef": "data/shikibetsu.json:sb-beshi-int-kanou",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.auxiliaries.beshi-maji-meanings"
+      ],
+      "answer": "B",
+      "correctChoice": "可能",
+      "wrongChoice": "意志",
+      "file": "kobun-04-beshi.md",
+      "heading": "2　可能の根拠を探す",
+      "sectionIndex": 2
+    },
+    {
+      "checkId": "check-kobun-04-beshi-03",
+      "sourceId": "pn-beshi-int8",
+      "sourceRef": "data/shikibetsu.json:pn-beshi-int8",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.auxiliaries.beshi-maji-meanings"
+      ],
+      "answer": "A",
+      "correctChoice": "意志",
+      "wrongChoice": "推量",
+      "file": "kobun-04-beshi.md",
+      "heading": "3　人称と文脈で意味を絞る",
+      "sectionIndex": 3
+    },
+    {
+      "checkId": "check-kobun-04-jodoshi-basic-01",
+      "sourceId": "derived-jodoshi-basic-keri",
+      "sourceRef": "data/kiso.json:kiso-jodoshi-zu〜kiso-jodoshi-shushi",
+      "reviewStatus": "derived-from-preparation-and-principles",
+      "ruleRefs": [
+        "kbp.auxiliaries.keri-meanings"
+      ],
+      "answer": "A",
+      "correctChoice": "き",
+      "wrongChoice": "けり",
+      "file": "kobun-04-jodoshi-basic.md",
+      "heading": "1　過去と詠嘆を分ける",
+      "sectionIndex": 1
+    },
+    {
+      "checkId": "check-kobun-04-jodoshi-basic-02",
+      "sourceId": "derived-jodoshi-basic-tari",
+      "sourceRef": "data/kiso.json:kiso-jodoshi-zu〜kiso-jodoshi-shushi",
+      "reviewStatus": "derived-from-preparation-and-principles",
+      "ruleRefs": [
+        "kbp.auxiliaries.tari-ri-meanings"
+      ],
+      "answer": "B",
+      "correctChoice": "存続",
+      "wrongChoice": "完了",
+      "file": "kobun-04-jodoshi-basic.md",
+      "heading": "2　完了・存続を分ける",
+      "sectionIndex": 2
+    },
+    {
+      "checkId": "check-kobun-04-jodoshi-basic-03",
+      "sourceId": "derived-jodoshi-basic-meaning",
+      "sourceRef": "data/kiso.json:c5-010",
+      "reviewStatus": "source-question",
+      "ruleRefs": [],
+      "answer": "A",
+      "correctChoice": "〜ない",
+      "wrongChoice": "〜たい",
+      "file": "kobun-04-jodoshi-basic.md",
+      "heading": "3　推量・希望・打消を置く",
+      "sectionIndex": 3
+    },
+    {
+      "checkId": "check-kobun-04-kemu-01",
+      "sourceId": "sb-kemu-int2",
+      "sourceRef": "data/shikibetsu.json:sb-kemu-int2",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.auxiliaries.kemu-meanings"
+      ],
+      "answer": "A",
+      "correctChoice": "過去推量",
+      "wrongChoice": "過去原因推量",
+      "file": "kobun-04-kemu.md",
+      "heading": "1　接続と時間を確定する",
+      "sectionIndex": 1
+    },
+    {
+      "checkId": "check-kobun-04-kemu-02",
+      "sourceId": "sb-kemu-int4",
+      "sourceRef": "data/shikibetsu.json:sb-kemu-int4",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.auxiliaries.kemu-meanings"
+      ],
+      "answer": "B",
+      "correctChoice": "過去の婉曲",
+      "wrongChoice": "過去推量",
+      "file": "kobun-04-kemu.md",
+      "heading": "2　事実か原因かを分ける",
+      "sectionIndex": 2
+    },
+    {
+      "checkId": "check-kobun-04-kemu-03",
+      "sourceId": "sb-kemu-int3",
+      "sourceRef": "data/shikibetsu.json:sb-kemu-int3",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.auxiliaries.kemu-meanings"
+      ],
+      "answer": "A",
+      "correctChoice": "過去の伝聞",
+      "wrongChoice": "過去推量",
+      "file": "kobun-04-kemu.md",
+      "heading": "3　伝聞・婉曲の候補を残す",
+      "sectionIndex": 3
+    },
+    {
+      "checkId": "check-kobun-04-keri-01",
+      "sourceId": "sb-keri-int1",
+      "sourceRef": "data/shikibetsu.json:sb-keri-int1",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.auxiliaries.keri-meanings"
+      ],
+      "answer": "A",
+      "correctChoice": "過去",
+      "wrongChoice": "詠嘆",
+      "file": "kobun-04-keri.md",
+      "heading": "1　連用形接続を確かめる",
+      "sectionIndex": 1
+    },
+    {
+      "checkId": "check-kobun-04-keri-02",
+      "sourceId": "pn-keri-int6",
+      "sourceRef": "data/shikibetsu.json:pn-keri-int6",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.auxiliaries.keri-meanings"
+      ],
+      "answer": "B",
+      "correctChoice": "過去",
+      "wrongChoice": "詠嘆",
+      "file": "kobun-04-keri.md",
+      "heading": "2　きは直接経験を読む",
+      "sectionIndex": 2
+    },
+    {
+      "checkId": "check-kobun-04-keri-03",
+      "sourceId": "pn-keri-int4",
+      "sourceRef": "data/shikibetsu.json:pn-keri-int4",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.auxiliaries.keri-meanings"
+      ],
+      "answer": "A",
+      "correctChoice": "過去",
+      "wrongChoice": "詠嘆",
+      "file": "kobun-04-keri.md",
+      "heading": "3　けりの文末を読む",
+      "sectionIndex": 3
+    },
+    {
+      "checkId": "check-kobun-04-mashi-01",
+      "sourceId": "pn-mashi-int4",
+      "sourceRef": "data/shikibetsu.json:pn-mashi-int4",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.auxiliaries.mashi-meanings"
+      ],
+      "answer": "A",
+      "correctChoice": "ためらいを含む意志",
+      "wrongChoice": "反実仮想(事実に反する仮定)",
+      "file": "kobun-04-mashi.md",
+      "heading": "1　未然形接続を確かめる",
+      "sectionIndex": 1
+    },
+    {
+      "checkId": "check-kobun-04-mashi-02",
+      "sourceId": "sb-mashi-int-tamerai",
+      "sourceRef": "data/shikibetsu.json:sb-mashi-int-tamerai",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.auxiliaries.mashi-meanings"
+      ],
+      "answer": "B",
+      "correctChoice": "ためらいを含む意志",
+      "wrongChoice": "事実に反する仮定",
+      "file": "kobun-04-mashi.md",
+      "heading": "2　疑問ならためらいを考える",
+      "sectionIndex": 2
+    },
+    {
+      "checkId": "check-kobun-04-mashi-03",
+      "sourceId": "src-jd07-q05",
+      "sourceRef": "data/shikibetsu.json:src-jd07-q05",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.auxiliaries.mashi-meanings"
+      ],
+      "answer": "A",
+      "correctChoice": "反事実の希望",
+      "wrongChoice": "ためらいの意志",
+      "file": "kobun-04-mashi.md",
+      "heading": "3　条件と結びなら反実仮想",
+      "sectionIndex": 3
+    },
+    {
+      "checkId": "check-kobun-04-mu-01",
+      "sourceId": "sb-mu-int-suiryou",
+      "sourceRef": "data/shikibetsu.json:sb-mu-int-suiryou",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.auxiliaries.mu-muzu-ji-meanings"
+      ],
+      "answer": "A",
+      "correctChoice": "意志",
+      "wrongChoice": "推量",
+      "file": "kobun-04-mu.md",
+      "heading": "1　未然形接続を入口にする",
+      "sectionIndex": 1
+    },
+    {
+      "checkId": "check-kobun-04-mu-02",
+      "sourceId": "sb-mu-int1",
+      "sourceRef": "data/shikibetsu.json:sb-mu-int1",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.auxiliaries.mu-muzu-ji-meanings"
+      ],
+      "answer": "B",
+      "correctChoice": "婉曲",
+      "wrongChoice": "意志",
+      "file": "kobun-04-mu.md",
+      "heading": "2　婉曲・仮定は形から探す",
+      "sectionIndex": 2
+    },
+    {
+      "checkId": "check-kobun-04-mu-03",
+      "sourceId": "sb-mu-int-kanyuu",
+      "sourceRef": "data/shikibetsu.json:sb-mu-int-kanyuu",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.auxiliaries.mu-muzu-ji-meanings"
+      ],
+      "answer": "A",
+      "correctChoice": "推量",
+      "wrongChoice": "意志",
+      "file": "kobun-04-mu.md",
+      "heading": "3　人称で意志・推量を分ける",
+      "sectionIndex": 3
+    },
+    {
+      "checkId": "check-kobun-04-mu-04",
+      "sourceId": "sb-mu-int-ji",
+      "sourceRef": "data/shikibetsu.json:sb-mu-int-ji",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.auxiliaries.mu-muzu-ji-meanings",
+        "kbp.particles.ba-meanings"
+      ],
+      "answer": "B",
+      "correctChoice": "打消意志",
+      "wrongChoice": "打消推量",
+      "file": "kobun-04-mu.md",
+      "heading": "4　じは打消しの判断を読む",
+      "sectionIndex": 4
+    },
+    {
+      "checkId": "check-kobun-04-nari-01",
+      "sourceId": "sb-nari-int1",
+      "sourceRef": "data/shikibetsu.json:sb-nari-int1",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.auxiliaries.nari-meanings"
+      ],
+      "answer": "A",
+      "correctChoice": "存在",
+      "wrongChoice": "断定",
+      "file": "kobun-04-nari.md",
+      "heading": "1　場所・方角なら存在を考える",
+      "sectionIndex": 1
+    },
+    {
+      "checkId": "check-kobun-04-nari-02",
+      "sourceId": "pn-nari-int1",
+      "sourceRef": "data/shikibetsu.json:pn-nari-int1",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.auxiliaries.nari-meanings"
+      ],
+      "answer": "B",
+      "correctChoice": "存在",
+      "wrongChoice": "断定",
+      "file": "kobun-04-nari.md",
+      "heading": "2　伝聞推定との接続を比べる",
+      "sectionIndex": 2
+    },
+    {
+      "checkId": "check-kobun-04-nari-03",
+      "sourceId": "pn-nari-int2",
+      "sourceRef": "data/shikibetsu.json:pn-nari-int2",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.auxiliaries.nari-meanings"
+      ],
+      "answer": "A",
+      "correctChoice": "断定",
+      "wrongChoice": "願望",
+      "file": "kobun-04-nari.md",
+      "heading": "3　訳を文全体に合わせる",
+      "sectionIndex": 3
+    },
+    {
+      "checkId": "check-kobun-04-other-01",
+      "sourceId": "src-jd07-q02",
+      "sourceRef": "data/shikibetsu.json:src-jd07-q02",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.auxiliaries.meri-meaning"
+      ],
+      "answer": "A",
+      "correctChoice": "推定",
+      "wrongChoice": "推量",
+      "file": "kobun-04-other.md",
+      "heading": "1　接続で候補を作る",
+      "sectionIndex": 1
+    },
+    {
+      "checkId": "check-kobun-04-other-02",
+      "sourceId": "src-jd07-q01",
+      "sourceRef": "data/shikibetsu.json:src-jd07-q01",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.auxiliaries.rashi-meaning"
+      ],
+      "answer": "B",
+      "correctChoice": "推定",
+      "wrongChoice": "推量",
+      "file": "kobun-04-other.md",
+      "heading": "2　らしは根拠からの推定",
+      "sectionIndex": 2
+    },
+    {
+      "checkId": "check-kobun-04-other-03",
+      "sourceId": "src-jd09-q05",
+      "sourceRef": "data/shikibetsu.json:src-jd09-q05",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.disambiguation.tari-identification"
+      ],
+      "answer": "A",
+      "correctChoice": "断定",
+      "wrongChoice": "完了",
+      "file": "kobun-04-other.md",
+      "heading": "3　めりは視覚を根拠にする",
+      "sectionIndex": 3
+    },
+    {
+      "checkId": "check-kobun-04-other-04",
+      "sourceId": "src-jd09-q03",
+      "sourceRef": "data/shikibetsu.json:src-jd09-q03",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.auxiliaries.tashi-meaning"
+      ],
+      "answer": "B",
+      "correctChoice": "願望",
+      "wrongChoice": "断定",
+      "file": "kobun-04-other.md",
+      "heading": "4　たし・ごとし・たりを分ける",
+      "sectionIndex": 4
+    },
+    {
+      "checkId": "check-kobun-04-ramu-01",
+      "sourceId": "sb-ramu-int1",
+      "sourceRef": "data/shikibetsu.json:sb-ramu-int1",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.auxiliaries.ramu-meanings",
+        "kbp.disambiguation.ramu-identification"
+      ],
+      "answer": "A",
+      "correctChoice": "現在原因推量",
+      "wrongChoice": "現在推量",
+      "file": "kobun-04-ramu.md",
+      "heading": "1　現在の事実か原因かを分ける",
+      "sectionIndex": 1
+    },
+    {
+      "checkId": "check-kobun-04-ramu-02",
+      "sourceId": "pn-ramu-int-denbun",
+      "sourceRef": "data/shikibetsu.json:pn-ramu-int-denbun",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.auxiliaries.ramu-meanings",
+        "kbp.disambiguation.ramu-identification"
+      ],
+      "answer": "B",
+      "correctChoice": "現在の伝聞",
+      "wrongChoice": "現在推量",
+      "file": "kobun-04-ramu.md",
+      "heading": "2　体言を修飾する形を読む",
+      "sectionIndex": 2
+    },
+    {
+      "checkId": "check-kobun-04-ramu-03",
+      "sourceId": "pn-ramu-int-enkyoku",
+      "sourceRef": "data/shikibetsu.json:pn-ramu-int-enkyoku",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.auxiliaries.ramu-meanings",
+        "kbp.disambiguation.ramu-identification"
+      ],
+      "answer": "A",
+      "correctChoice": "現在の婉曲",
+      "wrongChoice": "現在推量",
+      "file": "kobun-04-ramu.md",
+      "heading": "3　接続と訳を最後に照合する",
+      "sectionIndex": 3
+    },
+    {
+      "checkId": "check-kobun-04-rareru-01",
+      "sourceId": "sb-rareru-int-kanou",
+      "sourceRef": "data/shikibetsu.json:sb-rareru-int-kanou",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.auxiliaries.ru-raru-meanings"
+      ],
+      "answer": "A",
+      "correctChoice": "可能",
+      "wrongChoice": "受身",
+      "file": "kobun-04-rareru.md",
+      "heading": "1　る・らるの接続を確認する",
+      "sectionIndex": 1
+    },
+    {
+      "checkId": "check-kobun-04-rareru-02",
+      "sourceId": "pn-rareru-shiraru",
+      "sourceRef": "data/shikibetsu.json:pn-rareru-shiraru",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.auxiliaries.ru-raru-meanings"
+      ],
+      "answer": "B",
+      "correctChoice": "自発",
+      "wrongChoice": "受身",
+      "file": "kobun-04-rareru.md",
+      "heading": "2　受身・可能・自発を比べる",
+      "sectionIndex": 2
+    },
+    {
+      "checkId": "check-kobun-04-rareru-03",
+      "sourceId": "sb-rareru-int-sonkei",
+      "sourceRef": "data/shikibetsu.json:sb-rareru-int-sonkei",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.auxiliaries.ru-raru-meanings"
+      ],
+      "answer": "A",
+      "correctChoice": "尊敬",
+      "wrongChoice": "受身",
+      "file": "kobun-04-rareru.md",
+      "heading": "3　尊敬は主語と人物関係で決める",
+      "sectionIndex": 3
+    },
+    {
+      "checkId": "check-kobun-04-sasu-01",
+      "sourceId": "pn-sasu-shimu-shieki",
+      "sourceRef": "data/shikibetsu.json:pn-sasu-shimu-shieki",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.auxiliaries.su-sasu-shimu-meanings"
+      ],
+      "answer": "A",
+      "correctChoice": "使役",
+      "wrongChoice": "尊敬",
+      "file": "kobun-04-sasu.md",
+      "heading": "1　す・さす・しむの接続を見る",
+      "sectionIndex": 1
+    },
+    {
+      "checkId": "check-kobun-04-sasu-02",
+      "sourceId": "sb-sasu-int1",
+      "sourceRef": "data/shikibetsu.json:sb-sasu-int1",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.auxiliaries.su-sasu-shimu-meanings"
+      ],
+      "answer": "B",
+      "correctChoice": "使役",
+      "wrongChoice": "尊敬",
+      "file": "kobun-04-sasu.md",
+      "heading": "2　使役は二人の動作を置く",
+      "sectionIndex": 2
+    },
+    {
+      "checkId": "check-kobun-04-sasu-03",
+      "sourceId": "pn-sasu-basho-ni",
+      "sourceRef": "data/shikibetsu.json:pn-sasu-basho-ni",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.auxiliaries.su-sasu-shimu-meanings"
+      ],
+      "answer": "A",
+      "correctChoice": "尊敬",
+      "wrongChoice": "使役",
+      "file": "kobun-04-sasu.md",
+      "heading": "3　尊敬の候補を照合する",
+      "sectionIndex": 3
+    },
+    {
+      "checkId": "check-kobun-04-tariri-01",
+      "sourceId": "sb-tariri-int3",
+      "sourceRef": "data/shikibetsu.json:sb-tariri-int3",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.auxiliaries.tari-ri-meanings",
+        "kbp.disambiguation.ru-re-identification"
+      ],
+      "answer": "A",
+      "correctChoice": "完了",
+      "wrongChoice": "存続",
+      "file": "kobun-04-tariri.md",
+      "heading": "1　たりの接続を分ける",
+      "sectionIndex": 1
+    },
+    {
+      "checkId": "check-kobun-04-tariri-02",
+      "sourceId": "sb-tariri-int1",
+      "sourceRef": "data/shikibetsu.json:sb-tariri-int1",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.auxiliaries.tari-ri-meanings",
+        "kbp.disambiguation.ru-re-identification"
+      ],
+      "answer": "B",
+      "correctChoice": "完了",
+      "wrongChoice": "存続",
+      "file": "kobun-04-tariri.md",
+      "heading": "2　りは特別な接続を持つ",
+      "sectionIndex": 2
+    },
+    {
+      "checkId": "check-kobun-04-tariri-03",
+      "sourceId": "sb-tariri-int2",
+      "sourceRef": "data/shikibetsu.json:sb-tariri-int2",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.auxiliaries.tari-ri-meanings"
+      ],
+      "answer": "A",
+      "correctChoice": "存続",
+      "wrongChoice": "完了",
+      "file": "kobun-04-tariri.md",
+      "heading": "3　完了か存続かを本文で読む",
+      "sectionIndex": 3
+    },
+    {
+      "checkId": "check-kobun-04-tsunu-01",
+      "sourceId": "sb-tsunu-int1",
+      "sourceRef": "data/shikibetsu.json:sb-tsunu-int1",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.auxiliaries.tsu-nu-meanings",
+        "kbp.disambiguation.nu-ne-identification"
+      ],
+      "answer": "A",
+      "correctChoice": "完了",
+      "wrongChoice": "強意",
+      "file": "kobun-04-tsunu.md",
+      "heading": "1　連用形接続を確かめる",
+      "sectionIndex": 1
+    },
+    {
+      "checkId": "check-kobun-04-tsunu-02",
+      "sourceId": "sb-tsunu-int3",
+      "sourceRef": "data/shikibetsu.json:sb-tsunu-int3",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.auxiliaries.tsu-nu-meanings",
+        "kbp.disambiguation.nu-ne-identification"
+      ],
+      "answer": "B",
+      "correctChoice": "強意",
+      "wrongChoice": "完了",
+      "file": "kobun-04-tsunu.md",
+      "heading": "2　下に推量があれば強意を考える",
+      "sectionIndex": 2
+    },
+    {
+      "checkId": "check-kobun-04-tsunu-03",
+      "sourceId": "src-jd03-q05",
+      "sourceRef": "data/shikibetsu.json:src-jd03-q05",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.auxiliaries.tsu-nu-meanings"
+      ],
+      "answer": "A",
+      "correctChoice": "並列",
+      "wrongChoice": "完了",
+      "file": "kobun-04-tsunu.md",
+      "heading": "3　打消の「ぬ」と接続で分ける",
+      "sectionIndex": 3
+    },
+    {
+      "checkId": "check-kobun-05-ba-01",
+      "sourceId": "jb-ba-int1",
+      "sourceRef": "data/shikibetsu-joshi.json:jb-ba-int1",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.particles.ba-meanings"
+      ],
+      "answer": "A",
+      "correctChoice": "順接の原因・理由(〜ので)",
+      "wrongChoice": "偶然条件(〜と・〜ところ)",
+      "file": "kobun-05-ba.md",
+      "heading": "1　上の活用形を確定する",
+      "sectionIndex": 1
+    },
+    {
+      "checkId": "check-kobun-05-ba-02",
+      "sourceId": "jb-ba-int3",
+      "sourceRef": "data/shikibetsu-joshi.json:jb-ba-int3",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.particles.ba-meanings"
+      ],
+      "answer": "B",
+      "correctChoice": "仮定条件(もし〜ならば)",
+      "wrongChoice": "順接の原因・理由(〜ので)",
+      "file": "kobun-05-ba.md",
+      "heading": "2　確定条件の意味を文脈で選ぶ",
+      "sectionIndex": 2
+    },
+    {
+      "checkId": "check-kobun-05-dani-01",
+      "sourceId": "jb-dani-int2",
+      "sourceRef": "data/shikibetsu-joshi.json:jb-dani-int2",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.particles.dani-meanings"
+      ],
+      "answer": "A",
+      "correctChoice": "類推",
+      "wrongChoice": "限定",
+      "file": "kobun-05-dani.md",
+      "heading": "1　下に呼応する表現を探す",
+      "sectionIndex": 1
+    },
+    {
+      "checkId": "check-kobun-05-dani-02",
+      "sourceId": "jb-dani-int1",
+      "sourceRef": "data/shikibetsu-joshi.json:jb-dani-int1",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.particles.dani-meanings",
+        "kbp.honorifics.tamau-identification"
+      ],
+      "answer": "B",
+      "correctChoice": "限定",
+      "wrongChoice": "類推",
+      "file": "kobun-05-dani.md",
+      "heading": "2　最小限の「だけでも」を考える",
+      "sectionIndex": 2
+    },
+    {
+      "checkId": "check-kobun-05-joshi-map-01",
+      "sourceId": "c7-001",
+      "sourceRef": "data/multiple_choice.json:c7-001",
+      "reviewStatus": "source-question",
+      "ruleRefs": [],
+      "answer": "A",
+      "correctChoice": "主述関係なら主格、下の連体形に体言を補えるなら同格",
+      "wrongChoice": "直後に動詞が続いていれば、前後の関係を問わずすべて同格として訳す",
+      "file": "kobun-05-joshi-map.md",
+      "heading": "1　格助詞は関係を読む",
+      "sectionIndex": 1
+    },
+    {
+      "checkId": "check-kobun-05-joshi-map-02",
+      "sourceId": "c7-003",
+      "sourceRef": "data/multiple_choice.json:c7-003",
+      "reviewStatus": "source-question",
+      "ruleRefs": [],
+      "answer": "B",
+      "correctChoice": "未然形+ばは仮定条件、已然形+ばは確定条件",
+      "wrongChoice": "未然形+ばは原因、已然形+ばは仮定条件",
+      "file": "kobun-05-joshi-map.md",
+      "heading": "2　接続助詞は上の形を見る",
+      "sectionIndex": 2
+    },
+    {
+      "checkId": "check-kobun-05-joshi-map-03",
+      "sourceId": "c7-008",
+      "sourceRef": "data/multiple_choice.json:c7-008",
+      "reviewStatus": "source-question",
+      "ruleRefs": [],
+      "answer": "A",
+      "correctChoice": "願望・命令・意志・仮定を伴えば「せめて〜だけでも」、なければ「〜さえ」",
+      "wrongChoice": "後ろに願望・命令の語があってもなくても、常に「〜だけ」と限定の意味だけで訳す",
+      "file": "kobun-05-joshi-map.md",
+      "heading": "3　副助詞は取り立ての向きを読む",
+      "sectionIndex": 3
+    },
+    {
+      "checkId": "check-kobun-05-joshi-map-04",
+      "sourceId": "c7-007",
+      "sourceRef": "data/multiple_choice.json:c7-007",
+      "reviewStatus": "source-question",
+      "ruleRefs": [],
+      "answer": "B",
+      "correctChoice": "連体形",
+      "wrongChoice": "未然形",
+      "file": "kobun-05-joshi-map.md",
+      "heading": "4　係助詞・終助詞は文末へ進む",
+      "sectionIndex": 4
+    },
+    {
+      "checkId": "check-kobun-05-kakari-01",
+      "sourceId": "jb-kak-int1",
+      "sourceRef": "data/shikibetsu-joshi.json:jb-kak-int1",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.particles.kakari-musubi-special-constructions"
+      ],
+      "answer": "A",
+      "correctChoice": "逆接",
+      "wrongChoice": "強意",
+      "file": "kobun-05-kakari.md",
+      "heading": "1　こそ＋已然形の後ろを見る",
+      "sectionIndex": 1
+    },
+    {
+      "checkId": "check-kobun-05-kakari-02",
+      "sourceId": "jb-kak-int3",
+      "sourceRef": "data/shikibetsu-joshi.json:jb-kak-int3",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.particles.kakari-musubi-special-constructions"
+      ],
+      "answer": "B",
+      "correctChoice": "懸念",
+      "wrongChoice": "強意",
+      "file": "kobun-05-kakari.md",
+      "heading": "2　もぞ・もこそは懸念を表す",
+      "sectionIndex": 2
+    },
+    {
+      "checkId": "check-kobun-05-koou-01",
+      "sourceId": "c7-010",
+      "sourceRef": "data/multiple_choice.json:c7-010",
+      "reviewStatus": "source-question",
+      "ruleRefs": [],
+      "answer": "A",
+      "correctChoice": "〜けれども、...",
+      "wrongChoice": "〜ので、...",
+      "file": "kobun-05-koou.md",
+      "heading": "1　係助詞から結びへ進む",
+      "sectionIndex": 1
+    },
+    {
+      "checkId": "check-kobun-05-koou-02",
+      "sourceId": "c7-017",
+      "sourceRef": "data/multiple_choice.json:c7-017",
+      "reviewStatus": "source-question",
+      "ruleRefs": [],
+      "answer": "B",
+      "correctChoice": "〜(だ)よ・〜(だ)ぞ",
+      "wrongChoice": "〜するな",
+      "file": "kobun-05-koou.md",
+      "heading": "2　呼応の前半と文末を組にする",
+      "sectionIndex": 2
+    },
+    {
+      "checkId": "check-kobun-05-koou-03",
+      "sourceId": "c7-013",
+      "sourceRef": "data/multiple_choice.json:c7-013",
+      "reviewStatus": "source-question",
+      "ruleRefs": [],
+      "answer": "A",
+      "correctChoice": "未然形に接続し、他者への願望「〜てほしい」を表す",
+      "wrongChoice": "連用形に接続し、話し手自身の「〜たい」という願望を表す",
+      "file": "kobun-05-koou.md",
+      "heading": "3　終助詞は接続と気持ちを見る",
+      "sectionIndex": 3
+    },
+    {
+      "checkId": "check-kobun-05-no-01",
+      "sourceId": "derived-joshi-no-relation",
+      "sourceRef": "data/preparation/kobun-05-no.md:1",
+      "reviewStatus": "derived-from-preparation-and-principles",
+      "ruleRefs": [
+        "kbp.particles.ga-no-case-functions"
+      ],
+      "answer": "A",
+      "correctChoice": "連体格",
+      "wrongChoice": "主格",
+      "file": "kobun-05-no.md",
+      "heading": "1　下の語との関係を確認する",
+      "sectionIndex": 1
+    },
+    {
+      "checkId": "check-kobun-05-no-02",
+      "sourceId": "derived-joshi-no-juntaikaku",
+      "sourceRef": "data/preparation/kobun-05-no.md:2",
+      "reviewStatus": "derived-from-preparation-and-principles",
+      "ruleRefs": [
+        "kbp.particles.ga-no-case-functions"
+      ],
+      "answer": "B",
+      "correctChoice": "準体格",
+      "wrongChoice": "同格",
+      "file": "kobun-05-no.md",
+      "heading": "2　準体格・同格を比べる",
+      "sectionIndex": 2
+    },
+    {
+      "checkId": "check-kobun-05-shuujoshi-01",
+      "sourceId": "jb-shu-int1",
+      "sourceRef": "data/shikibetsu-joshi.json:jb-shu-int1",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.particles.final-particles-meanings"
+      ],
+      "answer": "A",
+      "correctChoice": "禁止",
+      "wrongChoice": "自己の願望",
+      "file": "kobun-05-shuujoshi.md",
+      "heading": "1　接続と基本の意味を組にする",
+      "sectionIndex": 1
+    },
+    {
+      "checkId": "check-kobun-05-shuujoshi-02",
+      "sourceId": "jb-shu-int3",
+      "sourceRef": "data/shikibetsu-joshi.json:jb-shu-int3",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.particles.final-particles-meanings",
+        "kbp.disambiguation.namu-identification"
+      ],
+      "answer": "B",
+      "correctChoice": "他への願望",
+      "wrongChoice": "強意+推量",
+      "file": "kobun-05-shuujoshi.md",
+      "heading": "2　文末の調子を確認する",
+      "sectionIndex": 2
+    },
+    {
+      "checkId": "check-kobun-05-yori-01",
+      "sourceId": "jb-yori-int2",
+      "sourceRef": "data/shikibetsu-joshi.json:jb-yori-int2",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.particles.yori-meanings"
+      ],
+      "answer": "A",
+      "correctChoice": "即時(〜するとすぐに)",
+      "wrongChoice": "経由(〜を通って)",
+      "file": "kobun-05-yori.md",
+      "heading": "1　経由・即時・手段を試す",
+      "sectionIndex": 1
+    },
+    {
+      "checkId": "check-kobun-05-yori-02",
+      "sourceId": "jb-yori-int3",
+      "sourceRef": "data/shikibetsu-joshi.json:jb-yori-int3",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.particles.yori-meanings"
+      ],
+      "answer": "B",
+      "correctChoice": "方法・手段(〜で)",
+      "wrongChoice": "経由(〜を通って)",
+      "file": "kobun-05-yori.md",
+      "heading": "2　起点・比較は本文で照合する",
+      "sectionIndex": 2
+    },
+    {
+      "checkId": "check-kobun-05-yori-03",
+      "sourceId": "jb-yori-int1",
+      "sourceRef": "data/shikibetsu-joshi.json:jb-yori-int1",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.particles.yori-meanings"
+      ],
+      "answer": "A",
+      "correctChoice": "経由(〜を通って)",
+      "wrongChoice": "即時(〜するとすぐに)",
+      "file": "kobun-05-yori.md",
+      "heading": "3　述語との関係で訳を決める",
+      "sectionIndex": 3
+    },
+    {
+      "checkId": "check-kobun-06-namu-01",
+      "sourceId": "hg-namu-int4",
+      "sourceRef": "data/shikibetsu-homograph.json:hg-namu-int4",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.disambiguation.namu-identification",
+        "kbp.auxiliaries.mu-muzu-ji-meanings"
+      ],
+      "answer": "A",
+      "correctChoice": "ナ変動詞の活用語尾「な」+推量系の助動詞「む」",
+      "wrongChoice": "他への願望を表す終助詞「なむ」",
+      "file": "kobun-06-namu.md",
+      "heading": "1　ナ変動詞を先に確認する",
+      "sectionIndex": 1
+    },
+    {
+      "checkId": "check-kobun-06-namu-02",
+      "sourceId": "hg-namu-int2",
+      "sourceRef": "data/shikibetsu-homograph.json:hg-namu-int2",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.disambiguation.namu-identification",
+        "kbp.particles.final-particles-meanings"
+      ],
+      "answer": "B",
+      "correctChoice": "他への願望を表す終助詞「なむ」",
+      "wrongChoice": "強意の係助詞「なむ」",
+      "file": "kobun-06-namu.md",
+      "heading": "2　未然形なら願望を考える",
+      "sectionIndex": 2
+    },
+    {
+      "checkId": "check-kobun-06-namu-03",
+      "sourceId": "hg-namu-int3",
+      "sourceRef": "data/shikibetsu-homograph.json:hg-namu-int3",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.disambiguation.namu-identification"
+      ],
+      "answer": "A",
+      "correctChoice": "完了「ぬ」の未然形「な」+推量系の「む」",
+      "wrongChoice": "未然形接続の終助詞「なむ」=他への願望",
+      "file": "kobun-06-namu.md",
+      "heading": "3　連用形なら完了＋むを考える",
+      "sectionIndex": 3
+    },
+    {
+      "checkId": "check-kobun-06-namu-04",
+      "sourceId": "hg-namu-int1",
+      "sourceRef": "data/shikibetsu-homograph.json:hg-namu-int1",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.disambiguation.namu-identification",
+        "kbp.particles.final-particles-meanings"
+      ],
+      "answer": "B",
+      "correctChoice": "強意の係助詞「なむ」",
+      "wrongChoice": "他への願望を表す終助詞「なむ」",
+      "file": "kobun-06-namu.md",
+      "heading": "4　係助詞の結びを探す",
+      "sectionIndex": 4
+    },
+    {
+      "checkId": "check-kobun-06-nari-01",
+      "sourceId": "hg-nari-int1",
+      "sourceRef": "data/shikibetsu-homograph.json:hg-nari-int1",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.disambiguation.nari-identification",
+        "kbp.auxiliaries.nari-meanings"
+      ],
+      "answer": "A",
+      "correctChoice": "存在の助動詞「なり」",
+      "wrongChoice": "断定の助動詞「なり」",
+      "file": "kobun-06-nari.md",
+      "heading": "1　二つの助動詞を接続で分ける",
+      "sectionIndex": 1
+    },
+    {
+      "checkId": "check-kobun-06-nari-02",
+      "sourceId": "hg-nari-int4",
+      "sourceRef": "data/shikibetsu-homograph.json:hg-nari-int4",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.disambiguation.nari-identification"
+      ],
+      "answer": "B",
+      "correctChoice": "形容動詞「静かなり」の活用語尾",
+      "wrongChoice": "断定の助動詞「なり」",
+      "file": "kobun-06-nari.md",
+      "heading": "2　形容動詞・動詞の可能性を残す",
+      "sectionIndex": 2
+    },
+    {
+      "checkId": "check-kobun-06-nari-03",
+      "sourceId": "hg-nari-int3",
+      "sourceRef": "data/shikibetsu-homograph.json:hg-nari-int3",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.disambiguation.nari-identification"
+      ],
+      "answer": "A",
+      "correctChoice": "推定の助動詞「なり」",
+      "wrongChoice": "断定の助動詞「なり」",
+      "file": "kobun-06-nari.md",
+      "heading": "3　文全体の訳で確定する",
+      "sectionIndex": 3
+    },
+    {
+      "checkId": "check-kobun-06-ni-01",
+      "sourceId": "hg-ni-int2",
+      "sourceRef": "data/shikibetsu-homograph.json:hg-ni-int2",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.disambiguation.ni-identification"
+      ],
+      "answer": "A",
+      "correctChoice": "格助詞",
+      "wrongChoice": "断定の助動詞「なり」の連用形",
+      "file": "kobun-06-ni.md",
+      "heading": "1　完了・断定の助動詞を考える",
+      "sectionIndex": 1
+    },
+    {
+      "checkId": "check-kobun-06-ni-02",
+      "sourceId": "hg-ni-int3",
+      "sourceRef": "data/shikibetsu-homograph.json:hg-ni-int3",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.disambiguation.ni-identification"
+      ],
+      "answer": "B",
+      "correctChoice": "接続助詞",
+      "wrongChoice": "断定の助動詞「なり」の連用形",
+      "file": "kobun-06-ni.md",
+      "heading": "2　助詞の関係を置く",
+      "sectionIndex": 2
+    },
+    {
+      "checkId": "check-kobun-06-ni-03",
+      "sourceId": "hg-ni-int4",
+      "sourceRef": "data/shikibetsu-homograph.json:hg-ni-int4",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.disambiguation.ni-identification"
+      ],
+      "answer": "A",
+      "correctChoice": "形容動詞「あはれなり」の連用形の活用語尾",
+      "wrongChoice": "場所・時・相手などを示す格助詞",
+      "file": "kobun-06-ni.md",
+      "heading": "3　語の一部も確認する",
+      "sectionIndex": 3
+    },
+    {
+      "checkId": "check-kobun-06-nune-01",
+      "sourceId": "hg-nune-int4",
+      "sourceRef": "data/shikibetsu-homograph.json:hg-nune-int4",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.disambiguation.nu-ne-identification",
+        "kbp.particles.ba-meanings"
+      ],
+      "answer": "A",
+      "correctChoice": "ナ行下二段活用動詞「寝」の一部",
+      "wrongChoice": "打消の助動詞「ず」の連体形",
+      "file": "kobun-06-nune.md",
+      "heading": "1　上の形で打消か完了かを分ける",
+      "sectionIndex": 1
+    },
+    {
+      "checkId": "check-kobun-06-nune-02",
+      "sourceId": "hg-nune-int2",
+      "sourceRef": "data/shikibetsu-homograph.json:hg-nune-int2",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.disambiguation.nu-ne-identification",
+        "kbp.auxiliaries.tsu-nu-meanings"
+      ],
+      "answer": "B",
+      "correctChoice": "完了の助動詞「ぬ」の命令形",
+      "wrongChoice": "打消の助動詞「ず」の已然形",
+      "file": "kobun-06-nune.md",
+      "heading": "2　下の位置で裏づける",
+      "sectionIndex": 2
+    },
+    {
+      "checkId": "check-kobun-06-nune-03",
+      "sourceId": "pn-nune-kokoroe",
+      "sourceRef": "data/shikibetsu-homograph.json:pn-nune-kokoroe",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.disambiguation.nu-ne-identification"
+      ],
+      "answer": "A",
+      "correctChoice": "打消の助動詞「ず」の連体形",
+      "wrongChoice": "完了の助動詞「ぬ」の終止形",
+      "file": "kobun-06-nune.md",
+      "heading": "3　訳を本文へ戻す",
+      "sectionIndex": 3
+    },
+    {
+      "checkId": "check-kobun-06-rure-01",
+      "sourceId": "pn-rure-tari",
+      "sourceRef": "data/shikibetsu-homograph.json:pn-rure-tari",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.disambiguation.ru-re-identification",
+        "kbp.auxiliaries.tari-ri-meanings"
+      ],
+      "answer": "A",
+      "correctChoice": "完了の助動詞「り」の一部",
+      "wrongChoice": "受身の助動詞「る」",
+      "file": "kobun-06-rure.md",
+      "heading": "1　上の音から候補を作る",
+      "sectionIndex": 1
+    },
+    {
+      "checkId": "check-kobun-06-rure-02",
+      "sourceId": "pn-rure-keri",
+      "sourceRef": "data/shikibetsu-homograph.json:pn-rure-keri",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.disambiguation.ru-re-identification",
+        "kbp.auxiliaries.keri-meanings"
+      ],
+      "answer": "B",
+      "correctChoice": "過去の助動詞「けり」の一部",
+      "wrongChoice": "受身の助動詞「る」",
+      "file": "kobun-06-rure.md",
+      "heading": "2　自身の活用形で確かめる",
+      "sectionIndex": 2
+    },
+    {
+      "checkId": "check-kobun-06-rure-03",
+      "sourceId": "pn-rure-jihatsu",
+      "sourceRef": "data/shikibetsu-homograph.json:pn-rure-jihatsu",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.disambiguation.ru-re-identification",
+        "kbp.auxiliaries.ru-raru-meanings"
+      ],
+      "answer": "A",
+      "correctChoice": "自発の助動詞「る」",
+      "wrongChoice": "受身の助動詞「る」",
+      "file": "kobun-06-rure.md",
+      "heading": "3　次の識別へつなぐ",
+      "sectionIndex": 3
+    },
+    {
+      "checkId": "check-kobun-07-haberi-01",
+      "sourceId": "kg-hab-int3",
+      "sourceRef": "data/shikibetsu-keigo.json:kg-hab-int3",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.honorifics.haberi-saburau-identification",
+        "kbp.honorifics.hojo-doushi-translation"
+      ],
+      "answer": "A",
+      "correctChoice": "丁寧",
+      "wrongChoice": "謙譲",
+      "file": "kobun-07-haberi.md",
+      "heading": "1　本動詞か補助動詞かを分ける",
+      "sectionIndex": 1
+    },
+    {
+      "checkId": "check-kobun-07-haberi-02",
+      "sourceId": "kg-hab-int1",
+      "sourceRef": "data/shikibetsu-keigo.json:kg-hab-int1",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.honorifics.haberi-saburau-identification",
+        "kbp.honorifics.keii-direction"
+      ],
+      "answer": "B",
+      "correctChoice": "丁寧",
+      "wrongChoice": "謙譲",
+      "file": "kobun-07-haberi.md",
+      "heading": "2　仕える相手と存在を比べる",
+      "sectionIndex": 2
+    },
+    {
+      "checkId": "check-kobun-07-hojo-01",
+      "sourceId": "kg-hojo-int1",
+      "sourceRef": "data/shikibetsu-keigo.json:kg-hojo-int1",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.honorifics.hojo-doushi-translation",
+        "kbp.honorifics.tatematsuru-mairu-identification"
+      ],
+      "answer": "A",
+      "correctChoice": "文を書き申し上げる",
+      "wrongChoice": "文をお書きになる",
+      "file": "kobun-07-hojo.md",
+      "heading": "1　前の動詞とのつながりを見る",
+      "sectionIndex": 1
+    },
+    {
+      "checkId": "check-kobun-07-hojo-02",
+      "sourceId": "kg-hojo-int3",
+      "sourceRef": "data/shikibetsu-keigo.json:kg-hojo-int3",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.honorifics.hojo-doushi-translation",
+        "kbp.honorifics.haberi-saburau-identification"
+      ],
+      "answer": "B",
+      "correctChoice": "見えます",
+      "wrongChoice": "お見えになる",
+      "file": "kobun-07-hojo.md",
+      "heading": "2　敬語の種類を訳へ移す",
+      "sectionIndex": 2
+    },
+    {
+      "checkId": "check-kobun-07-hojo-03",
+      "sourceId": "kg-hojo-int2",
+      "sourceRef": "data/shikibetsu-keigo.json:kg-hojo-int2",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.honorifics.hojo-doushi-translation",
+        "kbp.honorifics.tamau-identification"
+      ],
+      "answer": "A",
+      "correctChoice": "お書きになる",
+      "wrongChoice": "書き申し上げる",
+      "file": "kobun-07-hojo.md",
+      "heading": "3　敬意の方向と訳を照合する",
+      "sectionIndex": 3
+    },
+    {
+      "checkId": "check-kobun-07-keigo-map-01",
+      "sourceId": "c9-004",
+      "sourceRef": "data/multiple_choice.json:c9-004",
+      "reviewStatus": "source-question",
+      "ruleRefs": [],
+      "answer": "A",
+      "correctChoice": "別の動詞の下に付き敬意を添えれば補助動詞",
+      "wrongChoice": "文頭にあれば必ず補助動詞とする",
+      "file": "kobun-07-keigo-map.md",
+      "heading": "1　本動詞と補助動詞を分ける",
+      "sectionIndex": 1
+    },
+    {
+      "checkId": "check-kobun-07-keigo-map-02",
+      "sourceId": "c9-012",
+      "sourceRef": "data/multiple_choice.json:c9-012",
+      "reviewStatus": "source-question",
+      "ruleRefs": [],
+      "answer": "B",
+      "correctChoice": "謙譲は客体、尊敬は主体、丁寧は聞き手・読者",
+      "wrongChoice": "謙譲は動作の主体、尊敬は動作の客体、丁寧は文の主語に敬意が向く",
+      "file": "kobun-07-keigo-map.md",
+      "heading": "2　敬意の矢印を置く",
+      "sectionIndex": 2
+    },
+    {
+      "checkId": "check-kobun-07-keigo-map-03",
+      "sourceId": "c9-003",
+      "sourceRef": "data/multiple_choice.json:c9-003",
+      "reviewStatus": "source-question",
+      "ruleRefs": [],
+      "answer": "A",
+      "correctChoice": "動作の主体・主語",
+      "wrongChoice": "動作の客体だけ",
+      "file": "kobun-07-keigo-map.md",
+      "heading": "3　重なる敬語を順に読む",
+      "sectionIndex": 3
+    },
+    {
+      "checkId": "check-kobun-07-keii-01",
+      "sourceId": "kg-keii-int2",
+      "sourceRef": "data/shikibetsu-keigo.json:kg-keii-int2",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.honorifics.keii-direction",
+        "kbp.honorifics.tatematsuru-mairu-identification"
+      ],
+      "answer": "A",
+      "correctChoice": "動作の客体である宮",
+      "wrongChoice": "動作の主体であるわれ(翁)",
+      "file": "kobun-07-keii.md",
+      "heading": "1　敬意の発信者を決める",
+      "sectionIndex": 1
+    },
+    {
+      "checkId": "check-kobun-07-keii-02",
+      "sourceId": "kg-keii-int3",
+      "sourceRef": "data/shikibetsu-keigo.json:kg-keii-int3",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.honorifics.keii-direction",
+        "kbp.honorifics.haberi-saburau-identification"
+      ],
+      "answer": "B",
+      "correctChoice": "読者",
+      "wrongChoice": "会話の聞き手",
+      "file": "kobun-07-keii.md",
+      "heading": "2　種類ごとに対象を決める",
+      "sectionIndex": 2
+    },
+    {
+      "checkId": "check-kobun-07-keii-03",
+      "sourceId": "kg-keii-int1",
+      "sourceRef": "data/shikibetsu-keigo.json:kg-keii-int1",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.honorifics.keii-direction",
+        "kbp.honorifics.tamau-identification"
+      ],
+      "answer": "A",
+      "correctChoice": "動作の主体である大臣",
+      "wrongChoice": "動作の客体である内裏",
+      "file": "kobun-07-keii.md",
+      "heading": "3　訳と人物関係を照合する",
+      "sectionIndex": 3
+    },
+    {
+      "checkId": "check-kobun-07-tamau-01",
+      "sourceId": "kg-tamau-int2",
+      "sourceRef": "data/shikibetsu-keigo.json:kg-tamau-int2",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.honorifics.tamau-identification",
+        "kbp.particles.kakari-musubi-special-constructions"
+      ],
+      "answer": "A",
+      "correctChoice": "謙譲の補助動詞(下二段)",
+      "wrongChoice": "尊敬の補助動詞(四段)",
+      "file": "kobun-07-tamau.md",
+      "heading": "1　四段と下二段の基本を置く",
+      "sectionIndex": 1
+    },
+    {
+      "checkId": "check-kobun-07-tamau-02",
+      "sourceId": "kg-tamau-int3",
+      "sourceRef": "data/shikibetsu-keigo.json:kg-tamau-int3",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.honorifics.tamau-identification"
+      ],
+      "answer": "B",
+      "correctChoice": "尊敬(四段の命令形)",
+      "wrongChoice": "謙譲(下二段の連用形)",
+      "file": "kobun-07-tamau.md",
+      "heading": "2　「給へ」は前後の形で決める",
+      "sectionIndex": 2
+    },
+    {
+      "checkId": "check-kobun-07-tamau-03",
+      "sourceId": "kg-tamau-int1",
+      "sourceRef": "data/shikibetsu-keigo.json:kg-tamau-int1",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.honorifics.tamau-identification",
+        "kbp.honorifics.hojo-doushi-translation"
+      ],
+      "answer": "A",
+      "correctChoice": "尊敬の補助動詞(四段)",
+      "wrongChoice": "謙譲の補助動詞(下二段)",
+      "file": "kobun-07-tamau.md",
+      "heading": "3　活用と人物関係を重ねる",
+      "sectionIndex": 3
+    },
+    {
+      "checkId": "check-kobun-07-tatematsuru-01",
+      "sourceId": "kg-tate-int1",
+      "sourceRef": "data/shikibetsu-keigo.json:kg-tate-int1",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.honorifics.tatematsuru-mairu-identification",
+        "kbp.honorifics.keii-direction"
+      ],
+      "answer": "A",
+      "correctChoice": "謙譲(差し上げる)",
+      "wrongChoice": "尊敬(お召しになる)",
+      "file": "kobun-07-tatematsuru.md",
+      "heading": "1　奉るは動作の対象を見る",
+      "sectionIndex": 1
+    },
+    {
+      "checkId": "check-kobun-07-tatematsuru-02",
+      "sourceId": "kg-tate-int3",
+      "sourceRef": "data/shikibetsu-keigo.json:kg-tate-int3",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.honorifics.tatematsuru-mairu-identification",
+        "kbp.honorifics.keii-direction"
+      ],
+      "answer": "B",
+      "correctChoice": "謙譲(参上する)",
+      "wrongChoice": "尊敬(お召しになる)",
+      "file": "kobun-07-tatematsuru.md",
+      "heading": "2　参るは基本の謙譲から照合する",
+      "sectionIndex": 2
+    },
+    {
+      "checkId": "check-kobun-07-tatematsuru-03",
+      "sourceId": "kg-tate-int2",
+      "sourceRef": "data/shikibetsu-keigo.json:kg-tate-int2",
+      "reviewStatus": "source-question",
+      "ruleRefs": [
+        "kbp.honorifics.tatematsuru-mairu-identification"
+      ],
+      "answer": "A",
+      "correctChoice": "尊敬(お召しになる)",
+      "wrongChoice": "謙譲(差し上げる)",
+      "file": "kobun-07-tatematsuru.md",
+      "heading": "3　本動詞・補助動詞を分ける",
+      "sectionIndex": 3
+    }
+  ]
+}

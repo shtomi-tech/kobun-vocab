@@ -27,3 +27,6 @@ Thumbs.db
 # 検証・分析の一時生成物
 tmp/
 reports/
+!reports/
+reports/*
+!reports/preparation-check-map.json
