@@ -583,13 +583,55 @@ const KobunPreparation = (function () {
     thread.appendChild(error);
   }
 
+  // options.preparationの各エントリが{path, sections}を持つ。sectionsが空でなければ、
+  // 該当する:::check <id>を含むH2ブロックだけを残す（見出し前の本文＝タイトル・導入は保持する）。
+  // H2境界の判定はrenderThreadと同じ「## から次の## の直前まで」。一致するブロックが無い場合は
+  // フィルタせず全文を返す（データ不整合時に空白ページになるのを避ける安全側の挙動）。
+  function filterMarkdownBySections(markdown, sections) {
+    if (!Array.isArray(sections) || !sections.length) return markdown;
+    const lines = markdown.replace(/^﻿/, "").replace(/\r\n?/g, "\n").split("\n");
+    const firstH2 = lines.findIndex(line => /^##\s+/.test(line));
+    if (firstH2 < 0) return markdown;
+    const head = lines.slice(0, firstH2);
+    const body = lines.slice(firstH2);
+    const blocks = [];
+    let current = [];
+    body.forEach(line => {
+      if (/^##\s+/.test(line) && current.length) {
+        blocks.push(current);
+        current = [];
+      }
+      current.push(line);
+    });
+    if (current.length) blocks.push(current);
+
+    const wanted = new Set(sections);
+    const matched = blocks.filter(block => block.some(line => {
+      const m = line.trim().match(/^:::(?:board|practice|check)(?:\s+([A-Za-z0-9_-]+))?\s*$/);
+      return m && m[1] && wanted.has(m[1]);
+    }));
+    if (!matched.length) return markdown;
+    return head.concat(...matched).join("\n");
+  }
+
+  // options.preparation（[{path, sections}]の配列。1講に複数資料の可能性がある）を、
+  // 後方互換のため options.path（単一パスの旧呼び出し）からも組み立てられるようにする。
+  function normalizeMaterials(options) {
+    if (Array.isArray(options.preparation) && options.preparation.length) return options.preparation;
+    if (options.path) return [{ path: options.path, sections: [] }];
+    return [];
+  }
+
   function render(options) {
     const container = options.container;
     const task = options.task;
-    const path = options.path;
+    const stage = options.stage || null;
+    const materials = normalizeMaterials(options);
     const onBack = typeof options.onBack === "function" ? options.onBack : () => {};
     const onPractice = typeof options.onPractice === "function" ? options.onPractice : () => {};
-    const taskId = String((task && (task.id || task.label)) || path);
+    // 予習進捗は資料ファイルのパスではなく講（lesson.id、= stage.id）を基準に保存する。
+    // 1講に複数資料がある場合は、講idに資料の並び番号を付けて資料ごとに独立させる。
+    const lessonId = String((stage && stage.id) || (task && (task.id || task.label)) || "prep");
 
     activeCleanup();
     let disposed = false;
@@ -607,25 +649,6 @@ const KobunPreparation = (function () {
     container.innerHTML = "";
     container.classList.remove("hide");
 
-    const progress = loadProgress(taskId);
-    let progressView = null;
-    const progressController = {
-      checkIds: [],
-      recordCheck(checkId, choice, correct) {
-        progress.checks[checkId] = {
-          choice,
-          correct,
-          answeredAt: new Date().toISOString(),
-        };
-        const complete = this.checkIds.length > 0
-          && this.checkIds.every(id => progress.checks[id]);
-        progress.completedAt = complete ? (progress.completedAt || new Date().toISOString()) : "";
-        progress.updatedAt = new Date().toISOString();
-        saveProgress(taskId, progress);
-        if (progressView) progressView.refresh();
-      },
-    };
-
     const shell = document.createElement("div");
     shell.className = "prepShell";
 
@@ -642,66 +665,112 @@ const KobunPreparation = (function () {
     thread.className = "card prepThread";
     thread.dataset.postCharLimit = String(PREPARATION_POST_CHAR_LIMIT);
     thread.setAttribute("aria-live", "polite");
-    const loading = document.createElement("p");
-    loading.className = "hint prepLoading";
-    loading.textContent = "予習資料を開いています…";
-    thread.appendChild(loading);
     shell.appendChild(thread);
     container.appendChild(shell);
 
-    const query = path.includes("?") ? "&" : "?";
-    fetch(path + query + "v=0.4.1")
-      .then(response => {
-        if (!response.ok) throw new Error("HTTP " + response.status);
-        return response.text();
-      })
-      .then(markdown => {
-        if (!shell.isConnected || disposed) return;
-        thread.innerHTML = "";
-        const content = document.createElement("div");
-        content.className = "prepContent";
-        const parsed = renderThread(markdown, content, task, progressController);
-        thread.appendChild(content);
+    if (!materials.length) {
+      renderError(thread, leave);
+      return shell;
+    }
 
-        const checks = Array.from(content.querySelectorAll(".prep-check-interactive"));
-        progressController.checkIds = checks.map(check => check.dataset.checkId);
-        checks.forEach(check => {
-          const saved = progress.checks[check.dataset.checkId];
-          if (saved && saved.choice) setCheckResult(check, saved.choice, progressController, false);
-        });
+    let progressView = null;
 
-        const footer = document.createElement("div");
-        footer.className = "prepFooter";
-        footer.appendChild(document.createElement("p")).textContent = "読み終えたら、同じ単元の問題で確かめます。";
-        const practice = button("cta prepPracticeButton", "この単元の問題へ");
-        practice.addEventListener("click", () => {
-          dispose();
-          document.body.classList.remove("prepPageMode");
-          onPractice();
-        });
-        footer.appendChild(practice);
-        thread.appendChild(footer);
+    function loadMaterial(index) {
+      removePostProgress();
+      removePostProgress = () => {};
+      if (progressView && progressView.element.isConnected) shell.removeChild(progressView.element);
+      progressView = null;
 
-        const jumpToPost = index => {
-          const post = parsed.posts[index];
-          if (post) post.scrollIntoView({ behavior: "smooth", block: "start" });
-        };
-        progressView = createProgressHeader(task, parsed.posts, checks, progress, jumpToPost);
-        shell.insertBefore(progressView.element, thread);
-        window.scrollTo(0, 0);
-        removePostProgress = attachPostProgress(parsed.posts, current => {
-          if (current <= progress.postIndex) return;
-          progress.postIndex = current;
+      const material = materials[index];
+      const taskId = materials.length > 1 ? lessonId + ":" + index : lessonId;
+      const progress = loadProgress(taskId);
+      const progressController = {
+        checkIds: [],
+        recordCheck(checkId, choice, correct) {
+          progress.checks[checkId] = {
+            choice,
+            correct,
+            answeredAt: new Date().toISOString(),
+          };
+          const complete = this.checkIds.length > 0
+            && this.checkIds.every(id => progress.checks[id]);
+          progress.completedAt = complete ? (progress.completedAt || new Date().toISOString()) : "";
           progress.updatedAt = new Date().toISOString();
           saveProgress(taskId, progress);
           if (progressView) progressView.refresh();
-        });
-        progressView.refresh();
-      })
-      .catch(() => {
-        if (shell.isConnected && !disposed) renderError(thread, leave);
-      });
+        },
+      };
 
+      thread.innerHTML = "";
+      const loading = document.createElement("p");
+      loading.className = "hint prepLoading";
+      loading.textContent = "予習資料を開いています…";
+      thread.appendChild(loading);
+
+      const path = material.path;
+      const query = path.includes("?") ? "&" : "?";
+      fetch(path + query + "v=0.4.1")
+        .then(response => {
+          if (!response.ok) throw new Error("HTTP " + response.status);
+          return response.text();
+        })
+        .then(markdown => {
+          if (!shell.isConnected || disposed) return;
+          const filtered = filterMarkdownBySections(markdown, material.sections);
+          thread.innerHTML = "";
+          const content = document.createElement("div");
+          content.className = "prepContent";
+          const parsed = renderThread(filtered, content, task, progressController);
+          thread.appendChild(content);
+
+          const checks = Array.from(content.querySelectorAll(".prep-check-interactive"));
+          progressController.checkIds = checks.map(check => check.dataset.checkId);
+          checks.forEach(check => {
+            const saved = progress.checks[check.dataset.checkId];
+            if (saved && saved.choice) setCheckResult(check, saved.choice, progressController, false);
+          });
+
+          const isLast = index >= materials.length - 1;
+          const footer = document.createElement("div");
+          footer.className = "prepFooter";
+          footer.appendChild(document.createElement("p")).textContent = isLast
+            ? "読み終えたら、同じ単元の問題で確かめます。"
+            : "読み終えたら、次の資料に進みます。";
+          const nextButton = button("cta prepPracticeButton", isLast ? "この単元の問題へ" : "次の資料へ →");
+          nextButton.addEventListener("click", () => {
+            if (isLast) {
+              dispose();
+              document.body.classList.remove("prepPageMode");
+              onPractice();
+            } else {
+              loadMaterial(index + 1);
+            }
+          });
+          footer.appendChild(nextButton);
+          thread.appendChild(footer);
+
+          const jumpToPost = postIndex => {
+            const post = parsed.posts[postIndex];
+            if (post) post.scrollIntoView({ behavior: "smooth", block: "start" });
+          };
+          progressView = createProgressHeader(task, parsed.posts, checks, progress, jumpToPost);
+          shell.insertBefore(progressView.element, thread);
+          window.scrollTo(0, 0);
+          removePostProgress = attachPostProgress(parsed.posts, current => {
+            if (current <= progress.postIndex) return;
+            progress.postIndex = current;
+            progress.updatedAt = new Date().toISOString();
+            saveProgress(taskId, progress);
+            if (progressView) progressView.refresh();
+          });
+          progressView.refresh();
+        })
+        .catch(() => {
+          if (shell.isConnected && !disposed) renderError(thread, leave);
+        });
+    }
+
+    loadMaterial(0);
     return shell;
   }
 

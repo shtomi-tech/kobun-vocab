@@ -210,16 +210,16 @@ def check_required_question_ids(data):
 
 def check_joshi_required_question_ids(data):
     return check_required_question_ids_for_set(
-        data, "joshiRequiredQuestionIds", "joshiQuestions", 10,
-        {"integration": 10},
+        data, "joshiRequiredQuestionIds", "joshiQuestions", 12,
+        {"integration": 12},
         "助詞識別",
     )
 
 
 def check_homograph_required_question_ids(data):
     return check_required_question_ids_for_set(
-        data, "homographRequiredQuestionIds", "homographQuestions", 12,
-        {"integration": 12},
+        data, "homographRequiredQuestionIds", "homographQuestions", 28,
+        {"integration": 28},
         "同形語識別",
     )
 
@@ -234,7 +234,7 @@ def check_keigo_required_question_ids(data):
 
 def check_kiso_required_question_ids(data):
     return check_required_question_ids_for_set(
-        data, "kisoRequiredQuestionIds", "kisoQuestions", 59,
+        data, "kisoRequiredQuestionIds", "kisoQuestions", 64,
         None,
         "文法の土台",
     )
@@ -242,7 +242,7 @@ def check_kiso_required_question_ids(data):
 
 def check_choice_required_question_ids(data):
     return check_required_question_ids_for_set(
-        data, "choiceRequiredQuestionIds", "choiceQuestions", 57,
+        data, "choiceRequiredQuestionIds", "choiceQuestions", 63,
         None,
         "文法4択",
     )
@@ -632,7 +632,7 @@ def main():
         homographq = homograph.get("homographQuestions", [])
         homograph_by_id = {q.get("id"): q for q in homographq}
         required_types = Counter(homograph_by_id[qid].get("questionType") for qid in homograph.get("homographRequiredQuestionIds", []))
-        print("同形語識別必修ルート: 12問（" + ", ".join(f"{k}={v}" for k, v in sorted(required_types.items())) + "）、追加練習: 14問")
+        print("同形語識別必修ルート: 15問（" + ", ".join(f"{k}={v}" for k, v in sorted(required_types.items())) + "）、追加練習: 30問")
     if not keigo_required_err:
         keigoq = keigo.get("keigoQuestions", [])
         keigo_by_id = {q.get("id"): q for q in keigoq}

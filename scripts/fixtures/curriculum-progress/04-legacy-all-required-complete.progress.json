@@ -1,0 +1,1023 @@
+{
+  "kiso:k-yomi-03": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-yomi-04": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-yomi-05": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-yomi-02": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-yomi-06": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-yomi-07": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-yomi-08": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-bun-01": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-bun-02": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-bun-03": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-bun-04": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:c1-001": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:c1-002": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-bun-05": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-bun-06": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-kei-01": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-kei-02": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-kei-03": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-kei-04": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-kei-05": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-kei-06": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-kei-09": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-kei-07": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-kei-08": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:c1-010": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "yougo:v-kamiichidan-kiru": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "yougo:v-shimoichidan-keru": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "choice:c2-004": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "choice:c2-006": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-katsuyo-05": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-katsuyo-06": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-katsuyo-07": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "yougo:v-kahen-ku": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "yougo:v-sahen-su": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "choice:c2-008": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "choice:c2-009": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-katsuyo-01": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-katsuyo-02": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "yougo:v-nahen-shinu": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "yougo:v-rahen-ari": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "choice:c2-010": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "choice:c2-011": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-katsuyo-03": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-katsuyo-04": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "yougo:v-yodan-kaku": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "yougo:v-kaminidan-ok": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "yougo:v-shimonidan-uku": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "choice:c2-003": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "choice:c2-005": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "choice:c2-007": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "choice:c2-018": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "choice:c2-031": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "choice:c2-032": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "choice:c2-033": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "choice:c2-034": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "choice:c2-035": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "choice:c2-036": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "choice:c2-037": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "choice:c2-038": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "choice:c2-019": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "choice:c2-020": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "choice:c2-021": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "choice:c2-022": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "yougo:adj-ku-takashi": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "yougo:adj-shiku-utsukushi": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "choice:c2-023": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "yougo:adjv-nari-shizuka": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "yougo:adjv-tari-doudou": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "choice:c2-025": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "jodoshi:6": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "jodoshi:10": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "jodoshi:12": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "jodoshi:1": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "jodoshi:2": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "jodoshi:3": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "jodoshi:4": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "jodoshi:5": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "jodoshi:7": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "jodoshi:8": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "jodoshi:9": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "jodoshi:11": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "jodoshi:13": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "jodoshi:14": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "jodoshi:15": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "jodoshi:16": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "jodoshi:17": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "jodoshi:18": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "jodoshi:19": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "jodoshi:20": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "jodoshi:21": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "jodoshi:22": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "jodoshi:23": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "jodoshi:24": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "jodoshi:25": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "jodoshi:26": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "jodoshi:27": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "jodoshi:28": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-set-01": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:c3-002": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:c3-003": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:c3-004": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:c3-005": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-set-07": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-set-05": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-set-06": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:c5-005": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:c5-010": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:c5-011": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:c5-008": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:c5-009": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:src-jd07-q01": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:src-jd07-q02": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:src-jd09-q02": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:src-jd09-q03": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:src-jd09-q04": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:pn-keri-int2": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:pn-keri-int5": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:sb-tariri-int1": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:sb-tariri-int2": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:sb-tariri-int3": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:sb-tsunu-int1": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:sb-tsunu-int2": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:sb-tsunu-int3": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:sb-tsunu-int4": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:src-jd03-q05": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:sb-sasu-int1": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:sb-sasu-int-sonkei": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:pn-sasu-sonkei-noaite": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:pn-sasu-shimu-shieki": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:pn-sasu-shime-tamafu": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:sb-nari-int1": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:pn-nari-int1": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:pn-nari-int2": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:sb-mashi-int1": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:sb-mashi-int-tamerai": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:src-jd07-q05": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:sb-rareru-int-ukemi": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:sb-rareru-int-kanou": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:sb-rareru-int1": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:sb-rareru-int-sonkei": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:pn-rareru-ukemi-sonkei": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:pn-rareru-retamafu": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:sb-kemu-int1": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:sb-kemu-int2": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:sb-kemu-int3": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:sb-kemu-int4": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:sb-ramu-int1": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:pn-ramu-int-suiryo": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:pn-ramu-int-enkyoku": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:pn-ramu-int-denbun": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:sb-mu-int-ji": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:sb-mu-int1": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:sb-mu-int-suiryou": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:sb-mu-int-enkyoku": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:sb-mu-int-katei": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:sb-mu-int-kanyuu": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:sb-beshi-int1": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:sb-beshi-int-kanou": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:sb-beshi-int-suiryo": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:sb-beshi-int-maji": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:pn-beshi-int7": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:pn-beshi-int8": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:pn-beshi-int9": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:pn-beshi-int10": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:pn-beshi-int11": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:pn-beshi-int13": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "shikibetsu:src-jd05-q03": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "homograph:hg-nune-int2": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "homograph:hg-nune-int3": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "homograph:hg-rure-int1": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "homograph:hg-rure-int2": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "homograph:hg-rure-int3": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "homograph:hg-nari-int1": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "homograph:hg-nari-int2": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "homograph:hg-nari-int3": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "homograph:hg-nari-int4": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "joshi:jb-ba-int1": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "joshi:jb-ba-int2": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "joshi:jb-ba-int3": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "choice:c7-004": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "choice:c7-005": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "joshi:jb-kak-int1": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "joshi:jb-kak-int2": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "choice:c7-011": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "joshi:jb-shu-int2": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "joshi:jb-shu-int3": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "choice:c7-012": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "choice:c7-013": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "choice:c7-014": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "choice:c7-016": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "joshi:jb-shu-int1": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "choice:c7-015": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "choice:c7-017": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "joshi:jb-no-int5": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "choice:c7-001": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "joshi:jb-dani-int2": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "choice:c7-009": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "joshi:jb-dani-int1": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "homograph:hg-namu-int1": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "homograph:hg-namu-int2": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "homograph:hg-ni-int1": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "homograph:hg-ni-int2": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "homograph:hg-ni-int3": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "homograph:hg-ni-int4": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "__identificationPracticeVersion": 2
+}

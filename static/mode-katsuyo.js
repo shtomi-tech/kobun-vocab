@@ -27,224 +27,16 @@ const KatsuyoApp = (function () {
       KobunPreparation.clearProgress();
     }
   }
-  // 段階1（古典文法）の必修。頭の中で文を組み立てられる順に10段構成にしてある。
-  // 並びは「文の骨組み → 用言 → 助動詞（未然形接続 → 連用形接続 → 終止形接続 → 体言・連体形接続）
-  // → 助詞・呼応・文末 → 同形語 → 敬語 → 混合確認」。
-  // 助動詞は「28語の表を全部埋めてから意味へ」ではなく、接続グループごとに
-  // 「活用表 → 基本意味 → 識別手順」で完結させる。接続は形と意味をつなぐ軸なので、
-  // 同じ接続の語をひとまとまりで扱うと、表の暗記が意味判断の直前に効く。
-  // 同形語の識別を助詞のあとに置いているのは、「に」「なむ」の識別が助詞の知識を前提にするため。
-  const GRAMMAR_PATH = [
-    {
-      id: "kiso",
-      label: "1. 文の骨組み",
-      description: "音と文字、文節・品詞、文の役割、活用形・接続を順に押さえる",
-      tasks: [
-        { id: "kiso-yomi", kind: "group", setId: "kiso", groupId: "kiso-yomi", label: "歴史的仮名遣いと読み 7問" },
-        { id: "kiso-hinshi", kind: "group", setId: "kiso", groupId: "kiso-bunsetsu", label: "文節と品詞 8問" },
-        { id: "kiso-structure", kind: "group", setId: "kiso", groupId: "kiso-structure", label: "文の成分と省略 5問" },
-        { id: "kiso-katsuyo-kakari", kind: "group", setId: "kiso", groupId: "kiso-katsuyokei", label: "活用形と係り結び 10問" },
-        { id: "kiso-setsuzoku-kihon", kind: "group", setId: "kiso", groupId: "kiso-setsuzoku", label: "接続という考え方 14問" },
-      ],
-    },
-    {
-      id: "yougo",
-      label: "2. 用言の活用",
-      description: "所属語と見分け方を先に置き、活用表を読む→埋める→訳に使うの順で進める",
-      // 行埋め（yougo-table）は「表を自力で再生する」課題なので、その前に
-      // 「種類を決める」「表の並びを選択肢で照合する」4択を置く。
-      // 旧構成では qa-chapter-2 の25問が行埋めの後ろに1つの塊で置かれ、
-      // 各活用型の並びを確認する問題まで行埋めより後になっていた。
-      tasks: [
-        { id: "kiso-katsuyo-type", kind: "group", setId: "kiso", groupId: "kiso-katsuyo-type", label: "活用の種類と所属語 7問" },
-        { id: "choice-ch2-type", kind: "group", setId: "choice", groupId: "qa-chapter-2-type", label: "活用の種類の見分け方 12問" },
-        { id: "choice-ch2-form", kind: "group", setId: "choice", groupId: "qa-chapter-2-form", label: "用言の活用表を読む 14問" },
-        { id: "yougo-table", kind: "group", setId: "yougo", groupId: "yougo-all", label: "用言13語の活用表" },
-        { id: "kiso-sound", kind: "group", setId: "kiso", groupId: "kiso-sound", label: "語幹・音便 4問" },
-        { id: "choice-ch2-yaku", kind: "group", setId: "choice", groupId: "qa-chapter-2-yaku", label: "語幹の用法と訳し分け 6問" },
-      ],
-    },
-    {
-      id: "jodoshi-mizen",
-      label: "3. 未然形接続の助動詞",
-      description: "未然形につく11語を、活用表と同じ る・らる…まほし の順に演習する",
-      // タスクの並びは活用表（g1）の語順（る・らる・す・さす・しむ・ず・じ・む・むず・まし・まほし）に合わせてある。
-      // 「ず」「まほし」の基本意味は、2問1タスクにすると語順から外れるため1問ずつに分けている。
-      // じ・む・むずは意味決定の手順が同じ（人称で場合分け、じはむの否定側）なので1タスクにまとめているが、
-      // 実践の出題順は shikibetsu.json 側の sb-mu グループを「じ→む→むず」に並べ替えて語順を揃えた。
-      tasks: [
-        { id: "jodoshi-table-mizen", kind: "group", setId: "jodoshi", groupId: "g1", label: "未然形接続11語の活用表" },
-        { id: "proc-rareru", kind: "procedure", setId: "shikibetsu", procId: "rareru", label: "る・らるの識別" },
-        { id: "proc-sasu", kind: "procedure", setId: "shikibetsu", procId: "sasu", label: "す・さす・しむの識別" },
-        { id: "kiso-jodoshi-zu", kind: "group", setId: "kiso", groupId: "kiso-jodoshi-zu", label: "基本意味：ず 1問" },
-        { id: "proc-mu", kind: "procedure", setId: "shikibetsu", procId: "mu", label: "じ・む・むずの識別" },
-        { id: "proc-mashi", kind: "procedure", setId: "shikibetsu", procId: "mashi", label: "ましの識別" },
-        { id: "kiso-jodoshi-mahoshi", kind: "group", setId: "kiso", groupId: "kiso-jodoshi-mahoshi", label: "基本意味：まほし 1問" },
-      ],
-    },
-    {
-      id: "jodoshi-renyo",
-      label: "4. 連用形接続の助動詞",
-      description: "き・けり・つ・ぬ・たり・けむ・たし の順に、活用表と意味・識別を通して固める",
-      // りはサ変未然形・四段已然形接続で本来は連用形接続ではないが、
-      // 完了・存続の意味と識別手順がたり（完了）と同じため、たりのすぐ後ろに置いている（活用表・識別とも）。
-      // き・けり／つ・ぬ／たり・りの基本意味は、対応する識別タスクの予習資料と内容が重複していたため
-      // 2026-08-03に統合し、識別タスク1本にまとめた（kiso.jsonのc5-001・c5-002・c5-003・c5-006を削除）。
-      // たしは対応する識別タスクが無いため、基本意味の単問のまま残す（けむには基本意味の単問が無い）。
-      tasks: [
-        { id: "jodoshi-table-renyo", kind: "group", setId: "jodoshi", groupId: "g2", label: "連用形接続7語＋りの活用表" },
-        { id: "proc-keri", kind: "procedure", setId: "shikibetsu", procId: "keri", label: "き・けりの識別" },
-        { id: "proc-tsunu", kind: "procedure", setId: "shikibetsu", procId: "tsunu", label: "つ・ぬの識別" },
-        { id: "proc-tariri", kind: "procedure", setId: "shikibetsu", procId: "tariri", label: "たり・りの識別" },
-        { id: "proc-kemu", kind: "procedure", setId: "shikibetsu", procId: "kemu", label: "けむの識別" },
-        { id: "kiso-jodoshi-tashi", kind: "group", setId: "kiso", groupId: "kiso-jodoshi-tashi", label: "基本意味：たし 1問" },
-      ],
-    },
-    {
-      id: "jodoshi-shushi",
-      label: "5. 終止形接続の助動詞",
-      description: "終止形（ラ変は連体形）につく6語を、推量の種類ごとに読み分ける",
-      // らむの基本意味は、識別タスクの予習資料と内容が重複していたため2026-08-03に統合し、
-      // 基本意味はらしの1問のみ残した（kiso.jsonのc5-007を削除、らむの内容はproc-ramuの識別へ一本化）。
-      tasks: [
-        { id: "jodoshi-table-shushi", kind: "group", setId: "jodoshi", groupId: "g3", label: "終止形接続6語の活用表" },
-        { id: "kiso-jodoshi-shushi", kind: "group", setId: "kiso", groupId: "kiso-jodoshi-shushi", label: "基本意味：らし 1問" },
-        { id: "proc-beshi", kind: "procedure", setId: "shikibetsu", procId: "beshi", label: "べし・まじの識別" },
-        { id: "proc-ramu", kind: "procedure", setId: "shikibetsu", procId: "ramu", label: "らむの識別" },
-      ],
-    },
-    {
-      id: "jodoshi-taigen",
-      label: "6. 体言・連体形接続の助動詞",
-      description: "体言や連体形につく3語を押さえ、助動詞の意味を全体で仕上げる",
-      // たり・りの識別と基本意味は、りの完了・存続がたり（連用形接続）と同じ意味・手順のため必修4へ移した。
-      tasks: [
-        { id: "jodoshi-table-taigen", kind: "group", setId: "jodoshi", groupId: "g4", label: "体言・連体形接続3語の活用表" },
-        { id: "proc-nari", kind: "procedure", setId: "shikibetsu", procId: "nari", label: "なりの訳し分け（断定・存在）" },
-        { id: "proc-other", kind: "procedure", setId: "shikibetsu", procId: "other", label: "その他の助動詞の意味" },
-      ],
-    },
-    {
-      id: "joshi",
-      label: "7. 助詞・呼応・文末",
-      description: "助詞の地図を作り、呼応・係り結び・禁止・願望を本文で使う",
-      tasks: [
-        { id: "choice-joshi-map", kind: "group", setId: "choice", groupId: "qa-chapter-7-basics", label: "助詞の地図 9問" },
-        { id: "choice-koou", kind: "group", setId: "choice", groupId: "qa-chapter-7-response", label: "呼応・文末 8問" },
-        { id: "proc-ba", kind: "procedure", setId: "joshi", procId: "ba", label: "ばの識別" },
-        { id: "proc-yori", kind: "procedure", setId: "joshi", procId: "yori", label: "よりの識別" },
-        { id: "proc-no", kind: "procedure", setId: "joshi", procId: "no", label: "格助詞「の」の識別" },
-        { id: "proc-dani", kind: "procedure", setId: "joshi", procId: "dani", label: "だにの識別" },
-        { id: "proc-kakari", kind: "procedure", setId: "joshi", procId: "kakari", label: "係り結びの特殊構文" },
-        { id: "proc-shuujoshi", kind: "procedure", setId: "joshi", procId: "shuujoshi", label: "終助詞の識別" },
-      ],
-    },
-    {
-      id: "homograph",
-      label: "8. 同形語の識別",
-      description: "ぬ・ね／る・れ／なり／なむ／に を、接続と活用形から切り分ける",
-      tasks: [
-        { id: "proc-h-nune", kind: "procedure", setId: "homograph", procId: "h-nune", label: "ぬ・ねの識別" },
-        { id: "proc-h-rure", kind: "procedure", setId: "homograph", procId: "h-rure", label: "る・れの識別" },
-        { id: "proc-h-nari", kind: "procedure", setId: "homograph", procId: "h-nari", label: "なりの識別（伝聞推定・断定）" },
-        { id: "proc-h-namu", kind: "procedure", setId: "homograph", procId: "h-namu", label: "なむの識別" },
-        { id: "proc-h-ni", kind: "procedure", setId: "homograph", procId: "h-ni", label: "にの識別" },
-      ],
-    },
-    {
-      id: "keigo",
-      label: "9. 敬語・補助動詞",
-      description: "敬語の種類、補助動詞、敬意の方向を本文の人物関係に結び付ける",
-      tasks: [
-        { id: "choice-ch9", kind: "group", setId: "choice", groupId: "qa-chapter-9", label: "敬語の攻略 8問" },
-        { id: "proc-k-tamau", kind: "procedure", setId: "keigo-shikibetsu", procId: "k-tamau", label: "給ふの識別" },
-        { id: "proc-k-tatematsuru", kind: "procedure", setId: "keigo-shikibetsu", procId: "k-tatematsuru", label: "奉る・参るの識別" },
-        { id: "proc-k-haberi", kind: "procedure", setId: "keigo-shikibetsu", procId: "k-haberi", label: "侍り・候ふの識別" },
-        { id: "proc-k-hojo", kind: "procedure", setId: "keigo-shikibetsu", procId: "k-hojo", label: "補助動詞の訳し方" },
-        { id: "proc-k-keii", kind: "procedure", setId: "keigo-shikibetsu", procId: "k-keii", label: "敬意の方向" },
-      ],
-    },
-    {
-      id: "grammar-checkpoint",
-      label: "文法混合確認",
-      description: "必修1〜9の全範囲からランダムに出題し、文法全体を確認する",
-      tasks: [
-        { id: "grammar-checkpoint", kind: "checkpoint", label: "文法混合確認30問" },
-      ],
-    },
-  ];
-  const PREPARATION_PATHS = {
-    kiso: {
-      "kiso-yomi": "data/preparation/kobun-01-yomi.md",
-      "kiso-hinshi": "data/preparation/kobun-01-bunsetsu-hinshi.md",
-      "kiso-structure": "data/preparation/kobun-01-structure.md",
-      "kiso-katsuyo-kakari": "data/preparation/kobun-01-katsuyokei-kakari.md",
-      "kiso-setsuzoku-kihon": "data/preparation/kobun-01-setsuzoku.md",
-    },
-    yougo: {
-      "kiso-katsuyo-type": "data/preparation/kobun-02-katsuyo-type.md",
-      "choice-ch2-type": "data/preparation/kobun-02-yougo-mikiwake.md",
-      "choice-ch2-form": "data/preparation/kobun-02-yougo-practice.md",
-      "yougo-table": "data/preparation/kobun-02-yougo-table.md",
-      "kiso-sound": "data/preparation/kobun-02-sound.md",
-      "choice-ch2-yaku": "data/preparation/kobun-02-yougo-yaku.md",
-    },
-    // 助動詞は接続別の4必修。各必修の入口（活用表）に接続ごとの資料を置き、
-    // 基本意味の資料は4必修で共通のものを参照する。
-    "jodoshi-mizen": {
-      "jodoshi-table-mizen": "data/preparation/kobun-03-jodoshi-mizen.md",
-      "proc-rareru": "data/preparation/kobun-04-rareru.md",
-      "proc-sasu": "data/preparation/kobun-04-sasu.md",
-      "kiso-jodoshi-zu": "data/preparation/kobun-04-jodoshi-basic.md",
-      "proc-mu": "data/preparation/kobun-04-mu.md",
-      "proc-mashi": "data/preparation/kobun-04-mashi.md",
-      "kiso-jodoshi-mahoshi": "data/preparation/kobun-04-jodoshi-basic.md",
-    },
-    "jodoshi-renyo": {
-      "jodoshi-table-renyo": "data/preparation/kobun-03-jodoshi-renyo.md",
-      "proc-keri": "data/preparation/kobun-04-keri.md",
-      "proc-tsunu": "data/preparation/kobun-04-tsunu.md",
-      "proc-tariri": "data/preparation/kobun-04-tariri.md",
-      "proc-kemu": "data/preparation/kobun-04-kemu.md",
-      "kiso-jodoshi-tashi": "data/preparation/kobun-04-jodoshi-basic.md",
-    },
-    "jodoshi-shushi": {
-      "jodoshi-table-shushi": "data/preparation/kobun-03-jodoshi-shushi.md",
-      "kiso-jodoshi-shushi": "data/preparation/kobun-04-jodoshi-basic.md",
-      "proc-ramu": "data/preparation/kobun-04-ramu.md",
-      "proc-beshi": "data/preparation/kobun-04-beshi.md",
-    },
-    "jodoshi-taigen": {
-      "jodoshi-table-taigen": "data/preparation/kobun-03-jodoshi-taigen.md",
-      "proc-nari": "data/preparation/kobun-04-nari.md",
-      "proc-other": "data/preparation/kobun-04-other.md",
-    },
-    joshi: {
-      "choice-joshi-map": "data/preparation/kobun-05-joshi-map.md",
-      "choice-koou": "data/preparation/kobun-05-koou.md",
-      "proc-ba": "data/preparation/kobun-05-ba.md",
-      "proc-yori": "data/preparation/kobun-05-yori.md",
-      "proc-no": "data/preparation/kobun-05-no.md",
-      "proc-dani": "data/preparation/kobun-05-dani.md",
-      "proc-kakari": "data/preparation/kobun-05-kakari.md",
-      "proc-shuujoshi": "data/preparation/kobun-05-shuujoshi.md",
-    },
-    homograph: {
-      "proc-h-nune": "data/preparation/kobun-06-nune.md",
-      "proc-h-rure": "data/preparation/kobun-06-rure.md",
-      "proc-h-nari": "data/preparation/kobun-06-nari.md",
-      "proc-h-namu": "data/preparation/kobun-06-namu.md",
-      "proc-h-ni": "data/preparation/kobun-06-ni.md",
-    },
-    keigo: {
-      "choice-ch9": "data/preparation/kobun-07-keigo-map.md",
-      "proc-k-tamau": "data/preparation/kobun-07-tamau.md",
-      "proc-k-tatematsuru": "data/preparation/kobun-07-tatematsuru.md",
-      "proc-k-haberi": "data/preparation/kobun-07-haberi.md",
-      "proc-k-hojo": "data/preparation/kobun-07-hojo.md",
-      "proc-k-keii": "data/preparation/kobun-07-keii.md",
-    },
-  };
+  // 段階1（古典文法）の必修は、data/curriculum.json（6章46講）を正本として
+  // boot()で読み込み、buildGrammarPathFromCurriculum()で1講=1ステージのGRAMMAR_PATH形状
+  // （{id, label, description, tasks:[{id,kind,setId,groupId?,ids?,procId?,label}]}）へ変換する。
+  // 起動前（boot完了前）は空配列。予習資料の参照も、旧PREPARATION_PATHSの代わりに
+  // 各stageへ持たせたstage.preparation（lesson.preparationそのまま）から解決する。
+  let GRAMMAR_PATH = [];
+  // curriculum.json（fetch生データ）そのもの。lessonStatus/chapterStatus/firstIncompleteLessonが
+  // 章・講の構造（number, title, lessons配列）を辿るために持つ。GRAMMAR_PATHは平坦化済みで
+  // 章の境界を持たないため、curriculum.jsonの構造をそのまま参照できる別変数が必要。
+  let CURRICULUM = null;
   const READING_PATH = [
     {
       id: "reading-direction",
@@ -656,11 +448,30 @@ const KatsuyoApp = (function () {
   function shikibetsuGroupForProc(procId) {
     return getGroups().find(g => g.id === "sb-" + procId);
   }
-  function shikibetsuPracticeIds(procId) {
+  // allowedIds（省略可）を渡すと、そのprocedureの実践問題プールをallowedIdsだけに絞り込む。
+  // カリキュラムの講が、1つのprocedureの実践プールを複数講に分割して割り当てる場合に使う
+  // （例：h-nariの4問を31講「基本編」2問・32講「応用編」2問に分ける）。
+  // allowedIds指定時は旧来のrequiredQuestionIds（グループ単位の代表問題セット）による
+  // 絞り込みを経由しない。curriculum.json側で1問単位にどの講の必修に含めるかを既に
+  // 確定しているため（例：hg-nari-int4はhomographRequiredQuestionIdsには無いが、
+  // 32講の必修としてidsで明示されている＝curriculum.jsonが優先される）。
+  // グループを解決できない場合（"sb-"+procId命名規約に一致しない等）は、
+  // setのcollectionからintegration問題を直接拾うフォールバックを使う。
+  function shikibetsuPracticeIds(procId, allowedIds) {
     const g = shikibetsuGroupForProc(procId);
-    if (!g) return [];
+    if (Array.isArray(allowedIds) && allowedIds.length) {
+      // typoで無関係な問題が混入しないよう、グループ（無ければsetの全収集）の範囲内に絞る。
+      const pool = new Set(g ? g.ids : getItems().map(itemId));
+      return allowedIds.filter(id => pool.has(id) && (byId[itemKey(id)] || {}).questionType === "integration");
+    }
     const required = shikibetsuRequiredIdSet();
-    return g.ids.filter(id => required.has(id) && (byId[itemKey(id)] || {}).questionType === "integration");
+    if (g) {
+      return g.ids.filter(id => required.has(id) && (byId[itemKey(id)] || {}).questionType === "integration");
+    }
+    return getItems()
+      .filter(item => item.questionType === "integration")
+      .map(itemId)
+      .filter(id => required.has(id));
   }
   // 「習得済み」（isMastered、累計2回正解）は苦手復習・進捗バー用の基準。
   // フローの完了判定はセッションを1周し終えた（1回でも正解した）ことだけを基準にする。
@@ -670,9 +481,9 @@ const KatsuyoApp = (function () {
     const rec = progressRecord(p, id);
     return !!rec && rec.c >= 1;
   }
-  function shikibetsuProcStatus(procId) {
+  function shikibetsuProcStatus(procId, allowedIds) {
     const p = loadProgress();
-    const practiceIds = shikibetsuPracticeIds(procId);
+    const practiceIds = shikibetsuPracticeIds(procId, allowedIds);
     const practiceDone = practiceIds.filter(id => shikibetsuIdCleared(id, p)).length;
     return {
       practiceIds, practiceDone,
@@ -710,6 +521,29 @@ const KatsuyoApp = (function () {
     cycles[taskId] = Object.assign({}, cycles[taskId] || {}, patch);
     savePathState(state);
   }
+  // 46講版（lessonCycles）は、旧10必修版（grammarTaskCycles、上）とは別の器として持つ。
+  // 旧フィールドは読み取り互換のため残すだけで、新規保存は行わない。
+  function lessonCycles(state) {
+    if (!state.lessonCycles || typeof state.lessonCycles !== "object") {
+      state.lessonCycles = {};
+    }
+    return state.lessonCycles;
+  }
+  function lessonCycle(lessonId) {
+    const state = loadPathState();
+    const cycle = lessonCycles(state)[lessonId];
+    return cycle && typeof cycle === "object" ? cycle : { completedAt: "", lastReviewedAt: "" };
+  }
+  // 冪等：既にcompletedAtが入っているlessonへは書き込まない（正誤回数・完了日時の増殖防止）。
+  function markLessonCompleted(lessonId) {
+    const state = loadPathState();
+    const cycles = lessonCycles(state);
+    const existing = cycles[lessonId] && typeof cycles[lessonId] === "object" ? cycles[lessonId] : {};
+    if (existing.completedAt) return false;
+    cycles[lessonId] = Object.assign({ lastReviewedAt: "" }, existing, { completedAt: new Date().toISOString() });
+    savePathState(state);
+    return true;
+  }
   function practiceSetById(id) {
     return DATA.practiceSets.find(set => set.id === id) || null;
   }
@@ -723,9 +557,27 @@ const KatsuyoApp = (function () {
     return group;
   }
   function taskIds(task) {
+    // カリキュラムのactivityがids（明示リスト）を持つ場合はgroup検索を省略してそのまま返す。
+    // requiredQuestionIdsによる絞り込みは明示idsの場合は不要（既に確定した具体IDのため）。
+    if (Array.isArray(task.ids)) return task.ids.slice();
     const group = taskGroup(task);
     const set = practiceSetById(task.setId);
     return group ? groupIdsForSet(group, set) : [];
+  }
+  // taskStatus()が実際に完了判定へ使う具体ID一覧を、kindに応じて返す（読み取り専用）。
+  // procedure種別はtaskIds()ではなくshikibetsuPracticeIds()（procId基準）で解決するため、
+  // taskStatus()と同じ分岐をここでも辿る。判定ロジック自体（isMastered等）は複製しない。
+  // __testフック（fixture生成・回帰テスト用）からのみ使う想定。
+  function taskCheckedIds(task) {
+    if (task.kind === "checkpoint") return [];
+    if (task.kind === "procedure") {
+      const prev = currentSet;
+      currentSet = practiceSetById(task.setId || "shikibetsu");
+      const ids = shikibetsuPracticeIds(task.procId, task.ids);
+      currentSet = prev;
+      return ids;
+    }
+    return taskIds(task);
   }
   function isGrammarOnePassTask(task) {
     return task.kind === "group" && ["kiso", "yougo", "jodoshi", "choice"].includes(task.setId);
@@ -743,7 +595,7 @@ const KatsuyoApp = (function () {
     if (task.kind === "procedure") {
       const prev = currentSet;
       currentSet = practiceSetById(task.setId || "shikibetsu");
-      const status = shikibetsuProcStatus(task.procId);
+      const status = shikibetsuProcStatus(task.procId, task.ids);
       currentSet = prev;
       return {
         done: status.practiceDone,
@@ -806,6 +658,80 @@ const KatsuyoApp = (function () {
       const complete = tasks.every(task => task.status.complete);
       return Object.assign({}, stage, { tasks, complete, available: true });
     });
+  }
+
+  /* ---------- 講・章単位の進捗集計（curriculum.json正本） ---------- */
+  // 1講=1ステージという既存のGRAMMAR_PATH形状（buildGrammarPathFromCurriculum）をそのまま使い、
+  // taskStatus()の判定結果を集計するだけ。完了判定ロジック自体は二重実装しない。
+  function lessonStatus(lesson) {
+    const stage = GRAMMAR_PATH.find(s => s.id === lesson.id);
+    const tasks = stage ? stage.tasks : [];
+    const statuses = tasks.map(taskStatus);
+    const requiredCount = tasks.length;
+    const doneCount = statuses.filter(s => s.complete).length;
+    // 必修が0件（status:"blocked"の講）はvacuously completeにしない＝未完了として扱う。
+    const complete = requiredCount > 0 && statuses.every(s => s.complete);
+    return {
+      lessonId: lesson.id,
+      number: lesson.number,
+      title: lesson.title,
+      curriculumStatus: lesson.status,
+      requiredCount,
+      doneCount,
+      complete,
+    };
+  }
+  // taskの具体的id群のうち、苦手フラグ（rec.weak）が立っているものが1件でもあればtrue。
+  // weakIds()と同じ「rec.weak」基準を、必修task単位（curriculum.jsonのrequiredActivities）に適用する。
+  // id解決はtaskIds()ではなくtaskCheckedIds()を使う：kind==="procedure"のtask（ids未指定のもの、
+  // 章3〜6の必修の大半）はgroupIdを持たずtaskIds()では[]になってしまうため、taskStatus()と
+  // 同じ解決（shikibetsuPracticeIds経由）をするtaskCheckedIds()を再利用する。
+  function taskHasWeakRecord(task) {
+    if (task.kind === "checkpoint") return false;
+    const set = practiceSetById(task.setId);
+    if (!set) return false;
+    const prev = currentSet;
+    currentSet = set;
+    const p = loadProgress();
+    const ids = taskCheckedIds(task);
+    const weak = ids.some(id => {
+      const rec = progressRecord(p, id);
+      return !!rec && rec.weak;
+    });
+    currentSet = prev;
+    return weak;
+  }
+  function chapterStatus(chapter) {
+    const lessons = chapter.lessons || [];
+    const lessonStatuses = lessons.map(lessonStatus);
+    const completedLessons = lessonStatuses.filter(s => s.complete).length;
+    let weakCount = 0;
+    lessons.forEach(lesson => {
+      const stage = GRAMMAR_PATH.find(s => s.id === lesson.id);
+      if (!stage) return;
+      stage.tasks.forEach(task => { if (taskHasWeakRecord(task)) weakCount += 1; });
+    });
+    return {
+      chapterId: chapter.id,
+      number: chapter.number,
+      title: chapter.title,
+      totalLessons: lessonStatuses.length,
+      completedLessons,
+      weakCount,
+    };
+  }
+  // 46講のみを対象に、chapter.number昇順→lesson.number昇順で走査し、最初の未完了講を返す。
+  // 発展学習（keigo）・文法混合確認（grammar-checkpoint）はcurriculum.chaptersに含まれないため対象外。
+  function firstIncompleteLesson() {
+    if (!CURRICULUM || !Array.isArray(CURRICULUM.chapters)) return null;
+    const chapters = CURRICULUM.chapters.slice().sort((a, b) => a.number - b.number);
+    for (const chapter of chapters) {
+      const lessons = (chapter.lessons || []).slice().sort((a, b) => a.number - b.number);
+      for (const lesson of lessons) {
+        if (!lessonStatus(lesson).complete) return lesson;
+      }
+    }
+    return null;
   }
   function firstIncompleteGrammarTask() {
     const stages = grammarPathStatus();
@@ -875,18 +801,20 @@ const KatsuyoApp = (function () {
     if (task.source === "culture") return requiredCultureIds().map(id => ({ id, setId: "kobun-joshiki" }));
     return requiredGrammarEntries();
   }
+  // task（GRAMMAR_PATHの個々の必修活動）が属するstage（=lesson）を探し、
+  // そのlessonのpreparation配列（1講に複数資料の可能性がある）を返す。
+  // 予習資料が無い講（statusがblocked等でpreparationが空）はnullを返す。
   function preparationForTask(task) {
     if (!task) return null;
     const stage = GRAMMAR_PATH.find(item => item.tasks.some(candidate => candidate.id === task.id));
     if (!stage) return null;
-    const stagePath = PREPARATION_PATHS[stage.id];
-    const path = typeof stagePath === "string" ? stagePath : stagePath && stagePath[task.id];
-    if (!path) return null;
-    return { stage, path };
+    const preparation = Array.isArray(stage.preparation) ? stage.preparation : [];
+    if (!preparation.length) return null;
+    return { stage, preparation };
   }
   function openTaskPreparation(task, review = false) {
-    const preparation = preparationForTask(task);
-    if (!preparation || typeof KobunPreparation === "undefined") return false;
+    const prep = preparationForTask(task);
+    if (!prep || typeof KobunPreparation === "undefined") return false;
     activeGrammarMode = "roadmap";
     activeGrammarPathTask = task.id;
     activeGrammarPathReview = review;
@@ -896,8 +824,8 @@ const KatsuyoApp = (function () {
     KobunPreparation.render({
       container: homePanel,
       task,
-      stage: preparation.stage,
-      path: preparation.path,
+      stage: prep.stage,
+      preparation: prep.preparation,
       onBack: renderGrammarRoadmapHome,
       onPractice: () => startRequiredTask(task, review, { skipPreparation: true }),
     });
@@ -910,7 +838,7 @@ const KatsuyoApp = (function () {
     activeGrammarPathReview = review;
     if (task.kind === "procedure") {
       currentSet = practiceSetById(task.setId || "shikibetsu");
-      startShikibetsuFlow(task.procId, { pathTask: task.id, pathReview: review });
+      startShikibetsuFlow(task.procId, { pathTask: task.id, pathReview: review, allowedIds: task.ids });
       return;
     }
     if (task.kind === "checkpoint") {
@@ -1533,13 +1461,14 @@ const KatsuyoApp = (function () {
       procId,
       pathTask: pathContext.pathTask || activeGrammarPathTask,
       pathReview: !!pathContext.pathReview,
+      allowedIds: pathContext.allowedIds || null,
     };
     startShikibetsuPractice();
   }
 
   function startShikibetsuPractice() {
     const proc = shikibetsuProcedures().find(pr => pr.id === flow.procId);
-    startSession(shikibetsuPracticeIds(flow.procId), proc.name + "・実践問題", {
+    startSession(shikibetsuPracticeIds(flow.procId, flow.allowedIds), proc.name + "・実践問題", {
       flow: Object.assign({}, flow),
       pathTask: flow.pathTask,
       pathReview: flow.pathReview,
@@ -2477,13 +2406,143 @@ const KatsuyoApp = (function () {
       }
     });
   }
+  // curriculum.jsonが壊れている（chapters/lessonsの最低限の形を満たさない）場合は、
+  // ここで例外を投げてboot()の既存catchに処理させ、起動時エラー表示で停止する。
+  function assertValidCurriculum(curriculum) {
+    if (!curriculum || !Array.isArray(curriculum.chapters)) {
+      throw new Error("教材構成を読み込めませんでした（chaptersが不正）");
+    }
+    curriculum.chapters.forEach(chapter => {
+      if (!Array.isArray(chapter.lessons)) {
+        throw new Error("教材構成を読み込めませんでした（lessonsが不正）");
+      }
+      chapter.lessons.forEach(lesson => {
+        if (!lesson || !lesson.id || typeof lesson.number !== "number" || !Array.isArray(lesson.requiredActivities)) {
+          throw new Error("教材構成を読み込めませんでした（lessonの形式が不正: " + (lesson && lesson.id) + "）");
+        }
+      });
+    });
+  }
+  // procedureのprocIdから表示ラベルを解決する。procedures配列は setId ごとに
+  // proceduresKey（"procedures"/"joshiProcedures"/"homographProcedures"/"keigoProcedures"）が異なる。
+  function resolveProcedureLabel(setId, procId) {
+    const set = practiceSetById(setId);
+    const list = (set && set.proceduresKey && DATA[set.proceduresKey]) || [];
+    const proc = list.find(p => p.id === procId);
+    return (proc && (proc.name || proc.label || proc.title)) || procId;
+  }
+  // groupIdから表示ラベルを解決する（groups配列の name フィールド）。
+  function resolveGroupLabel(setId, groupId) {
+    const set = practiceSetById(setId);
+    const list = (set && DATA[set.groups]) || [];
+    const group = list.find(g => g.id === groupId);
+    return (group && (group.name || group.label)) || groupId;
+  }
+  // curriculum.jsonのactivityにはlabelが無いため、種別ごとに実データから解決する。
+  // a) procedure: procedures配列のname　b) group+groupId: groups配列のname
+  // c) group+ids（groupId無し）: lessonのtitleをそのまま使う
+  function activityLabel(activity, lesson) {
+    if (activity.kind === "procedure") return resolveProcedureLabel(activity.setId, activity.procId);
+    if (activity.kind === "group" && activity.groupId) return resolveGroupLabel(activity.setId, activity.groupId);
+    return lesson.title;
+  }
+  // data/curriculum.jsonの46講を「1講=1ステージ」としてGRAMMAR_PATHの形へ変換する。
+  // statusがready/partial/blockedいずれの講も含める（blocked講はrequiredActivitiesが空なので
+  // stage.tasksが空配列になる。UI上の見せ方は別タスクの範囲で、ここではクラッシュしないことのみ担保する）。
+  function buildGrammarPathFromCurriculum(curriculum) {
+    const lessons = (curriculum.chapters || []).flatMap(chapter => chapter.lessons || []);
+    const stages = lessons.map(lesson => ({
+      id: lesson.id,
+      label: lesson.number + "講　" + lesson.title,
+      description: "",
+      curriculumStatus: lesson.status,
+      preparation: Array.isArray(lesson.preparation) ? lesson.preparation : [],
+      tasks: (lesson.requiredActivities || []).map(activity => ({
+        id: activity.id,
+        kind: activity.kind,
+        setId: activity.setId,
+        groupId: activity.groupId,
+        ids: activity.ids,
+        procId: activity.procId,
+        label: activityLabel(activity, lesson),
+      })),
+    }));
+
+    // 発展学習（敬語・補助動詞）は46講には含まれないが、従来どおり文法ロードマップの
+    // 一部として関所①（段階2解放）の完了条件に含める。curriculum.extensionsから構築する。
+    const keigoExt = (curriculum.extensions || []).find(ext => ext.id === "keigo");
+    if (keigoExt && Array.isArray(keigoExt.activities) && keigoExt.activities.length) {
+      stages.push({
+        id: keigoExt.id,
+        label: keigoExt.title,
+        description: keigoExt.description || "",
+        curriculumStatus: "ready",
+        preparation: [],
+        tasks: keigoExt.activities.map(activity => ({
+          id: activity.id,
+          kind: activity.kind,
+          setId: activity.setId,
+          groupId: activity.groupId,
+          ids: activity.ids,
+          procId: activity.procId,
+          label: activityLabel(activity, { title: keigoExt.title }),
+        })),
+      });
+    }
+
+    // 文法混合確認（チェックポイント）も従来どおり関所①の完了条件の最終ステージとする。
+    const checkpoint = curriculum.checkpoint;
+    if (checkpoint && checkpoint.id) {
+      stages.push({
+        id: checkpoint.id,
+        label: checkpoint.title,
+        description: checkpoint.description || "",
+        curriculumStatus: "ready",
+        preparation: [],
+        tasks: [{
+          id: checkpoint.id,
+          kind: "checkpoint",
+          label: checkpoint.title + (checkpoint.questionCount ? checkpoint.questionCount + "問" : ""),
+          sampleSize: checkpoint.questionCount,
+          total: checkpoint.questionCount,
+        }],
+      });
+    }
+
+    return stages;
+  }
+  // 旧進捗（問題別正解記録kobun-katsuyo-progress-v2）からの、46講版lessonCyclesへの移行。
+  // boot()のたびに呼ばれるため冪等にする：completedAtは「空→値がある」の1回きりの遷移のみ行い、
+  // 既に入っている講は素通りする。分割された旧taskの通し演習完了（grammarTaskCycle）は根拠にしない。
+  // あくまでlessonStatus()＝taskStatus()が見る、新講の必修が指す具体的な問題ID・procedure実践IDの
+  // 正解記録（kobun-katsuyo-progress-v2）だけを根拠にする。
+  function migrateLessonProgress(curriculum) {
+    const state = loadPathState();
+    state.curriculumVersion = curriculum.id;
+    if (!state.textbookCheckpointV1 || typeof state.textbookCheckpointV1 !== "object") {
+      state.textbookCheckpointV1 = {
+        passed: false,
+        score: 0,
+        total: (curriculum.checkpoint && curriculum.checkpoint.questionCount) || 30,
+      };
+    }
+    const cycles = lessonCycles(state);
+    const lessons = (curriculum.chapters || []).flatMap(chapter => chapter.lessons || []);
+    lessons.forEach(lesson => {
+      const existing = cycles[lesson.id];
+      if (existing && typeof existing === "object" && existing.completedAt) return;
+      if (!lessonStatus(lesson).complete) return;
+      cycles[lesson.id] = Object.assign({ lastReviewedAt: "" }, existing || {}, { completedAt: new Date().toISOString() });
+    });
+    savePathState(state);
+  }
   let booted = false;
   let bootPromise = null;
   function boot() {
     bootPromise = Promise.all([
       fetch("data/katsuyo.json?v=20260724-2")
         .then(r => { if (!r.ok) throw new Error("katsuyo data load failed: " + r.status); return r.json(); }),
-      fetch("data/multiple_choice.json?v=20260801-1")
+      fetch("data/multiple_choice.json?v=20260818-1")
         .then(r => { if (!r.ok) throw new Error("choice data load failed: " + r.status); return r.json(); }),
       fetch("data/shikibetsu.json?v=20260730-7")
         .then(r => { if (!r.ok) throw new Error("shikibetsu data load failed: " + r.status); return r.json(); }),
@@ -2491,20 +2550,23 @@ const KatsuyoApp = (function () {
         .then(r => { if (!r.ok) throw new Error("keigo-dokkai data load failed: " + r.status); return r.json(); }),
       fetch("data/kobun-joshiki.json?v=20260721-1")
         .then(r => { if (!r.ok) throw new Error("kobun-joshiki data load failed: " + r.status); return r.json(); }),
-      fetch("data/kiso.json?v=20260801-1")
+      fetch("data/kiso.json?v=20260818-1")
         .then(r => { if (!r.ok) throw new Error("kiso data load failed: " + r.status); return r.json(); }),
-      fetch("data/shikibetsu-joshi.json?v=20260729-1")
+      fetch("data/shikibetsu-joshi.json?v=20260818-1")
         .then(r => { if (!r.ok) throw new Error("joshi data load failed: " + r.status); return r.json(); }),
-      fetch("data/shikibetsu-homograph.json?v=20260729-1")
+      fetch("data/shikibetsu-homograph.json?v=20260818-1")
         .then(r => { if (!r.ok) throw new Error("homograph data load failed: " + r.status); return r.json(); }),
       fetch("data/shikibetsu-keigo.json?v=20260729-1")
-        .then(r => { if (!r.ok) throw new Error("keigo-shikibetsu data load failed: " + r.status); return r.json(); })
+        .then(r => { if (!r.ok) throw new Error("keigo-shikibetsu data load failed: " + r.status); return r.json(); }),
+      fetch("data/curriculum.json?v=20260817-1")
+        .then(r => { if (!r.ok) throw new Error("curriculum data load failed: " + r.status); return r.json(); })
     ])
       .then(async ([d, choiceData, shikibetsuData, keigoDokkaiData, kobunJoshikiData,
-                    kisoData, joshiData, homographData, keigoShikibetsuData]) => {
+                    kisoData, joshiData, homographData, keigoShikibetsuData, curriculumData]) => {
         DATA = Object.assign({}, d, choiceData, shikibetsuData, keigoDokkaiData, kobunJoshikiData,
           kisoData, joshiData, homographData, keigoShikibetsuData);
         pruneRetired(DATA);
+        assertValidCurriculum(curriculumData);
 
         const jodoshiSet = d.practiceSets.find(s => s.id === "jodoshi");
 
@@ -2652,6 +2714,13 @@ const KatsuyoApp = (function () {
           (DATA[set.collection] || []).forEach(item => { byId[set.id + ":" + itemId(item)] = item; });
         });
 
+        // 段階1（古典文法）の必修は、curriculum.json（6章46講）を正本にGRAMMAR_PATHへ変換する。
+        // procedures/groupsのlabel解決にpracticeSets/byIdを使うため、上のDATA.practiceSets構築後に行う。
+        GRAMMAR_PATH = buildGrammarPathFromCurriculum(curriculumData);
+        CURRICULUM = curriculumData;
+        // 旧進捗（問題別正解記録）から46講版lessonCyclesへの移行。冪等なので毎起動呼んでよい。
+        migrateLessonProgress(curriculumData);
+
         // 生徒別クラウド同期（共有URL ?s=&t= があり config.json が揃うときのみ有効）。
         // 6つの練習セット（jodoshi/yougo/choice/shikibetsu/keigo-dokkai/kobun-joshiki）の進捗を1つのprogressマップとしてまとめて同期する。
         cloud = createCloud({
@@ -2712,5 +2781,11 @@ const KatsuyoApp = (function () {
     return bootPromise || Promise.resolve();
   }
 
-  return { mount, handleKey, pathOverview, ensureData };
+  // __test: 講・章単位の進捗集計（lessonStatus/chapterStatus/firstIncompleteLesson）を
+  // ブラウザconsoleやNode回帰テスト（scripts/check_curriculum_progress.mjs）から呼べるようにする
+  // デバッグ用フック。UIからは呼ばない（Task8/9で正式なUI導線を追加する予定）。
+  return {
+    mount, handleKey, pathOverview, ensureData,
+    __test: { lessonStatus, chapterStatus, firstIncompleteLesson, taskCheckedIds, taskStatus },
+  };
 })();

@@ -1,0 +1,192 @@
+{
+  "kiso:k-yomi-03": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-yomi-04": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-yomi-05": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-yomi-02": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-yomi-06": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-yomi-07": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-yomi-08": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-bun-01": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-bun-02": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-bun-03": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-bun-04": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:c1-001": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:c1-002": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-bun-05": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-bun-06": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-kei-01": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-kei-02": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-kei-03": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-kei-04": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-kei-05": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-kei-06": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-kei-09": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-kei-07": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:k-kei-08": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "kiso:c1-010": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "yougo:v-yodan-kaku": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "yougo:v-kamiichidan-kiru": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "yougo:v-kaminidan-ok": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "yougo:v-shimoichidan-keru": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "yougo:v-shimonidan-uku": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "yougo:v-kahen-ku": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "yougo:v-sahen-su": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "yougo:v-nahen-shinu": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "yougo:v-rahen-ari": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "yougo:adj-ku-takashi": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "yougo:adj-shiku-utsukushi": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "yougo:adjv-nari-shizuka": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  },
+  "yougo:adjv-tari-doudou": {
+    "c": 2,
+    "w": 0,
+    "weak": false
+  }
+}

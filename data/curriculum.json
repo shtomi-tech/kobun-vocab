@@ -1,0 +1,906 @@
+{
+  "version": 1,
+  "id": "textbook-46-v1",
+  "title": "古典文法 6章46講",
+  "chapters": [
+    {
+      "id": "chapter-1",
+      "number": 1,
+      "title": "基本知識",
+      "lessons": [
+        {
+          "id": "lesson-01",
+          "number": 1,
+          "hook": "",
+          "title": "歴史的仮名遣い 文字編",
+          "status": "ready",
+          "preparation": [
+            { "path": "data/preparation/kobun-01-yomi.md", "sections": ["check-kobun-01-yomi-02"] }
+          ],
+          "requiredActivities": [
+            { "id": "lesson-01-kiso", "kind": "group", "setId": "kiso", "ids": ["k-yomi-03", "k-yomi-04", "k-yomi-05"] }
+          ],
+          "supplementalActivities": [],
+          "legacyTaskIds": ["kiso-yomi"]
+        },
+        {
+          "id": "lesson-02",
+          "number": 2,
+          "hook": "",
+          "title": "歴史的仮名遣い 発音編",
+          "status": "ready",
+          "preparation": [
+            {
+              "path": "data/preparation/kobun-01-yomi.md",
+              "sections": ["check-kobun-01-yomi-01", "check-kobun-01-yomi-03", "check-kobun-01-yomi-04", "check-kobun-01-yomi-05"]
+            }
+          ],
+          "requiredActivities": [
+            { "id": "lesson-02-kiso", "kind": "group", "setId": "kiso", "ids": ["k-yomi-02", "k-yomi-06", "k-yomi-07", "k-yomi-08"] }
+          ],
+          "supplementalActivities": [],
+          "legacyTaskIds": ["kiso-yomi"]
+        },
+        {
+          "id": "lesson-03",
+          "number": 3,
+          "hook": "",
+          "title": "品詞・活用",
+          "status": "ready",
+          "preparation": [
+            { "path": "data/preparation/kobun-01-bunsetsu-hinshi.md", "sections": [] }
+          ],
+          "requiredActivities": [
+            {
+              "id": "lesson-03-kiso",
+              "kind": "group",
+              "setId": "kiso",
+              "ids": ["k-bun-01", "k-bun-02", "k-bun-03", "k-bun-04", "c1-001", "c1-002", "k-bun-05", "k-bun-06"]
+            }
+          ],
+          "supplementalActivities": [
+            {
+              "id": "lesson-03-kiso-structure",
+              "kind": "group",
+              "setId": "kiso",
+              "groupId": "kiso-structure",
+              "label": "文の成分と省略 5問（補助教材）"
+            }
+          ],
+          "legacyTaskIds": ["kiso-hinshi", "kiso-structure"]
+        },
+        {
+          "id": "lesson-04",
+          "number": 4,
+          "hook": "",
+          "title": "活用形",
+          "status": "partial",
+          "preparation": [
+            {
+              "path": "data/preparation/kobun-01-katsuyokei-kakari.md",
+              "sections": ["check-kobun-01-katsuyokei-kakari-01", "check-kobun-01-katsuyokei-kakari-02", "check-kobun-01-katsuyokei-kakari-03", "check-kobun-01-katsuyokei-kakari-05"]
+            }
+          ],
+          "requiredActivities": [
+            {
+              "id": "lesson-04-kiso",
+              "kind": "group",
+              "setId": "kiso",
+              "ids": ["k-kei-01", "k-kei-02", "k-kei-03", "k-kei-04", "k-kei-05", "k-kei-06", "k-kei-09"]
+            }
+          ],
+          "supplementalActivities": [],
+          "legacyTaskIds": ["kiso-katsuyo-kakari"],
+          "notes": "k-kei-06(終止形の見分け方)の正答根拠「終止形接続の語が続く」が予習本文に明示されていない。要監査後にreadyへ昇格。"
+        },
+        {
+          "id": "lesson-05",
+          "number": 5,
+          "hook": "",
+          "title": "係り結びの法則",
+          "status": "partial",
+          "preparation": [
+            { "path": "data/preparation/kobun-01-katsuyokei-kakari.md", "sections": ["check-kobun-01-katsuyokei-kakari-04"] }
+          ],
+          "requiredActivities": [
+            { "id": "lesson-05-kiso", "kind": "group", "setId": "kiso", "ids": ["k-kei-07", "k-kei-08", "c1-010"] }
+          ],
+          "supplementalActivities": [],
+          "legacyTaskIds": ["kiso-katsuyo-kakari"],
+          "notes": "k-kei-08・c1-010の予習カバレッジが薄い（専用ボード・専用チェックなし）。c1-010はこの講の必修専用とし、35講では再利用しない。"
+        }
+      ]
+    },
+    {
+      "id": "chapter-2",
+      "number": 2,
+      "title": "用言",
+      "lessons": [
+        {
+          "id": "lesson-06",
+          "number": 6,
+          "hook": "",
+          "title": "動詞① 上一段・下一段",
+          "status": "ready",
+          "preparation": [
+            { "path": "data/preparation/kobun-02-katsuyo-type.md", "sections": ["check-kobun-02-katsuyo-type-02"] }
+          ],
+          "requiredActivities": [
+            { "id": "lesson-06-table", "kind": "group", "setId": "yougo", "ids": ["v-kamiichidan-kiru", "v-shimoichidan-keru"] },
+            { "id": "lesson-06-form", "kind": "group", "setId": "choice", "ids": ["c2-004", "c2-006"] },
+            { "id": "lesson-06-katsuyo-type", "kind": "group", "setId": "kiso", "ids": ["k-katsuyo-05", "k-katsuyo-06", "k-katsuyo-07"] }
+          ],
+          "supplementalActivities": [
+            { "id": "lesson-06-sup-mikiwake", "kind": "group", "setId": "choice", "ids": ["c2-001", "c2-002", "c2-013"] }
+          ],
+          "legacyTaskIds": ["kiso-katsuyo-type", "choice-ch2-form"]
+        },
+        {
+          "id": "lesson-07",
+          "number": 7,
+          "hook": "",
+          "title": "動詞② カ変・サ変",
+          "status": "ready",
+          "preparation": [
+            {
+              "path": "data/preparation/kobun-02-katsuyo-type.md",
+              "sections": ["check-kobun-02-katsuyo-type-01"],
+              "sharedReason": "変格活用4種の所属語を1節でまとめて説明しているため08講と共有"
+            }
+          ],
+          "requiredActivities": [
+            { "id": "lesson-07-table", "kind": "group", "setId": "yougo", "ids": ["v-kahen-ku", "v-sahen-su"] },
+            { "id": "lesson-07-form", "kind": "group", "setId": "choice", "ids": ["c2-008", "c2-009"] },
+            { "id": "lesson-07-katsuyo-type", "kind": "group", "setId": "kiso", "ids": ["k-katsuyo-01", "k-katsuyo-02"] }
+          ],
+          "supplementalActivities": [],
+          "legacyTaskIds": ["kiso-katsuyo-type", "choice-ch2-form"]
+        },
+        {
+          "id": "lesson-08",
+          "number": 8,
+          "hook": "",
+          "title": "動詞③ ナ変・ラ変",
+          "status": "ready",
+          "preparation": [
+            {
+              "path": "data/preparation/kobun-02-katsuyo-type.md",
+              "sections": ["check-kobun-02-katsuyo-type-01"],
+              "sharedReason": "変格活用4種の所属語を1節でまとめて説明しているため07講と共有"
+            }
+          ],
+          "requiredActivities": [
+            { "id": "lesson-08-table", "kind": "group", "setId": "yougo", "ids": ["v-nahen-shinu", "v-rahen-ari"] },
+            { "id": "lesson-08-form", "kind": "group", "setId": "choice", "ids": ["c2-010", "c2-011"] },
+            { "id": "lesson-08-katsuyo-type", "kind": "group", "setId": "kiso", "ids": ["k-katsuyo-03", "k-katsuyo-04"] }
+          ],
+          "supplementalActivities": [],
+          "legacyTaskIds": ["kiso-katsuyo-type", "choice-ch2-form"]
+        },
+        {
+          "id": "lesson-09",
+          "number": 9,
+          "hook": "",
+          "title": "動詞④ 四段・上二段・下二段",
+          "status": "ready",
+          "preparation": [
+            { "path": "data/preparation/kobun-02-yougo-mikiwake.md", "sections": ["check-kobun-02-yougo-mikiwake-02"] }
+          ],
+          "requiredActivities": [
+            { "id": "lesson-09-table", "kind": "group", "setId": "yougo", "ids": ["v-yodan-kaku", "v-kaminidan-ok", "v-shimonidan-uku"] },
+            { "id": "lesson-09-form", "kind": "group", "setId": "choice", "ids": ["c2-003", "c2-005", "c2-007"] },
+            { "id": "lesson-09-method", "kind": "group", "setId": "choice", "ids": ["c2-018"] },
+            { "id": "lesson-09-practice", "kind": "group", "setId": "choice", "ids": ["c2-031", "c2-032", "c2-033", "c2-034", "c2-035", "c2-036", "c2-037", "c2-038"] }
+          ],
+          "supplementalActivities": [
+            { "id": "lesson-09-sup-yaku", "kind": "group", "setId": "choice", "ids": ["c2-027", "c2-028", "c2-029", "c2-030"] }
+          ],
+          "legacyTaskIds": ["choice-ch2-type", "choice-ch2-form", "choice-ch2-yaku"]
+        },
+        {
+          "id": "lesson-10",
+          "number": 10,
+          "hook": "",
+          "title": "動詞⑤ 行を押さえるべき動詞",
+          "status": "ready",
+          "preparation": [
+            {
+              "path": "data/preparation/kobun-02-katsuyo-gyou.md",
+              "sections": ["check-kobun-02-katsuyo-gyou-01", "check-kobun-02-katsuyo-gyou-02"]
+            }
+          ],
+          "requiredActivities": [
+            {
+              "id": "lesson-10-katsuyo-gyou",
+              "kind": "group",
+              "setId": "kiso",
+              "ids": ["k-katsuyo-gyou-01", "k-katsuyo-gyou-02", "k-katsuyo-gyou-03", "k-katsuyo-gyou-04", "k-katsuyo-gyou-05"]
+            }
+          ],
+          "supplementalActivities": [],
+          "legacyTaskIds": [],
+          "notes": "2026-08-18、Web調査（複数の信頼できる情報源で一致確認）に基づき新規作成。原則カードkbp.verbs.shimo-nidan-memorizeをverification: source-checkedへ更新（範囲: 得・心得・所得／植う・飢う・据う／老ゆ・悔ゆ・報ゆ）。心得・所得の追加はAI調査による拡張。"
+        },
+        {
+          "id": "lesson-11",
+          "number": 11,
+          "hook": "",
+          "title": "形容詞",
+          "status": "ready",
+          "preparation": [
+            { "path": "data/preparation/kobun-02-yougo-mikiwake.md", "sections": ["check-kobun-02-yougo-mikiwake-03"] }
+          ],
+          "requiredActivities": [
+            { "id": "lesson-11-honkatsuyo", "kind": "group", "setId": "choice", "ids": ["c2-019", "c2-020", "c2-021", "c2-022"] },
+            { "id": "lesson-11-table", "kind": "group", "setId": "yougo", "ids": ["adj-ku-takashi", "adj-shiku-utsukushi"] },
+            { "id": "lesson-11-mikiwake", "kind": "group", "setId": "choice", "ids": ["c2-023"] }
+          ],
+          "supplementalActivities": [
+            { "id": "lesson-11-sup-gokan", "kind": "group", "setId": "choice", "ids": ["c2-024", "c2-026"] },
+            { "id": "lesson-11-sup-sound", "kind": "group", "setId": "kiso", "ids": ["k-sound-04"] }
+          ],
+          "legacyTaskIds": ["choice-ch2-form", "choice-ch2-yaku", "kiso-sound"],
+          "notes": "c2-023は2026-08-03頃に必修ルートから意図的に外され孤立データ化していた問題。11講で再登録する前にユーザー確認を推奨。"
+        },
+        {
+          "id": "lesson-12",
+          "number": 12,
+          "hook": "",
+          "title": "形容動詞",
+          "status": "partial",
+          "preparation": [
+            { "path": "data/preparation/kobun-02-yougo-table.md", "sections": [] }
+          ],
+          "requiredActivities": [
+            { "id": "lesson-12-table", "kind": "group", "setId": "yougo", "ids": ["adjv-nari-shizuka", "adjv-tari-doudou"] },
+            { "id": "lesson-12-renyokei", "kind": "group", "setId": "choice", "ids": ["c2-025"] }
+          ],
+          "supplementalActivities": [],
+          "legacyTaskIds": ["choice-ch2-form"],
+          "notes": "必修候補が活用表2語＋1問のみで演習量が薄い。専用予習資料も未整備（現指定は11講と重複の可能性）。c2-023に相当するナリ/タリ見分け4択の追加を検討。"
+        }
+      ]
+    },
+    {
+      "id": "chapter-3",
+      "number": 3,
+      "title": "助動詞",
+      "lessons": [
+        {
+          "id": "lesson-13",
+          "number": 13,
+          "hook": "",
+          "title": "助動詞 活用① 特殊型「ず・き・まし」",
+          "status": "partial",
+          "preparation": [
+            { "path": "data/preparation/kobun-03-jodoushi-katachi.md", "sections": [] },
+            { "path": "data/preparation/kobun-03-jodoshi-mizen.md", "sections": [] },
+            { "path": "data/preparation/kobun-03-jodoshi-renyo.md", "sections": [] }
+          ],
+          "requiredActivities": [
+            { "id": "lesson-13-katsuyo-tokushu", "kind": "group", "setId": "jodoshi", "ids": [6, 10, 12] }
+          ],
+          "supplementalActivities": [],
+          "legacyTaskIds": ["jodoshi-table-mizen", "jodoshi-table-renyo"],
+          "notes": "対象語(ず・き・まし)はkatsuyo.jsonのtype==='特殊型'で機械抽出可能。ただし予習3ファイルは接続グループ単位で書かれており、特殊型3語専用の予習が無い（14講の内容が混入する）。"
+        },
+        {
+          "id": "lesson-14",
+          "number": 14,
+          "hook": "",
+          "title": "助動詞 活用② その他",
+          "status": "partial",
+          "preparation": [
+            { "path": "data/preparation/kobun-03-jodoushi-table.md", "sections": [] },
+            { "path": "data/preparation/kobun-03-jodoshi-mizen.md", "sections": [] },
+            { "path": "data/preparation/kobun-03-jodoshi-renyo.md", "sections": [] },
+            { "path": "data/preparation/kobun-03-jodoshi-shushi.md", "sections": [] },
+            { "path": "data/preparation/kobun-03-jodoshi-taigen.md", "sections": [] }
+          ],
+          "requiredActivities": [
+            {
+              "id": "lesson-14-katsuyo-sonota",
+              "kind": "group",
+              "setId": "jodoshi",
+              "ids": [1, 2, 3, 4, 5, 7, 8, 9, 11, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28]
+            }
+          ],
+          "supplementalActivities": [],
+          "legacyTaskIds": ["jodoshi-table-mizen", "jodoshi-table-renyo", "jodoshi-table-shushi", "jodoshi-table-taigen"],
+          "notes": "25語を1講に集約。活用型が9種にまたがり分量として妥当か要検討。予習4ファイルは13講の対象語も含み重複表示が起きる。"
+        },
+        {
+          "id": "lesson-15",
+          "number": 15,
+          "hook": "",
+          "title": "助動詞 接続①",
+          "status": "partial",
+          "preparation": [
+            { "path": "data/preparation/kobun-01-setsuzoku.md", "sections": [] }
+          ],
+          "requiredActivities": [
+            {
+              "id": "lesson-15-kiso-setsuzoku-kihon",
+              "kind": "group",
+              "setId": "kiso",
+              "ids": ["k-set-01", "c3-002", "c3-003", "c3-004", "c3-005", "k-set-07"]
+            }
+          ],
+          "supplementalActivities": [],
+          "legacyTaskIds": ["kiso-setsuzoku-kihon"],
+          "notes": "予習資料の第4節(終止形接続)が15講対象(基本)と16講対象(ラ変注意)を1つのH2に同居させており、現状は全文参照で内容が混入する。"
+        },
+        {
+          "id": "lesson-16",
+          "number": 16,
+          "hook": "",
+          "title": "助動詞 接続②",
+          "status": "partial",
+          "preparation": [
+            { "path": "data/preparation/kobun-01-setsuzoku.md", "sections": [] }
+          ],
+          "requiredActivities": [
+            { "id": "lesson-16-kiso-setsuzoku-reigai", "kind": "group", "setId": "kiso", "ids": ["k-set-05", "k-set-06", "c5-005"] }
+          ],
+          "supplementalActivities": [
+            { "id": "lesson-16-kiso-setsuzoku-preview", "kind": "group", "setId": "kiso", "ids": ["k-set-02", "c3-006", "k-set-08", "k-set-09"] }
+          ],
+          "legacyTaskIds": ["kiso-setsuzoku-kihon"],
+          "notes": "15講と同じ予習ファイルを参照するため全文重複表示になる。k-set-10(接続助詞ば)はChapter5(33講)領域の可能性がありここでは対象外。"
+        },
+        {
+          "id": "lesson-17",
+          "number": 17,
+          "hook": "",
+          "title": "ず／たし・まほし／らし・めり／ごとし",
+          "status": "partial",
+          "preparation": [
+            { "path": "data/preparation/kobun-04-other.md", "sections": [] }
+          ],
+          "requiredActivities": [
+            { "id": "lesson-17-kiso-zu", "kind": "group", "setId": "kiso", "groupId": "kiso-jodoshi-zu" },
+            { "id": "lesson-17-kiso-mahoshi", "kind": "group", "setId": "kiso", "groupId": "kiso-jodoshi-mahoshi" },
+            { "id": "lesson-17-kiso-tashi", "kind": "group", "setId": "kiso", "groupId": "kiso-jodoshi-tashi" },
+            { "id": "lesson-17-kiso-rashi", "kind": "group", "setId": "kiso", "groupId": "kiso-jodoshi-shushi" },
+            {
+              "id": "lesson-17-proc-other",
+              "kind": "procedure",
+              "setId": "shikibetsu",
+              "procId": "other",
+              "ids": ["src-jd07-q01", "src-jd07-q02", "src-jd09-q02", "src-jd09-q03", "src-jd09-q04"]
+            }
+          ],
+          "supplementalActivities": [],
+          "legacyTaskIds": ["kiso-jodoshi-zu", "kiso-jodoshi-mahoshi", "kiso-jodoshi-tashi", "kiso-jodoshi-shushi", "proc-other"],
+          "notes": "ず・まほしは抽象1問のみで本文つき実践が無い。現行kobun-04-jodoshi-basic.mdはらしに触れておらずこの講の予習として不適切なためkobun-04-other.mdを採用したが、ず・まほしを直接カバーする予習は無いまま。"
+        },
+        {
+          "id": "lesson-18",
+          "number": 18,
+          "hook": "",
+          "title": "き・けり／たり・り",
+          "status": "ready",
+          "preparation": [
+            { "path": "data/preparation/kobun-04-keri.md", "sections": [] },
+            { "path": "data/preparation/kobun-04-tariri.md", "sections": [] }
+          ],
+          "requiredActivities": [
+            { "id": "lesson-18-proc-keri", "kind": "procedure", "setId": "shikibetsu", "procId": "keri" },
+            { "id": "lesson-18-proc-tariri", "kind": "procedure", "setId": "shikibetsu", "procId": "tariri" }
+          ],
+          "supplementalActivities": [],
+          "legacyTaskIds": ["proc-keri", "proc-tariri"]
+        },
+        {
+          "id": "lesson-19",
+          "number": 19,
+          "hook": "",
+          "title": "つ・ぬ",
+          "status": "ready",
+          "preparation": [
+            { "path": "data/preparation/kobun-04-tsunu.md", "sections": [] }
+          ],
+          "requiredActivities": [
+            { "id": "lesson-19-proc-tsunu", "kind": "procedure", "setId": "shikibetsu", "procId": "tsunu" }
+          ],
+          "supplementalActivities": [],
+          "legacyTaskIds": ["proc-tsunu"]
+        },
+        {
+          "id": "lesson-20",
+          "number": 20,
+          "hook": "",
+          "title": "す・さす・しむ",
+          "status": "ready",
+          "preparation": [
+            { "path": "data/preparation/kobun-04-sasu.md", "sections": [] }
+          ],
+          "requiredActivities": [
+            { "id": "lesson-20-proc-sasu", "kind": "procedure", "setId": "shikibetsu", "procId": "sasu" }
+          ],
+          "supplementalActivities": [],
+          "legacyTaskIds": ["proc-sasu"]
+        },
+        {
+          "id": "lesson-21",
+          "number": 21,
+          "hook": "",
+          "title": "なり（断定／伝聞推定）",
+          "status": "ready",
+          "preparation": [
+            { "path": "data/preparation/kobun-04-nari.md", "sections": [] }
+          ],
+          "requiredActivities": [
+            { "id": "lesson-21-proc-nari", "kind": "procedure", "setId": "shikibetsu", "procId": "nari" }
+          ],
+          "supplementalActivities": [],
+          "legacyTaskIds": ["proc-nari"],
+          "notes": "計画書は「基本意味と識別を一講に統合」を指示していたが、proc-h-nariの4問はChapter5の31・32講が識別procedureとして専有するため、この講はproc-nari（断定/存在の基本意味）のみを必修とした。単純重複の禁止（sharedReason必須ルール）を優先した意図的な逸脱であり、ユーザー確認が必要。"
+        },
+        {
+          "id": "lesson-22",
+          "number": 22,
+          "hook": "",
+          "title": "まし",
+          "status": "ready",
+          "preparation": [
+            { "path": "data/preparation/kobun-04-mashi.md", "sections": [] }
+          ],
+          "requiredActivities": [
+            { "id": "lesson-22-proc-mashi", "kind": "procedure", "setId": "shikibetsu", "procId": "mashi" }
+          ],
+          "supplementalActivities": [],
+          "legacyTaskIds": ["proc-mashi"]
+        },
+        {
+          "id": "lesson-23",
+          "number": 23,
+          "hook": "",
+          "title": "る・らる",
+          "status": "ready",
+          "preparation": [
+            { "path": "data/preparation/kobun-04-rareru.md", "sections": [] }
+          ],
+          "requiredActivities": [
+            { "id": "lesson-23-proc-rareru", "kind": "procedure", "setId": "shikibetsu", "procId": "rareru" }
+          ],
+          "supplementalActivities": [],
+          "legacyTaskIds": ["proc-rareru"]
+        },
+        {
+          "id": "lesson-24",
+          "number": 24,
+          "hook": "",
+          "title": "けむ・らむ",
+          "status": "ready",
+          "preparation": [
+            { "path": "data/preparation/kobun-04-kemu.md", "sections": [] },
+            { "path": "data/preparation/kobun-04-ramu.md", "sections": [] }
+          ],
+          "requiredActivities": [
+            { "id": "lesson-24-proc-kemu", "kind": "procedure", "setId": "shikibetsu", "procId": "kemu" },
+            { "id": "lesson-24-proc-ramu", "kind": "procedure", "setId": "shikibetsu", "procId": "ramu" }
+          ],
+          "supplementalActivities": [],
+          "legacyTaskIds": ["proc-kemu", "proc-ramu"],
+          "notes": "sb-ramu/sb-kemuは共に純粋な意味・時制判断のみで、29講が必要とする文字列識別の内容を含まない。29講とのID共有はなし。"
+        },
+        {
+          "id": "lesson-25",
+          "number": 25,
+          "hook": "",
+          "title": "む・むず／じ",
+          "status": "ready",
+          "preparation": [
+            { "path": "data/preparation/kobun-04-mu.md", "sections": [] }
+          ],
+          "requiredActivities": [
+            { "id": "lesson-25-proc-mu", "kind": "procedure", "setId": "shikibetsu", "procId": "mu" }
+          ],
+          "supplementalActivities": [],
+          "legacyTaskIds": ["proc-mu"]
+        },
+        {
+          "id": "lesson-26",
+          "number": 26,
+          "hook": "",
+          "title": "べし・まじ",
+          "status": "ready",
+          "preparation": [
+            { "path": "data/preparation/kobun-04-beshi.md", "sections": [] }
+          ],
+          "requiredActivities": [
+            { "id": "lesson-26-proc-beshi", "kind": "procedure", "setId": "shikibetsu", "procId": "beshi" }
+          ],
+          "supplementalActivities": [],
+          "legacyTaskIds": ["proc-beshi"]
+        }
+      ]
+    },
+    {
+      "id": "chapter-4",
+      "number": 4,
+      "title": "助動詞が絡む識別",
+      "lessons": [
+        {
+          "id": "lesson-27",
+          "number": 27,
+          "hook": "",
+          "title": "ぬ・ねの識別",
+          "status": "ready",
+          "preparation": [
+            { "path": "data/preparation/kobun-06-nune.md", "sections": [] }
+          ],
+          "requiredActivities": [
+            { "id": "lesson-27-proc-h-nune", "kind": "procedure", "setId": "homograph", "procId": "h-nune" }
+          ],
+          "supplementalActivities": [],
+          "legacyTaskIds": ["proc-h-nune"]
+        },
+        {
+          "id": "lesson-28",
+          "number": 28,
+          "hook": "",
+          "title": "る・れの識別",
+          "status": "ready",
+          "preparation": [
+            { "path": "data/preparation/kobun-06-rure.md", "sections": [] }
+          ],
+          "requiredActivities": [
+            { "id": "lesson-28-proc-h-rure", "kind": "procedure", "setId": "homograph", "procId": "h-rure" }
+          ],
+          "supplementalActivities": [],
+          "legacyTaskIds": ["proc-h-rure"]
+        },
+        {
+          "id": "lesson-29",
+          "number": 29,
+          "hook": "",
+          "title": "らむの識別",
+          "status": "ready",
+          "preparation": [
+            { "path": "data/preparation/kobun-06-ramu-shiki.md", "sections": [] }
+          ],
+          "requiredActivities": [
+            { "id": "lesson-29-proc-h-ramu", "kind": "procedure", "setId": "homograph", "procId": "h-ramu" }
+          ],
+          "supplementalActivities": [],
+          "legacyTaskIds": [],
+          "notes": "2026-08-18、Web調査に基づき新規procedure h-ramu（文字列識別、ウ段/エ段/ア段の3分岐）を作成。既存proc-ramu（24講・意味判断）とは別物。24講とのID共有なし。"
+        }
+      ]
+    },
+    {
+      "id": "chapter-5",
+      "number": 5,
+      "title": "助詞",
+      "lessons": [
+        {
+          "id": "lesson-30",
+          "number": 30,
+          "hook": "",
+          "title": "「せ」の識別",
+          "status": "ready",
+          "preparation": [
+            { "path": "data/preparation/kobun-06-se.md", "sections": [] }
+          ],
+          "requiredActivities": [
+            { "id": "lesson-30-proc-h-se", "kind": "procedure", "setId": "homograph", "procId": "h-se" }
+          ],
+          "supplementalActivities": [],
+          "legacyTaskIds": [],
+          "notes": "2026-08-18、Web調査（4件の情報源で一致）に基づき新規作成。過去の助動詞「き」未然形／サ変動詞「す」未然形／使役・尊敬の助動詞「す」未然形の3分岐。原則カードkbp.disambiguation.se-identification（active・source-checked）を新設。"
+        },
+        {
+          "id": "lesson-31",
+          "number": 31,
+          "hook": "",
+          "title": "「なり」の識別 基本編",
+          "status": "partial",
+          "preparation": [
+            { "path": "data/preparation/kobun-06-nari.md", "sections": [] }
+          ],
+          "requiredActivities": [
+            { "id": "lesson-31-h-nari-basic", "kind": "procedure", "setId": "homograph", "procId": "h-nari", "ids": ["hg-nari-int1", "hg-nari-int2"] }
+          ],
+          "supplementalActivities": [],
+          "legacyTaskIds": ["proc-h-nari"],
+          "notes": "接続だけで即断できる2問(体言接続→存在／連体形接続→断定)を基本編とした。応用編(32講)と合わせて4問しかなく、演習量はやや少ない。"
+        },
+        {
+          "id": "lesson-32",
+          "number": 32,
+          "hook": "",
+          "title": "「なり」の識別 応用編",
+          "status": "partial",
+          "preparation": [
+            { "path": "data/preparation/kobun-06-nari.md", "sections": [] }
+          ],
+          "requiredActivities": [
+            { "id": "lesson-32-h-nari-advanced", "kind": "procedure", "setId": "homograph", "procId": "h-nari", "ids": ["hg-nari-int3", "hg-nari-int4"] }
+          ],
+          "supplementalActivities": [],
+          "legacyTaskIds": ["proc-h-nari"],
+          "notes": "既存4問にラ変型活用語(あり・をり・はべり等)を主語とする例文が1つも無く、手順が明記する「ラ変型は連体形接続」の判定を実践で確認できない。ラ変型を使った新規問題が必要。"
+        },
+        {
+          "id": "lesson-33",
+          "number": 33,
+          "hook": "",
+          "title": "接続助詞① ば・とも・ど／ども",
+          "status": "partial",
+          "preparation": [
+            { "path": "data/preparation/kobun-05-ba.md", "sections": [] },
+            { "path": "data/preparation/kobun-05-joshi-map.md", "sections": [] }
+          ],
+          "requiredActivities": [
+            { "id": "lesson-33-proc-ba", "kind": "procedure", "setId": "joshi", "procId": "ba" },
+            { "id": "lesson-33-c7-tomo", "kind": "group", "setId": "choice", "ids": ["c7-004"] }
+          ],
+          "supplementalActivities": [
+            { "id": "lesson-33-c7-ba-knowledge", "kind": "group", "setId": "choice", "ids": ["c7-003"] }
+          ],
+          "legacyTaskIds": ["proc-ba"],
+          "notes": "「ば」は3用法とも実践あり(exact)。「とも」は接続形の知識問題のみ。「ど・ども」は問題ゼロ（原則カードkbp.particles.tomo-do-domo-meanings(active・source-checked、出典33講明記)はあるので作問のみ残作業）。"
+        },
+        {
+          "id": "lesson-34",
+          "number": 34,
+          "hook": "",
+          "title": "接続助詞② その他",
+          "status": "partial",
+          "preparation": [
+            { "path": "data/preparation/kobun-05-joshi-koou.md", "sections": [] }
+          ],
+          "requiredActivities": [
+            { "id": "lesson-34-c7-de", "kind": "group", "setId": "choice", "ids": ["c7-005"] }
+          ],
+          "supplementalActivities": [
+            { "id": "lesson-34-c7-te-wo", "kind": "group", "setId": "choice", "ids": ["c7-006", "c7-007"] }
+          ],
+          "legacyTaskIds": [],
+          "notes": "対象4助詞(で・ものの／ものを／ものゆゑ・ながら・つつ)は原則カード4枚とも active・source-checked(出典34講明記)だが、で以外の3種は問題が1問も無い。カードは揃っているため作問のみが残作業。"
+        },
+        {
+          "id": "lesson-35",
+          "number": 35,
+          "hook": "",
+          "title": "係助詞① 意味／疑問・反語",
+          "status": "ready",
+          "preparation": [
+            { "path": "data/preparation/kobun-05-kakari-imi.md", "sections": [] }
+          ],
+          "requiredActivities": [
+            {
+              "id": "lesson-35-c7-imi",
+              "kind": "group",
+              "setId": "choice",
+              "ids": ["c7-018", "c7-019", "c7-020", "c7-021", "c7-022", "c7-023"]
+            }
+          ],
+          "supplementalActivities": [],
+          "legacyTaskIds": [],
+          "notes": "2026-08-18、Web調査（3件以上の情報源で一致）に基づき新規作成。ぞ・なむ・こそ＝強意／や・か＝疑問・反語の分類。原則カードkbp.particles.kakari-musubi-basicをactive・source-checkedへ更新。c1-010（05講専有）とは独立の新規問題で、疑問語ヒントによる反語判定（05講領分）とは重ならない設計。"
+        },
+        {
+          "id": "lesson-36",
+          "number": 36,
+          "hook": "",
+          "title": "係助詞② 結びの省略・流れ",
+          "status": "ready",
+          "preparation": [
+            { "path": "data/preparation/kobun-05-kakari-shouryaku-nagare.md", "sections": [] }
+          ],
+          "requiredActivities": [
+            { "id": "lesson-36-proc-kakari-ellipsis", "kind": "procedure", "setId": "joshi", "procId": "kakari-ellipsis" }
+          ],
+          "supplementalActivities": [],
+          "legacyTaskIds": [],
+          "notes": "2026-08-18判明: 原則カードkbp.particles.kakari-musubi-omission／kakari-musubi-nagareは既に存在していた（監査時点の記載は誤り、資産不足は「実践問題」の欠如を指していた）。Web調査で内容を裏付け、出典を追記。新規procedure kakari-ellipsisを37講のkakariとは別に作成。"
+        },
+        {
+          "id": "lesson-37",
+          "number": 37,
+          "hook": "",
+          "title": "係助詞③ 逆接強調・危惧",
+          "status": "ready",
+          "preparation": [
+            { "path": "data/preparation/kobun-05-kakari.md", "sections": [] }
+          ],
+          "requiredActivities": [
+            { "id": "lesson-37-proc-kakari", "kind": "procedure", "setId": "joshi", "procId": "kakari" },
+            { "id": "lesson-37-c7-mozo-mokoso", "kind": "group", "setId": "choice", "ids": ["c7-011"] }
+          ],
+          "supplementalActivities": [],
+          "legacyTaskIds": ["proc-kakari"],
+          "notes": "3実践問題とも「通常の強意」が正解になる問題が無い（誤答選択肢としてのみ登場）。タイトルの「逆接強調」の指す範囲を要確認。"
+        },
+        {
+          "id": "lesson-38",
+          "number": 38,
+          "hook": "",
+          "title": "終助詞① 願望",
+          "status": "partial",
+          "preparation": [
+            { "path": "data/preparation/kobun-05-shuujoshi.md", "sections": [] },
+            { "path": "data/preparation/kobun-05-koou.md", "sections": [] }
+          ],
+          "requiredActivities": [
+            { "id": "lesson-38-jb-shu-desire", "kind": "procedure", "setId": "joshi", "procId": "shuujoshi", "ids": ["jb-shu-int2", "jb-shu-int3"] },
+            { "id": "lesson-38-c7-desire-knowledge", "kind": "group", "setId": "choice", "ids": ["c7-012", "c7-013", "c7-014", "c7-016"] }
+          ],
+          "supplementalActivities": [],
+          "legacyTaskIds": ["proc-shuujoshi", "choice-koou"],
+          "notes": "ばや・てしがな/にしがなは本文付き実践が無く知識問題のみ。自己/他者/状態の分類のうち自己2形中1形しか実践されていない。"
+        },
+        {
+          "id": "lesson-39",
+          "number": 39,
+          "hook": "",
+          "title": "終助詞② 禁止・念押し・詠嘆",
+          "status": "partial",
+          "preparation": [
+            { "path": "data/preparation/kobun-05-shuujoshi.md", "sections": [] },
+            { "path": "data/preparation/kobun-05-koou.md", "sections": [] }
+          ],
+          "requiredActivities": [
+            { "id": "lesson-39-jb-shu-kinshi", "kind": "procedure", "setId": "joshi", "procId": "shuujoshi", "ids": ["jb-shu-int1"] },
+            { "id": "lesson-39-c7-kinshi-nenoshi", "kind": "group", "setId": "choice", "ids": ["c7-015", "c7-017"] }
+          ],
+          "supplementalActivities": [],
+          "legacyTaskIds": ["proc-shuujoshi"],
+          "notes": "禁止は充実、念押しは知識問題のみ。詠嘆は原則カード・問題ともに存在しない。既存c7-016は「かな・もがな」を願望に分類しており、一般的な学校文法の「かな＝詠嘆」との整理と食い違う点を要確認。"
+        },
+        {
+          "id": "lesson-40",
+          "number": 40,
+          "hook": "",
+          "title": "格助詞「の」",
+          "status": "partial",
+          "preparation": [
+            { "path": "data/preparation/kobun-05-no.md", "sections": [] },
+            { "path": "data/preparation/kobun-05-joshi-map.md", "sections": [] }
+          ],
+          "requiredActivities": [
+            { "id": "lesson-40-proc-no", "kind": "procedure", "setId": "joshi", "procId": "no" },
+            { "id": "lesson-40-c7-ga-no", "kind": "group", "setId": "choice", "ids": ["c7-001"] }
+          ],
+          "supplementalActivities": [],
+          "legacyTaskIds": ["proc-no"],
+          "notes": "5用法中、本文付き実践で正解として問われるのは主格のみ(1/5)。「連用修飾格」は裏付けとなる原則カードが無い出典不明の分類。連体修飾格・準体格・同格の実践問題新規作成が必要。"
+        },
+        {
+          "id": "lesson-41",
+          "number": 41,
+          "hook": "",
+          "title": "副助詞① だに（類推）・さへ",
+          "status": "partial",
+          "preparation": [
+            { "path": "data/preparation/kobun-05-dani.md", "sections": [] },
+            { "path": "data/preparation/kobun-05-joshi-map.md", "sections": [] }
+          ],
+          "requiredActivities": [
+            { "id": "lesson-41-proc-dani-ruisui", "kind": "procedure", "setId": "joshi", "procId": "dani", "ids": ["jb-dani-int2"] },
+            { "id": "lesson-41-c7-sahe", "kind": "group", "setId": "choice", "ids": ["c7-009"] }
+          ],
+          "supplementalActivities": [],
+          "legacyTaskIds": ["proc-dani"],
+          "notes": "だに(類推)は実践あり。さへは知識問題1問のみで原則カードも無い。"
+        },
+        {
+          "id": "lesson-42",
+          "number": 42,
+          "hook": "",
+          "title": "副助詞② だに（最小限）・し",
+          "status": "partial",
+          "preparation": [
+            { "path": "data/preparation/kobun-05-dani.md", "sections": [] }
+          ],
+          "requiredActivities": [
+            { "id": "lesson-42-proc-dani-gentei", "kind": "procedure", "setId": "joshi", "procId": "dani", "ids": ["jb-dani-int1"] }
+          ],
+          "supplementalActivities": [],
+          "legacyTaskIds": ["proc-dani"],
+          "notes": "だに(最小限)は実践あり。副助詞「し」(強意)は原則カード・問題・予習資料のいずれにも存在しない（30講「せ」・43講「し・て」と並ぶ空白領域）。"
+        }
+      ]
+    },
+    {
+      "id": "chapter-6",
+      "number": 6,
+      "title": "助詞が絡む識別",
+      "lessons": [
+        {
+          "id": "lesson-43",
+          "number": 43,
+          "hook": "",
+          "title": "「し」「て」の識別",
+          "status": "ready",
+          "preparation": [
+            { "path": "data/preparation/kobun-06-shite.md", "sections": [] }
+          ],
+          "requiredActivities": [
+            { "id": "lesson-43-proc-h-shi", "kind": "procedure", "setId": "homograph", "procId": "h-shi" },
+            { "id": "lesson-43-proc-h-te", "kind": "procedure", "setId": "homograph", "procId": "h-te" }
+          ],
+          "supplementalActivities": [],
+          "legacyTaskIds": [],
+          "notes": "2026-08-18、Web調査（複数情報源で一致、定番単元と確認）に基づき新規作成。しは強意の副助詞／過去の助動詞きの連体形／サ変動詞連用形の3分岐、てはつ(完了・強意)の未然形/連用形／接続助詞の識別。原則カードkbp.disambiguation.shi-identification・te-identification(active・source-checked)を新設。"
+        },
+        {
+          "id": "lesson-44",
+          "number": 44,
+          "hook": "",
+          "title": "「なむ」の識別",
+          "status": "ready",
+          "preparation": [
+            { "path": "data/preparation/kobun-06-namu.md", "sections": [] }
+          ],
+          "requiredActivities": [
+            { "id": "lesson-44-proc-h-namu", "kind": "procedure", "setId": "homograph", "procId": "h-namu" }
+          ],
+          "supplementalActivities": [],
+          "legacyTaskIds": ["proc-h-namu"]
+        },
+        {
+          "id": "lesson-45",
+          "number": 45,
+          "hook": "",
+          "title": "「に」の識別①",
+          "status": "partial",
+          "preparation": [
+            { "path": "data/preparation/kobun-06-ni.md", "sections": [] }
+          ],
+          "requiredActivities": [
+            { "id": "lesson-45-proc-h-ni", "kind": "procedure", "setId": "homograph", "procId": "h-ni", "ids": ["hg-ni-int1", "hg-ni-int2"] }
+          ],
+          "supplementalActivities": [],
+          "legacyTaskIds": ["proc-h-ni"],
+          "notes": "対応表の「後続語を使う応用判定」という説明は実データ（訳し分け・語彙暗記が根拠）と一致しない。ここでは「完了・断定・格助詞の一次判定」を45講に割り当てたが、この分割案はユーザー確認が必要。"
+        },
+        {
+          "id": "lesson-46",
+          "number": 46,
+          "hook": "",
+          "title": "「に」の識別②",
+          "status": "partial",
+          "preparation": [
+            { "path": "data/preparation/kobun-06-ni.md", "sections": [] }
+          ],
+          "requiredActivities": [
+            { "id": "lesson-46-proc-h-ni", "kind": "procedure", "setId": "homograph", "procId": "h-ni", "ids": ["hg-ni-int3", "hg-ni-int4"] }
+          ],
+          "supplementalActivities": [],
+          "legacyTaskIds": ["proc-h-ni"],
+          "notes": "h-niのprocedure本文(手順I〜IV)は1オブジェクトのため、45/46講のどちらでも全文表示される可能性がある。講ごとの部分表示が実装で必要になるかもしれない。"
+        }
+      ]
+    }
+  ],
+  "checkpoint": {
+    "id": "grammar-checkpoint",
+    "title": "文法混合確認",
+    "description": "必修1〜9の全範囲からランダムに出題し、文法全体を確認する",
+    "questionCount": 30,
+    "passThreshold": 24,
+    "poolSource": "required-choice-and-kiso-activities"
+  },
+  "extensions": [
+    {
+      "id": "keigo",
+      "title": "発展：敬語・補助動詞",
+      "description": "敬語の種類、補助動詞、敬意の方向を本文の人物関係に結び付ける",
+      "activities": [
+        { "id": "choice-ch9", "kind": "group", "setId": "choice", "groupId": "qa-chapter-9" },
+        { "id": "proc-k-tamau", "kind": "procedure", "setId": "keigo-shikibetsu", "procId": "k-tamau" },
+        { "id": "proc-k-tatematsuru", "kind": "procedure", "setId": "keigo-shikibetsu", "procId": "k-tatematsuru" },
+        { "id": "proc-k-haberi", "kind": "procedure", "setId": "keigo-shikibetsu", "procId": "k-haberi" },
+        { "id": "proc-k-hojo", "kind": "procedure", "setId": "keigo-shikibetsu", "procId": "k-hojo" },
+        { "id": "proc-k-keii", "kind": "procedure", "setId": "keigo-shikibetsu", "procId": "k-keii" }
+      ],
+      "legacyTaskIds": ["choice-ch9", "proc-k-tamau", "proc-k-tatematsuru", "proc-k-haberi", "proc-k-hojo", "proc-k-keii"]
+    },
+    { "id": "keigo-dokkai", "title": "発展：敬語読解", "activities": [], "legacyTaskIds": [] },
+    { "id": "kobun-joshiki", "title": "発展：古文常識", "activities": [], "legacyTaskIds": [] }
+  ]
+}

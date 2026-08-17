@@ -1,14 +1,17 @@
 {
   "meta": {
-    "source": "docs/kobun-principles の particles 分野の原則カード6枚をもとにしたオリジナル問題",
-    "note": "2026-07-25新設。助詞は data/multiple_choice.json の Chapter 7（知識の4択）だけでは訳し分けの手順が身につかないため、識別フロー（手順の内容理解→4択→実践）を助動詞と同じ形式で用意した。 / 2026-07-29改訂：識別の手順確認・条件確認・対比の4択問題を削除し、理解→実践の2段階に整理。",
+    "source": "docs/kobun-principles の particles・syntax 分野の原則カードをもとにしたオリジナル問題",
+    "note": "2026-07-25新設。助詞は data/multiple_choice.json の Chapter 7（知識の4択）だけでは訳し分けの手順が身につかないため、識別フロー（手順の内容理解→4択→実践）を助動詞と同じ形式で用意した。 / 2026-07-29改訂：識別の手順確認・条件確認・対比の4択問題を削除し、理解→実践の2段階に整理。 / 2026-08-18：36講「係助詞②結びの省略・流れ」向けに procId: kakari-ellipsis を新設。既存の kakari（こそ已然形逆接・もぞもこその懸念、37講用）とは別procedureとして分離し、syntax分野のkbp.syntax.kakari-musubi-omission・kbp.syntax.kakari-musubi-nagareに対応する実践問題6問（jb-kae-int1〜6）を追加した。",
     "ruleCards": [
       "kbp.particles.ba-meanings",
       "kbp.particles.yori-meanings",
       "kbp.particles.ga-no-case-functions",
       "kbp.particles.dani-meanings",
       "kbp.particles.kakari-musubi-special-constructions",
-      "kbp.particles.final-particles-meanings"
+      "kbp.particles.final-particles-meanings",
+      "kbp.syntax.kakari-musubi-omission",
+      "kbp.syntax.kakari-musubi-nagare",
+      "kbp.particles.kakari-musubi-basic"
     ]
   },
   "joshiRequiredQuestionIds": [
@@ -21,6 +24,8 @@
     "jb-dani-int1",
     "jb-kak-int1",
     "jb-kak-int2",
+    "jb-kae-int1",
+    "jb-kae-int4",
     "jb-shu-int1"
   ],
   "joshiProcedures": [
@@ -120,6 +125,25 @@
       ]
     },
     {
+      "id": "kakari-ellipsis",
+      "name": "結びの省略・流れの識別",
+      "sub": "省略された結びを補う・結びが実現しない場合の読み方",
+      "steps": [
+        {
+          "no": "手順I",
+          "text": "係助詞があるのに、対応する結びの語が本文に見当たらないかを確認する。見当たらなければ結びの省略の可能性がある。「と＋ぞ・となむ・とや・とか」は「言ふ・聞く」などの伝聞、「〜にや・〜にか」は「あらむ」が省略されやすい典型の形である。文脈から適当な語を補って意味が通るか確かめる。"
+        },
+        {
+          "no": "手順II",
+          "text": "係助詞を受けるはずの活用語に、接続助詞（て・ば・ど・ども 等）が続いて文がそのまま下へ続いていないかを確認する。続いていれば、通常の結びは実現しない「結びの流れ」であり、連体形・已然形の結びを探さない。"
+        },
+        {
+          "no": "手順III",
+          "text": "どちらにも当てはまらず、結びの語が本文中に明示され、そこで文が完結していれば、通常の係り結びとして扱う。"
+        }
+      ]
+    },
+    {
       "id": "shuujoshi",
       "name": "終助詞の識別",
       "sub": "願望・禁止・念押し",
@@ -188,6 +212,19 @@
       ]
     },
     {
+      "id": "sb-kakari-ellipsis",
+      "name": "結びの省略・流れの識別",
+      "sub": "省略された結びを補う・結びが実現しない場合の読み方",
+      "ids": [
+        "jb-kae-int1",
+        "jb-kae-int2",
+        "jb-kae-int3",
+        "jb-kae-int4",
+        "jb-kae-int5",
+        "jb-kae-int6"
+      ]
+    },
+    {
       "id": "sb-shuujoshi",
       "name": "終助詞の識別",
       "sub": "願望・禁止・念押し",
@@ -215,6 +252,12 @@
         "jb-kak-int1",
         "jb-kak-int2",
         "jb-kak-int3",
+        "jb-kae-int1",
+        "jb-kae-int2",
+        "jb-kae-int3",
+        "jb-kae-int4",
+        "jb-kae-int5",
+        "jb-kae-int6",
         "jb-shu-int1",
         "jb-shu-int2",
         "jb-shu-int3"
@@ -303,6 +346,41 @@
         {
           "id": "jb-kak-int3",
           "label": "統合③",
+          "questionType": "integration"
+        }
+      ]
+    },
+    {
+      "topic": "結びの省略・流れの識別",
+      "items": [
+        {
+          "id": "jb-kae-int1",
+          "label": "統合①",
+          "questionType": "integration"
+        },
+        {
+          "id": "jb-kae-int2",
+          "label": "統合②",
+          "questionType": "integration"
+        },
+        {
+          "id": "jb-kae-int3",
+          "label": "統合③",
+          "questionType": "integration"
+        },
+        {
+          "id": "jb-kae-int4",
+          "label": "統合④",
+          "questionType": "integration"
+        },
+        {
+          "id": "jb-kae-int5",
+          "label": "統合⑤",
+          "questionType": "integration"
+        },
+        {
+          "id": "jb-kae-int6",
+          "label": "統合⑥",
           "questionType": "integration"
         }
       ]
@@ -808,6 +886,200 @@
         {
           "start": 3,
           "text": "の"
+        }
+      ]
+    },
+    {
+      "id": "jb-kae-int1",
+      "topic": "結びの省略・流れの識別",
+      "step": "実践",
+      "questionType": "integration",
+      "coverageId": "jb-kae-int1",
+      "passage": "男、逃げにけりとぞ。",
+      "target": "とぞ",
+      "explanation": "「と＋ぞ」の形は伝聞・引用の結びとして「言ふ・聞く」などが省略されやすい。ここでは「逃げにけりと（人々が）言ふ」の「言ふ」が省略されている。",
+      "distractorRationale": {
+        "「あらむ」（婉曲）": "「にや・にか」型で補う語であり、「とぞ」型ではない",
+        "「侍り」（丁寧）": "丁寧の意味を補う根拠が文脈にない",
+        "「べし」（推量）": "推量を補う根拠が文脈にない"
+      },
+      "ruleRefs": [
+        "kbp.syntax.kakari-musubi-omission"
+      ],
+      "question": "傍線部の直後で省略されている語として最も適切なものはどれか。",
+      "choices": [
+        "「言ふ」（伝聞）",
+        "「あらむ」（婉曲）",
+        "「侍り」（丁寧）",
+        "「べし」（推量）"
+      ],
+      "answerIndex": 0,
+      "targetRanges": [
+        {
+          "start": 7,
+          "text": "とぞ"
+        }
+      ]
+    },
+    {
+      "id": "jb-kae-int2",
+      "topic": "結びの省略・流れの識別",
+      "step": "実践",
+      "questionType": "integration",
+      "coverageId": "jb-kae-int2",
+      "passage": "山の奥に、いかなる人の住むにか。",
+      "target": "にか",
+      "explanation": "「体言・連体形＋に（断定）＋か」の形では、下の「あらむ」が省略されることが多い。「いかなる人が住むのであろうか」の意になる。",
+      "distractorRationale": {
+        "「言ふ」などの伝聞を表す語": "伝聞の「言ふ」は「とぞ・となむ」型で補う語であり、この形ではない",
+        "「見ゆ」": "文脈上、補う根拠がない",
+        "「知る」": "文脈上、補う根拠がない"
+      },
+      "ruleRefs": [
+        "kbp.syntax.kakari-musubi-omission"
+      ],
+      "question": "傍線部の直後で省略されている語として最も適切なものはどれか。",
+      "choices": [
+        "「言ふ」などの伝聞を表す語",
+        "「見ゆ」",
+        "「あらむ」",
+        "「知る」"
+      ],
+      "answerIndex": 2,
+      "targetRanges": [
+        {
+          "start": 13,
+          "text": "にか"
+        }
+      ]
+    },
+    {
+      "id": "jb-kae-int3",
+      "topic": "結びの省略・流れの識別",
+      "step": "実践",
+      "questionType": "integration",
+      "coverageId": "jb-kae-int3",
+      "passage": "これなむ、都にて名高き剣。",
+      "target": "なむ",
+      "explanation": "「なむ」の結びとして探すべき語が本文になく、名詞「剣」で終わっている。「これがまさに〜という剣である」と説明する場面なので、断定「なり」の連体形「なる」を補って読む。",
+      "distractorRationale": {
+        "推量の「べし」（連体形「べかる」）": "文脈上、推量を補う根拠がない",
+        "使役の「さす」": "文脈上、使役を補う根拠がない",
+        "完了の「ぬ」": "文脈上、完了を補う根拠がない"
+      },
+      "ruleRefs": [
+        "kbp.syntax.kakari-musubi-omission"
+      ],
+      "question": "傍線部「なむ」に対応する結びとして省略されていると考えられる語はどれか。",
+      "choices": [
+        "使役の「さす」",
+        "断定の「なり」（連体形「なる」）",
+        "推量の「べし」（連体形「べかる」）",
+        "完了の「ぬ」"
+      ],
+      "answerIndex": 1,
+      "targetRanges": [
+        {
+          "start": 2,
+          "text": "なむ"
+        }
+      ]
+    },
+    {
+      "id": "jb-kae-int4",
+      "topic": "結びの省略・流れの識別",
+      "step": "実践",
+      "questionType": "integration",
+      "coverageId": "jb-kae-int4",
+      "passage": "花こそ咲きて、人は訪れず。",
+      "target": "こそ",
+      "explanation": "「こそ」を受けるはずの語「咲き」に接続助詞「て」が付いて文が下へ続いているため、已然形の結びは現れず、係り結びは成立しない（結びの流れ）。",
+      "distractorRationale": {
+        "已然形の結びが本文にあり、通常の係り結びが成立している": "「咲きて」は連用形＋接続助詞であり、已然形の結びではない",
+        "結びが省略されている": "結びの語自体は「咲き」として存在しており、省略ではない",
+        "「もこそ」と同じ懸念の構文である": "「も」を伴っていないので懸念の構文ではない"
+      },
+      "ruleRefs": [
+        "kbp.syntax.kakari-musubi-nagare"
+      ],
+      "question": "傍線部「こそ」について正しい説明はどれか。",
+      "choices": [
+        "已然形の結びが本文にあり、通常の係り結びが成立している",
+        "結びが省略されている",
+        "已然形の結びを求めず、下へ続く「結びの流れ」である",
+        "「もこそ」と同じ懸念の構文である"
+      ],
+      "answerIndex": 2,
+      "targetRanges": [
+        {
+          "start": 1,
+          "text": "こそ"
+        }
+      ]
+    },
+    {
+      "id": "jb-kae-int5",
+      "topic": "結びの省略・流れの識別",
+      "step": "実践",
+      "questionType": "integration",
+      "coverageId": "jb-kae-int5",
+      "passage": "風ぞ吹けば、船は出でず。",
+      "target": "ぞ",
+      "explanation": "「ぞ」を受ける語「吹け」に接続助詞「ば」が付いて後ろへ続いているため、連体形の結びは現れず、係り結びは成立しない（結びの流れ）。",
+      "distractorRationale": {
+        "連体形の結びが本文にあり、通常の係り結びが成立している": "「吹けば」は已然形＋接続助詞であり、連体形の結びではない",
+        "結びが省略されている": "結びの語「吹け」自体は存在しており、省略ではない",
+        "反語の構文である": "「ぞ」は疑問・反語を表す係助詞ではない"
+      },
+      "ruleRefs": [
+        "kbp.syntax.kakari-musubi-nagare"
+      ],
+      "question": "傍線部「ぞ」について正しい説明はどれか。",
+      "choices": [
+        "結びが省略されている",
+        "連体形の結びが本文にあり、通常の係り結びが成立している",
+        "反語の構文である",
+        "連体形の結びを求めず、下へ続く「結びの流れ」である"
+      ],
+      "answerIndex": 3,
+      "targetRanges": [
+        {
+          "start": 1,
+          "text": "ぞ"
+        }
+      ]
+    },
+    {
+      "id": "jb-kae-int6",
+      "topic": "結びの省略・流れの識別",
+      "step": "実践",
+      "questionType": "integration",
+      "coverageId": "jb-kae-int6",
+      "passage": "月ぞ隈なく照りたる。",
+      "target": "ぞ",
+      "explanation": "「ぞ」の結びである連体形「照りたる」が本文中に明示され、そこで文が完結しているため、省略でも流れでもない通常の係り結びである。",
+      "distractorRationale": {
+        "結びの省略である": "結びの語「照りたる」は本文中にあり、省略には当たらない",
+        "結びの流れである": "接続助詞が続いておらず、文はそこで完結しているため流れには当たらない",
+        "懸念の構文である": "「も」を伴っていないので懸念の構文ではない"
+      },
+      "ruleRefs": [
+        "kbp.particles.kakari-musubi-basic",
+        "kbp.syntax.kakari-musubi-omission",
+        "kbp.syntax.kakari-musubi-nagare"
+      ],
+      "question": "傍線部「ぞ」について正しい説明はどれか。",
+      "choices": [
+        "結びの省略である",
+        "結びの流れである",
+        "懸念の構文である",
+        "通常の係り結びである"
+      ],
+      "answerIndex": 3,
+      "targetRanges": [
+        {
+          "start": 1,
+          "text": "ぞ"
         }
       ]
     }
