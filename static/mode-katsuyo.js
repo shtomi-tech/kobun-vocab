@@ -4,7 +4,7 @@ const KatsuyoApp = (function () {
   const FORM_NAMES = ["未然形", "連用形", "終止形", "連体形", "已然形", "命令形"];
   const STORE_KEY = "kobun-katsuyo-progress-v2";
   const APP_ID = "kobun-katsuyo-v2";
-  const MASTERY_THRESHOLD = 2; // 単語モードと同じ「累計2回正解」で習得扱いに揃える
+  const MASTERY_THRESHOLD = 2; // 「累計2回正解」で習得扱いとする
   const IDENTIFICATION_PRACTICE_VERSION = 2;
 
   const homePanel = document.getElementById("homePanel");
@@ -27,7 +27,7 @@ const KatsuyoApp = (function () {
       KobunPreparation.clearProgress();
     }
   }
-  // 段階2の必修。頭の中で文を組み立てられる順に10段構成にしてある。
+  // 段階1（古典文法）の必修。頭の中で文を組み立てられる順に10段構成にしてある。
   // 並びは「文の骨組み → 用言 → 助動詞（未然形接続 → 連用形接続 → 終止形接続 → 体言・連体形接続）
   // → 助詞・呼応・文末 → 同形語 → 敬語 → 混合確認」。
   // 助動詞は「28語の表を全部埋めてから意味へ」ではなく、接続グループごとに
@@ -683,7 +683,7 @@ const KatsuyoApp = (function () {
     return shikibetsuProcedures().find(proc => !shikibetsuProcStatus(proc.id).complete) || null;
   }
 
-  /* ---------- 文法ロードマップ（第2段階） ---------- */
+  /* ---------- 文法ロードマップ（第1段階） ---------- */
   function loadPathState() {
     try {
       const raw = localStorage.getItem(PATH_STORE_KEY);
@@ -948,8 +948,9 @@ const KatsuyoApp = (function () {
       requeueWrong: false,
     });
   }
-  function appendPathSection(title, stages, stats, hintText, lockText, collapsed) {
+  function appendPathSection(title, stages, stats, hintText, lockText, collapsed, sectionId) {
     const progress = el("section", "card");
+    if (sectionId) progress.id = sectionId;
     progress.appendChild(el("span", "label", title + "の進捗"));
     const grid = el("div", "statGrid");
     stats.forEach(([num, small, cap]) => {
@@ -1065,20 +1066,15 @@ const KatsuyoApp = (function () {
         : firstIncompleteCultureTask();
     const hero = el("section", "card hero");
     hero.appendChild(el("span", "label", !grammarComplete
-      ? "STAGE 2 / GRAMMAR"
+      ? "STAGE 1 / GRAMMAR"
       : !readingComplete
-        ? "STAGE 3 / KEIGO READING"
-        : "STAGE 4 / CLASSICAL CULTURE"));
+        ? "STAGE 2 / KEIGO READING"
+        : "STAGE 3 / CLASSICAL CULTURE"));
     hero.appendChild(el("h2", null, !grammarComplete
-      ? (next ? "次は" + next.task.label + "を進める" : "第2段階の文法を完了しました")
+      ? (next ? "次は" + next.task.label + "を進める" : "第1段階の文法を完了しました")
       : !readingComplete
-        ? (next ? "次は" + next.task.label + "を進める" : "第3段階の敬語読解を完了しました")
-        : (next ? "次は" + next.task.label + "を進める" : "第4段階の古文常識を完了しました")));
-    hero.appendChild(el("p", "hint", !grammarComplete
-      ? "文の骨組み → 用言 → 助動詞の形 → 助動詞の意味 → 助詞・呼応・文末 → 同形語 → 敬語の順で進みます。次の課題では、先に予習資料を読んでから問題へ進みます。"
-      : !readingComplete
-        ? "敬意の方向 → 省略主語 → 短文統合の順で、敬語を主語判別に使います。"
-        : "宮廷生活 → 恋愛・婚姻 → 年中行事の順で、文法だけでは埋まらない行間を読みます。"));
+        ? (next ? "次は" + next.task.label + "を進める" : "第2段階の敬語読解を完了しました")
+        : (next ? "次は" + next.task.label + "を進める" : "第3段階の古文常識を完了しました")));
     if (next) {
       const primary = el("button", "cta primaryCta", "");
       primary.type = "button";
@@ -1086,13 +1082,18 @@ const KatsuyoApp = (function () {
       primary.appendChild(el("span", "ctaMain", next.task.label));
       primary.addEventListener("click", () => startRequiredTask(next.task));
       hero.appendChild(primary);
-    } else {
-      hero.appendChild(el("p", "hint", cultureComplete
+    }
+    hero.appendChild(el("p", "hint", next
+      ? (!grammarComplete
+        ? "文の骨組み → 用言 → 助動詞の形 → 助動詞の意味 → 助詞・呼応・文末 → 同形語 → 敬語の順で進みます。次の課題では、先に予習資料を読んでから問題へ進みます。"
+        : !readingComplete
+          ? "敬意の方向 → 省略主語 → 短文統合の順で、敬語を主語判別に使います。"
+          : "宮廷生活 → 恋愛・婚姻 → 年中行事の順で、文法だけでは埋まらない行間を読みます。")
+      : (cultureComplete
         ? "現在の必修範囲はここまでです。復習は下の完了済み項目から行えます。"
         : readingComplete
-          ? "第4段階（古文常識）の次の必修を選べる状態です。復習は下の完了済み項目から行えます。"
-          : "第3段階（敬語読解）の次の必修を選べる状態です。復習は下の完了済み項目から行えます。"));
-    }
+          ? "第3段階（古文常識）の次の必修を選べる状態です。復習は下の完了済み項目から行えます。"
+          : "第2段階（敬語読解）の次の必修を選べる状態です。復習は下の完了済み項目から行えます。")));
     homePanel.appendChild(hero);
 
     if (typeof LearningMap !== "undefined") {
@@ -1109,24 +1110,27 @@ const KatsuyoApp = (function () {
     const cultureCurrent = grammarComplete && readingComplete && !cultureComplete;
 
     const grammarCompleted = grammarStages.filter(stage => stage.complete).length;
-    appendPathSection("第2段階", grammarStages,
+    appendPathSection("第1段階", grammarStages,
       [[String(grammarCompleted), "/ " + grammarStages.length, "COMPLETE・完了"], [String(grammarStages.length - grammarCompleted), "", "REMAINING・残り"], [String(requiredChoiceIds().length), "", "確認対象の4択"]],
       "通常問題は通し演習で各問題を1回以上正解すると完了、識別フローは実践を全問1回正解で完了扱いです。最後に文法混合確認30問を行います。",
       "前の文法必修を完了すると解放されます。",
-      !grammarCurrent);
+      !grammarCurrent,
+      "grammarStage");
 
     const readingCompleted = readingStages.filter(stage => stage.complete).length;
-    appendPathSection("第3段階", readingStages,
+    appendPathSection("第2段階", readingStages,
       [[String(readingCompleted), "/ " + readingStages.length, "COMPLETE・完了"], [String(readingStages.length - readingCompleted), "", "REMAINING・残り"], [String(requiredReadingIds().length), "", "敬語読解の確認"]],
       "敬語読解は各短文を2回正解し、最後に12問中10問以上のチェックポイントに合格すると完了です。",
-      "第2段階の文法を完了すると解放されます。",
-      !readingCurrent);
+      "第1段階の文法を完了すると解放されます。",
+      !readingCurrent,
+      "readingStage");
     const cultureCompleted = cultureStages.filter(stage => stage.complete).length;
-    appendPathSection("第4段階", cultureStages,
+    appendPathSection("第3段階", cultureStages,
       [[String(cultureCompleted), "/ " + cultureStages.length, "COMPLETE・完了"], [String(cultureStages.length - cultureCompleted), "", "REMAINING・残り"], [String(requiredCultureIds().length), "", "古文常識の確認"]],
       "古文常識は各短文を2回正解し、最後に12問中10問以上のチェックポイントに合格すると完了です。",
-      "第3段階の敬語読解を完了すると解放されます。",
-      !cultureCurrent);
+      "第2段階の敬語読解を完了すると解放されます。",
+      !cultureCurrent,
+      "cultureStage");
     renderSupplementalPracticeCard();
     if (!sharedMode) {
       const moreCard = el("section", "card");
@@ -2686,7 +2690,7 @@ const KatsuyoApp = (function () {
     renderHome();
   }
 
-  // 学習マップ用：段階2〜4（文法・敬語読解・古文常識）の完了状況と次タスクを返す。
+  // 学習マップ用：段階1〜3（文法・敬語読解・古文常識）の完了状況と次タスクを返す。
   // DATA 未読込のときは ready:false。ensureData() で読み込める。
   function pathOverview() {
     if (!DATA) return { ready: false };

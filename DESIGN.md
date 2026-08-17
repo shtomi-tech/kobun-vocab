@@ -1,7 +1,7 @@
-# DESIGN.md — kobun-vocab
+# DESIGN.md — 古典文法演習
 
 > このアプリのUIデザイン正本。エージェントは `dev/CLAUDE.md` の共通指針ではなく**このファイルに準拠**すること。
-> ベース: [VoltAgent/awesome-design-md](https://github.com/VoltAgent/awesome-design-md) の Apple DESIGN.md を本アプリ（日本語・古文学習アプリ、Windows/モバイル環境）向けに適応。
+> ベース: [VoltAgent/awesome-design-md](https://github.com/VoltAgent/awesome-design-md) の Apple DESIGN.md を本アプリ（日本語・古典文法学習アプリ、Windows/モバイル環境）向けに適応。
 
 ## デザインの核
 

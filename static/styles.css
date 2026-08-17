@@ -1,4 +1,4 @@
-/* kobun-vocab — Apple design language（正本: リポ直下の DESIGN.md）
+/* 古典文法演習 — Apple design language（正本: リポ直下の DESIGN.md）
    トークン名は旧デザインとの互換のため維持（JSが var(--parchment) 等を参照）。 */
 :root {
   --ink: #1d1d1f;
@@ -117,48 +117,8 @@ h2 {
 
 .hint { color: var(--muted); font-size: 13px; margin: 8px 0 0; }
 
-/* ---- App nav（上段のモード／古典文法内の練習モード） ---- */
-.appNav {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 8px;
-  margin-bottom: 17px;
-}
-
 #homePanel { display: grid; gap: 24px; }
 #homePanel > .card { margin-bottom: 0; }
-
-.appTab {
-  border: 1px solid var(--line);
-  border-radius: var(--r-card);
-  background: var(--paper);
-  color: var(--ink);
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 4px;
-  min-height: 62px;
-  padding: 12px 17px;
-  text-align: left;
-}
-.appTab span {
-  color: var(--muted);
-  font-size: 11px;
-}
-.appTab:hover {
-  background: var(--paper);
-  border-color: var(--clay);
-  color: var(--clay);
-}
-.appTab:hover span { color: var(--clay); }
-.appTab[aria-pressed="true"] {
-  background: var(--clay);
-  border-color: var(--clay);
-  color: #fff;
-}
-.appTab[aria-pressed="true"] span { color: rgba(255, 255, 255, .74); }
-.appTab.locked { color: var(--muted); opacity: .78; }
-.appTab.locked:hover { border-color: var(--line); color: var(--muted); }
 
 /* ---- Stats grid ---- */
 .statGrid {
@@ -200,28 +160,7 @@ h2 {
 .hero .masteryBar { background: rgba(255, 255, 255, .2); }
 .hero .masteryFill { background: #fff; }
 
-/* ---- Chapter list（単語モード） ---- */
-.chapterList {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
-  margin-top: 4px;
-}
-.chapterBtn {
-  border: 1px solid transparent;
-  border-radius: var(--r-md);
-  background: var(--parchment);
-  color: var(--ink);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  text-align: left;
-  padding: 12px 12px;
-  cursor: pointer;
-  font: inherit;
-}
-.chapterBtn:hover { border-color: var(--clay); }
+/* ---- 活用ホーム内訳の行要素 ---- */
 .chapterMain { display: grid; gap: 8px; min-width: 0; flex: 1 1 auto; }
 .chapterName { font-size: 15px; }
 .chapterStat {
@@ -239,7 +178,6 @@ h2 {
   max-width: 220px;
 }
 .chapterMiniBar span { display: block; height: 100%; border-radius: var(--r-pill); background: var(--clay); }
-@media (max-width: 560px) { .chapterList { grid-template-columns: 1fr; } }
 .cta { font-weight: 600; min-width: min(100%, 260px); }
 .reviewCta { background: var(--clay); border-color: var(--clay); }
 .reviewCta:hover { background: var(--blue-hover); border-color: var(--blue-hover); }
@@ -267,45 +205,17 @@ h2 {
 .primaryCta .ctaMain { font-size: 19px; font-weight: 600; }
 
 .moreDetails summary,
-.chapterDetails summary,
 .pathStagesDetails summary {
   cursor: pointer;
   list-style: none;
 }
 .moreDetails summary::-webkit-details-marker,
-.chapterDetails summary::-webkit-details-marker,
 .pathStagesDetails summary::-webkit-details-marker { display: none; }
 .moreDetails summary::before,
-.chapterDetails summary::before,
 .pathStagesDetails summary::before { content: "▸ "; color: var(--clay); }
 .moreDetails[open] summary::before,
-.chapterDetails[open] summary::before,
 .pathStagesDetails[open] summary::before { content: "▾ "; }
-.chapterDetails .chapterList { margin-top: 12px; }
 .pathStagesDetails .pathStages { margin-top: 12px; }
-
-.rangePicker { margin-top: 12px; }
-.rangeRow { display: flex; align-items: flex-end; gap: 12px; flex-wrap: wrap; }
-.rangeField { display: flex; flex-direction: column; gap: 4px; }
-.rangeFieldLabel {
-  font-size: 12px;
-  color: var(--muted);
-}
-.rangeField input[type="number"] {
-  width: 90px;
-  padding: 8px 12px;
-  border: 1px solid var(--line);
-  border-radius: var(--r-md);
-  background: var(--paper);
-  color: var(--ink);
-  font: inherit;
-  font-size: 15px;
-}
-.rangeField input[type="number"]:focus { outline: 2px solid var(--focus); outline-offset: 1px; }
-.rangeSep { padding-bottom: 8px; color: var(--muted); }
-.chapterBtnAll { background: var(--paper); border-color: var(--line); }
-.chapterBtnAll:hover { border-color: var(--clay); }
-.chapterBtnAll .chapterName { font-weight: 600; }
 
 /* ---- 活用ホーム：表示専用の内訳（練習ボタンと見た目を分ける） ---- */
 .breakdownList {
@@ -396,8 +306,7 @@ h2 {
 }
 
 /* ---- 古典文法の予習資料 ---- */
-.prepPageMode .top,
-.prepPageMode .appNav { display: none; }
+.prepPageMode .top { display: none; }
 .prepPageMode .wrap { max-width: 720px; padding-top: 32px; }
 .prepShell { display: grid; gap: 17px; }
 .prepBack {
@@ -618,7 +527,7 @@ h2 {
   .prepPracticeButton { width: 100%; }
 }
 
-/* ---- 学習マップ（段階1〜4の全体フローと現在地） ---- */
+/* ---- 学習マップ（段階1〜3の全体フローと現在地） ---- */
 .lmap { padding: 17px 24px; }
 .lmapTop { display: grid; gap: 4px; }
 .lmapTop .label { margin: 0; }
@@ -627,13 +536,6 @@ h2 {
 .lmapStepper { list-style: none; display: grid; gap: 8px; margin: 12px 0 0; padding: 0; }
 .lmapStep { min-width: 0; position: relative; text-align: left; }
 .lmapStep::before { display: none; }
-
-.lmapParallel { border-radius: var(--r-md); background: var(--parchment); padding: 12px; margin-top: 17px; }
-.lmapParallel .lmapStepper { margin-top: 0; }
-.lmapParallelTag { margin: 0 0 4px; font-size: 11px; color: var(--muted); text-align: left; }
-.lmapStepperParallel .lmapStep::before { display: none; }
-
-.lmapParallel .lmapStepper { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
 .lmapStepBtn, .lmapStepStatic {
   display: grid; grid-template-columns: 32px minmax(0, 1fr); grid-template-rows: auto auto;
@@ -667,8 +569,6 @@ h2 {
 .lmapDetails[open] > summary::before { content: "▾"; }
 
 .lmapFlow { display: flex; flex-direction: column; margin-top: 8px; }
-.lmapFlowParallel { border: 1px dashed var(--line); border-radius: var(--r-md); padding: 12px; display: flex; flex-direction: column; gap: 12px; }
-.lmapFlowParallelTag { margin: 0; font-size: 11.5px; color: var(--muted); text-align: left; }
 .lmapFlowStage { border: 1px solid var(--line); border-radius: var(--r-md); padding: 12px 12px; background: var(--paper); }
 .lmapFlowStage.is-current { border-color: var(--clay); border-left-width: 3px; background: var(--parchment); }
 .lmapFlowStage.is-locked { opacity: .72; }
@@ -691,7 +591,6 @@ h2 {
 @media (max-width: 480px) {
   .lmapName { font-size: 11px; }
   .lmapNow { width: 100%; }
-  .lmapParallel .lmapStepper { grid-template-columns: 1fr; }
 }
 
 /* ---- 知識項目カバレッジ（手順ごとの確認状況） ---- */
@@ -788,57 +687,11 @@ h2 {
   line-height: 1.25;
   margin: 0 0 4px;
 }
-.askMeta {
-  font-size: 13px;
-  color: var(--muted);
-  margin: 0 0 17px;
-}
-.askMeta .pos {
-  border: 1px solid var(--line);
-  border-radius: var(--r-pill);
-  padding: 4px 8px;
-  margin-right: 8px;
-}
 .gradeChoiceQuestion {
   font-size: 22px;
   line-height: 1.6;
   margin: 0;
 }
-
-/* ---- 単語モード：4択（choices/choiceBtn） ---- */
-.choices { display: grid; gap: 12px; }
-.choiceBtn {
-  background: var(--paper);
-  color: var(--ink);
-  border: 1px solid var(--line);
-  border-radius: var(--r-md);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  min-height: 56px;
-  padding: 12px 17px;
-  text-align: left;
-  cursor: pointer;
-  font: inherit;
-}
-.choiceBtn:hover:not(:disabled) { border-color: var(--clay); color: var(--clay); }
-.choiceBtn:active:not(:disabled) { transform: scale(0.99); }
-.choiceBtn:disabled { cursor: default; opacity: 1; transform: none; }
-.choiceBtn.correct { border-color: var(--ok); border-width: 2px; background: #f2fbf2; color: var(--ink); }
-.choiceBtn.wrong { border-color: var(--ng); border-width: 2px; background: #fdf2f2; color: var(--ink); }
-.choiceBtn .txt { font-size: 17px; }
-.key {
-  border: 1px solid var(--line);
-  border-radius: var(--r-pill);
-  color: var(--muted);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 26px;
-  height: 26px;
-  font-size: 12px;
-}
-.choiceBtn:hover:not(:disabled) .key { border-color: currentColor; color: inherit; }
 
 /* ---- 活用モード：行入力フィールド ---- */
 .fieldRow { border-top: 1px solid var(--divider); padding: 12px 0; }
@@ -884,7 +737,7 @@ h2 {
 .optionChip.wrong .optionChipIcon { color: var(--ng); }
 .fieldHint { color: var(--muted); font-size: 12px; margin: 8px 0 0; }
 
-/* ---- 活用モード：文法4択（gradeChoice*、単語モードのchoiceBtnと構造が異なるため別名） ---- */
+/* ---- 活用モード：文法4択（gradeChoice*） ---- */
 .gradeChoiceList {
   display: grid;
   gap: 12px;
@@ -952,8 +805,6 @@ h2 {
 .feedback.ng { border-color: var(--ng); }
 .feedback.ok h3 { color: var(--ok); }
 .feedback.ng h3 { color: var(--ng); }
-.feedback .word { font-size: 20px; font-weight: 600; }
-.feedback .word small { font-size: 13px; font-weight: 400; color: var(--muted); margin-left: 8px; }
 .feedback ul { margin: 8px 0 0; padding-left: 17px; }
 .feedback li { margin: 4px 0; }
 #feedbackArea { scroll-margin-top: 17px; }
@@ -1022,68 +873,6 @@ h2 {
   padding: 4px 12px;
 }
 
-/* ---- Vocab: 誤答復習ステージ ---- */
-.reviewList { display: flex; flex-direction: column; gap: 12px; margin-top: 12px; }
-.reviewCard {
-  border: 1px solid var(--line);
-  border-left: 3px solid var(--ng);
-  border-radius: var(--r-md);
-  background: var(--paper);
-  padding: 12px 17px;
-}
-.reviewCard.reviewCardDone { border-left-color: var(--line); opacity: .6; }
-.reviewCardHead { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-.reviewCheckBtn { min-height: 44px; }
-.reviewCard .word { font-size: 20px; font-weight: 600; margin: 0; }
-.reviewCard .word small { font-size: 13px; font-weight: 400; color: var(--muted); margin-left: 8px; }
-.reviewCard ul { margin: 8px 0 0; padding-left: 17px; }
-.reviewCard li { margin: 4px 0; }
-.reviewNote, .reviewExample {
-  border-top: 1px solid var(--divider);
-  margin: 12px 0 0;
-  padding-top: 8px;
-  font-size: 14px;
-}
-.reviewNote .k, .reviewExample .k {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--clay);
-  margin-right: 8px;
-}
-.translationGuide {
-  border: 1px solid var(--line);
-  border-radius: var(--r-md);
-  background: var(--parchment);
-  margin-top: 12px;
-  padding: 12px 12px;
-}
-.translationGuideTitle {
-  margin: 0 0 8px;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--muted);
-}
-.translationVariants {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-  gap: 12px;
-}
-.translationVariant {
-  border-left: 3px solid var(--clay);
-  padding-left: 12px;
-}
-.translationVariantType {
-  margin: 0;
-  font-weight: 600;
-}
-.translationVariant ul {
-  margin: 4px 0 0;
-  padding-left: 17px;
-}
-.translationVariant li { margin: 4px 0; }
-.reviewExample .exJp { font-size: 15px; display: block; margin-top: 4px; }
-.reviewExample .exYaku { color: var(--muted); display: block; margin-top: 4px; }
-
 /* ---- Done banner ---- */
 .doneBanner {
   background: var(--ink);
@@ -1107,16 +896,12 @@ h2 {
   .gradeChoiceQuestion { font-size: 20px; }
   .kanaInput { width: 46%; }
   .topActions, .top { align-items: stretch; }
-  .chapterBtn { align-items: flex-start; flex-direction: column; }
   .chapterStat { flex: 0 1 auto; }
   .actions .cta, .actions .ghost { width: 100%; }
   .actions .smallGhost { min-height: 44px; }
   .nextRow { justify-content: stretch; flex-direction: column; }
   .submitRow { flex-direction: column; }
   .submitRow .cta { width: 100%; }
-  .appNav { gap: 8px; }
-  .appTab { min-height: 56px; }
-  .choiceBtn { min-height: 56px; }
   .nextRow .cta { min-height: 56px; width: 100%; }
   #sessionPanel .nextRow {
     position: sticky;
@@ -1127,6 +912,3 @@ h2 {
     padding: 12px 0 calc(12px + env(safe-area-inset-bottom));
   }
 }
-
-/* 演習中は回答に集中させ、モード切替を誤って押さないようにする。 */
-body:has(#sessionPanel:not(.hide)) .appNav { display: none; }
