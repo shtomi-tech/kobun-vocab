@@ -440,6 +440,33 @@ const KatsuyoApp = (function () {
     const injected = typeof window !== "undefined" && window.__KATSUYO_NOW__;
     return typeof injected === "string" ? injected : new Date().toISOString();
   }
+  function lessonSrsMap(p) {
+    if (!p.__lessonSrs || typeof p.__lessonSrs !== "object" || Array.isArray(p.__lessonSrs)) {
+      p.__lessonSrs = {};
+    }
+    return p.__lessonSrs;
+  }
+  function lessonSrs(lessonId) {
+    const p = loadProgress();
+    return KobunSrs.normalize(lessonSrsMap(p)[lessonId]);
+  }
+  function recordLessonSrs(lessonId, correct, answeredAt = nowIso()) {
+    const p = loadProgress();
+    const map = lessonSrsMap(p);
+    map[lessonId] = KobunSrs.record(map[lessonId], correct, new Date(answeredAt));
+    saveProgress(p);
+    return map[lessonId];
+  }
+  function lessonHasWeakRecord(lesson) {
+    return lessonActivityTasks(lesson.id).some(task => taskHasWeakRecord(task));
+  }
+  function curriculumLessons() {
+    return (CURRICULUM && CURRICULUM.chapters || []).flatMap(chapter => chapter.lessons || []);
+  }
+  function dueLessons(now = Date.parse(nowIso())) {
+    return curriculumLessons().filter(lesson =>
+      lessonStatus(lesson).complete && KobunSrs.isDue(lessonSrs(lesson.id), now));
+  }
   function grammarTaskCycles(state) {
     if (!state.grammarTaskCycles || typeof state.grammarTaskCycles !== "object") {
       state.grammarTaskCycles = {};
@@ -512,10 +539,15 @@ const KatsuyoApp = (function () {
     const at = options.now || nowIso();
     if (options.review) {
       markLessonReviewed(lesson.id, at);
+      if (lessonStatus(lesson).complete) {
+        recordLessonSrs(lesson.id, !lessonHasWeakRecord(lesson), at);
+      }
       return true;
     }
     if (!lessonStatus(lesson).complete) return false;
-    return markLessonCompleted(lesson.id, at);
+    const completed = markLessonCompleted(lesson.id, at);
+    if (completed) recordLessonSrs(lesson.id, true, at);
+    return completed;
   }
   function practiceSetById(id) {
     return DATA.practiceSets.find(set => set.id === id) || null;
@@ -936,7 +968,8 @@ const KatsuyoApp = (function () {
         const body = el("div", "lessonRoadmapBody");
         body.appendChild(el("span", "lessonRoadmapNumber", String(lesson.number).padStart(2, "0") + "講"));
         body.appendChild(el("h4", null, lesson.title));
-        body.appendChild(el("p", "hint", "活動 " + status.doneCount + " / " + status.requiredCount + (status.complete ? "・完了" : "・未完了")));
+        body.appendChild(el("p", "hint", "活動 " + status.doneCount + " / " + status.requiredCount
+          + (status.complete ? "・完了・" + KobunSrs.label(lessonSrs(lesson.id)) : "・未完了")));
         row.appendChild(body);
         const actions = el("div", "lessonRoadmapActions");
         const action = el("button", status.complete ? "ghost smallGhost" : "cta smallGhost", status.complete ? "復習する" : "この講を始める");
@@ -951,6 +984,46 @@ const KatsuyoApp = (function () {
       chapterCard.appendChild(details);
       homePanel.appendChild(chapterCard);
     });
+    const completedSrsLessons = allLessons.filter(lesson => lessonStatus(lesson).complete);
+    const due = dueLessons();
+    const srsCard = el("section", "card lessonSrsCard");
+    srsCard.appendChild(el("span", "label", "SPACED REVIEW"));
+    srsCard.appendChild(el("h2", null, "今日の復習"));
+    srsCard.appendChild(el("p", "hint", "完了した講を1講ずつ間隔復習します。正解すると1・3・7・14日後へ進みます。"));
+    const counts = Object.fromEntries(KobunSrs.labels.map(label => [label, 0]));
+    completedSrsLessons.forEach(lesson => { counts[KobunSrs.label(lessonSrs(lesson.id))] += 1; });
+    const intervalGrid = el("div", "intervalGrid");
+    intervalGrid.setAttribute("aria-label", "講の復習間隔別内訳");
+    KobunSrs.labels.forEach(label => {
+      const cell = el("div", "intervalCell");
+      cell.appendChild(el("strong", null, String(counts[label])));
+      cell.appendChild(el("span", null, label));
+      intervalGrid.appendChild(cell);
+    });
+    srsCard.appendChild(intervalGrid);
+    const srsButton = el("button", "cta reviewCta", due.length
+      ? "今日復習する講 " + due.length + "件を始める"
+      : "今日復習する講はありません");
+    srsButton.type = "button";
+    srsButton.disabled = due.length === 0;
+    srsButton.addEventListener("click", () => {
+      const next = dueLessons()[0];
+      if (next) startLesson(next, { review: true });
+    });
+    srsCard.appendChild(srsButton);
+    if (!due.length) {
+      const nextReviewAt = completedSrsLessons
+        .map(lesson => Date.parse(lessonSrs(lesson.id).nextReviewAt || ""))
+        .filter(time => Number.isFinite(time))
+        .sort((a, b) => a - b)[0];
+      if (nextReviewAt) {
+        const days = Math.max(1, Math.ceil((nextReviewAt - Date.parse(nowIso())) / 86400000));
+        srsCard.appendChild(el("p", "hint", "次の復習は" + days + "日後です。"));
+      } else if (!completedSrsLessons.length) {
+        srsCard.appendChild(el("p", "hint", "講を完了すると復習対象になります。"));
+      }
+    }
+    homePanel.appendChild(srsCard);
     const weakCount = weakQueueEntries(allLessons).length;
     if (weakCount) {
       const weakCard = el("section", "card weakRoadmapCard");
@@ -2727,6 +2800,7 @@ const KatsuyoApp = (function () {
       taskCheckedIds,
       taskStatus,
       applyActivityCompletion,
+      dueLessons,
       grammarCourseStatus,
       lessonQueueEntries,
       chapterQueueEntries,

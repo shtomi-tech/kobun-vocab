@@ -350,6 +350,25 @@ h2 {
 .lessonRoadmapBody .hint { margin-top: 2px; }
 .lessonRoadmapActions { display: flex; justify-content: flex-end; }
 .lessonRoadmapActions .smallGhost { min-width: 104px; min-height: 44px; }
+.lessonSrsCard { border-left: 4px solid var(--clay); }
+.intervalGrid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  margin: 12px 0 17px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  overflow: hidden;
+}
+.intervalCell {
+  padding: 10px 6px;
+  border-left: 1px solid var(--line);
+  background: var(--parchment);
+  text-align: center;
+}
+.intervalCell:first-child { border-left: 0; }
+.intervalCell strong, .intervalCell span { display: block; }
+.intervalCell strong { font-size: 20px; }
+.intervalCell span { color: var(--muted); font-size: 11px; }
 @media (max-width: 700px) {
   .chapterStepper { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
@@ -359,6 +378,9 @@ h2 {
   .lessonRoadmapRow { grid-template-columns: 32px minmax(0, 1fr); align-items: start; }
   .lessonRoadmapActions { grid-column: 2; justify-content: stretch; }
   .lessonRoadmapActions .smallGhost { width: 100%; }
+  .intervalGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .intervalCell:nth-child(4) { border-left: 0; border-top: 1px solid var(--line); }
+  .intervalCell:nth-child(n+5) { border-top: 1px solid var(--line); }
 }
 
 /* ---- 古典文法の予習資料 ---- */

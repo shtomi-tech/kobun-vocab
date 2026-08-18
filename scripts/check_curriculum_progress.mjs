@@ -93,8 +93,10 @@ function createHarness(seed) {
   };
   const context = vm.createContext(sandbox);
   const cloudSrc = fs.readFileSync(path.join(ROOT, "static/vendor/harness/cloud.js"), "utf8");
+  const srsSrc = fs.readFileSync(path.join(ROOT, "static/srs.js"), "utf8");
   const appSrc = fs.readFileSync(path.join(ROOT, "static/mode-katsuyo.js"), "utf8");
   vm.runInContext(cloudSrc, context, { filename: "static/vendor/harness/cloud.js" });
+  vm.runInContext(srsSrc, context, { filename: "static/srs.js" });
   vm.runInContext(appSrc, context, { filename: "static/mode-katsuyo.js" });
   vm.runInContext("this.__KatsuyoApp = KatsuyoApp;", context, { filename: "capture.js" });
   return { context, localStorage, app: context.__KatsuyoApp };
@@ -388,17 +390,47 @@ async function testCurriculumStateBoundaries() {
     !path.grammarTaskCycles || !path.grammarTaskCycles[lesson01Task.id]);
   check(label + ": last activity stamps lessonCycles once",
     path.lessonCycles && path.lessonCycles[lesson01.id] && path.lessonCycles[lesson01.id].completedAt === fixed);
+  let storedProgress = JSON.parse(localStorage.getItem(STORE_KEY) || "{}");
+  check(label + ": first completion schedules SRS for one day later",
+    storedProgress.__lessonSrs && storedProgress.__lessonSrs[lesson01.id]
+      && storedProgress.__lessonSrs[lesson01.id].stage === 1
+      && storedProgress.__lessonSrs[lesson01.id].nextReviewAt === "2026-08-19T00:00:00.000Z");
 
   app.__test.applyActivityCompletion(lesson01Task.id, { now: "2026-08-18T01:00:00.000Z" });
   path = parsePathState(localStorage);
   check(label + ": repeated completion keeps the original completedAt",
     path.lessonCycles[lesson01.id].completedAt === fixed);
+  storedProgress = JSON.parse(localStorage.getItem(STORE_KEY) || "{}");
+  check(label + ": repeated completion does not advance SRS",
+    storedProgress.__lessonSrs[lesson01.id].stage === 1
+      && storedProgress.__lessonSrs[lesson01.id].wrongCount === 0);
 
   app.__test.applyActivityCompletion(lesson01Task.id, { review: true, now: "2026-08-18T02:00:00.000Z" });
   path = parsePathState(localStorage);
   check(label + ": review updates lastReviewedAt only",
     path.lessonCycles[lesson01.id].completedAt === fixed
       && path.lessonCycles[lesson01.id].lastReviewedAt === "2026-08-18T02:00:00.000Z");
+  storedProgress = JSON.parse(localStorage.getItem(STORE_KEY) || "{}");
+  check(label + ": successful review advances SRS three days",
+    storedProgress.__lessonSrs[lesson01.id].stage === 2
+      && storedProgress.__lessonSrs[lesson01.id].nextReviewAt === "2026-08-21T02:00:00.000Z");
+
+  storedProgress["kiso:k-yomi-03"].weak = true;
+  localStorage.setItem(STORE_KEY, JSON.stringify(storedProgress));
+  app.__test.applyActivityCompletion(lesson01Task.id, { review: true, now: "2026-08-18T03:00:00.000Z" });
+  storedProgress = JSON.parse(localStorage.getItem(STORE_KEY) || "{}");
+  check(label + ": review with a remaining weak record resets SRS",
+    storedProgress.__lessonSrs[lesson01.id].stage === 0
+      && storedProgress.__lessonSrs[lesson01.id].nextReviewAt === null
+      && storedProgress.__lessonSrs[lesson01.id].wrongCount === 1);
+  check(label + ": reset SRS lesson is due",
+    app.__test.dueLessons(Date.parse("2026-08-18T03:00:00.000Z")).some(lesson => lesson.id === lesson01.id));
+
+  const lesson02Task = findTask(curriculum, "lesson-02-kiso");
+  app.__test.applyActivityCompletion(lesson02Task.id, { review: true, now: "2026-08-18T04:00:00.000Z" });
+  storedProgress = JSON.parse(localStorage.getItem(STORE_KEY) || "{}");
+  check(label + ": reviewing an incomplete lesson does not schedule SRS",
+    !storedProgress.__lessonSrs["lesson-02"]);
 
   check(label + ": removed checkpoint API is not exposed",
     typeof app.__test.saveCheckpointResult === "undefined");
