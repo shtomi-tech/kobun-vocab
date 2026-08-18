@@ -1,11 +1,23 @@
 # 教材目次46講 対応マップ
 
-`data/curriculum.json` の正本と対になる監査記録。`.hermes/plans/2026-08-17_165814-textbook-toc-curriculum-reorder.md` のTask1〜2に対応する。
+`data/curriculum.json` の正本と対になる監査記録。`.hermes/plans/2026-08-17_165814-textbook-toc-curriculum-reorder.md` のTask1〜8に対応する。
 
-検証: `python scripts/check_curriculum.py --structure` → OK（2026-08-18時点）。
-`python scripts/check_curriculum.py --release` → FAIL（46講中27講のみready。詳細は下表）。
+現行検証: `py -3 scripts/check_curriculum.py --structure` → OK。
+`py -3 scripts/check_curriculum.py --release` → OK（46講すべてready）。
 
-## 2026-08-18追記: blocked6講の解消
+## 現行実装（2026-08-18）
+
+`data/curriculum.json` を教材目次の正本とし、6章46講を1講1ステージとして表示する。講の完了は必修活動の完了、文法混合確認（30問中24問）は講とは別のcheckpoint、`extensions` は発展領域として別管理する。
+
+- 予習: `preparation[]` の実在ファイルと `sections[]` を `scripts/audit_preparation_checks.py` で検査。
+- 進捗: 旧問題別正解記録を読み取り、`kobun-katsuyo-path-v2.lessonCycles` へ冪等に移行。
+- 境界: `ids` とprocedureの `stepRange` で、13/14講、15/16講、31/32講、45/46講などの分割を固定。
+- 復習: 講復習・章復習・苦手復習を同じ問題セッションの外側の活動キューで連結。
+- 品質: 追加した問題は `quality_check.py --check`、原則参照は `check_rule_coverage.py --check` で検査。
+
+以下の監査表・申し送りは、実装前に行った状態の履歴である。現在のstatus判断には使わない。
+
+## 履歴: 2026-08-18追記 blocked6講の解消
 
 ユーザーの明示的な許可（「Webリサーチをして着手してください」）に基づき、10・29・30・35・36・43講について、複数の信頼できる情報源（学習サイト・参考書コンテンツ）をWebSearch/WebFetchで調査したうえで、`docs/kobun-principles`に原則カードを新設・更新し、`data/shikibetsu-homograph.json`・`data/kiso.json`・`data/multiple_choice.json`・`data/shikibetsu-joshi.json`にオリジナルの新規問題を追加した。全問題は既存の作問形式（`AUTHORING_STANDARD.md`・`QUESTION_AUTHORING_PRINCIPLES.md`）に従い、特定文学作品からの転記はしていない。
 
@@ -31,7 +43,7 @@ curriculum.jsonへ6講を統合した後、実ブラウザ（`python -m http.ser
 
 修正後、`check_curriculum.py --structure`・`--release`（27講ready）・`quality_check.py --check`・`check_rule_coverage.py --check`・`check_curriculum_progress.py`（51 PASS）・実ブラウザのコンソールエラーなし・全新規講のラベル/件数表示を確認済み。
 
-## 監査方法
+## 履歴: 監査方法
 
 Chapter単位で6件の並列監査を実施し、各Chapterの担当者が実際に以下を読んで検証した。
 
@@ -42,7 +54,7 @@ Chapter単位で6件の並列監査を実施し、各Chapterの担当者が実�
 
 目次タイトルだけからの新規問題作成は行っていない。教材本文が必要な箇所は `blocked` のまま残した。
 
-## 全体サマリー
+## 履歴: 全体サマリー
 
 | status | 講数 | 講番号 |
 |---|---:|---|
@@ -52,7 +64,7 @@ Chapter単位で6件の並列監査を実施し、各Chapterの担当者が実�
 
 「partial」は教材項目としての帰属は正しいが、演習量・予習カバレッジ・識別対象の分割根拠のいずれかに具体的な欠陥がある状態。「blocked」は対応する既存資産がなく、目次タイトルからの推測作成を避けるため空のまま置いている。
 
-## Chapter別ステータス表
+## 履歴: Chapter別ステータス表
 
 ### Chapter 1 基本知識（01〜05講）
 
@@ -141,7 +153,7 @@ Chapter単位で6件の並列監査を実施し、各Chapterの担当者が実�
 | 45 | 「に」の識別① | partial | 対応表の「後続語を使う応用判定」という説明が実データ（訳し分け・語彙暗記が根拠）と不一致。ここでは「完了・断定・格助詞の一次判定」を45講とする代替案を採用（要確認） |
 | 46 | 「に」の識別② | partial | 「接続助詞の消去法＋形容動詞語尾・副詞の語彙判定」。procedure本文（手順I〜IV）が45/46講で全文重複表示される実装上の懸念あり |
 
-## blocked講（6件）に共通する対応方針
+## 履歴: blocked講（6件）に共通する対応方針
 
 以下はすべて「対応する既存資産・原則カードが確認できない」ため空のまま。**教材本文（該当ページ）の提示、または検証済みの原則カード整備が着手条件**。
 
@@ -154,7 +166,7 @@ Chapter単位で6件の並列監査を実施し、各Chapterの担当者が実�
 | 36 | 「結びの省略・流れ」の教材本文確認。「流れ」は説明自体が既存資料に存在しない |
 | 43 | 「し」「て」の識別が何を指すか自体が未確定（副助詞し＋接続助詞て／過去の助動詞きの連体形し等、複数候補）。教材本文の提示が必要 |
 
-## 未確認・要ユーザー判断事項（横断）
+## 履歴: 未確認・要ユーザー判断事項（横断）
 
 1. **21講とproc-h-nariの扱い**（上記Chapter3参照）— 計画書の「統合」指示から意図的に逸脱した。承認が必要。
 2. **c2-023の11講再登録**（Chapter2）— 過去に意図的に必修ルートから外された経緯があるため確認推奨。
@@ -165,7 +177,7 @@ Chapter単位で6件の並列監査を実施し、各Chapterの担当者が実�
 7. **45/46講のprocedure本文重複表示**（Chapter6）— `h-ni`の手順テキストが1オブジェクトのため、講ごとの部分表示に実装対応が必要になる可能性。
 8. **孤立資産**: `data/preparation/kobun-01-bun-no-hone.md`（未参照ファイル）、katsuyo.json no.26「断定のたり」（未割り当て）。
 
-## 次のステップ
+## 履歴: 次のステップ
 
 - Phase B（Task 3〜4: カリキュラムローダー・進捗移行の実装）は本マップの`ready`講だけでも着手可能。
 - Phase C（Task 5〜7: データ再配置・不足補完）は、上記6件のblocked講について教材本文の提示を待つ必要がある。

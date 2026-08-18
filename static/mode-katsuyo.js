@@ -37,6 +37,8 @@ const KatsuyoApp = (function () {
   // 章・講の構造（number, title, lessons配列）を辿るために持つ。GRAMMAR_PATHは平坦化済みで
   // 章の境界を持たないため、curriculum.jsonの構造をそのまま参照できる別変数が必要。
   let CURRICULUM = null;
+  let CURRICULUM_CHECKPOINT = null;
+  let GRAMMAR_EXTENSIONS = [];
   const READING_PATH = [
     {
       id: "reading-direction",
@@ -106,7 +108,13 @@ const KatsuyoApp = (function () {
     },
   ];
   function allPathTasks() {
-    return GRAMMAR_PATH.concat(READING_PATH, CULTURE_PATH).flatMap(stage => stage.tasks);
+    const stages = GRAMMAR_PATH.concat(
+      CURRICULUM_CHECKPOINT ? [CURRICULUM_CHECKPOINT] : [],
+      GRAMMAR_EXTENSIONS,
+      READING_PATH,
+      CULTURE_PATH,
+    );
+    return stages.flatMap(stage => stage.tasks);
   }
 
   /* ---------- progress (localStorage) ---------- */
@@ -504,6 +512,10 @@ const KatsuyoApp = (function () {
   function savePathState(state) {
     try { localStorage.setItem(PATH_STORE_KEY, JSON.stringify(state)); } catch (_) {}
   }
+  function nowIso() {
+    const injected = typeof window !== "undefined" && window.__KATSUYO_NOW__;
+    return typeof injected === "string" ? injected : new Date().toISOString();
+  }
   function grammarTaskCycles(state) {
     if (!state.grammarTaskCycles || typeof state.grammarTaskCycles !== "object") {
       state.grammarTaskCycles = {};
@@ -535,14 +547,61 @@ const KatsuyoApp = (function () {
     return cycle && typeof cycle === "object" ? cycle : { completedAt: "", lastReviewedAt: "" };
   }
   // 冪等：既にcompletedAtが入っているlessonへは書き込まない（正誤回数・完了日時の増殖防止）。
-  function markLessonCompleted(lessonId) {
+  function markLessonCompleted(lessonId, completedAt = nowIso()) {
     const state = loadPathState();
     const cycles = lessonCycles(state);
     const existing = cycles[lessonId] && typeof cycles[lessonId] === "object" ? cycles[lessonId] : {};
     if (existing.completedAt) return false;
-    cycles[lessonId] = Object.assign({ lastReviewedAt: "" }, existing, { completedAt: new Date().toISOString() });
+    cycles[lessonId] = Object.assign({ lastReviewedAt: "" }, existing, { completedAt });
     savePathState(state);
     return true;
+  }
+  function markLessonReviewed(lessonId, reviewedAt = nowIso()) {
+    const state = loadPathState();
+    const cycles = lessonCycles(state);
+    const existing = cycles[lessonId] && typeof cycles[lessonId] === "object" ? cycles[lessonId] : {};
+    cycles[lessonId] = Object.assign({ completedAt: "", lastReviewedAt: "" }, existing, { lastReviewedAt: reviewedAt });
+    savePathState(state);
+    return true;
+  }
+  function curriculumLessonById(lessonId) {
+    if (!CURRICULUM || !Array.isArray(CURRICULUM.chapters)) return null;
+    for (const chapter of CURRICULUM.chapters) {
+      const lesson = (chapter.lessons || []).find(item => item.id === lessonId);
+      if (lesson) return lesson;
+    }
+    return null;
+  }
+  function curriculumTaskById(taskId) {
+    for (const stage of GRAMMAR_PATH) {
+      const task = stage.tasks.find(item => item.id === taskId);
+      if (task) return task;
+    }
+    return null;
+  }
+  // activity単位の終了処理。UIと回帰テストが同じ保存経路を通るようにする。
+  function applyActivityCompletion(taskId, options = {}) {
+    const task = curriculumTaskById(taskId);
+    if (!task || !task.lessonId) return false;
+    const lesson = curriculumLessonById(task.lessonId);
+    if (!lesson) return false;
+    const at = options.now || nowIso();
+    if (options.review) {
+      markLessonReviewed(lesson.id, at);
+      return true;
+    }
+    if (!lessonStatus(lesson).complete) return false;
+    return markLessonCompleted(lesson.id, at);
+  }
+  function saveCheckpointResult(taskDef, score, total) {
+    const pathState = loadPathState();
+    const checkpointKey = taskDef.checkpointKey || "grammarCheckpoint";
+    pathState[checkpointKey] = {
+      score,
+      total,
+      passed: score >= Math.ceil(total * 0.8),
+    };
+    savePathState(pathState);
   }
   function practiceSetById(id) {
     return DATA.practiceSets.find(set => set.id === id) || null;
@@ -616,18 +675,16 @@ const KatsuyoApp = (function () {
     currentSet = set;
     const p = loadProgress();
     const ids = taskIds(task);
-    if (!isGrammarOnePassTask(task)) {
+    if (!task.curriculumActivity && !isGrammarOnePassTask(task)) {
       const done = ids.filter(id => isMastered(progressRecord(p, id))).length;
       currentSet = prev;
       return { done, total: ids.length, complete: ids.length > 0 && done === ids.length };
     }
-    const cycle = grammarTaskCycle(task.id);
     const done = ids.filter(id => {
       const rec = progressRecord(p, id);
       return !!rec && rec.c >= 1;
     }).length;
-    const legacyComplete = ids.length > 0 && done === ids.length;
-    const complete = !!cycle.passCompleted || legacyComplete;
+    const complete = ids.length > 0 && done === ids.length;
     currentSet = prev;
     return {
       done,
@@ -644,6 +701,26 @@ const KatsuyoApp = (function () {
       const complete = tasks.every(task => task.status.complete);
       return Object.assign({}, stage, { tasks, complete, available: true });
     });
+  }
+  function grammarLessonsComplete() {
+    return GRAMMAR_PATH.length > 0 && GRAMMAR_PATH.every(stage => {
+      const lesson = curriculumLessonById(stage.id);
+      return !!lesson && lessonStatus(lesson).complete;
+    });
+  }
+  function grammarCheckpointStatus() {
+    return CURRICULUM_CHECKPOINT
+      ? taskStatus(CURRICULUM_CHECKPOINT.task)
+      : { done: 0, total: 0, complete: false };
+  }
+  function grammarCourseStatus() {
+    const lessonsComplete = grammarLessonsComplete();
+    const checkpoint = grammarCheckpointStatus();
+    return {
+      lessonsComplete,
+      checkpoint,
+      complete: lessonsComplete && checkpoint.complete,
+    };
   }
   function readingPathStatus() {
     return READING_PATH.map(stage => {
@@ -738,7 +815,11 @@ const KatsuyoApp = (function () {
     for (const stage of stages) {
       if (!stage.available || stage.complete) continue;
       const task = stage.tasks.find(item => !item.status.complete);
-      if (task) return { stage, task };
+      if (task) return { stage, task, lesson: curriculumLessonById(stage.id) };
+    }
+    if (grammarLessonsComplete() && CURRICULUM_CHECKPOINT) {
+      const status = taskStatus(CURRICULUM_CHECKPOINT.task);
+      if (!status.complete) return { stage: CURRICULUM_CHECKPOINT, task: CURRICULUM_CHECKPOINT.task, lesson: null };
     }
     return null;
   }
@@ -762,6 +843,37 @@ const KatsuyoApp = (function () {
   }
   function firstIncompleteRequiredTask() {
     return firstIncompleteGrammarTask() || firstIncompleteReadingTask() || firstIncompleteCultureTask();
+  }
+  function grammarStageForLesson(lessonId) {
+    return GRAMMAR_PATH.find(stage => stage.id === lessonId) || null;
+  }
+  function lessonActivityTasks(lessonId) {
+    const stage = grammarStageForLesson(lessonId);
+    return stage ? stage.tasks.slice() : [];
+  }
+  function lessonQueueEntries(lesson, review = false) {
+    return lessonActivityTasks(lesson.id)
+      .filter(task => review || !taskStatus(task).complete)
+      .map(task => ({ task, review }));
+  }
+  function chapterQueueEntries(chapter) {
+    return (chapter.lessons || []).flatMap(lesson => lessonQueueEntries(lesson, true));
+  }
+  function weakQueueEntries(lessons) {
+    return lessons.flatMap(lesson => lessonActivityTasks(lesson.id).flatMap(task => {
+      const set = practiceSetById(task.setId);
+      if (!set || task.kind === "checkpoint") return [];
+      const prev = currentSet;
+      currentSet = set;
+      const p = loadProgress();
+      const weak = taskCheckedIds(task).filter(id => (progressRecord(p, id) || {}).weak);
+      currentSet = prev;
+      if (!weak.length) return [];
+      return [{ task: Object.assign({}, task, { ids: weak }), review: true }];
+    }));
+  }
+  function makeActivityQueue(type, entries, meta = {}) {
+    return { type, entries, index: 0, ...meta };
   }
   // 文法混合確認の母集団。入口・章別の4択問題を混ぜる。
   // 除外するもの:
@@ -812,7 +924,7 @@ const KatsuyoApp = (function () {
     if (!preparation.length) return null;
     return { stage, preparation };
   }
-  function openTaskPreparation(task, review = false) {
+  function openTaskPreparation(task, review = false, options = {}) {
     const prep = preparationForTask(task);
     if (!prep || typeof KobunPreparation === "undefined") return false;
     activeGrammarMode = "roadmap";
@@ -827,18 +939,24 @@ const KatsuyoApp = (function () {
       stage: prep.stage,
       preparation: prep.preparation,
       onBack: renderGrammarRoadmapHome,
-      onPractice: () => startRequiredTask(task, review, { skipPreparation: true }),
+      onPractice: () => startRequiredTask(task, review, Object.assign({}, options, { skipPreparation: true })),
     });
     return true;
   }
   function startRequiredTask(task, review = false, options = {}) {
-    if (!options.skipPreparation && !review && openTaskPreparation(task, review)) return;
+    if (!options.skipPreparation && !review && openTaskPreparation(task, review, options)) return;
     activeGrammarMode = "roadmap";
     activeGrammarPathTask = task.id;
     activeGrammarPathReview = review;
     if (task.kind === "procedure") {
       currentSet = practiceSetById(task.setId || "shikibetsu");
-      startShikibetsuFlow(task.procId, { pathTask: task.id, pathReview: review, allowedIds: task.ids });
+      startShikibetsuFlow(task.procId, {
+        pathTask: task.id,
+        pathReview: review,
+        allowedIds: task.ids,
+        stepRange: task.stepRange,
+        activityQueue: options.activityQueue,
+      });
       return;
     }
     if (task.kind === "checkpoint") {
@@ -848,13 +966,14 @@ const KatsuyoApp = (function () {
         pathTask: task.id,
         pathReview: review,
         setMap: entriesToSetMap(entries),
+        activityQueue: options.activityQueue,
       });
       return;
     }
     const set = practiceSetById(task.setId);
     const ids = taskIds(task);
     currentSet = set;
-    if (!isGrammarOnePassTask(task)) {
+    if (!task.curriculumActivity && !isGrammarOnePassTask(task)) {
       const p = loadProgress();
       const pending = review ? ids : ids.filter(id => !isMastered(progressRecord(p, id)));
       startSession(pending.length ? pending : ids, task.label, { pathTask: task.id, pathReview: review });
@@ -873,8 +992,58 @@ const KatsuyoApp = (function () {
       pathTask: task.id,
       pathReview: review,
       pathPhase: "pass",
-      requeueWrong: false,
+      requeueWrong: true,
+      activityQueue: options.activityQueue,
     });
+  }
+  function startLesson(lesson, options = {}) {
+    const target = typeof lesson === "string" ? curriculumLessonById(lesson) : lesson;
+    if (!target) { renderGrammarRoadmapHome(); return; }
+    const ownerChapter = (CURRICULUM && CURRICULUM.chapters || []).find(chapter =>
+      (chapter.lessons || []).some(item => item.id === target.id));
+    const chapterId = options.chapterId || (ownerChapter && ownerChapter.id);
+    const entries = lessonQueueEntries(target, !!options.review);
+    if (!entries.length) {
+      if (options.review) {
+        const queue = makeActivityQueue("lesson", [], {
+          lessonId: target.id,
+          chapterId,
+          review: true,
+        });
+        renderQueuedDone(queue);
+      } else {
+        renderGrammarRoadmapHome();
+      }
+      return;
+    }
+    const queue = makeActivityQueue("lesson", entries, {
+      lessonId: target.id,
+      chapterId,
+      review: !!options.review,
+    });
+    const first = entries[0];
+    if (!options.skipPreparation && !options.review && openTaskPreparation(first.task, false, { activityQueue: queue })) return;
+    startRequiredTask(first.task, first.review, { skipPreparation: true, activityQueue: queue });
+  }
+  function startChapterReview(chapter) {
+    const target = typeof chapter === "string"
+      ? (CURRICULUM && CURRICULUM.chapters || []).find(item => item.id === chapter)
+      : chapter;
+    if (!target) { renderGrammarRoadmapHome(); return; }
+    const entries = chapterQueueEntries(target);
+    if (!entries.length) { renderGrammarRoadmapHome(); return; }
+    const queue = makeActivityQueue("chapter", entries, { chapterId: target.id, review: true });
+    startRequiredTask(entries[0].task, true, { skipPreparation: true, activityQueue: queue });
+  }
+  function startWeakReview(scope = "all") {
+    const chapters = (CURRICULUM && CURRICULUM.chapters) || [];
+    const lessons = scope && scope !== "all"
+      ? chapters.flatMap(chapter => chapter.id === scope ? chapter.lessons : [])
+      : chapters.flatMap(chapter => chapter.lessons || []);
+    const entries = weakQueueEntries(lessons);
+    if (!entries.length) { renderGrammarRoadmapHome(); return; }
+    const queue = makeActivityQueue("weak", entries, { scope, review: true });
+    startRequiredTask(entries[0].task, true, { skipPreparation: true, activityQueue: queue });
   }
   function appendPathSection(title, stages, stats, hintText, lockText, collapsed, sectionId) {
     const progress = el("section", "card");
@@ -968,6 +1137,163 @@ const KatsuyoApp = (function () {
       homePanel.appendChild(list);
     }
   }
+  function renderGrammarCurriculumRoadmap(chapters, nextLesson) {
+    const card = el("section", "card curriculumRoadmapCard");
+    card.appendChild(el("span", "label", "TEXTBOOK ROADMAP"));
+    card.appendChild(el("h2", null, "6章・46講の文法ロードマップ"));
+    const allLessons = chapters.flatMap(chapter => chapter.lessons || []);
+    const completed = allLessons.filter(lesson => lessonStatus(lesson).complete).length;
+    const statGrid = el("div", "statGrid");
+    [[String(completed), "/ 46", "LESSONS・講"], [String(chapters.length), "", "CHAPTERS・章"], [String(Math.max(0, allLessons.length - completed)), "", "REMAINING・残り"]]
+      .forEach(([num, small, caption]) => {
+        const cell = el("div", "statCell");
+        const value = el("div", "statNum");
+        value.appendChild(document.createTextNode(num));
+        if (small) value.appendChild(el("small", null, small));
+        cell.appendChild(value);
+        cell.appendChild(el("div", "statCaption", caption));
+        statGrid.appendChild(cell);
+      });
+    card.appendChild(statGrid);
+    const progress = el("div", "masteryBar");
+    progress.setAttribute("aria-label", "文法講の完了 " + completed + "/" + allLessons.length);
+    const fill = el("div", "masteryFill");
+    fill.style.width = (allLessons.length ? Math.round(completed / allLessons.length * 100) : 0) + "%";
+    progress.appendChild(fill);
+    card.appendChild(progress);
+
+    const currentChapter = nextLesson
+      ? chapters.find(chapter => (chapter.lessons || []).some(lesson => lesson.id === nextLesson.id))
+      : null;
+    const stepper = el("ol", "chapterStepper");
+    chapters.forEach(chapter => {
+      const item = el("li", "chapterStep" + (currentChapter && currentChapter.id === chapter.id ? " current" : ""));
+      const jump = el("button", "chapterStepButton", "第" + chapter.number + "章");
+      jump.type = "button";
+      jump.setAttribute("aria-controls", "curriculum-chapter-" + chapter.number);
+      if (currentChapter && currentChapter.id === chapter.id) jump.setAttribute("aria-current", "step");
+      jump.addEventListener("click", () => {
+        const target = document.getElementById("curriculum-chapter-" + chapter.number);
+        if (target) {
+          const details = target.querySelector("details");
+          document.querySelectorAll(".chapterRoadmapCard details").forEach(item => { item.open = item === details; });
+          target.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      });
+      item.appendChild(jump);
+      item.appendChild(el("span", "chapterStepLabel", chapter.title));
+      stepper.appendChild(item);
+    });
+    card.appendChild(stepper);
+    homePanel.appendChild(card);
+
+    chapters.forEach(chapter => {
+      const statuses = (chapter.lessons || []).map(lesson => ({ lesson, status: lessonStatus(lesson) }));
+      const completedLessons = statuses.filter(item => item.status.complete).length;
+      const chapterCard = el("section", "card chapterRoadmapCard" + (currentChapter && currentChapter.id === chapter.id ? " current" : ""));
+      chapterCard.id = "curriculum-chapter-" + chapter.number;
+      const head = el("div", "chapterRoadmapHead");
+      const heading = el("div");
+      heading.appendChild(el("span", "label", "CHAPTER " + chapter.number));
+      heading.appendChild(el("h3", null, "第" + chapter.number + "章　" + chapter.title));
+      heading.appendChild(el("p", "hint", completedLessons + " / " + statuses.length + "講 完了"));
+      head.appendChild(heading);
+      const chapterAction = el("button", "ghost smallGhost", "章を復習する");
+      chapterAction.type = "button";
+      chapterAction.disabled = completedLessons === 0;
+      chapterAction.setAttribute("aria-label", "第" + chapter.number + "章を復習する");
+      chapterAction.addEventListener("click", () => startChapterReview(chapter));
+      head.appendChild(chapterAction);
+      chapterCard.appendChild(head);
+
+      const details = document.createElement("details");
+      details.className = "chapterLessonsDetails";
+      details.open = !currentChapter || currentChapter.id === chapter.id;
+      const summary = document.createElement("summary");
+      summary.textContent = "講の一覧を" + (details.open ? "閉じる" : "開く");
+      details.addEventListener("toggle", () => {
+        summary.textContent = "講の一覧を" + (details.open ? "閉じる" : "開く");
+      });
+      details.appendChild(summary);
+      const lessonList = el("ol", "lessonRoadmapList");
+      statuses.forEach(({ lesson, status }) => {
+        const row = el("li", "lessonRoadmapRow" + (status.complete ? " done" : "") + (nextLesson && nextLesson.id === lesson.id ? " current" : ""));
+        row.id = "curriculum-" + lesson.id;
+        if (nextLesson && nextLesson.id === lesson.id) row.setAttribute("aria-current", "step");
+        const marker = el("span", "lessonRoadmapMarker", status.complete ? "✓" : "" + lesson.number);
+        marker.setAttribute("aria-label", status.complete ? "完了" : "未完了");
+        row.appendChild(marker);
+        const body = el("div", "lessonRoadmapBody");
+        body.appendChild(el("span", "lessonRoadmapNumber", String(lesson.number).padStart(2, "0") + "講"));
+        body.appendChild(el("h4", null, lesson.title));
+        body.appendChild(el("p", "hint", "活動 " + status.doneCount + " / " + status.requiredCount + (status.complete ? "・完了" : "・未完了")));
+        row.appendChild(body);
+        const actions = el("div", "lessonRoadmapActions");
+        const action = el("button", status.complete ? "ghost smallGhost" : "cta smallGhost", status.complete ? "復習する" : "この講を始める");
+        action.type = "button";
+        action.setAttribute("aria-label", lesson.number + "講「" + lesson.title + "」を" + (status.complete ? "復習する" : "始める"));
+        action.addEventListener("click", () => startLesson(lesson, { review: status.complete, chapterId: chapter.id }));
+        actions.appendChild(action);
+        row.appendChild(actions);
+        lessonList.appendChild(row);
+      });
+      details.appendChild(lessonList);
+      chapterCard.appendChild(details);
+      homePanel.appendChild(chapterCard);
+    });
+    const weakCount = weakQueueEntries(allLessons).length;
+    if (weakCount) {
+      const weakCard = el("section", "card weakRoadmapCard");
+      weakCard.appendChild(el("span", "label", "REVIEW"));
+      weakCard.appendChild(el("h2", null, "苦手をまとめて復習する"));
+      weakCard.appendChild(el("p", "hint", "文法の必修活動から、苦手と記録された問題だけを順に出題します。"));
+      const weakButton = el("button", "cta", "苦手" + weakCount + "活動を復習する");
+      weakButton.type = "button";
+      weakButton.addEventListener("click", () => startWeakReview("all"));
+      weakCard.appendChild(weakButton);
+      homePanel.appendChild(weakCard);
+    }
+  }
+  function renderGrammarCheckpointCard() {
+    if (!CURRICULUM_CHECKPOINT) return;
+    const status = grammarCheckpointStatus();
+    const card = el("section", "card checkpointRoadmapCard");
+    card.appendChild(el("span", "label", "CHECKPOINT"));
+    card.appendChild(el("h2", null, CURRICULUM_CHECKPOINT.label));
+    card.appendChild(el("p", "hint", "46講とは別の仕上げ確認です。合否は講の完了数に含めません。"));
+    card.appendChild(el("p", "procedureLearnStat", status.complete ? "合格済み" : "未実施・合格基準 24 / 30"));
+    const action = el("button", status.complete ? "ghost" : "cta", status.complete ? "もう一度確認する" : "文法混合確認を始める");
+    action.type = "button";
+    action.addEventListener("click", () => startRequiredTask(CURRICULUM_CHECKPOINT.task, status.complete, { skipPreparation: true }));
+    card.appendChild(action);
+    homePanel.appendChild(card);
+  }
+  function renderGrammarExtensionCard() {
+    if (!GRAMMAR_EXTENSIONS.length) return;
+    const card = el("section", "card extensionRoadmapCard");
+    card.appendChild(el("span", "label", "EXTENSIONS"));
+    card.appendChild(el("h2", null, "発展学習"));
+    card.appendChild(el("p", "hint", "発展学習は46講と文法checkpointの完了条件に含めません。"));
+    GRAMMAR_EXTENSIONS.forEach(stage => {
+      const block = el("div", "extensionRoadmapBlock");
+      block.appendChild(el("h3", null, stage.label));
+      block.appendChild(el("p", "hint", stage.description));
+      stage.tasks.forEach(task => {
+        const status = taskStatus(task);
+        const row = el("div", "pathTaskRow" + (status.complete ? " done" : ""));
+        row.appendChild(el("span", "pathTaskMark", status.complete ? "✓" : "□"));
+        row.appendChild(el("span", "pathTaskLabel", task.label));
+        row.appendChild(el("span", "pathTaskStat", status.done + "/" + status.total));
+        const action = el("button", "ghost smallGhost pathTaskAction", status.complete ? "復習する" : "演習する");
+        action.type = "button";
+        action.addEventListener("click", () => startRequiredTask(task, status.complete, { skipPreparation: true }));
+        row.appendChild(action);
+        block.appendChild(row);
+      });
+      card.appendChild(block);
+    });
+    homePanel.appendChild(card);
+  }
   function renderGrammarRoadmapHome() {
     flow = null;
     session = null;
@@ -981,39 +1307,43 @@ const KatsuyoApp = (function () {
     homePanel.innerHTML = "";
 
     const grammarStages = grammarPathStatus();
-    const grammarComplete = grammarStages.every(stage => stage.complete);
+    const grammarStatus = grammarCourseStatus();
+    const grammarComplete = grammarStatus.complete;
     const readingStages = readingPathStatus();
     const readingComplete = readingStages.every(stage => stage.complete);
     const cultureStages = culturePathStatus();
     const cultureComplete = cultureStages.every(stage => stage.complete);
     const sharedMode = !!(cloud && cloud.isEnabled());
+    const nextLesson = firstIncompleteLesson();
     const next = !grammarComplete
-      ? firstIncompleteGrammarTask()
+      ? (nextLesson ? { lesson: nextLesson } : firstIncompleteGrammarTask())
       : !readingComplete
         ? firstIncompleteReadingTask()
         : firstIncompleteCultureTask();
     const hero = el("section", "card hero");
     hero.appendChild(el("span", "label", !grammarComplete
-      ? "STAGE 1 / GRAMMAR"
+      ? "TEXTBOOK / 6 CHAPTERS・46 LESSONS"
       : !readingComplete
         ? "STAGE 2 / KEIGO READING"
         : "STAGE 3 / CLASSICAL CULTURE"));
     hero.appendChild(el("h2", null, !grammarComplete
-      ? (next ? "次は" + next.task.label + "を進める" : "第1段階の文法を完了しました")
+      ? (nextLesson ? "次は第" + nextLesson.number + "講を進める" : next ? "文法checkpointを確認する" : "第1段階の文法を完了しました")
       : !readingComplete
         ? (next ? "次は" + next.task.label + "を進める" : "第2段階の敬語読解を完了しました")
         : (next ? "次は" + next.task.label + "を進める" : "第3段階の古文常識を完了しました")));
     if (next) {
       const primary = el("button", "cta primaryCta", "");
       primary.type = "button";
-      primary.appendChild(el("span", "ctaTag", "次にやること"));
-      primary.appendChild(el("span", "ctaMain", next.task.label));
-      primary.addEventListener("click", () => startRequiredTask(next.task));
+      primary.appendChild(el("span", "ctaTag", nextLesson ? "次にやること" : "仕上げ確認"));
+      primary.appendChild(el("span", "ctaMain", nextLesson ? nextLesson.number + "講　" + nextLesson.title : next.task.label));
+      primary.addEventListener("click", () => nextLesson
+        ? startLesson(nextLesson, { chapterId: nextLesson.chapterId })
+        : startRequiredTask(next.task));
       hero.appendChild(primary);
     }
     hero.appendChild(el("p", "hint", next
       ? (!grammarComplete
-        ? "文の骨組み → 用言 → 助動詞の形 → 助動詞の意味 → 助詞・呼応・文末 → 同形語 → 敬語の順で進みます。次の課題では、先に予習資料を読んでから問題へ進みます。"
+        ? "講を順に進めます。講の中では予習を確認してから、必要な活動を一つの流れで行います。"
         : !readingComplete
           ? "敬意の方向 → 省略主語 → 短文統合の順で、敬語を主語判別に使います。"
           : "宮廷生活 → 恋愛・婚姻 → 年中行事の順で、文法だけでは埋まらない行間を読みます。")
@@ -1024,26 +1354,12 @@ const KatsuyoApp = (function () {
           : "第2段階（敬語読解）の次の必修を選べる状態です。復習は下の完了済み項目から行えます。")));
     homePanel.appendChild(hero);
 
-    if (typeof LearningMap !== "undefined") {
-      const mapSlot = el("section");
-      mapSlot.id = "learningMapSlot";
-      homePanel.appendChild(mapSlot);
-      LearningMap.render(mapSlot, { activeApp: "grammar" });
-    }
-
-    // 進行中の段階だけタスク一覧を展開する。完了済み・未解放の段階は要約＋<details>に折りたたむ
-    // （ヒックの法則：GHOME一画面に常時並ぶ選択肢を、今取り組む段階だけに絞る）。
     const grammarCurrent = !grammarComplete;
     const readingCurrent = grammarComplete && !readingComplete;
     const cultureCurrent = grammarComplete && readingComplete && !cultureComplete;
-
-    const grammarCompleted = grammarStages.filter(stage => stage.complete).length;
-    appendPathSection("第1段階", grammarStages,
-      [[String(grammarCompleted), "/ " + grammarStages.length, "COMPLETE・完了"], [String(grammarStages.length - grammarCompleted), "", "REMAINING・残り"], [String(requiredChoiceIds().length), "", "確認対象の4択"]],
-      "通常問題は通し演習で各問題を1回以上正解すると完了、識別フローは実践を全問1回正解で完了扱いです。最後に文法混合確認30問を行います。",
-      "前の文法必修を完了すると解放されます。",
-      !grammarCurrent,
-      "grammarStage");
+    renderGrammarCurriculumRoadmap((CURRICULUM && CURRICULUM.chapters) || [], nextLesson);
+    renderGrammarCheckpointCard();
+    renderGrammarExtensionCard();
 
     const readingCompleted = readingStages.filter(stage => stage.complete).length;
     appendPathSection("第2段階", readingStages,
@@ -1059,7 +1375,6 @@ const KatsuyoApp = (function () {
       "第2段階の敬語読解を完了すると解放されます。",
       !cultureCurrent,
       "cultureStage");
-    renderSupplementalPracticeCard();
     if (!sharedMode) {
       const moreCard = el("section", "card");
       const details = document.createElement("details");
@@ -1433,6 +1748,7 @@ const KatsuyoApp = (function () {
         ? !!opts.pathReview
         : activeGrammarPathReview,
       pathPhase: (opts && opts.pathPhase) || null,
+      activityQueue: (opts && opts.activityQueue) || null,
       // 混合確認は複数の練習セットから出題するため、問題ごとに所属セットを持たせる。
       // 問題IDは全セットで接頭辞が異なるので、フラットな id→setId の対応で衝突しない。
       setMap: (opts && opts.setMap) || null,
@@ -1462,6 +1778,8 @@ const KatsuyoApp = (function () {
       pathTask: pathContext.pathTask || activeGrammarPathTask,
       pathReview: !!pathContext.pathReview,
       allowedIds: pathContext.allowedIds || null,
+      stepRange: pathContext.stepRange || null,
+      activityQueue: pathContext.activityQueue || null,
     };
     startShikibetsuPractice();
   }
@@ -1472,12 +1790,106 @@ const KatsuyoApp = (function () {
       flow: Object.assign({}, flow),
       pathTask: flow.pathTask,
       pathReview: flow.pathReview,
+      activityQueue: flow.activityQueue,
     });
+  }
+
+  function queuedTaskIsLessonBoundary(taskDef) {
+    const queue = session && session.activityQueue;
+    if (!queue) return true;
+    const next = queue.entries[queue.index + 1];
+    return !next || next.task.lessonId !== taskDef.lessonId;
+  }
+  function completeQueuedActivity(taskDef) {
+    if (!taskDef || !taskDef.curriculumActivity || !queuedTaskIsLessonBoundary(taskDef)) return;
+    applyActivityCompletion(taskDef.id, { review: session.pathReview });
+  }
+  function startNextQueuedActivity() {
+    const queue = session && session.activityQueue;
+    if (!queue || queue.index + 1 >= queue.entries.length) return false;
+    queue.index += 1;
+    const entry = queue.entries[queue.index];
+    startRequiredTask(entry.task, entry.review, { skipPreparation: true, activityQueue: queue });
+    return true;
+  }
+  function renderQueueTransition(taskDef) {
+    const queue = session.activityQueue;
+    const nextEntry = queue.entries[queue.index + 1];
+    sessionPanel.innerHTML = "";
+    const card = el("section", "card activityQueueCard");
+    card.appendChild(el("span", "label", queue.type === "chapter" ? "章の復習" : "講の進行"));
+    card.appendChild(el("h2", null, taskDef.label + "を完了"));
+    card.appendChild(el("p", "resultText", "次の活動も同じ流れで続けます。"));
+    const actions = el("div", "actions");
+    const next = el("button", "cta", "次へ：" + nextEntry.task.label);
+    next.type = "button";
+    next.addEventListener("click", startNextQueuedActivity);
+    actions.appendChild(next);
+    const roadmap = el("button", "ghost smallGhost", "ロードマップへ戻る");
+    roadmap.type = "button";
+    roadmap.addEventListener("click", renderGrammarRoadmapHome);
+    actions.appendChild(roadmap);
+    card.appendChild(actions);
+    sessionPanel.appendChild(card);
+    next.focus();
+  }
+  function renderQueuedDone(queue) {
+    sessionPanel.innerHTML = "";
+    homePanel.classList.add("hide");
+    sessionPanel.classList.remove("hide");
+    const card = el("section", "card activityQueueCard");
+    const label = queue.type === "chapter" ? "章の復習完了" : queue.type === "weak" ? "苦手復習完了" : "講の完了";
+    card.appendChild(el("span", "label", label));
+    let title = "復習が終わりました。";
+    let lesson = null;
+    let chapter = null;
+    if (queue.lessonId) {
+      lesson = curriculumLessonById(queue.lessonId);
+      title = lesson ? lesson.number + "講「" + lesson.title + "」を完了しました。" : title;
+    }
+    if (queue.chapterId && CURRICULUM) chapter = CURRICULUM.chapters.find(item => item.id === queue.chapterId) || null;
+    if (queue.type === "chapter" && chapter) title = chapter.number + "章「" + chapter.title + "」の復習が終わりました。";
+    card.appendChild(el("p", "resultText", title));
+    const actions = el("div", "actions");
+    const roadmap = el("button", "cta", "学習ロードマップへ戻る");
+    roadmap.type = "button";
+    roadmap.addEventListener("click", renderGrammarRoadmapHome);
+    actions.appendChild(roadmap);
+    if (lesson) {
+      const again = el("button", "ghost", "この講をもう一度");
+      again.type = "button";
+      again.addEventListener("click", () => startLesson(lesson, { review: true, chapterId: queue.chapterId }));
+      actions.appendChild(again);
+      if (chapter) {
+        const chapterAgain = el("button", "ghost", "この章を復習する");
+        chapterAgain.type = "button";
+        chapterAgain.addEventListener("click", () => startChapterReview(chapter));
+        actions.appendChild(chapterAgain);
+      }
+    }
+    const weak = el("button", "ghost", "文法の苦手を復習する");
+    weak.type = "button";
+    weak.addEventListener("click", () => startWeakReview("all"));
+    actions.appendChild(weak);
+    card.appendChild(actions);
+    sessionPanel.appendChild(card);
   }
 
   // フロー内の実践セッションが完了したときの分岐。
   function renderFlowDone() {
     const proc = shikibetsuProcedures().find(pr => pr.id === flow.procId);
+    const pathTaskDef = session.pathTask ? allPathTasks().find(task => task.id === session.pathTask) : null;
+    if (pathTaskDef) {
+      completeQueuedActivity(pathTaskDef);
+      if (session.activityQueue && !queuedTaskIsLessonBoundary(pathTaskDef)) {
+        renderQueueTransition(pathTaskDef);
+        return;
+      }
+      if (session.activityQueue) {
+        renderQueuedDone(session.activityQueue);
+        return;
+      }
+    }
     const card = el("section", "card");
     card.appendChild(el("span", "label", session.pathReview ? "復習完了" : "Next"));
 
@@ -1801,8 +2213,11 @@ const KatsuyoApp = (function () {
     const box = el("div", "drillBox procedureRefBox");
     function paint() {
       box.innerHTML = "";
+      const range = Array.isArray(session.flow.stepRange) && session.flow.stepRange.length === 2
+        ? [Math.max(0, session.flow.stepRange[0]), Math.min(proc.steps.length - 1, session.flow.stepRange[1])]
+        : [0, proc.steps.length - 1];
       const steps = proc.steps;
-      const idx = Math.min(Math.max(session.flow.refIdx || 0, 0), steps.length - 1);
+      const idx = Math.min(Math.max(session.flow.refIdx == null ? range[0] : session.flow.refIdx, range[0]), range[1]);
       session.flow.refIdx = idx;
       const step = steps[idx];
 
@@ -1815,16 +2230,16 @@ const KatsuyoApp = (function () {
       const nav = el("div", "actions");
       const prevBtn = el("button", "ghost smallGhost", "← 前の手順");
       prevBtn.type = "button";
-      if (idx === 0) prevBtn.disabled = true;
+      if (idx === range[0]) prevBtn.disabled = true;
       prevBtn.addEventListener("click", () => { session.flow.refIdx = idx - 1; paint(); });
       nav.appendChild(prevBtn);
       const nextBtn = el("button", "ghost smallGhost", "次の手順 →");
       nextBtn.type = "button";
-      if (idx === steps.length - 1) nextBtn.disabled = true;
+      if (idx === range[1]) nextBtn.disabled = true;
       nextBtn.addEventListener("click", () => { session.flow.refIdx = idx + 1; paint(); });
       nav.appendChild(nextBtn);
       box.appendChild(nav);
-      box.appendChild(el("p", "cardCounter", "手順 " + (idx + 1) + " / " + steps.length));
+      box.appendChild(el("p", "cardCounter", "手順 " + (idx - range[0] + 1) + " / " + (range[1] - range[0] + 1)));
     }
     paint();
     return box;
@@ -2195,7 +2610,17 @@ const KatsuyoApp = (function () {
   }
 
   function renderPathPassDone(taskDef) {
-    if (!session.pathReview) saveGrammarTaskCycle(taskDef.id, { passCompleted: true });
+    if (taskDef.curriculumActivity) {
+      completeQueuedActivity(taskDef);
+      if (session.activityQueue && !queuedTaskIsLessonBoundary(taskDef)) {
+        renderQueueTransition(taskDef);
+        return;
+      }
+      if (session.activityQueue) {
+        renderQueuedDone(session.activityQueue);
+        return;
+      }
+    }
     sessionPanel.innerHTML = "";
     const score = session.firstTryOk;
     const total = session.total;
@@ -2258,14 +2683,7 @@ const KatsuyoApp = (function () {
       return;
     }
     if (pathTaskDef && pathTaskDef.kind === "checkpoint" && !session.pathReview) {
-      const pathState = loadPathState();
-      const checkpointKey = pathTaskDef.checkpointKey || "grammarCheckpoint";
-      pathState[checkpointKey] = {
-        score,
-        total,
-        passed: score >= Math.ceil(total * 0.8),
-      };
-      savePathState(pathState);
+      saveCheckpointResult(pathTaskDef, score, total);
     }
 
     const banner = el("div", "doneBanner");
@@ -2446,70 +2864,78 @@ const KatsuyoApp = (function () {
     if (activity.kind === "group" && activity.groupId) return resolveGroupLabel(activity.setId, activity.groupId);
     return lesson.title;
   }
-  // data/curriculum.jsonの46講を「1講=1ステージ」としてGRAMMAR_PATHの形へ変換する。
-  // statusがready/partial/blockedいずれの講も含める（blocked講はrequiredActivitiesが空なので
-  // stage.tasksが空配列になる。UI上の見せ方は別タスクの範囲で、ここではクラッシュしないことのみ担保する）。
+  // data/curriculum.jsonの46講だけを「1講=1ステージ」としてGRAMMAR_PATHへ変換する。
+  // 発展学習とcheckpointは別の完了契約を持つため、GRAMMAR_PATHへ混ぜない。
   function buildGrammarPathFromCurriculum(curriculum) {
-    const lessons = (curriculum.chapters || []).flatMap(chapter => chapter.lessons || []);
-    const stages = lessons.map(lesson => ({
+    return (curriculum.chapters || []).flatMap(chapter => (chapter.lessons || []).map(lesson => ({
       id: lesson.id,
+      chapterId: chapter.id,
+      chapterNumber: chapter.number,
       label: lesson.number + "講　" + lesson.title,
-      description: "",
+      description: lesson.hook || "",
       curriculumStatus: lesson.status,
       preparation: Array.isArray(lesson.preparation) ? lesson.preparation : [],
       tasks: (lesson.requiredActivities || []).map(activity => ({
         id: activity.id,
+        activityId: activity.id,
+        lessonId: lesson.id,
+        chapterId: chapter.id,
         kind: activity.kind,
         setId: activity.setId,
         groupId: activity.groupId,
         ids: activity.ids,
         procId: activity.procId,
+        stepRange: activity.stepRange,
+        checkpointKey: activity.checkpointKey,
+        sampleSize: activity.sampleSize,
+        curriculumActivity: true,
         label: activityLabel(activity, lesson),
       })),
-    }));
-
-    // 発展学習（敬語・補助動詞）は46講には含まれないが、従来どおり文法ロードマップの
-    // 一部として関所①（段階2解放）の完了条件に含める。curriculum.extensionsから構築する。
-    const keigoExt = (curriculum.extensions || []).find(ext => ext.id === "keigo");
-    if (keigoExt && Array.isArray(keigoExt.activities) && keigoExt.activities.length) {
-      stages.push({
-        id: keigoExt.id,
-        label: keigoExt.title,
-        description: keigoExt.description || "",
+    })));
+  }
+  function buildGrammarExtensionPath(curriculum) {
+    return (curriculum.extensions || [])
+      .filter(ext => ext && Array.isArray(ext.activities) && ext.activities.length)
+      .map(ext => ({
+        id: ext.id,
+        label: ext.title,
+        description: ext.description || "",
         curriculumStatus: "ready",
         preparation: [],
-        tasks: keigoExt.activities.map(activity => ({
+        tasks: ext.activities.map(activity => ({
           id: activity.id,
           kind: activity.kind,
           setId: activity.setId,
           groupId: activity.groupId,
           ids: activity.ids,
           procId: activity.procId,
-          label: activityLabel(activity, { title: keigoExt.title }),
+          label: activityLabel(activity, { title: ext.title }),
         })),
-      });
-    }
-
-    // 文法混合確認（チェックポイント）も従来どおり関所①の完了条件の最終ステージとする。
+      }));
+  }
+  function buildGrammarCheckpoint(curriculum) {
     const checkpoint = curriculum.checkpoint;
-    if (checkpoint && checkpoint.id) {
-      stages.push({
-        id: checkpoint.id,
-        label: checkpoint.title,
-        description: checkpoint.description || "",
-        curriculumStatus: "ready",
-        preparation: [],
-        tasks: [{
-          id: checkpoint.id,
-          kind: "checkpoint",
-          label: checkpoint.title + (checkpoint.questionCount ? checkpoint.questionCount + "問" : ""),
-          sampleSize: checkpoint.questionCount,
-          total: checkpoint.questionCount,
-        }],
-      });
-    }
-
-    return stages;
+    if (!checkpoint || !checkpoint.id) return null;
+    const task = {
+      id: checkpoint.id,
+      kind: "checkpoint",
+      source: "grammar",
+      sourceSetId: "choice",
+      checkpointKey: checkpoint.checkpointKey || "textbookCheckpointV1",
+      label: checkpoint.title + (checkpoint.questionCount ? checkpoint.questionCount + "問" : ""),
+      sampleSize: checkpoint.questionCount,
+      total: checkpoint.questionCount,
+      curriculumCheckpoint: true,
+    };
+    return {
+      id: checkpoint.id,
+      label: checkpoint.title,
+      description: checkpoint.description || "",
+      curriculumStatus: "ready",
+      preparation: [],
+      tasks: [task],
+      task,
+    };
   }
   // 旧進捗（問題別正解記録kobun-katsuyo-progress-v2）からの、46講版lessonCyclesへの移行。
   // boot()のたびに呼ばれるため冪等にする：completedAtは「空→値がある」の1回きりの遷移のみ行い、
@@ -2532,7 +2958,7 @@ const KatsuyoApp = (function () {
       const existing = cycles[lesson.id];
       if (existing && typeof existing === "object" && existing.completedAt) return;
       if (!lessonStatus(lesson).complete) return;
-      cycles[lesson.id] = Object.assign({ lastReviewedAt: "" }, existing || {}, { completedAt: new Date().toISOString() });
+      cycles[lesson.id] = Object.assign({ lastReviewedAt: "" }, existing || {}, { completedAt: nowIso() });
     });
     savePathState(state);
   }
@@ -2542,7 +2968,7 @@ const KatsuyoApp = (function () {
     bootPromise = Promise.all([
       fetch("data/katsuyo.json?v=20260724-2")
         .then(r => { if (!r.ok) throw new Error("katsuyo data load failed: " + r.status); return r.json(); }),
-      fetch("data/multiple_choice.json?v=20260818-1")
+      fetch("data/multiple_choice.json?v=20260818-2")
         .then(r => { if (!r.ok) throw new Error("choice data load failed: " + r.status); return r.json(); }),
       fetch("data/shikibetsu.json?v=20260730-7")
         .then(r => { if (!r.ok) throw new Error("shikibetsu data load failed: " + r.status); return r.json(); }),
@@ -2550,15 +2976,15 @@ const KatsuyoApp = (function () {
         .then(r => { if (!r.ok) throw new Error("keigo-dokkai data load failed: " + r.status); return r.json(); }),
       fetch("data/kobun-joshiki.json?v=20260721-1")
         .then(r => { if (!r.ok) throw new Error("kobun-joshiki data load failed: " + r.status); return r.json(); }),
-      fetch("data/kiso.json?v=20260818-1")
+      fetch("data/kiso.json?v=20260818-2")
         .then(r => { if (!r.ok) throw new Error("kiso data load failed: " + r.status); return r.json(); }),
-      fetch("data/shikibetsu-joshi.json?v=20260818-1")
+      fetch("data/shikibetsu-joshi.json?v=20260818-2")
         .then(r => { if (!r.ok) throw new Error("joshi data load failed: " + r.status); return r.json(); }),
-      fetch("data/shikibetsu-homograph.json?v=20260818-1")
+      fetch("data/shikibetsu-homograph.json?v=20260818-2")
         .then(r => { if (!r.ok) throw new Error("homograph data load failed: " + r.status); return r.json(); }),
       fetch("data/shikibetsu-keigo.json?v=20260729-1")
         .then(r => { if (!r.ok) throw new Error("keigo-shikibetsu data load failed: " + r.status); return r.json(); }),
-      fetch("data/curriculum.json?v=20260817-1")
+      fetch("data/curriculum.json?v=20260818-2")
         .then(r => { if (!r.ok) throw new Error("curriculum data load failed: " + r.status); return r.json(); })
     ])
       .then(async ([d, choiceData, shikibetsuData, keigoDokkaiData, kobunJoshikiData,
@@ -2717,6 +3143,8 @@ const KatsuyoApp = (function () {
         // 段階1（古典文法）の必修は、curriculum.json（6章46講）を正本にGRAMMAR_PATHへ変換する。
         // procedures/groupsのlabel解決にpracticeSets/byIdを使うため、上のDATA.practiceSets構築後に行う。
         GRAMMAR_PATH = buildGrammarPathFromCurriculum(curriculumData);
+        GRAMMAR_EXTENSIONS = buildGrammarExtensionPath(curriculumData);
+        CURRICULUM_CHECKPOINT = buildGrammarCheckpoint(curriculumData);
         CURRICULUM = curriculumData;
         // 旧進捗（問題別正解記録）から46講版lessonCyclesへの移行。冪等なので毎起動呼んでよい。
         migrateLessonProgress(curriculumData);
@@ -2763,13 +3191,13 @@ const KatsuyoApp = (function () {
   // DATA 未読込のときは ready:false。ensureData() で読み込める。
   function pathOverview() {
     if (!DATA) return { ready: false };
-    const g = grammarPathStatus();
     const r = readingPathStatus();
     const c = culturePathStatus();
+    const grammarStatus = grammarCourseStatus();
     const next = firstIncompleteRequiredTask();
     return {
       ready: true,
-      grammarComplete: g.every(s => s.complete),
+      grammarComplete: grammarStatus.complete,
       readingComplete: r.every(s => s.complete),
       cultureComplete: c.every(s => s.complete),
       next: next ? { taskLabel: next.task.label, stageLabel: next.stage.label } : null,
@@ -2786,6 +3214,18 @@ const KatsuyoApp = (function () {
   // デバッグ用フック。UIからは呼ばない（Task8/9で正式なUI導線を追加する予定）。
   return {
     mount, handleKey, pathOverview, ensureData,
-    __test: { lessonStatus, chapterStatus, firstIncompleteLesson, taskCheckedIds, taskStatus },
+    __test: {
+      lessonStatus,
+      chapterStatus,
+      firstIncompleteLesson,
+      taskCheckedIds,
+      taskStatus,
+      applyActivityCompletion,
+      saveCheckpointResult,
+      grammarCourseStatus,
+      lessonQueueEntries,
+      chapterQueueEntries,
+      weakQueueEntries,
+    },
   };
 })();

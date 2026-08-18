@@ -23,10 +23,14 @@
     "hg-nari-int1",
     "hg-nari-int2",
     "hg-nari-int3",
+    "hg-nari-int4",
+    "hg-nari-int5",
     "hg-namu-int1",
     "hg-namu-int2",
     "hg-ni-int1",
+    "hg-ni-int2",
     "hg-ni-int3",
+    "hg-ni-int4",
     "hg-ramu-int1",
     "hg-ramu-int3",
     "hg-ramu-int5",
@@ -290,7 +294,8 @@
         "hg-nari-int1",
         "hg-nari-int2",
         "hg-nari-int3",
-        "hg-nari-int4"
+        "hg-nari-int4",
+        "hg-nari-int5"
       ]
     },
     {
@@ -351,6 +356,7 @@
         "hg-nari-int2",
         "hg-nari-int3",
         "hg-nari-int4",
+        "hg-nari-int5",
         "hg-namu-int1",
         "hg-namu-int2",
         "hg-namu-int3",
@@ -1163,6 +1169,7 @@
       },
       "ruleRefs": [
         "kbp.disambiguation.nari-identification",
+        "kbp.disambiguation.keiyoudoushi-nari-identification",
         "kbp.auxiliaries.nari-meanings"
       ],
       "question": "傍線部の意味として最も適切なものを選べ。",
@@ -1196,6 +1203,7 @@
       },
       "ruleRefs": [
         "kbp.disambiguation.nari-identification",
+        "kbp.disambiguation.keiyoudoushi-nari-identification",
         "kbp.auxiliaries.nari-meanings"
       ],
       "question": "傍線部の意味として最も適切なものを選べ。",
@@ -1423,7 +1431,8 @@
         "接続助詞": "接続助詞は連体形に付く"
       },
       "ruleRefs": [
-        "kbp.disambiguation.ni-identification"
+        "kbp.disambiguation.ni-identification",
+        "kbp.disambiguation.ni-adverb-keiyoudoushi-identification"
       ],
       "question": "傍線部の意味として最も適切なものを選べ。",
       "choices": [
@@ -1519,7 +1528,8 @@
         "副詞の一部（つひに・げに 等）": "副詞と認めるのは指定の一覧にある語に限られ、「あはれに」は含まれない"
       },
       "ruleRefs": [
-        "kbp.disambiguation.ni-identification"
+        "kbp.disambiguation.ni-identification",
+        "kbp.disambiguation.ni-adverb-keiyoudoushi-identification"
       ],
       "question": "傍線部の意味として最も適切なものを選べ。",
       "choices": [
@@ -1954,6 +1964,39 @@
         {
           "start": 3,
           "text": "て"
+        }
+      ]
+    },
+    {
+      "id": "hg-nari-int5",
+      "topic": "なりの識別",
+      "step": "実践",
+      "questionType": "integration",
+      "coverageId": "hg-nari-int5",
+      "passage": "昔、ここに人あるなり。",
+      "target": "なり",
+      "explanation": "直前の「ある」はラ変動詞「あり」の連体形。終止形接続の伝聞推定の助動詞「なり」は、ラ変型の後ろでは連体形に接続するため、「あるなり」は伝聞推定と判断する。",
+      "distractorRationale": {
+        "断定の助動詞「なり」": "断定の「なり」は体言・連体形に付き得るが、ここではラ変型の連体形に付く伝聞推定の用法を本文の「昔」と伝聞の調子から判断する",
+        "形容動詞「あるなり」の活用語尾": "「ある」はラ変動詞「あり」の連体形で、形容動詞の語幹ではない",
+        "動詞「なる」の連用形": "「あるなり」は「なる」の活用ではなく、「あり」＋助動詞「なり」である"
+      },
+      "ruleRefs": [
+        "kbp.disambiguation.nari-identification",
+        "kbp.disambiguation.keiyoudoushi-nari-identification"
+      ],
+      "question": "傍線部の意味として最も適切なものを選べ。",
+      "choices": [
+        "伝聞推定の助動詞「なり」",
+        "断定の助動詞「なり」",
+        "形容動詞「あるなり」の活用語尾",
+        "動詞「なる」の連用形"
+      ],
+      "answerIndex": 0,
+      "targetRanges": [
+        {
+          "start": 8,
+          "text": "なり"
         }
       ]
     },

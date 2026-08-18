@@ -1,7 +1,7 @@
 """古文の予習Markdownへ、既存問題に根拠を持つ10秒確認を追加する。
 
 予習Markdownを表示側の正本とし、問題JSONは読み取り専用で参照する。
-未参照の旧資料には追加せず、現行ロードマップから使われる47ファイルだけを対象にする。
+未参照の旧資料には追加せず、現行ロードマップのpreparation[]から対象ファイルを導出する。
 """
 
 from __future__ import annotations
@@ -19,9 +19,9 @@ PREPARATION_DIR = ROOT / "data" / "preparation"
 REPORT_PATH = ROOT / "reports" / "preparation-check-map.json"
 
 
-# mode-katsuyo.js の現行 PREPARATION_PATHS と対応する正本データ。
-# 同じ資料を複数タスクから読む場合も、ファイル単位で1回だけ生成する。
-FILE_SOURCES: dict[str, list[tuple[str, str]]] = {
+# 予習checkの出題候補。active対象ファイルの集合はcurriculum.jsonから導出し、
+# この表は候補問題の選び方だけを持つ。同じ資料を複数講から読む場合も、ファイル単位で1回だけ生成する。
+QUESTION_SOURCES: dict[str, list[tuple[str, str]]] = {
     "kobun-01-yomi.md": [("kiso", "kiso-yomi")],
     "kobun-01-bunsetsu-hinshi.md": [("kiso", "kiso-bunsetsu")],
     "kobun-01-structure.md": [("kiso", "kiso-structure")],
@@ -33,10 +33,13 @@ FILE_SOURCES: dict[str, list[tuple[str, str]]] = {
     "kobun-02-yougo-table.md": [("derived", "yougo-table")],
     "kobun-02-sound.md": [("kiso", "kiso-sound")],
     "kobun-02-yougo-yaku.md": [("choice", "qa-chapter-2-yaku")],
+    "kobun-02-katsuyo-gyou.md": [("kiso", "kiso-katsuyo-gyou")],
     "kobun-03-jodoshi-mizen.md": [("derived", "jodoshi-mizen")],
     "kobun-03-jodoshi-renyo.md": [("derived", "jodoshi-renyo")],
     "kobun-03-jodoshi-shushi.md": [("derived", "jodoshi-shushi")],
     "kobun-03-jodoshi-taigen.md": [("derived", "jodoshi-taigen")],
+    "kobun-03-jodoushi-katachi.md": [("derived", "jodoshi-katachi")],
+    "kobun-03-jodoushi-table.md": [("derived", "jodoshi-table")],
     "kobun-04-jodoshi-basic.md": [("derived", "jodoshi-basic")],
     "kobun-04-rareru.md": [("homograph", "sb-rareru")],
     "kobun-04-sasu.md": [("homograph", "sb-sasu")],
@@ -52,17 +55,23 @@ FILE_SOURCES: dict[str, list[tuple[str, str]]] = {
     "kobun-04-other.md": [("homograph", "sb-other")],
     "kobun-05-joshi-map.md": [("choice", "qa-chapter-7-basics")],
     "kobun-05-koou.md": [("choice", "qa-chapter-7-response")],
+    "kobun-05-joshi-koou.md": [("choice", "qa-chapter-7-response")],
     "kobun-05-ba.md": [("joshi", "sb-ba")],
     "kobun-05-yori.md": [("joshi", "sb-yori")],
     "kobun-05-no.md": [("derived", "joshi-no")],
     "kobun-05-dani.md": [("joshi", "sb-dani")],
     "kobun-05-kakari.md": [("joshi", "sb-kakari")],
     "kobun-05-shuujoshi.md": [("joshi", "sb-shuujoshi")],
+    "kobun-05-kakari-imi.md": [("choice", "qa-chapter-7-response")],
+    "kobun-05-kakari-shouryaku-nagare.md": [("joshi", "sb-kakari-ellipsis")],
     "kobun-06-nune.md": [("homograph2", "sb-h-nune")],
     "kobun-06-rure.md": [("homograph2", "sb-h-rure")],
     "kobun-06-nari.md": [("homograph2", "sb-h-nari")],
     "kobun-06-namu.md": [("homograph2", "sb-h-namu")],
     "kobun-06-ni.md": [("homograph2", "sb-h-ni")],
+    "kobun-06-ramu-shiki.md": [("homograph2", "sb-h-ramu")],
+    "kobun-06-se.md": [("homograph2", "sb-h-se")],
+    "kobun-06-shite.md": [("homograph2", "sb-h-shi"), ("homograph2", "sb-h-te")],
     "kobun-07-keigo-map.md": [("keigo-choice", "qa-chapter-9")],
     "kobun-07-tamau.md": [("keigo", "sb-k-tamau")],
     "kobun-07-tatematsuru.md": [("keigo", "sb-k-tatematsuru")],
@@ -220,6 +229,94 @@ def group_candidates(data: dict[str, Any], source_type: str, group_id: str) -> l
 def derived_candidates(data: dict[str, Any], source_id: str) -> list[dict[str, Any]]:
     jodoshi = data["jodoshi.json"]["jodoshi"]
     by_name = {item["kihon"]: item for item in jodoshi}
+
+    if source_id == "jodoshi-katachi":
+        return [
+            make_candidate(
+                "derived-jodoshi-katachi-position",
+                "助動詞の活用形を決める最初の手がかりはどれ？",
+                ["直前の語との接続と、助動詞自身の位置", "助動詞の意味だけ"],
+                0,
+                "助動詞は、直前の語がどの活用形かを接続で確認し、助動詞自身が文中で何形かも後ろの語や位置から確かめます。",
+                "data/preparation/kobun-03-jodoushi-katachi.md",
+                [],
+                "derived-from-preparation",
+            ),
+            make_candidate(
+                "derived-jodoshi-katachi-mizen",
+                "「咲かず」の「咲か」はどの活用形か？",
+                ["未然形", "連用形"],
+                0,
+                "打消の助動詞「ず」は未然形に接続するため、「咲か」は未然形です。",
+                "data/preparation/kobun-03-jodoushi-katachi.md",
+                [],
+                "derived-from-preparation",
+            ),
+            make_candidate(
+                "derived-jodoshi-katachi-renyo",
+                "「花咲きぬ」の「咲き」はどの活用形か？",
+                ["連用形", "未然形"],
+                0,
+                "完了の助動詞「ぬ」は連用形に接続するので、「咲き」は連用形です。",
+                "data/preparation/kobun-03-jodoushi-katachi.md",
+                [],
+                "derived-from-preparation",
+            ),
+            make_candidate(
+                "derived-jodoshi-katachi-rentai",
+                "体言を修飾する助動詞の形を決める手がかりはどれ？",
+                ["連体形", "終止形"],
+                0,
+                "体言の前でその体言を修飾していれば、助動詞自身の連体形を候補にします。",
+                "data/preparation/kobun-03-jodoushi-katachi.md",
+                [],
+                "derived-from-preparation",
+            ),
+            make_candidate(
+                "derived-jodoshi-katachi-order",
+                "助動詞の意味を決める順番として適切なものはどれ？",
+                ["形・接続を確認してから、基本意味と文脈を見る", "最初に現代語訳だけを当てはめる"],
+                0,
+                "形と接続で候補を絞り、基本意味を置いたあと、主語・時・文脈で本文に合う意味を決めます。",
+                "data/preparation/kobun-03-jodoushi-katachi.md",
+                [],
+                "derived-from-preparation",
+            ),
+        ]
+
+    if source_id == "jodoshi-table":
+        return [
+            make_candidate(
+                "derived-jodoshi-table-order",
+                "助動詞の活用表を読む順番はどれ？",
+                ["未然・連用・終止・連体・已然・命令", "終止・未然・命令・連用・已然・連体"],
+                0,
+                "活用表は未然形、連用形、終止形、連体形、已然形、命令形の順に確認します。空欄の形も含めて見ます。",
+                "data/preparation/kobun-03-jodoushi-table.md",
+                [],
+                "derived-from-preparation",
+            ),
+            make_candidate(
+                "derived-jodoshi-table-setsuzoku",
+                "「ず・む」と「き・けり」の接続の組み合わせとして正しいものはどれ？",
+                ["ず・むは未然形、き・けりは連用形に接続する", "ず・むは連用形、き・けりは終止形に接続する"],
+                0,
+                "接続グループを分けると、直前の語の活用形を確認しやすくなります。",
+                "data/preparation/kobun-03-jodoushi-table.md",
+                [],
+                "derived-from-preparation",
+            ),
+            make_candidate(
+                "derived-jodoshi-table-rahen",
+                "ラ変型「あり」の後ろで終止形接続の助動詞が付くとき、直前の形はどうなる？",
+                ["連体形", "未然形"],
+                0,
+                "ラ変型の語の後ろでは、終止形接続の助動詞でも連体形に付く例外があるため、直前の語の種類を確認します。",
+                "data/preparation/kobun-03-jodoushi-table.md",
+                ["kbp.disambiguation.nari-identification"],
+                "derived-from-preparation-and-principles",
+            ),
+        ]
 
     if source_id == "yougo-table":
         katsuyo = data["katsuyo.json"]
@@ -469,8 +566,42 @@ def load_data() -> dict[str, Any]:
         "shikibetsu-keigo.json",
         "jodoshi.json",
         "katsuyo.json",
+        "curriculum.json",
     }
     return {name: json.loads((ROOT / "data" / name).read_text(encoding="utf-8")) for name in names}
+
+
+def active_preparation_refs(data: dict[str, Any]) -> dict[str, list[dict[str, Any]]]:
+    """curriculum.jsonのpreparation[]を予習資料のactive対象と対応表の正本にする。"""
+    refs: dict[str, list[dict[str, Any]]] = {}
+    for chapter in data["curriculum.json"].get("chapters", []):
+        for lesson in chapter.get("lessons", []):
+            activities = lesson.get("requiredActivities", [])
+            activity_ids = [str(activity.get("id", "")) for activity in activities if activity.get("id")]
+            source_ids = []
+            for activity in activities:
+                ids = activity.get("ids", [])
+                if isinstance(ids, list):
+                    source_ids.extend(str(item) for item in ids)
+            for material in lesson.get("preparation", []):
+                path = str(material.get("path", ""))
+                filename = Path(path.split("?", 1)[0]).name
+                if not filename:
+                    continue
+                refs.setdefault(filename, []).append({
+                    "lessonId": str(lesson.get("id", "")),
+                    "chapterId": str(chapter.get("id", "")),
+                    "chapterNumber": chapter.get("number"),
+                    "lessonNumber": lesson.get("number"),
+                    "sectionIds": [str(section) for section in material.get("sections", [])],
+                    "activityIds": activity_ids,
+                    "sourceQuestionIds": source_ids,
+                })
+    return refs
+
+
+def active_preparation_files(data: dict[str, Any]) -> set[str]:
+    return set(active_preparation_refs(data))
 
 
 def source_candidates(data: dict[str, Any], source_type: str, source_id: str) -> list[dict[str, Any]]:
@@ -560,7 +691,9 @@ def add_checks(raw: str, filename: str, data: dict[str, Any]) -> tuple[str, list
     sections = parse_sections(raw)
     if not sections:
         return raw, []
-    sources = FILE_SOURCES[filename]
+    sources = QUESTION_SOURCES.get(filename, [])
+    if not sources:
+        raise ValueError(f"no question source mapping: {filename}")
     candidates: list[dict[str, Any]] = []
     for source_type, source_id in sources:
         candidates.extend(source_candidates(data, source_type, source_id))
@@ -618,12 +751,27 @@ def add_checks(raw: str, filename: str, data: dict[str, Any]) -> tuple[str, list
         prefix.extend(block.splitlines())
         prefix.append("")
         lines = prefix + suffix
+    refs = active_preparation_refs(data).get(filename, [])
+    for record in selected:
+        check_id = record["checkId"]
+        matched = [ref for ref in refs if check_id in ref.get("sectionIds", [])]
+        if not matched:
+            matched = refs
+        record["curriculumRefs"] = matched
     return "\n".join(lines).rstrip() + "\n", selected
 
 
 def remove_generated_checks(raw: str, filename: str) -> str:
     unit = re.escape(Path(filename).stem)
     return re.sub(rf"\n*:::check check-{unit}-\d+\n.*?\n:::\n*", "\n\n", raw, flags=re.S)
+
+
+def attach_curriculum_refs(entry: dict[str, Any], refs: dict[str, list[dict[str, Any]]]) -> None:
+    filename = str(entry.get("file", ""))
+    file_refs = refs.get(filename, [])
+    check_id = str(entry.get("checkId", ""))
+    matched = [ref for ref in file_refs if check_id in ref.get("sectionIds", [])]
+    entry["curriculumRefs"] = matched or file_refs
 
 
 def main() -> int:
@@ -634,16 +782,22 @@ def main() -> int:
     args = parser.parse_args()
 
     data = load_data()
-    wanted = {item.strip() for item in args.files.split(",")} if args.files else set(FILE_SOURCES)
-    unknown = wanted - set(FILE_SOURCES)
+    active_files = active_preparation_files(data)
+    wanted = {item.strip() for item in args.files.split(",")} if args.files else active_files
+    known_files = set(QUESTION_SOURCES) if args.remove_generated else active_files
+    unknown = wanted - known_files
     if unknown:
-        raise SystemExit(f"UNKNOWN_FILES={','.join(sorted(unknown))}")
+        raise SystemExit(f"UNKNOWN_ACTIVE_FILES={','.join(sorted(unknown))}")
 
     report: dict[str, Any] = {}
     if REPORT_PATH.exists():
         report = json.loads(REPORT_PATH.read_text(encoding="utf-8"))
     entries: list[dict[str, Any]] = report.get("checks", []) if isinstance(report, dict) else []
     by_id = {entry.get("checkId"): entry for entry in entries if isinstance(entry, dict)}
+    refs = active_preparation_refs(data)
+    for entry in by_id.values():
+        if isinstance(entry, dict):
+            attach_curriculum_refs(entry, refs)
     total = 0
 
     for filename in sorted(wanted):
@@ -653,6 +807,8 @@ def main() -> int:
             updated = remove_generated_checks(raw, filename)
             if args.apply and updated != raw:
                 path.write_text(updated, encoding="utf-8", newline="\n")
+            for check_id in [key for key, entry in by_id.items() if isinstance(entry, dict) and entry.get("file") == filename]:
+                by_id.pop(check_id, None)
             print(f"REMOVE {filename}: {raw.count(f'check-{Path(filename).stem}-')}")
             continue
         if re.search(r"(?m)^:::check(?:\s|$)", raw):
@@ -667,7 +823,7 @@ def main() -> int:
             path.write_text(updated, encoding="utf-8", newline="\n")
         total += len(selected)
 
-    if args.apply and not args.remove_generated:
+    if args.apply:
         REPORT_PATH.write_text(
             json.dumps({"version": 1, "checks": sorted(by_id.values(), key=lambda item: item["checkId"])}, ensure_ascii=False, indent=2) + "\n",
             encoding="utf-8",

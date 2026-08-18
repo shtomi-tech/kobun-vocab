@@ -33,6 +33,7 @@ SB_PATH = os.path.join(ROOT, "data", "shikibetsu.json")
 JOSHI_PATH = os.path.join(ROOT, "data", "shikibetsu-joshi.json")
 HOMOGRAPH_PATH = os.path.join(ROOT, "data", "shikibetsu-homograph.json")
 KEIGO_PATH = os.path.join(ROOT, "data", "shikibetsu-keigo.json")
+CURRICULUM_PATH = os.path.join(ROOT, "data", "curriculum.json")
 
 
 def load(path):
@@ -181,7 +182,7 @@ def check_required_question_ids_for_set(data, required_key, questions_key,
     duplicates = [qid for qid, n in Counter(required).items() if n > 1]
     missing = [qid for qid in required if qid not in question_id_set]
     unknown = [qid for qid in question_ids if qid not in required_set]
-    if len(required) != expected_count:
+    if expected_count is not None and len(required) != expected_count:
         errors.append(f"{label}の必修問題数が{expected_count}でない（{len(required)}）")
     if duplicates:
         errors.append(f"{required_key} に重複: " + ", ".join(duplicates))
@@ -210,16 +211,16 @@ def check_required_question_ids(data):
 
 def check_joshi_required_question_ids(data):
     return check_required_question_ids_for_set(
-        data, "joshiRequiredQuestionIds", "joshiQuestions", 12,
-        {"integration": 12},
+        data, "joshiRequiredQuestionIds", "joshiQuestions", None,
+        None,
         "助詞識別",
     )
 
 
 def check_homograph_required_question_ids(data):
     return check_required_question_ids_for_set(
-        data, "homographRequiredQuestionIds", "homographQuestions", 28,
-        {"integration": 28},
+        data, "homographRequiredQuestionIds", "homographQuestions", None,
+        None,
         "同形語識別",
     )
 
@@ -234,7 +235,7 @@ def check_keigo_required_question_ids(data):
 
 def check_kiso_required_question_ids(data):
     return check_required_question_ids_for_set(
-        data, "kisoRequiredQuestionIds", "kisoQuestions", 64,
+        data, "kisoRequiredQuestionIds", "kisoQuestions", None,
         None,
         "文法の土台",
     )
@@ -242,10 +243,55 @@ def check_kiso_required_question_ids(data):
 
 def check_choice_required_question_ids(data):
     return check_required_question_ids_for_set(
-        data, "choiceRequiredQuestionIds", "choiceQuestions", 63,
+        data, "choiceRequiredQuestionIds", "choiceQuestions", None,
         None,
         "文法4択",
     )
+
+
+CURRICULUM_MANIFESTS = {
+    "choice": ("choiceRequiredQuestionIds", "choiceGroups", "multiple_choice.json"),
+    "kiso": ("kisoRequiredQuestionIds", "kisoGroups", "kiso.json"),
+    "joshi": ("joshiRequiredQuestionIds", "joshiGroups", "shikibetsu-joshi.json"),
+    "homograph": ("homographRequiredQuestionIds", "homographGroups", "shikibetsu-homograph.json"),
+}
+
+
+def curriculum_explicit_required_ids(set_id, data_by_file):
+    """curriculum.jsonでids/groupIdが明示された必修活動を収集する。
+
+    procedureのids省略は、既存のprocedureグループが代表問題集合を持つ
+    互換形式なので、この検査では対象外にする。分割講の境界はids明示で固定する。
+    """
+    manifest = load(CURRICULUM_PATH)
+    required_ids_key, groups_key, filename = CURRICULUM_MANIFESTS[set_id]
+    source = data_by_file[filename]
+    groups = {str(group.get("id")): group.get("ids", []) for group in source.get(groups_key, [])}
+    found = []
+    for chapter in manifest.get("chapters", []):
+        for lesson in chapter.get("lessons", []):
+            for activity in lesson.get("requiredActivities", []):
+                if activity.get("setId") != set_id:
+                    continue
+                if isinstance(activity.get("ids"), list):
+                    found.extend(activity["ids"])
+                elif activity.get("groupId"):
+                    found.extend(groups.get(str(activity["groupId"]), []))
+    return list(dict.fromkeys(found))
+
+
+def check_curriculum_required_ids(data_by_file):
+    problems = []
+    for set_id, (required_key, _groups_key, filename) in CURRICULUM_MANIFESTS.items():
+        data = data_by_file[filename]
+        required = set(data.get(required_key, []))
+        manifest_ids = curriculum_explicit_required_ids(set_id, data_by_file)
+        missing = [qid for qid in manifest_ids if qid not in required]
+        if missing:
+            problems.append(
+                f"{set_id}: curriculum必修idsが{required_key}に未登録（{', '.join(map(str, missing))}）"
+            )
+    return problems
 
 
 # ---------------------------------------------------------------------------
@@ -558,6 +604,15 @@ def run_check():
     for error in check_choice_required_question_ids(load(MC_PATH)):
         problems.append(f"[必修ルート] multiple_choice.json {error}")
 
+    manifest_data = {
+        "multiple_choice.json": load(MC_PATH),
+        "kiso.json": load(KISO_PATH),
+        "shikibetsu-joshi.json": load(JOSHI_PATH),
+        "shikibetsu-homograph.json": load(HOMOGRAPH_PATH),
+    }
+    for error in check_curriculum_required_ids(manifest_data):
+        problems.append(f"[カリキュラム必修] {error}")
+
     problems += check_retired()
 
     if problems:
@@ -592,7 +647,13 @@ def main():
     keigo_required_err = check_keigo_required_question_ids(keigo)
     kiso_required_err = check_kiso_required_question_ids(kiso)
     choice_required_err = check_choice_required_question_ids(mc)
-    if not mc_err and not sb_err and not required_err and not joshi_required_err and not homograph_required_err and not keigo_required_err and not kiso_required_err and not choice_required_err:
+    manifest_err = check_curriculum_required_ids({
+        "multiple_choice.json": mc,
+        "kiso.json": kiso,
+        "shikibetsu-joshi.json": joshi,
+        "shikibetsu-homograph.json": homograph,
+    })
+    if not mc_err and not sb_err and not required_err and not joshi_required_err and not homograph_required_err and not keigo_required_err and not kiso_required_err and not choice_required_err and not manifest_err:
         print("違反なし。全問が必須フィールドを満たす。")
     else:
         print(f"[4択] 違反 {len(mc_err)} 件")
@@ -619,6 +680,9 @@ def main():
         print(f"[文法4択必修ルート] 違反 {len(choice_required_err)} 件")
         for e in choice_required_err:
             print("  - " + e)
+        print(f"[カリキュラム必修同期] 違反 {len(manifest_err)} 件")
+        for e in manifest_err:
+            print("  - " + e)
     if not required_err:
         sbq_by_id = {q.get("id"): q for q in sbq}
         required_types = Counter(sbq_by_id[qid].get("questionType") for qid in sb.get("requiredQuestionIds", []))
@@ -627,12 +691,14 @@ def main():
         joshiq = joshi.get("joshiQuestions", [])
         joshi_by_id = {q.get("id"): q for q in joshiq}
         required_types = Counter(joshi_by_id[qid].get("questionType") for qid in joshi.get("joshiRequiredQuestionIds", []))
-        print("助詞識別必修ルート: 10問（" + ", ".join(f"{k}={v}" for k, v in sorted(required_types.items())) + "）、追加練習: 5問")
+        required_count = len(joshi.get("joshiRequiredQuestionIds", []))
+        print(f"助詞識別必修ルート: {required_count}問（" + ", ".join(f"{k}={v}" for k, v in sorted(required_types.items())) + f"）、追加練習: {len(joshiq) - required_count}問")
     if not homograph_required_err:
         homographq = homograph.get("homographQuestions", [])
         homograph_by_id = {q.get("id"): q for q in homographq}
         required_types = Counter(homograph_by_id[qid].get("questionType") for qid in homograph.get("homographRequiredQuestionIds", []))
-        print("同形語識別必修ルート: 15問（" + ", ".join(f"{k}={v}" for k, v in sorted(required_types.items())) + "）、追加練習: 30問")
+        required_count = len(homograph.get("homographRequiredQuestionIds", []))
+        print(f"同形語識別必修ルート: {required_count}問（" + ", ".join(f"{k}={v}" for k, v in sorted(required_types.items())) + f"）、追加練習: {len(homographq) - required_count}問")
     if not keigo_required_err:
         keigoq = keigo.get("keigoQuestions", [])
         keigo_by_id = {q.get("id"): q for q in keigoq}

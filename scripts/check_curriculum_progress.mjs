@@ -140,13 +140,24 @@ function findChapter(curriculum, chapterId) {
   return curriculum.chapters.find(c => c.id === chapterId) || null;
 }
 
+function findTask(curriculum, taskId) {
+  for (const chapter of curriculum.chapters) {
+    for (const lesson of chapter.lessons) {
+      const task = lesson.requiredActivities.find(activity => activity.id === taskId);
+      if (task) return task;
+    }
+  }
+  return null;
+}
+
 const curriculum = JSON.parse(fs.readFileSync(path.join(ROOT, "data/curriculum.json"), "utf8"));
-// fixture4（旧10必修完了済みユーザー）は2026-08-17時点のfixtureで、当時blockedだった
-// 10/29/30/35/36/43講は2026-08-18のWeb調査で新規に requiredActivities が追加された。
-// 旧進捗データ（fixtureの固定JSON）はこれらの新規問題IDへの正解記録を持たないため、
-// 「旧必修をすべて終えたユーザーでも、この6講だけは新規内容としてやり直しが必要」という
-// 状態が正しい。この一覧はcurriculum.jsonのstatusとは独立に、fixture作成時点の固定値とする。
-const FIXTURE4_UNCOVERED_LESSON_IDS = ["lesson-10", "lesson-29", "lesson-30", "lesson-35", "lesson-36", "lesson-43"];
+// fixture4は旧必修ルートの完了データであり、後から追加した活動には記録を持たない。
+// 旧データを現行教材へ無理に完了扱いしないことを、この固定一覧で確認する。
+const FIXTURE4_UNCOVERED_LESSON_IDS = [
+  "lesson-10", "lesson-12", "lesson-17", "lesson-29", "lesson-30",
+  "lesson-32", "lesson-33", "lesson-34", "lesson-35", "lesson-36",
+  "lesson-38", "lesson-39", "lesson-40", "lesson-41", "lesson-42", "lesson-43",
+];
 
 /* ================= fixture 1: 進捗なし（空） ================= */
 async function testFixture1() {
@@ -357,6 +368,97 @@ async function testWeakCountProcedureTask() {
   check(label + ": chapter-3 weakCount picks up procedure-kind task's weak record", status.weakCount === 1);
 }
 
+/* ================= Task 1: 46講版の状態境界 ================= */
+async function testCurriculumStateBoundaries() {
+  const label = "curriculum-state-boundaries";
+  const { app, localStorage } = createHarness(loadFixtureSeed("01-empty"));
+  await app.ensureData();
+
+  const lesson01Task = findTask(curriculum, "lesson-01-kiso");
+  const lesson01 = findLesson(curriculum, "lesson-01");
+  check(label + ": test task exists", !!lesson01Task);
+
+  const progress = JSON.parse(localStorage.getItem(STORE_KEY) || "{}");
+  lesson01Task.ids.forEach(id => { progress["kiso:" + id] = { c: 1, w: 0, weak: false }; });
+  localStorage.setItem(STORE_KEY, JSON.stringify(progress));
+
+  const fixed = "2026-08-18T00:00:00.000Z";
+  app.__test.applyActivityCompletion(lesson01Task.id, { now: fixed });
+  let path = parsePathState(localStorage);
+  check(label + ": activity completion does not create grammarTaskCycles",
+    !path.grammarTaskCycles || !path.grammarTaskCycles[lesson01Task.id]);
+  check(label + ": last activity stamps lessonCycles once",
+    path.lessonCycles && path.lessonCycles[lesson01.id] && path.lessonCycles[lesson01.id].completedAt === fixed);
+
+  app.__test.applyActivityCompletion(lesson01Task.id, { now: "2026-08-18T01:00:00.000Z" });
+  path = parsePathState(localStorage);
+  check(label + ": repeated completion keeps the original completedAt",
+    path.lessonCycles[lesson01.id].completedAt === fixed);
+
+  app.__test.applyActivityCompletion(lesson01Task.id, { review: true, now: "2026-08-18T02:00:00.000Z" });
+  path = parsePathState(localStorage);
+  check(label + ": review updates lastReviewedAt only",
+    path.lessonCycles[lesson01.id].completedAt === fixed
+      && path.lessonCycles[lesson01.id].lastReviewedAt === "2026-08-18T02:00:00.000Z");
+
+  app.__test.saveCheckpointResult({ checkpointKey: "textbookCheckpointV1" }, 24, 30);
+  path = parsePathState(localStorage);
+  check(label + ": checkpoint uses textbookCheckpointV1",
+    path.textbookCheckpointV1 && path.textbookCheckpointV1.score === 24 && path.textbookCheckpointV1.passed === true);
+  check(label + ": old grammarCheckpoint is not overwritten",
+    !path.grammarCheckpoint);
+
+  const blocked = app.__test.lessonStatus({ id: "blocked-fixture", number: 99, title: "blocked", status: "blocked", requiredActivities: [] });
+  check(label + ": empty blocked lesson is not complete", blocked.complete === false);
+}
+
+async function testExtensionsDoNotGateGrammar() {
+  const label = "extensions-do-not-gate-grammar";
+  const { app, localStorage } = createHarness(loadFixtureSeed("01-empty"));
+  await app.ensureData();
+  const progress = JSON.parse(localStorage.getItem(STORE_KEY) || "{}");
+  curriculum.chapters.flatMap(chapter => chapter.lessons).forEach(lesson => {
+    lesson.requiredActivities.forEach(activity => {
+      app.__test.taskCheckedIds({
+        id: activity.id,
+        kind: activity.kind,
+        setId: activity.setId,
+        groupId: activity.groupId,
+        ids: activity.ids,
+        procId: activity.procId,
+      }).forEach(id => {
+        const key = activity.setId + ":" + id;
+        progress[key] = { c: 1, w: 0, weak: false };
+      });
+    });
+  });
+  localStorage.setItem(STORE_KEY, JSON.stringify(progress));
+  app.__test.saveCheckpointResult({ checkpointKey: "textbookCheckpointV1" }, 24, 30);
+  check(label + ": grammar completion ignores unfinished extension activities",
+    app.__test.grammarCourseStatus().complete === true);
+}
+
+async function testActivityQueues() {
+  const label = "activity-queues";
+  const { app, localStorage } = createHarness(loadFixtureSeed("01-empty"));
+  await app.ensureData();
+  const lesson01 = findLesson(curriculum, "lesson-01");
+  const chapter1 = findChapter(curriculum, "chapter-1");
+  const firstEntries = app.__test.lessonQueueEntries(lesson01, false);
+  check(label + ": first lesson queue has its activity", firstEntries.length === 1 && firstEntries[0].review === false);
+  const chapterEntries = app.__test.chapterQueueEntries(chapter1);
+  check(label + ": chapter queue keeps lesson order", chapterEntries.length > 1 && chapterEntries[0].task.lessonId === "lesson-01");
+  check(label + ": chapter queue is review-only", chapterEntries.every(entry => entry.review === true));
+
+  const progress = JSON.parse(localStorage.getItem(STORE_KEY) || "{}");
+  progress["kiso:k-yomi-03"] = { c: 0, w: 1, weak: true };
+  localStorage.setItem(STORE_KEY, JSON.stringify(progress));
+  const weakEntries = app.__test.weakQueueEntries([lesson01]);
+  check(label + ": weak queue narrows to concrete weak IDs",
+    weakEntries.length === 1 && weakEntries[0].review === true && weakEntries[0].task.ids.length === 1
+      && weakEntries[0].task.ids[0] === "k-yomi-03");
+}
+
 async function main() {
   await testFixture1();
   await testFixture2();
@@ -365,6 +467,9 @@ async function main() {
   await testFixture5();
   await testFixture6();
   await testWeakCountProcedureTask();
+  await testCurriculumStateBoundaries();
+  await testExtensionsDoNotGateGrammar();
+  await testActivityQueues();
 
   console.log("");
   console.log("PASS: " + passCount + " / FAIL: " + failCount);

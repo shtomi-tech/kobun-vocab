@@ -279,6 +279,16 @@ def check_activity_refs(activity, lesson, data_index, result):
     kind = activity.get("kind")
     set_id = activity.get("setId")
 
+    if "stepRange" in activity:
+        step_range = activity.get("stepRange")
+        if (
+            not isinstance(step_range, list)
+            or len(step_range) != 2
+            or any(not isinstance(value, int) or value < 0 for value in step_range)
+            or step_range[0] > step_range[1]
+        ):
+            result.error(f"{lesson['id']}/{activity.get('id')}: stepRangeが不正: {step_range}")
+
     if kind not in ("group", "procedure", "checkpoint", "review"):
         result.error(f"{lesson['id']}: 不正なactivity.kind: {kind}")
         return

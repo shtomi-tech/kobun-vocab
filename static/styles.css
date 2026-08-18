@@ -305,6 +305,104 @@ h2 {
   .pathTaskAction { align-self: center; }
 }
 
+/* ---- 6章46講の教材ロードマップ ---- */
+.curriculumRoadmapCard { scroll-margin-top: 16px; }
+.chapterStepper {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 8px;
+  margin: 17px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.chapterStep { min-width: 0; }
+.chapterStepButton {
+  width: 100%;
+  min-height: 44px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 13px;
+}
+.chapterStepButton:hover,
+.chapterStep.current .chapterStepButton { border-color: var(--clay); color: var(--clay); }
+.chapterStepLabel {
+  display: block;
+  overflow: hidden;
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.chapterRoadmapCard { scroll-margin-top: 16px; }
+.chapterRoadmapCard.current { border-color: var(--clay); }
+.chapterRoadmapHead { display: flex; justify-content: space-between; align-items: flex-start; gap: 17px; }
+.chapterRoadmapHead h3 { margin: 0; font-size: 20px; font-weight: 600; }
+.chapterRoadmapHead .smallGhost { flex: 0 0 auto; min-height: 44px; }
+.chapterLessonsDetails { margin-top: 17px; border-top: 1px solid var(--divider); }
+.chapterLessonsDetails summary {
+  min-height: 44px;
+  padding: 10px 4px;
+  cursor: pointer;
+  color: var(--clay);
+  font-size: 13px;
+  list-style: none;
+}
+.chapterLessonsDetails summary::-webkit-details-marker { display: none; }
+.chapterLessonsDetails summary::before { content: "▸ "; }
+.chapterLessonsDetails[open] summary::before { content: "▾ "; }
+.lessonRoadmapList { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.lessonRoadmapRow {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid transparent;
+  border-radius: var(--r-md);
+  background: var(--parchment);
+}
+.lessonRoadmapRow.current { border-color: var(--clay); }
+.lessonRoadmapRow.done { background: var(--paper); border-color: var(--divider); }
+.lessonRoadmapMarker {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  color: var(--clay);
+  font-size: 12px;
+  font-weight: 600;
+}
+.lessonRoadmapRow.done .lessonRoadmapMarker { border-color: var(--clay); background: var(--clay); color: #fff; }
+.lessonRoadmapBody { min-width: 0; }
+.lessonRoadmapNumber { color: var(--muted); font-size: 11px; }
+.lessonRoadmapBody h4 { margin: 0; font-size: 16px; font-weight: 600; }
+.lessonRoadmapBody .hint { margin-top: 2px; }
+.lessonRoadmapActions { display: flex; justify-content: flex-end; }
+.lessonRoadmapActions .smallGhost { min-width: 104px; min-height: 44px; }
+.checkpointRoadmapCard,
+.extensionRoadmapCard { border-left: 4px solid var(--clay); }
+.checkpointRoadmapCard .cta,
+.checkpointRoadmapCard .ghost { margin-top: 8px; }
+.extensionRoadmapBlock + .extensionRoadmapBlock { margin-top: 17px; padding-top: 17px; border-top: 1px solid var(--divider); }
+.extensionRoadmapBlock h3 { margin: 0; font-size: 17px; }
+.extensionRoadmapBlock .pathTaskRow { margin-top: 8px; }
+.extensionRoadmapBlock .smallGhost { min-height: 44px; }
+@media (max-width: 700px) {
+  .chapterStepper { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 520px) {
+  .chapterRoadmapHead { display: block; }
+  .chapterRoadmapHead .smallGhost { width: 100%; margin-top: 8px; }
+  .lessonRoadmapRow { grid-template-columns: 32px minmax(0, 1fr); align-items: start; }
+  .lessonRoadmapActions { grid-column: 2; justify-content: stretch; }
+  .lessonRoadmapActions .smallGhost { width: 100%; }
+}
+
 /* ---- 古典文法の予習資料 ---- */
 .prepPageMode .top { display: none; }
 .prepPageMode .wrap { max-width: 720px; padding-top: 32px; }

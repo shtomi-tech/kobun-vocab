@@ -20,13 +20,26 @@
     "jb-ba-int3",
     "jb-yori-int1",
     "jb-yori-int2",
+    "jb-no-int1",
+    "jb-no-int2",
+    "jb-no-int3",
+    "jb-no-int4",
     "jb-no-int5",
     "jb-dani-int1",
+    "jb-dani-int2",
+    "jb-sahe-int1",
+    "jb-sahe-int2",
     "jb-kak-int1",
     "jb-kak-int2",
     "jb-kae-int1",
     "jb-kae-int4",
-    "jb-shu-int1"
+    "jb-shu-int1",
+    "jb-shu-int2",
+    "jb-shu-int3",
+    "jb-shu-int4",
+    "jb-shu-int5",
+    "jb-shi-int1",
+    "jb-shi-int2"
   ],
   "joshiProcedures": [
     {
@@ -102,6 +115,36 @@
         {
           "no": "手順II",
           "text": "あれば限定（せめて〜だけでも）、なければ類推（〜さえ）と判断する。2条件は互いに他方の否定なので、判定に漏れはない。"
+        }
+      ]
+    },
+    {
+      "id": "sahe",
+      "name": "さへの識別",
+      "sub": "添加・類推の強調",
+      "steps": [
+        {
+          "no": "手順I",
+          "text": "「さへ」は、ある事柄に加えて別の事柄まで含める添加の意味をまず候補にする。"
+        },
+        {
+          "no": "手順II",
+          "text": "前後の文脈から「〜までも・〜さえ」と訳せるかを確認し、単なる並列や主格と混同しない。"
+        }
+      ]
+    },
+    {
+      "id": "shi",
+      "name": "副助詞「し」の識別",
+      "sub": "取り立て・強意",
+      "steps": [
+        {
+          "no": "手順I",
+          "text": "「し」を外しても文の骨格が残るかを確認し、語を取り立てる副助詞の候補を作る。"
+        },
+        {
+          "no": "手順II",
+          "text": "直前・直後の語を調べ、過去の助動詞「き」の連体形やサ変動詞の一部ではないかを除外する。"
         }
       ]
     },
@@ -189,6 +232,10 @@
       "name": "格助詞「の」の識別",
       "sub": "連用修飾格・準体格・連体修飾格・同格・主格",
       "ids": [
+        "jb-no-int1",
+        "jb-no-int2",
+        "jb-no-int3",
+        "jb-no-int4",
         "jb-no-int5"
       ]
     },
@@ -199,6 +246,24 @@
       "ids": [
         "jb-dani-int1",
         "jb-dani-int2"
+      ]
+    },
+    {
+      "id": "sb-sahe",
+      "name": "さへの識別",
+      "sub": "添加・類推の強調",
+      "ids": [
+        "jb-sahe-int1",
+        "jb-sahe-int2"
+      ]
+    },
+    {
+      "id": "sb-shi",
+      "name": "副助詞「し」の識別",
+      "sub": "取り立て・強意",
+      "ids": [
+        "jb-shi-int1",
+        "jb-shi-int2"
       ]
     },
     {
@@ -231,7 +296,9 @@
       "ids": [
         "jb-shu-int1",
         "jb-shu-int2",
-        "jb-shu-int3"
+        "jb-shu-int3",
+        "jb-shu-int4",
+        "jb-shu-int5"
       ]
     },
     {
@@ -260,7 +327,13 @@
         "jb-kae-int6",
         "jb-shu-int1",
         "jb-shu-int2",
-        "jb-shu-int3"
+        "jb-shu-int3",
+        "jb-shu-int4",
+        "jb-shu-int5",
+        "jb-sahe-int1",
+        "jb-sahe-int2",
+        "jb-shi-int1",
+        "jb-shi-int2"
       ]
     }
   ],
@@ -1080,6 +1153,322 @@
         {
           "start": 1,
           "text": "ぞ"
+        }
+      ]
+    },
+    {
+      "id": "jb-no-int1",
+      "topic": "格助詞「の」の識別",
+      "step": "連体修飾格",
+      "questionType": "integration",
+      "coverageId": "jb-no-int1",
+      "passage": "花の咲く庭を歩く。",
+      "target": "の",
+      "explanation": "「花の咲く庭」で、「の」の下に続く「咲く庭」を説明している。体言「花」と用言を結び、後ろの内容を修飾する連体修飾格と判断する。",
+      "distractorRationale": {
+        "準体格（もの・ことを省略して受ける）": "「〜のもの・こと」と名詞を省略して受ける形ではない",
+        "同格（前後を同じものとして説明）": "前後が同じものを言い換えているのではない",
+        "主格（動作・状態の主体を表す）": "「花」が咲く主体を表す「が」に近い構造ではなく、「咲く庭」を修飾している"
+      },
+      "ruleRefs": [
+        "kbp.particles.ga-no-case-functions"
+      ],
+      "question": "傍線部の働きとして最も適切なものを選べ。",
+      "choices": [
+        "連体修飾格（後ろの体言を修飾）",
+        "準体格（もの・ことを省略して受ける）",
+        "同格（前後を同じものとして説明）",
+        "主格（動作・状態の主体を表す）"
+      ],
+      "answerIndex": 0,
+      "targetRanges": [
+        {
+          "start": 1,
+          "text": "の"
+        }
+      ]
+    },
+    {
+      "id": "jb-no-int2",
+      "topic": "格助詞「の」の識別",
+      "step": "準体格",
+      "questionType": "integration",
+      "coverageId": "jb-no-int2",
+      "passage": "我が見るのは月なり。",
+      "target": "の",
+      "explanation": "「見るのは」は「見るものは・見ることは」と名詞相当の内容を受けている。「の」を準体格と判断する。",
+      "distractorRationale": {
+        "連体修飾格": "下に修飾される体言が続くのではなく、「の」自体が名詞相当の内容を受けている",
+        "同格": "前後の体言を同じものとして言い換えている形ではない",
+        "主格": "「見る」の動作主を示すのではなく、見る内容を名詞化している"
+      },
+      "ruleRefs": [
+        "kbp.particles.ga-no-case-functions"
+      ],
+      "question": "傍線部の働きとして最も適切なものを選べ。",
+      "choices": [
+        "準体格",
+        "連体修飾格",
+        "同格",
+        "主格"
+      ],
+      "answerIndex": 0,
+      "targetRanges": [
+        {
+          "start": 4,
+          "text": "の"
+        }
+      ]
+    },
+    {
+      "id": "jb-no-int3",
+      "topic": "格助詞「の」の識別",
+      "step": "同格",
+      "questionType": "integration",
+      "coverageId": "jb-no-int3",
+      "passage": "我が友の、都の人来たり。",
+      "target": "の",
+      "explanation": "「我が友の、都の人」は、後ろの「都の人」が前の「我が友」を言い換えて説明する流れで、「の」は同格と読む。",
+      "distractorRationale": {
+        "連体修飾格": "後ろの体言を単に修飾するだけでなく、同じ人物を言い換えている",
+        "準体格": "「〜のもの・こと」と名詞を省略して受ける形ではない",
+        "主格": "「友」が「来たり」の主体であることだけで、同格の説明を失っている"
+      },
+      "ruleRefs": [
+        "kbp.particles.ga-no-case-functions"
+      ],
+      "question": "傍線部の働きとして最も適切なものを選べ。",
+      "choices": [
+        "同格",
+        "連体修飾格",
+        "準体格",
+        "主格"
+      ],
+      "answerIndex": 0,
+      "targetRanges": [
+        {
+          "start": 3,
+          "text": "の"
+        }
+      ]
+    },
+    {
+      "id": "jb-no-int4",
+      "topic": "格助詞「の」の識別",
+      "step": "連用修飾格",
+      "questionType": "integration",
+      "coverageId": "jb-no-int4",
+      "passage": "夜の静かに更けゆくころなり。",
+      "target": "の",
+      "explanation": "「夜の静かに更けゆく」は、夜が静かに更けていく様子を後ろの用言にかけていると読む。教材の五分類では、用言の内容を修飾する連用修飾格に当たる。",
+      "distractorRationale": {
+        "連体修飾格": "後ろの体言を説明するのではなく、後続する用言の様子を説明している",
+        "準体格": "「夜のもの・こと」と名詞相当の内容を受けていない",
+        "同格": "前後が同じ体言を言い換える関係ではない"
+      },
+      "ruleRefs": [
+        "kbp.particles.ga-no-case-functions"
+      ],
+      "question": "傍線部の働きとして最も適切なものを選べ。",
+      "choices": [
+        "連用修飾格",
+        "連体修飾格",
+        "準体格",
+        "同格"
+      ],
+      "answerIndex": 0,
+      "targetRanges": [
+        {
+          "start": 1,
+          "text": "の"
+        }
+      ]
+    },
+    {
+      "id": "jb-shu-int4",
+      "topic": "終助詞の識別",
+      "step": "ばや",
+      "questionType": "integration",
+      "coverageId": "jb-shu-int4",
+      "passage": "花咲かばや。",
+      "target": "ばや",
+      "explanation": "未然形「咲か」に終助詞「ばや」が続き、話し手自身の願望「花が咲いてほしい・咲きたい」を表す。",
+      "distractorRationale": {
+        "他者への願望「相手に〜てほしい」": "他者に何かをさせたい願望の「なむ」と取り違えている",
+        "禁止「〜するな・〜してはいけない」": "禁止の終助詞「な・そ」と取り違えている",
+        "強意の係助詞「特に〜だと取り立てる」": "係助詞「ばや」という用法はなく、文末の願望を表している"
+      },
+      "ruleRefs": [
+        "kbp.particles.final-particles-meanings"
+      ],
+      "question": "傍線部の意味として最も適切なものを選べ。",
+      "choices": [
+        "自己の願望「〜たい・〜てほしい」",
+        "他者への願望「相手に〜てほしい」",
+        "禁止「〜するな・〜してはいけない」",
+        "強意の係助詞「特に〜だと取り立てる」"
+      ],
+      "answerIndex": 0,
+      "targetRanges": [
+        {
+          "start": 3,
+          "text": "ばや"
+        }
+      ]
+    },
+    {
+      "id": "jb-shu-int5",
+      "topic": "終助詞の識別",
+      "step": "てしがな・にしがな",
+      "questionType": "integration",
+      "coverageId": "jb-shu-int5",
+      "passage": "あらまほしき世にてしがな。",
+      "target": "てしがな",
+      "explanation": "連用形に続く「てしがな」は、話し手自身の願望を表す終助詞。「理想的な世であってほしいものだ」と訳す。",
+      "distractorRationale": {
+        "他者への願望「相手に〜てほしい」": "未然形＋「なむ」の他者への願望と取り違えている",
+        "禁止「〜するな・〜してはいけない」": "終助詞「な・そ」の禁止と取り違えている",
+        "念押し「確かめる・念を押す」": "「かし」などの念押しと取り違えている"
+      },
+      "ruleRefs": [
+        "kbp.particles.final-particles-meanings"
+      ],
+      "question": "傍線部の意味として最も適切なものを選べ。",
+      "choices": [
+        "自己の願望「〜であってほしい」",
+        "他者への願望「相手に〜てほしい」",
+        "禁止「〜するな・〜してはいけない」",
+        "念押し「確かめる・念を押す」"
+      ],
+      "answerIndex": 0,
+      "targetRanges": [
+        {
+          "start": 8,
+          "text": "てしがな"
+        }
+      ]
+    },
+    {
+      "id": "jb-sahe-int1",
+      "topic": "さへの識別",
+      "step": "添加",
+      "questionType": "integration",
+      "coverageId": "jb-sahe-int1",
+      "passage": "花さへ咲かず。",
+      "target": "さへ",
+      "explanation": "「花さへ」は、花まで・花でさえという添加の意味を表す。「さへ」は別の事柄を加えて強調する副助詞である。",
+      "distractorRationale": {
+        "限定「花だけ（それ以外を含めない）」": "添加の「〜まで・〜さえ」を限定の「のみ」と取り違えている",
+        "逆接「花だけれども（しかし花は）」": "接続助詞の逆接と取り違えている",
+        "願望「花が咲いてほしい（話し手の希望）」": "文末の意味を「さへ」自体の意味と取り違えている"
+      },
+      "ruleRefs": [],
+      "question": "傍線部の意味として最も適切なものを選べ。",
+      "choices": [
+        "花までも・花でさえ",
+        "限定「花だけ（それ以外を含めない）」",
+        "逆接「花だけれども（しかし花は）」",
+        "願望「花が咲いてほしい（話し手の希望）」"
+      ],
+      "answerIndex": 0,
+      "targetRanges": [
+        {
+          "start": 1,
+          "text": "さへ"
+        }
+      ]
+    },
+    {
+      "id": "jb-sahe-int2",
+      "topic": "さへの識別",
+      "step": "文脈",
+      "questionType": "integration",
+      "coverageId": "jb-sahe-int2",
+      "passage": "子どもさへ笑ふ。",
+      "target": "さへ",
+      "explanation": "大人だけでなく子どもまで笑うという追加を表すため、「さへ」は添加・類推の副助詞。",
+      "distractorRationale": {
+        "限定「子どもだけ笑う（他は笑わない）」": "「さへ」は限定ではなく、意外なものを追加する働きである",
+        "逆接「子どもが笑うけれども（しかし）」": "逆接の接続助詞ではない",
+        "願望「子どもに笑ってほしい（話し手の希望）」": "願望の終助詞ではない"
+      },
+      "ruleRefs": [],
+      "question": "傍線部の意味として最も適切なものを選べ。",
+      "choices": [
+        "子どもまで・子どもでさえ",
+        "限定「子どもだけ笑う（他は笑わない）」",
+        "逆接「子どもが笑うけれども（しかし）」",
+        "願望「子どもに笑ってほしい（話し手の希望）」"
+      ],
+      "answerIndex": 0,
+      "targetRanges": [
+        {
+          "start": 3,
+          "text": "さへ"
+        }
+      ]
+    },
+    {
+      "id": "jb-shi-int1",
+      "topic": "副助詞「し」の識別",
+      "step": "取り立て",
+      "questionType": "integration",
+      "coverageId": "jb-shi-int1",
+      "passage": "この花し、色深し。",
+      "target": "し",
+      "explanation": "「この花し」は花を取り立てて強調する形で、後ろの「色深し」全体を特に強く述べている。副助詞「し」と読む。",
+      "distractorRationale": {
+        "過去の助動詞「き」の連体形": "下に体言が続く「書きし文」の形ではなく、ここでは語を取り立てている",
+        "サ変動詞「す」の一部": "「花す」という動詞の活用ではない",
+        "接続助詞": "文と文をつなぐ働きではなく、「花」を強調している"
+      },
+      "ruleRefs": [
+        "kbp.disambiguation.shi-identification"
+      ],
+      "question": "傍線部の働きとして最も適切なものを選べ。",
+      "choices": [
+        "取り立て・強意の副助詞",
+        "過去の助動詞「き」の連体形",
+        "サ変動詞「す」の一部",
+        "接続助詞"
+      ],
+      "answerIndex": 0,
+      "targetRanges": [
+        {
+          "start": 3,
+          "text": "し"
+        }
+      ]
+    },
+    {
+      "id": "jb-shi-int2",
+      "topic": "副助詞「し」の識別",
+      "step": "対比",
+      "questionType": "integration",
+      "coverageId": "jb-shi-int2",
+      "passage": "人し知るべきことなり。",
+      "target": "し",
+      "explanation": "「人し」は「人こそ」と同じように人を取り立てて強調する。直後は動詞「知る」で、過去の助動詞やサ変動詞の一部ではない。",
+      "distractorRationale": {
+        "過去の助動詞「き」の連体形": "「し」の直前は体言「人」で、動詞の連用形ではない",
+        "サ変動詞「す」の一部": "「人す」というサ変動詞の形ではない",
+        "断定の助動詞「なり」の一部": "「なり」に「し」は含まれない"
+      },
+      "ruleRefs": [
+        "kbp.disambiguation.shi-identification"
+      ],
+      "question": "傍線部の働きとして最も適切なものを選べ。",
+      "choices": [
+        "取り立て・強意の副助詞",
+        "過去の助動詞「き」の連体形",
+        "サ変動詞「す」の一部",
+        "断定の助動詞「なり」の一部"
+      ],
+      "answerIndex": 0,
+      "targetRanges": [
+        {
+          "start": 1,
+          "text": "し"
         }
       ]
     }

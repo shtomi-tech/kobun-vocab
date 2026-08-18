@@ -7,7 +7,7 @@ import re
 from collections import Counter
 from pathlib import Path
 
-from generate_preparation_checks import FILE_SOURCES
+from generate_preparation_checks import active_preparation_files, active_preparation_refs, load_data
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -40,7 +40,9 @@ def main() -> int:
     total_headings = 0
     total_checks = 0
     seen_check_ids: set[str] = set()
-    active_files = set(FILE_SOURCES)
+    curriculum_data = load_data()
+    active_files = active_preparation_files(curriculum_data)
+    curriculum_refs = active_preparation_refs(curriculum_data)
     status_counts: Counter[str] = Counter()
 
     for filename in sorted(active_files):
@@ -102,6 +104,19 @@ def main() -> int:
             errors.append(f"対応表 {check_id}: active対象外のファイル")
         if not item.get("sourceId"):
             errors.append(f"対応表 {check_id}: sourceIdがない")
+        refs = item.get("curriculumRefs")
+        if not isinstance(refs, list) or not refs:
+            errors.append(f"対応表 {check_id}: curriculumRefsがない")
+        else:
+            for ref in refs:
+                if not isinstance(ref, dict):
+                    errors.append(f"対応表 {check_id}: curriculumRefsの形式が不正")
+                    continue
+                for key in ("lessonId", "chapterNumber", "sectionIds", "activityIds"):
+                    if key not in ref:
+                        errors.append(f"対応表 {check_id}: curriculumRefs.{key}がない")
+                if filename not in curriculum_refs:
+                    errors.append(f"対応表 {check_id}: curriculum正本にないファイル")
         status_counts[str(item.get("reviewStatus", "unknown"))] += 1
 
     inactive_checks = []
