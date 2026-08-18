@@ -450,15 +450,33 @@ const KatsuyoApp = (function () {
     const p = loadProgress();
     return KobunSrs.normalize(lessonSrsMap(p)[lessonId]);
   }
+  function lessonSrsLabel(state) {
+    if (!state || !state.lastAnsweredAt || !state.nextReviewAt) return KobunSrs.label(state);
+    const last = new Date(state.lastAnsweredAt);
+    const next = new Date(state.nextReviewAt);
+    const lastDay = Date.UTC(last.getFullYear(), last.getMonth(), last.getDate());
+    const nextDay = Date.UTC(next.getFullYear(), next.getMonth(), next.getDate());
+    const interval = KobunSrs.intervals.indexOf(Math.round((nextDay - lastDay) / 86400000));
+    return interval < 0 ? KobunSrs.label(state) : KobunSrs.labels[interval + 2];
+  }
   function recordLessonSrs(lessonId, correct, answeredAt = nowIso()) {
     const p = loadProgress();
     const map = lessonSrsMap(p);
-    map[lessonId] = KobunSrs.record(map[lessonId], correct, new Date(answeredAt));
+    const state = KobunSrs.record(map[lessonId], correct, new Date(answeredAt));
+    if (state.nextReviewAt) {
+      const next = new Date(state.nextReviewAt);
+      next.setHours(0, 0, 0, 0);
+      state.nextReviewAt = next.toISOString();
+    }
+    map[lessonId] = state;
     saveProgress(p);
     return map[lessonId];
   }
   function lessonHasWeakRecord(lesson) {
     return lessonActivityTasks(lesson.id).some(task => taskHasWeakRecord(task));
+  }
+  function lessonWeakCount(lesson) {
+    return weakQueueEntries([lesson]).reduce((count, entry) => count + entry.task.ids.length, 0);
   }
   function curriculumLessons() {
     return (CURRICULUM && CURRICULUM.chapters || []).flatMap(chapter => chapter.lessons || []);
@@ -539,7 +557,7 @@ const KatsuyoApp = (function () {
     const at = options.now || nowIso();
     if (options.review) {
       markLessonReviewed(lesson.id, at);
-      if (lessonStatus(lesson).complete) {
+      if (lessonStatus(lesson).complete && !options.skipSrs) {
         recordLessonSrs(lesson.id, !lessonHasWeakRecord(lesson), at);
       }
       return true;
@@ -879,6 +897,78 @@ const KatsuyoApp = (function () {
     const queue = makeActivityQueue("weak", entries, { scope, review: true });
     startRequiredTask(entries[0].task, true, { skipPreparation: true, activityQueue: queue });
   }
+  function reviewDateLabel(iso) {
+    const date = new Date(iso);
+    return (date.getMonth() + 1) + "/" + date.getDate();
+  }
+  function buildLessonSrsCard(allLessons) {
+    const completedSrsLessons = allLessons.filter(lesson => lessonStatus(lesson).complete);
+    const due = dueLessons();
+    const srsCard = el("section", "card lessonSrsCard");
+    srsCard.appendChild(el("span", "label", "SPACED REVIEW"));
+    srsCard.appendChild(el("h2", null, "今日の復習"));
+    srsCard.appendChild(el("p", "hint", "完了した講を1講ずつ間隔復習します。正解すると1・3・7・14日後へ進みます。"));
+
+    if (completedSrsLessons.length) {
+      const counts = Object.fromEntries(KobunSrs.labels.map(label => [label, 0]));
+      completedSrsLessons.forEach(lesson => { counts[lessonSrsLabel(lessonSrs(lesson.id))] += 1; });
+      const intervalGrid = el("div", "intervalGrid");
+      intervalGrid.setAttribute("role", "group");
+      intervalGrid.setAttribute("aria-label", "講の復習間隔別内訳");
+      KobunSrs.labels.forEach(label => {
+        const cell = el("div", "intervalCell");
+        cell.appendChild(el("strong", null, String(counts[label])));
+        cell.appendChild(el("span", null, label));
+        intervalGrid.appendChild(cell);
+      });
+      srsCard.appendChild(intervalGrid);
+    }
+
+    if (due.length) {
+      const next = due[0];
+      const srsButton = el("button", "cta primaryCta", "");
+      srsButton.type = "button";
+      srsButton.appendChild(el("span", "ctaTag", "今日の復習（残り" + due.length + "件）"));
+      srsButton.appendChild(el("span", "ctaMain", String(next.number).padStart(2, "0") + "講　" + next.title));
+      srsButton.addEventListener("click", () => {
+        const nextDue = dueLessons()[0];
+        if (nextDue) startLesson(nextDue, { review: true });
+      });
+      srsCard.appendChild(srsButton);
+    } else {
+      srsCard.appendChild(el("p", "hint", completedSrsLessons.length
+        ? "今日の復習は終わりました。"
+        : "今日の復習は終わりました。講を完了すると復習対象になります。"));
+      if (completedSrsLessons.length) {
+        const nextReviewAt = completedSrsLessons
+          .map(lesson => lessonSrs(lesson.id).nextReviewAt)
+          .map(value => Date.parse(value || ""))
+          .filter(time => Number.isFinite(time))
+          .sort((a, b) => a - b)[0];
+        if (nextReviewAt) {
+          const nextState = completedSrsLessons
+            .map(lesson => lessonSrs(lesson.id))
+            .find(state => Date.parse(state.nextReviewAt || "") === nextReviewAt);
+          srsCard.appendChild(el("p", "hint", "次の復習は" + lessonSrsLabel(nextState)
+            + "（" + reviewDateLabel(nextReviewAt) + "）です。"));
+        }
+      }
+    }
+    return srsCard;
+  }
+  function buildWeakCard(allLessons) {
+    const weakCount = weakQueueEntries(allLessons).length;
+    if (!weakCount) return null;
+    const weakCard = el("section", "card weakRoadmapCard");
+    weakCard.appendChild(el("span", "label", "REVIEW"));
+    weakCard.appendChild(el("h2", null, "苦手をまとめて復習する"));
+    weakCard.appendChild(el("p", "hint", "文法の必修活動から、苦手と記録された問題だけを順に出題します。"));
+    const weakButton = el("button", "cta", "苦手" + weakCount + "活動を復習する");
+    weakButton.type = "button";
+    weakButton.addEventListener("click", () => startWeakReview("all"));
+    weakCard.appendChild(weakButton);
+    return weakCard;
+  }
   function renderGrammarCurriculumRoadmap(chapters, nextLesson) {
     const card = el("section", "card curriculumRoadmapCard");
     card.appendChild(el("span", "label", "TEXTBOOK ROADMAP"));
@@ -927,6 +1017,9 @@ const KatsuyoApp = (function () {
       stepper.appendChild(item);
     });
     card.appendChild(stepper);
+    homePanel.appendChild(buildLessonSrsCard(allLessons));
+    const weakCard = buildWeakCard(allLessons);
+    if (weakCard) homePanel.appendChild(weakCard);
     homePanel.appendChild(card);
 
     chapters.forEach(chapter => {
@@ -969,7 +1062,7 @@ const KatsuyoApp = (function () {
         body.appendChild(el("span", "lessonRoadmapNumber", String(lesson.number).padStart(2, "0") + "講"));
         body.appendChild(el("h4", null, lesson.title));
         body.appendChild(el("p", "hint", "活動 " + status.doneCount + " / " + status.requiredCount
-          + (status.complete ? "・完了・" + KobunSrs.label(lessonSrs(lesson.id)) : "・未完了")));
+          + (status.complete ? "・完了・" + lessonSrsLabel(lessonSrs(lesson.id)) : "・未完了")));
         row.appendChild(body);
         const actions = el("div", "lessonRoadmapActions");
         const action = el("button", status.complete ? "ghost smallGhost" : "cta smallGhost", status.complete ? "復習する" : "この講を始める");
@@ -984,58 +1077,6 @@ const KatsuyoApp = (function () {
       chapterCard.appendChild(details);
       homePanel.appendChild(chapterCard);
     });
-    const completedSrsLessons = allLessons.filter(lesson => lessonStatus(lesson).complete);
-    const due = dueLessons();
-    const srsCard = el("section", "card lessonSrsCard");
-    srsCard.appendChild(el("span", "label", "SPACED REVIEW"));
-    srsCard.appendChild(el("h2", null, "今日の復習"));
-    srsCard.appendChild(el("p", "hint", "完了した講を1講ずつ間隔復習します。正解すると1・3・7・14日後へ進みます。"));
-    const counts = Object.fromEntries(KobunSrs.labels.map(label => [label, 0]));
-    completedSrsLessons.forEach(lesson => { counts[KobunSrs.label(lessonSrs(lesson.id))] += 1; });
-    const intervalGrid = el("div", "intervalGrid");
-    intervalGrid.setAttribute("aria-label", "講の復習間隔別内訳");
-    KobunSrs.labels.forEach(label => {
-      const cell = el("div", "intervalCell");
-      cell.appendChild(el("strong", null, String(counts[label])));
-      cell.appendChild(el("span", null, label));
-      intervalGrid.appendChild(cell);
-    });
-    srsCard.appendChild(intervalGrid);
-    const srsButton = el("button", "cta reviewCta", due.length
-      ? "今日復習する講 " + due.length + "件を始める"
-      : "今日復習する講はありません");
-    srsButton.type = "button";
-    srsButton.disabled = due.length === 0;
-    srsButton.addEventListener("click", () => {
-      const next = dueLessons()[0];
-      if (next) startLesson(next, { review: true });
-    });
-    srsCard.appendChild(srsButton);
-    if (!due.length) {
-      const nextReviewAt = completedSrsLessons
-        .map(lesson => Date.parse(lessonSrs(lesson.id).nextReviewAt || ""))
-        .filter(time => Number.isFinite(time))
-        .sort((a, b) => a - b)[0];
-      if (nextReviewAt) {
-        const days = Math.max(1, Math.ceil((nextReviewAt - Date.parse(nowIso())) / 86400000));
-        srsCard.appendChild(el("p", "hint", "次の復習は" + days + "日後です。"));
-      } else if (!completedSrsLessons.length) {
-        srsCard.appendChild(el("p", "hint", "講を完了すると復習対象になります。"));
-      }
-    }
-    homePanel.appendChild(srsCard);
-    const weakCount = weakQueueEntries(allLessons).length;
-    if (weakCount) {
-      const weakCard = el("section", "card weakRoadmapCard");
-      weakCard.appendChild(el("span", "label", "REVIEW"));
-      weakCard.appendChild(el("h2", null, "苦手をまとめて復習する"));
-      weakCard.appendChild(el("p", "hint", "文法の必修活動から、苦手と記録された問題だけを順に出題します。"));
-      const weakButton = el("button", "cta", "苦手" + weakCount + "活動を復習する");
-      weakButton.type = "button";
-      weakButton.addEventListener("click", () => startWeakReview("all"));
-      weakCard.appendChild(weakButton);
-      homePanel.appendChild(weakCard);
-    }
   }
   function renderGrammarRoadmapHome() {
     flow = null;
@@ -1498,7 +1539,11 @@ const KatsuyoApp = (function () {
   }
   function completeQueuedActivity(taskDef) {
     if (!taskDef || !taskDef.curriculumActivity || !queuedTaskIsLessonBoundary(taskDef)) return;
-    applyActivityCompletion(taskDef.id, { review: session.pathReview });
+    const queue = session && session.activityQueue;
+    applyActivityCompletion(taskDef.id, {
+      review: session.pathReview,
+      skipSrs: queue && queue.type === "weak",
+    });
   }
   function startNextQueuedActivity() {
     const queue = session && session.activityQueue;
@@ -1534,23 +1579,45 @@ const KatsuyoApp = (function () {
     homePanel.classList.add("hide");
     sessionPanel.classList.remove("hide");
     const card = el("section", "card activityQueueCard");
-    const label = queue.type === "chapter" ? "章の復習完了" : queue.type === "weak" ? "苦手復習完了" : "講の完了";
+    const isLessonReview = queue.type === "lesson" && queue.review;
+    const label = queue.type === "chapter" ? "章の復習完了"
+      : queue.type === "weak" ? "苦手復習完了"
+        : isLessonReview ? "講の復習完了" : "講の完了";
     card.appendChild(el("span", "label", label));
     let title = "復習が終わりました。";
     let lesson = null;
     let chapter = null;
     if (queue.lessonId) {
       lesson = curriculumLessonById(queue.lessonId);
-      title = lesson ? lesson.number + "講「" + lesson.title + "」を完了しました。" : title;
+      title = lesson
+        ? String(lesson.number).padStart(2, "0") + "講「" + lesson.title + "」を"
+          + (isLessonReview ? "復習しました。" : "完了しました。")
+        : title;
     }
     if (queue.chapterId && CURRICULUM) chapter = CURRICULUM.chapters.find(item => item.id === queue.chapterId) || null;
     if (queue.type === "chapter" && chapter) title = chapter.number + "章「" + chapter.title + "」の復習が終わりました。";
     card.appendChild(el("p", "resultText", title));
+    if (isLessonReview && lesson) {
+      const state = lessonSrs(lesson.id);
+      const nextDate = state.nextReviewAt ? "（" + reviewDateLabel(state.nextReviewAt) + "）" : "";
+      card.appendChild(el("p", "hint", "次は" + lessonSrsLabel(state) + nextDate + "です。"));
+      const weakCount = lessonWeakCount(lesson);
+      if (weakCount) card.appendChild(el("p", "hint", "苦手が" + weakCount + "問残っています。"));
+    }
     const actions = el("div", "actions");
-    const roadmap = el("button", "cta", "学習ロードマップへ戻る");
-    roadmap.type = "button";
-    roadmap.addEventListener("click", renderGrammarRoadmapHome);
-    actions.appendChild(roadmap);
+    const remainingDue = isLessonReview ? dueLessons() : [];
+    const nextDue = remainingDue[0];
+    if (nextDue) {
+      const next = el("button", "cta", "次の復習へ（残り" + remainingDue.length + "件）");
+      next.type = "button";
+      next.addEventListener("click", () => startLesson(nextDue, { review: true }));
+      actions.appendChild(next);
+    } else {
+      const roadmap = el("button", "cta", "学習ロードマップへ戻る");
+      roadmap.type = "button";
+      roadmap.addEventListener("click", renderGrammarRoadmapHome);
+      actions.appendChild(roadmap);
+    }
     if (lesson) {
       const again = el("button", "ghost", "この講をもう一度");
       again.type = "button";
@@ -1562,6 +1629,12 @@ const KatsuyoApp = (function () {
         chapterAgain.addEventListener("click", () => startChapterReview(chapter));
         actions.appendChild(chapterAgain);
       }
+    }
+    if (nextDue) {
+      const roadmap = el("button", "ghost", "学習ロードマップへ戻る");
+      roadmap.type = "button";
+      roadmap.addEventListener("click", renderGrammarRoadmapHome);
+      actions.appendChild(roadmap);
     }
     const weak = el("button", "ghost", "文法の苦手を復習する");
     weak.type = "button";
@@ -2801,6 +2874,7 @@ const KatsuyoApp = (function () {
       taskStatus,
       applyActivityCompletion,
       dueLessons,
+      lessonSrsLabel,
       grammarCourseStatus,
       lessonQueueEntries,
       chapterQueueEntries,

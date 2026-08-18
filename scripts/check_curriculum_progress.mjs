@@ -394,7 +394,7 @@ async function testCurriculumStateBoundaries() {
   check(label + ": first completion schedules SRS for one day later",
     storedProgress.__lessonSrs && storedProgress.__lessonSrs[lesson01.id]
       && storedProgress.__lessonSrs[lesson01.id].stage === 1
-      && storedProgress.__lessonSrs[lesson01.id].nextReviewAt === "2026-08-19T00:00:00.000Z");
+      && storedProgress.__lessonSrs[lesson01.id].nextReviewAt === "2026-08-18T15:00:00.000Z");
 
   app.__test.applyActivityCompletion(lesson01Task.id, { now: "2026-08-18T01:00:00.000Z" });
   path = parsePathState(localStorage);
@@ -413,7 +413,22 @@ async function testCurriculumStateBoundaries() {
   storedProgress = JSON.parse(localStorage.getItem(STORE_KEY) || "{}");
   check(label + ": successful review advances SRS three days",
     storedProgress.__lessonSrs[lesson01.id].stage === 2
-      && storedProgress.__lessonSrs[lesson01.id].nextReviewAt === "2026-08-21T02:00:00.000Z");
+      && storedProgress.__lessonSrs[lesson01.id].nextReviewAt === "2026-08-20T15:00:00.000Z");
+  check(label + ": rounded SRS keeps the three-day label",
+    app.__test.lessonSrsLabel(storedProgress.__lessonSrs[lesson01.id]) === "3日後");
+
+  app.__test.applyActivityCompletion(lesson01Task.id, {
+    review: true,
+    skipSrs: true,
+    now: "2026-08-18T02:30:00.000Z",
+  });
+  path = parsePathState(localStorage);
+  storedProgress = JSON.parse(localStorage.getItem(STORE_KEY) || "{}");
+  check(label + ": weak review still records lastReviewedAt",
+    path.lessonCycles[lesson01.id].lastReviewedAt === "2026-08-18T02:30:00.000Z");
+  check(label + ": weak review does not advance SRS",
+    storedProgress.__lessonSrs[lesson01.id].stage === 2
+      && storedProgress.__lessonSrs[lesson01.id].nextReviewAt === "2026-08-20T15:00:00.000Z");
 
   storedProgress["kiso:k-yomi-03"].weak = true;
   localStorage.setItem(STORE_KEY, JSON.stringify(storedProgress));

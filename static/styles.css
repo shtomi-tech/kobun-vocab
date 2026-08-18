@@ -368,7 +368,7 @@ h2 {
 .intervalCell:first-child { border-left: 0; }
 .intervalCell strong, .intervalCell span { display: block; }
 .intervalCell strong { font-size: 20px; }
-.intervalCell span { color: var(--muted); font-size: 11px; }
+.intervalCell span { color: var(--muted); font-size: 12px; }
 @media (max-width: 700px) {
   .chapterStepper { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
