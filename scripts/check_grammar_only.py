@@ -20,7 +20,6 @@ GRAMMAR_STORE_KEYS = [
 REQUIRED_SCRIPTS = [
     "static/mode-katsuyo.js",
     "static/kobun-preparation.js",
-    "static/learning-map.js",
     "static/app.js",
 ]
 
@@ -48,11 +47,6 @@ def main() -> int:
         if forbidden in app_js:
             errors.append(f"static/app.js に {forbidden} が残っている")
 
-    learning_map_js = read("static/learning-map.js")
-    for forbidden in ("VocabApp", "古文単語", 'data-app="vocab"'):
-        if forbidden in learning_map_js:
-            errors.append(f"static/learning-map.js に {forbidden} が残っている")
-
     if exists("static/mode-vocab.js"):
         errors.append("static/mode-vocab.js が存在する")
     if exists("data/vocab.json"):
@@ -78,7 +72,7 @@ def main() -> int:
         if not found:
             errors.append(f"文法用の保存キー {key} が見つからない")
 
-    print(f"Checked index.html, static/app.js, static/learning-map.js and {len(vocab_key_targets)} file(s) for kobun_vocab_")
+    print(f"Checked index.html, static/app.js and {len(vocab_key_targets)} file(s) for kobun_vocab_")
     if errors:
         print(f"ERROR: {len(errors)}")
         for error in errors:

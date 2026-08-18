@@ -878,32 +878,5 @@
         }
       ]
     }
-  ],
-  "checkpoint": {
-    "id": "grammar-checkpoint",
-    "checkpointKey": "textbookCheckpointV1",
-    "title": "文法混合確認",
-    "description": "6章46講の文法活動からランダムに出題し、講の境界を越えて全体を確認する",
-    "questionCount": 30,
-    "passThreshold": 24,
-    "poolSource": "curriculum-required-choice-activities"
-  },
-  "extensions": [
-    {
-      "id": "keigo",
-      "title": "発展：敬語・補助動詞",
-      "description": "敬語の種類、補助動詞、敬意の方向を本文の人物関係に結び付ける",
-      "activities": [
-        { "id": "choice-ch9", "kind": "group", "setId": "choice", "groupId": "qa-chapter-9" },
-        { "id": "proc-k-tamau", "kind": "procedure", "setId": "keigo-shikibetsu", "procId": "k-tamau" },
-        { "id": "proc-k-tatematsuru", "kind": "procedure", "setId": "keigo-shikibetsu", "procId": "k-tatematsuru" },
-        { "id": "proc-k-haberi", "kind": "procedure", "setId": "keigo-shikibetsu", "procId": "k-haberi" },
-        { "id": "proc-k-hojo", "kind": "procedure", "setId": "keigo-shikibetsu", "procId": "k-hojo" },
-        { "id": "proc-k-keii", "kind": "procedure", "setId": "keigo-shikibetsu", "procId": "k-keii" }
-      ],
-      "legacyTaskIds": ["choice-ch9", "proc-k-tamau", "proc-k-tatematsuru", "proc-k-haberi", "proc-k-hojo", "proc-k-keii"]
-    },
-    { "id": "keigo-dokkai", "title": "発展：敬語読解", "activities": [], "legacyTaskIds": [] },
-    { "id": "kobun-joshiki", "title": "発展：古文常識", "activities": [], "legacyTaskIds": [] }
   ]
 }

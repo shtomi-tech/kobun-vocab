@@ -472,11 +472,6 @@ COVERAGE_KEYS = {
     "shikibetsu-keigo.json": "keigoCoverageTopics",
 }
 
-# 文法混合確認は章別4択と入口から30問を抜く。母集団が細ると24問合格が成立しない。
-CHECKPOINT_FILES = {"multiple_choice.json", "kiso.json"}
-MIN_CHECKPOINT_POOL = 40
-
-
 def check_retired():
     """退役させた問題が、学習ルートを壊していないかを確認する。
 
@@ -485,7 +480,6 @@ def check_retired():
     読み込み時に外すため、外した後の状態をここで確かめる。
     """
     problems = []
-    checkpoint_pool = 0
     for fname, qkey, rkey, gkey in RETIRE_SOURCES:
         path = os.path.join(ROOT, "data", fname)
         if not os.path.exists(path):
@@ -520,13 +514,6 @@ def check_retired():
                     f"[退役] {fname} カバレッジ「{topic.get('topic')}」の指定例が全て退役している"
                 )
 
-        if fname in CHECKPOINT_FILES:
-            checkpoint_pool += len(live)
-
-    if checkpoint_pool < MIN_CHECKPOINT_POOL:
-        problems.append(
-            f"[退役] 文法混合確認の母集団が {checkpoint_pool}問で下限 {MIN_CHECKPOINT_POOL}問を割る"
-        )
     return problems
 
 

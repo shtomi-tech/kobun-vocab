@@ -7,7 +7,7 @@
 
 ## 現行実装（2026-08-18）
 
-`data/curriculum.json` を教材目次の正本とし、6章46講を1講1ステージとして表示する。講の完了は必修活動の完了、文法混合確認（30問中24問）は講とは別のcheckpoint、`extensions` は発展領域として別管理する。
+`data/curriculum.json` を教材目次の正本とし、6章46講を1講1ステージとして表示する。講の完了は必修活動の完了で、46講で文法コースを完了する。文法混合確認と発展学習は採用しない。
 
 - 予習: `preparation[]` の実在ファイルと `sections[]` を `scripts/audit_preparation_checks.py` で検査。
 - 進捗: 旧問題別正解記録を読み取り、`kobun-katsuyo-path-v2.lessonCycles` へ冪等に移行。

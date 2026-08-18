@@ -2,7 +2,7 @@
 """data/curriculum.json の構造検証。
 
 --structure : 構造だけを検証する（chapter/lesson番号、ID一意性、参照先の実在、
-              予習pathとsectionの実在、重複必修IDのsharedReason、checkpointの存在）。
+              予習pathとsectionの実在、重複必修IDのsharedReason、任意領域の不在）。
 --release   : --structure に加えて、全46講が status:"ready" であることを要求する。
 
 このスクリプトは「実装可能な形で正しいか」を検証するものであり、問題文・解説の
@@ -269,10 +269,11 @@ def check_structure(curriculum, data_index, result):
                             f"{lesson['id']}: preparation section '{sec}' が {path} 内に見つからない"
                         )
 
-    # checkpoint存在チェック
-    checkpoint = curriculum.get("checkpoint")
-    if not checkpoint or not checkpoint.get("id"):
-        result.error("46講の後の文法checkpointがcurriculum.jsonに定義されていない（'checkpoint'キー）")
+    # 46講後の任意領域はアプリから削除済み。再追加を正本検査で止める。
+    if "checkpoint" in curriculum:
+        result.error("文法混合確認は削除済みだが、curriculum.jsonに'checkpoint'キーが残っている")
+    if "extensions" in curriculum:
+        result.error("発展学習は削除済みだが、curriculum.jsonに'extensions'キーが残っている")
 
 
 def check_activity_refs(activity, lesson, data_index, result):
@@ -289,10 +290,8 @@ def check_activity_refs(activity, lesson, data_index, result):
         ):
             result.error(f"{lesson['id']}/{activity.get('id')}: stepRangeが不正: {step_range}")
 
-    if kind not in ("group", "procedure", "checkpoint", "review"):
+    if kind not in ("group", "procedure"):
         result.error(f"{lesson['id']}: 不正なactivity.kind: {kind}")
-        return
-    if kind == "checkpoint" or kind == "review":
         return
 
     if set_id not in data_index:

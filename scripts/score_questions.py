@@ -62,11 +62,6 @@ SOURCES = [
     ("shikibetsu-keigo.json", "keigoQuestions", "keigoRequiredQuestionIds", "keigoGroups"),
 ]
 
-# 文法混合確認は choice モード(章別4択と入口)から30問を抜く。母集団が細ると
-# 24問合格の条件が成立しなくなるので、余裕を持った下限を置く。
-CHECKPOINT_SOURCES = {"multiple_choice.json", "kiso.json"}
-MIN_CHECKPOINT_POOL = 40
-
 AXES = [
     ("A", "正答の妥当性", 35),
     ("B", "誤答の質", 20),
@@ -371,10 +366,6 @@ def removal_blocker(record: dict, records: dict[str, dict], removing: set[str]) 
         # 識別問題は coverageTopics に「指定例」として登録され、用法ごとに
         # 1問が割り当てられている。外すとその用法の実例が無くなる。
         return f"識別カバレッジの指定例（{record['coverageTopic']}／{record['coverageLabel']}）"
-    if record["file"] in CHECKPOINT_SOURCES:
-        pool = [r for r in alive if r["file"] in CHECKPOINT_SOURCES]
-        if len(pool) < MIN_CHECKPOINT_POOL:
-            return f"文法混合確認の母集団が {len(pool)}問になり下限 {MIN_CHECKPOINT_POOL}問を割る"
     return ""
 
 

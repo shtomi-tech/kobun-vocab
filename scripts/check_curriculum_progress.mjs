@@ -176,7 +176,7 @@ async function testFixture1() {
   const state = parsePathState(localStorage);
   check(label + ": path state parses", !!state);
   check(label + ": curriculumVersion stamped", state && state.curriculumVersion === CURRICULUM_VERSION);
-  check(label + ": textbookCheckpointV1 present", state && typeof state.textbookCheckpointV1 === "object" && state.textbookCheckpointV1.passed === false);
+  check(label + ": removed textbookCheckpointV1 is absent", state && !state.textbookCheckpointV1);
   check(label + ": lessonCycles empty (nothing completed)",
     state && state.lessonCycles && Object.keys(state.lessonCycles).length === 0);
 }
@@ -274,9 +274,8 @@ async function testFixture4() {
       !(state.lessonCycles[id] && state.lessonCycles[id].completedAt));
   });
 
-  check(label + ": old grammarCheckpoint preserved untouched", state.grammarCheckpoint && state.grammarCheckpoint.passed === true);
-  check(label + ": textbookCheckpointV1 NOT auto-synced from old grammarCheckpoint (要確認事項、現状の仕様)",
-    state.textbookCheckpointV1 && state.textbookCheckpointV1.passed === false);
+  check(label + ": old grammarCheckpoint is preserved but ignored", state.grammarCheckpoint && state.grammarCheckpoint.passed === true);
+  check(label + ": removed textbook checkpoint is not initialized", !state.textbookCheckpointV1);
 }
 
 /* ================= fixture 5: 壊れたJSON ================= */
@@ -401,21 +400,20 @@ async function testCurriculumStateBoundaries() {
     path.lessonCycles[lesson01.id].completedAt === fixed
       && path.lessonCycles[lesson01.id].lastReviewedAt === "2026-08-18T02:00:00.000Z");
 
-  app.__test.saveCheckpointResult({ checkpointKey: "textbookCheckpointV1" }, 24, 30);
-  path = parsePathState(localStorage);
-  check(label + ": checkpoint uses textbookCheckpointV1",
-    path.textbookCheckpointV1 && path.textbookCheckpointV1.score === 24 && path.textbookCheckpointV1.passed === true);
-  check(label + ": old grammarCheckpoint is not overwritten",
-    !path.grammarCheckpoint);
+  check(label + ": removed checkpoint API is not exposed",
+    typeof app.__test.saveCheckpointResult === "undefined");
 
   const blocked = app.__test.lessonStatus({ id: "blocked-fixture", number: 99, title: "blocked", status: "blocked", requiredActivities: [] });
   check(label + ": empty blocked lesson is not complete", blocked.complete === false);
 }
 
-async function testExtensionsDoNotGateGrammar() {
-  const label = "extensions-do-not-gate-grammar";
+async function testOptionalRoutesRemoved() {
+  const label = "optional-routes-removed";
   const { app, localStorage } = createHarness(loadFixtureSeed("01-empty"));
   await app.ensureData();
+  check(label + ": curriculum checkpoint is removed", !curriculum.checkpoint);
+  check(label + ": curriculum extensions are removed",
+    !curriculum.extensions || curriculum.extensions.length === 0);
   const progress = JSON.parse(localStorage.getItem(STORE_KEY) || "{}");
   curriculum.chapters.flatMap(chapter => chapter.lessons).forEach(lesson => {
     lesson.requiredActivities.forEach(activity => {
@@ -433,9 +431,9 @@ async function testExtensionsDoNotGateGrammar() {
     });
   });
   localStorage.setItem(STORE_KEY, JSON.stringify(progress));
-  app.__test.saveCheckpointResult({ checkpointKey: "textbookCheckpointV1" }, 24, 30);
-  check(label + ": grammar completion ignores unfinished extension activities",
-    app.__test.grammarCourseStatus().complete === true);
+  const status = app.__test.grammarCourseStatus();
+  check(label + ": grammar completion is based on the 46 lessons only", status.complete === true);
+  check(label + ": grammar status has no checkpoint", !status.checkpoint);
 }
 
 async function testActivityQueues() {
@@ -468,7 +466,7 @@ async function main() {
   await testFixture6();
   await testWeakCountProcedureTask();
   await testCurriculumStateBoundaries();
-  await testExtensionsDoNotGateGrammar();
+  await testOptionalRoutesRemoved();
   await testActivityQueues();
 
   console.log("");

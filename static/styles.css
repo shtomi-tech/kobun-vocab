@@ -204,18 +204,13 @@ h2 {
 }
 .primaryCta .ctaMain { font-size: 19px; font-weight: 600; }
 
-.moreDetails summary,
-.pathStagesDetails summary {
+.moreDetails summary {
   cursor: pointer;
   list-style: none;
 }
-.moreDetails summary::-webkit-details-marker,
-.pathStagesDetails summary::-webkit-details-marker { display: none; }
-.moreDetails summary::before,
-.pathStagesDetails summary::before { content: "▸ "; color: var(--clay); }
-.moreDetails[open] summary::before,
-.pathStagesDetails[open] summary::before { content: "▾ "; }
-.pathStagesDetails .pathStages { margin-top: 12px; }
+.moreDetails summary::-webkit-details-marker { display: none; }
+.moreDetails summary::before { content: "▸ "; color: var(--clay); }
+.moreDetails[open] summary::before { content: "▾ "; }
 
 /* ---- 活用ホーム：表示専用の内訳（練習ボタンと見た目を分ける） ---- */
 .breakdownList {
@@ -275,35 +270,6 @@ h2 {
 .groupSub { font-size: 12px; color: var(--muted); }
 .groupStat { font-size: 12px; color: var(--muted); }
 @media (max-width: 620px) { .groupList { grid-template-columns: 1fr; } }
-
-.pathStages { display: grid; gap: 12px; }
-.pathStageCard { margin-bottom: 0; }
-.pathStageCard.current { border-color: var(--clay); }
-.pathStageHead { display: flex; justify-content: space-between; align-items: flex-start; gap: 17px; }
-.pathStageHead h3 { margin: 0; font-size: 18px; font-weight: 600; letter-spacing: -.01em; }
-.pathStageHead .hint { margin-top: 4px; }
-.pathStageStatus { flex: 0 0 auto; color: var(--muted); font-size: 13px; white-space: nowrap; }
-.pathStageCard.current .pathStageStatus { color: var(--clay); font-weight: 600; }
-.pathTaskList { display: grid; gap: 8px; margin-top: 17px; }
-.pathTaskRow { display: grid; grid-template-columns: 22px minmax(0, 1fr) auto auto; align-items: center; gap: 8px; padding: 12px 12px; border-radius: var(--r-md); background: var(--parchment); color: var(--muted); font-size: 13px; }
-.pathTaskRow.done { color: var(--ink); }
-.pathTaskMark { color: var(--clay); font-weight: 700; }
-.pathTaskLabel { min-width: 0; }
-.pathTaskStat { font-size: 12px; white-space: nowrap; }
-.pathTaskAction { min-height: 44px; padding: 8px 12px; white-space: nowrap; }
-.pathTaskActions { display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap; min-width: 0; }
-.pathPrepAction { background: var(--paper); }
-.pathLockHint { border-top: 1px solid var(--divider); padding-top: 12px; margin-top: 12px; }
-@media (max-width: 560px) {
-  .pathStageHead { display: block; }
-  .pathStageStatus { display: block; margin-top: 8px; }
-  .pathTaskRow { grid-template-columns: 22px minmax(0, 1fr) auto; align-items: start; }
-  .pathTaskMark { grid-column: 1; grid-row: 1 / span 2; }
-  .pathTaskLabel { grid-column: 2; grid-row: 1; }
-  .pathTaskStat { grid-column: 2; grid-row: 2; }
-  .pathTaskActions { grid-column: 3; grid-row: 1 / span 2; align-self: center; display: grid; justify-items: stretch; }
-  .pathTaskAction { align-self: center; }
-}
 
 /* ---- 6章46講の教材ロードマップ ---- */
 .curriculumRoadmapCard { scroll-margin-top: 16px; }
@@ -384,14 +350,6 @@ h2 {
 .lessonRoadmapBody .hint { margin-top: 2px; }
 .lessonRoadmapActions { display: flex; justify-content: flex-end; }
 .lessonRoadmapActions .smallGhost { min-width: 104px; min-height: 44px; }
-.checkpointRoadmapCard,
-.extensionRoadmapCard { border-left: 4px solid var(--clay); }
-.checkpointRoadmapCard .cta,
-.checkpointRoadmapCard .ghost { margin-top: 8px; }
-.extensionRoadmapBlock + .extensionRoadmapBlock { margin-top: 17px; padding-top: 17px; border-top: 1px solid var(--divider); }
-.extensionRoadmapBlock h3 { margin: 0; font-size: 17px; }
-.extensionRoadmapBlock .pathTaskRow { margin-top: 8px; }
-.extensionRoadmapBlock .smallGhost { min-height: 44px; }
 @media (max-width: 700px) {
   .chapterStepper { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
@@ -623,72 +581,6 @@ h2 {
   .prepProgressSegment { flex-basis: 24px; width: 24px; }
   .prepResumeButton { width: 100%; }
   .prepPracticeButton { width: 100%; }
-}
-
-/* ---- 学習マップ（段階1〜3の全体フローと現在地） ---- */
-.lmap { padding: 17px 24px; }
-.lmapTop { display: grid; gap: 4px; }
-.lmapTop .label { margin: 0; }
-.lmapNow { font-size: 13px; color: var(--clay); font-weight: 600; }
-
-.lmapStepper { list-style: none; display: grid; gap: 8px; margin: 12px 0 0; padding: 0; }
-.lmapStep { min-width: 0; position: relative; text-align: left; }
-.lmapStep::before { display: none; }
-
-.lmapStepBtn, .lmapStepStatic {
-  display: grid; grid-template-columns: 32px minmax(0, 1fr); grid-template-rows: auto auto;
-  align-items: center; column-gap: 12px; row-gap: 4px;
-  width: 100%; padding: 8px 8px; margin: 0; font: inherit; text-align: left;
-  position: relative; z-index: 1;
-}
-.lmapStepBtn { background: none; border: none; color: inherit; min-height: 44px; cursor: pointer; border-radius: var(--r-md); }
-.lmapStepBtn:hover { background: var(--parchment); }
-.lmapStepBtn:active { transform: none; }
-
-.lmapDot {
-  width: 32px; height: 32px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 14px; font-weight: 600;
-  border: 2px solid var(--line); background: var(--paper); color: var(--muted);
-}
-.lmapStep.is-done .lmapDot { background: var(--clay); border-color: var(--clay); color: #fff; }
-.lmapStep.is-current .lmapDot { border-color: var(--clay); color: var(--clay); outline: 3px solid rgba(0, 102, 204, .16); }
-
-.lmapName { font-size: 12.5px; color: var(--ink); line-height: 1.3; }
-.lmapStep.is-locked .lmapName { color: var(--muted); }
-.lmapStepBtn .lmapDot, .lmapStepStatic .lmapDot { grid-row: 1 / span 2; }
-.lmapState { grid-column: 2; font-size: 11px; color: var(--muted); }
-.lmapStep.is-current .lmapState { color: var(--clay); font-weight: 600; }
-
-.lmapDetails { margin-top: 24px; padding-top: 0; }
-.lmapDetails > summary { cursor: pointer; color: var(--clay); font-size: 13px; list-style: none; min-height: 32px; display: flex; align-items: center; }
-.lmapDetails > summary::-webkit-details-marker { display: none; }
-.lmapDetails > summary::before { content: "▸"; margin-right: 8px; }
-.lmapDetails[open] > summary::before { content: "▾"; }
-
-.lmapFlow { display: flex; flex-direction: column; margin-top: 8px; }
-.lmapFlowStage { border: 1px solid var(--line); border-radius: var(--r-md); padding: 12px 12px; background: var(--paper); }
-.lmapFlowStage.is-current { border-color: var(--clay); border-left-width: 3px; background: var(--parchment); }
-.lmapFlowStage.is-locked { opacity: .72; }
-.lmapFlowHead { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
-.lmapFlowTag { font-size: 11px; color: var(--muted); }
-.lmapFlowName { font-size: 15px; font-weight: 600; letter-spacing: -.01em; }
-.lmapFlowBadge { margin-left: auto; font-size: 11px; color: var(--muted); }
-.lmapFlowStage.is-done .lmapFlowBadge { color: var(--clay); }
-.lmapFlowStage.is-current .lmapFlowBadge { color: var(--clay); font-weight: 600; }
-.lmapFlowSteps { margin: 8px 0 0; padding-left: 17px; }
-.lmapFlowSteps li { font-size: 12.5px; color: var(--ink); margin: 4px 0; line-height: 1.5; }
-.lmapFlowGoal { margin: 8px 0 0; padding-top: 8px; border-top: 1px dashed var(--divider); font-size: 12px; color: var(--muted); }
-.lmapArrow { text-align: left; color: var(--muted); font-size: 14px; line-height: 1; margin: 4px 0 4px 17px; }
-.lmapGate { text-align: left; }
-.lmapGate span { display: inline-block; border: 1px solid var(--line); border-radius: var(--r-pill); padding: 4px 12px; font-size: 11.5px; color: var(--muted); }
-.lmapLegend { margin-top: 12px; border-top: 1px solid var(--divider); padding-top: 12px; font-size: 12px; color: var(--muted); }
-.lmapLegend p { margin: 4px 0; }
-.lmapLegend b { color: var(--ink); font-weight: 600; }
-
-@media (max-width: 480px) {
-  .lmapName { font-size: 11px; }
-  .lmapNow { width: 100%; }
 }
 
 /* ---- 知識項目カバレッジ（手順ごとの確認状況） ---- */
