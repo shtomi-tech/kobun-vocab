@@ -1145,11 +1145,14 @@ const KatsuyoApp = (function () {
     slot.textContent = message || "";
     slot.className = "shareStatus" + (tone ? " " + tone : "");
   }
-  function applyCloudProgress(p) {
+  function applyCloudProgress(p, { reason } = {}) {
     if (!p || typeof p !== "object") return;
     const changed = migrateIdentificationPracticeProgress(p);
     try { localStorage.setItem(STORE_KEY, JSON.stringify(p)); } catch (_) {}
-    if (changed && cloud) cloud.queueSave();
+    // 起動時は同期層の準備完了後に送る。
+    if (changed && cloud) Promise.resolve().then(() => cloud.queueSave());
+    // 他端末の進捗を取り込んだとき、ホーム表示中なら数値を描き直す（出題中は次の画面で反映）。
+    if (reason && reason !== "init" && !flow && !homePanel.classList.contains("hide")) goHome();
   }
 
   /* ---------- helpers ---------- */
