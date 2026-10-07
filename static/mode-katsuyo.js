@@ -806,6 +806,50 @@ const KatsuyoApp = (function () {
     });
     return true;
   }
+  // 他のアプリ（古文単語 学習アプリの「和歌で文法」など）から ?prep=<資料名>&sec=<節番号> で
+  // 予習資料を直接開く。資料名は curriculum.json のどこかの講が使っているものに限る。
+  // 講ごとの節しぼりこみは掛けず資料全体を表示し、予習の進み具合は講とは別に記録する。
+  function linkedPreparationRequest() {
+    const params = new URLSearchParams(window.location.search);
+    const name = params.get("prep") || "";
+    if (!/^kobun-\d{2}-[a-z0-9-]+$/.test(name)) return null;
+    const path = "data/preparation/" + name + ".md";
+    const stage = GRAMMAR_PATH.find(item => item.preparation.some(material => material.path === path));
+    if (!stage) return null;
+    const section = Number.parseInt(params.get("sec") || "", 10);
+    return { name, path, stage, section: Number.isInteger(section) && section > 0 ? section : 0 };
+  }
+  function clearLinkedPreparationQuery() {
+    const url = new URL(window.location.href);
+    if (!url.searchParams.has("prep") && !url.searchParams.has("sec")) return;
+    url.searchParams.delete("prep");
+    url.searchParams.delete("sec");
+    window.history.replaceState(null, "", url.pathname + url.search + url.hash);
+  }
+  function openLinkedPreparation() {
+    const request = linkedPreparationRequest();
+    clearLinkedPreparationQuery();
+    if (!request || typeof KobunPreparation === "undefined") return false;
+    const task = request.stage.tasks[0] || null;
+    activeGrammarMode = "roadmap";
+    activeGrammarPathTask = null;
+    activeGrammarPathReview = false;
+    sessionPanel.classList.add("hide");
+    sessionPanel.innerHTML = "";
+    homePanel.classList.remove("hide");
+    KobunPreparation.render({
+      container: homePanel,
+      task: { id: "link:" + request.name, label: request.stage.label },
+      preparation: [{ path: request.path, sections: [] }],
+      focusSection: request.section,
+      onBack: renderGrammarRoadmapHome,
+      onPractice: () => {
+        if (task) startRequiredTask(task, false, { skipPreparation: true });
+        else renderGrammarRoadmapHome();
+      },
+    });
+    return true;
+  }
   function startRequiredTask(task, review = false, options = {}) {
     if (!options.skipPreparation && !review && openTaskPreparation(task, review, options)) return;
     activeGrammarMode = "roadmap";
@@ -2840,6 +2884,7 @@ const KatsuyoApp = (function () {
     grammarMode = (setId === "grammar");
     if (grammarMode) {
       currentSet = null;
+      if (openLinkedPreparation()) return;
       renderGrammarRoadmapHome();
       return;
     }
