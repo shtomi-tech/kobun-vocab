@@ -632,6 +632,9 @@ const KobunPreparation = (function () {
     // 予習進捗は資料ファイルのパスではなく講（lesson.id、= stage.id）を基準に保存する。
     // 1講に複数資料がある場合は、講idに資料の並び番号を付けて資料ごとに独立させる。
     const lessonId = String((stage && stage.id) || (task && (task.id || task.label)) || "prep");
+    // 外部リンク（?prep=）から開いたときは、指定のH2節（1始まり）へ移動して表示する。
+    const focusSection = Number.isInteger(options.focusSection) && options.focusSection > 0
+      ? options.focusSection : 0;
 
     activeCleanup();
     let disposed = false;
@@ -755,7 +758,11 @@ const KobunPreparation = (function () {
           };
           progressView = createProgressHeader(task, parsed.posts, checks, progress, jumpToPost);
           shell.insertBefore(progressView.element, thread);
-          window.scrollTo(0, 0);
+          const focusPost = index === 0 && focusSection
+            ? content.querySelector('.prepPost[data-section-index="' + (focusSection - 1) + '"]')
+            : null;
+          if (focusPost) focusPost.scrollIntoView({ block: "start" });
+          else window.scrollTo(0, 0);
           removePostProgress = attachPostProgress(parsed.posts, current => {
             if (current <= progress.postIndex) return;
             progress.postIndex = current;
